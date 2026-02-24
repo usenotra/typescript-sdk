@@ -1,0 +1,37 @@
+speakeasyVersion: 1.728.0
+sources:
+    Notra API:
+        sourceNamespace: notra-api
+        sourceRevisionDigest: sha256:365a1cf76ad405d35194655d49e8cf029472c410ff8eca0eecc22e501dccbfa7
+        sourceBlobDigest: sha256:1beb8f9ac0e252d0534690fd52a87d54e22763e03bfbd90f532c3c6114195521
+        tags:
+            - latest
+            - 1.0.0
+targets:
+    notra:
+        source: Notra API
+        sourceNamespace: notra-api
+        sourceRevisionDigest: sha256:365a1cf76ad405d35194655d49e8cf029472c410ff8eca0eecc22e501dccbfa7
+        sourceBlobDigest: sha256:1beb8f9ac0e252d0534690fd52a87d54e22763e03bfbd90f532c3c6114195521
+        codeSamplesNamespace: notra-api-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:36dc6d4c9bb548eab303ac04a1db019997585e359d1e71ce4d964158a93f497a
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Notra API:
+            inputs:
+                - location: https://docs.usenotra.com/openapi.json
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/notra/notra/notra-api
+    targets:
+        notra:
+            target: typescript
+            source: Notra API
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/notra/notra/notra-api-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

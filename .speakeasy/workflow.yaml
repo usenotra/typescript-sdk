@@ -1,0 +1,19 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    Notra API:
+        inputs:
+            - location: https://docs.usenotra.com/openapi.json
+        output: .speakeasy/out.openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/notra/notra/notra-api
+targets:
+    notra:
+        target: typescript
+        source: Notra API
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/notra/notra/notra-api-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false
