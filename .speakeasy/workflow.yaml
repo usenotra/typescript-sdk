@@ -11,6 +11,9 @@ targets:
     notra:
         target: typescript
         source: Notra API
+        publish:
+            npm:
+                token: $npm_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/notra/notra/notra-api-typescript-code-samples
