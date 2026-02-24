@@ -1,6 +1,6 @@
 {
   "name": "@usenotra/sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Speakeasy",
   "type": "module",
   "files": [
@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/usenotra/notra-typescript.git"
+    "url": "https://github.com/usenotra/typescript-sdk.git"
   },
   "sideEffects": false,
   "scripts": {

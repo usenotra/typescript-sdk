@@ -96,6 +96,146 @@ run();
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
+<!-- Start Summary [summary] -->
+## Summary
+
+Notra API: OpenAPI schema for authenticated content endpoints.
+<!-- End Summary [summary] -->
+
+<!-- Start Table of Contents [toc] -->
+## Table of Contents
+<!-- $toc-max-depth=2 -->
+* [@usenotra/sdk](#usenotrasdk)
+  * [SDK Example Usage](#sdk-example-usage)
+  * [Authentication](#authentication)
+  * [Available Resources and Operations](#available-resources-and-operations)
+  * [SDK Installation](#sdk-installation)
+  * [Requirements](#requirements)
+  * [SDK Example Usage](#sdk-example-usage-1)
+  * [Authentication](#authentication-1)
+  * [Available Resources and Operations](#available-resources-and-operations-1)
+  * [Standalone functions](#standalone-functions)
+  * [Retries](#retries)
+  * [Error Handling](#error-handling)
+  * [Server Selection](#server-selection)
+  * [Custom HTTP Client](#custom-http-client)
+  * [Debugging](#debugging)
+* [Development](#development)
+  * [Maturity](#maturity)
+  * [Contributions](#contributions)
+
+<!-- End Table of Contents [toc] -->
+
+<!-- Start SDK Installation [installation] -->
+## SDK Installation
+
+The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
+
+### NPM
+
+```bash
+npm add @usenotra/sdk
+```
+
+### PNPM
+
+```bash
+pnpm add @usenotra/sdk
+```
+
+### Bun
+
+```bash
+bun add @usenotra/sdk
+```
+
+### Yarn
+
+```bash
+yarn add @usenotra/sdk
+```
+
+> [!NOTE]
+> This package is published with CommonJS and ES Modules (ESM) support.
+<!-- End SDK Installation [installation] -->
+
+<!-- Start Requirements [requirements] -->
+## Requirements
+
+For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
+<!-- End Requirements [requirements] -->
+
+<!-- Start SDK Example Usage [usage] -->
+## SDK Example Usage
+
+### Example
+
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.listPosts({
+    organizationId: "org_123",
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End SDK Example Usage [usage] -->
+
+<!-- Start Authentication [security] -->
+## Authentication
+
+### Per-Client Security Schemes
+
+This SDK supports the following security scheme globally:
+
+| Name         | Type | Scheme      | Environment Variable |
+| ------------ | ---- | ----------- | -------------------- |
+| `bearerAuth` | http | HTTP Bearer | `NOTRA_BEARER_AUTH`  |
+
+To authenticate with the API the `bearerAuth` parameter must be set when initializing the SDK client instance. For example:
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.listPosts({
+    organizationId: "org_123",
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End Authentication [security] -->
+
+<!-- Start Available Resources and Operations [operations] -->
+## Available Resources and Operations
+
+<details open>
+<summary>Available methods</summary>
+
+### [Content](docs/sdks/content/README.md)
+
+* [listPosts](docs/sdks/content/README.md#listposts) - List posts
+* [getPost](docs/sdks/content/README.md#getpost) - Get a single post
+
+</details>
+<!-- End Available Resources and Operations [operations] -->
+
 <!-- Start Standalone functions [standalone-funcs] -->
 ## Standalone functions
 
