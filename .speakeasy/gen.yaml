@@ -9,8 +9,6 @@ generation:
     optionalPropertyRendering: withExample
     sdkInitStyle: constructor
   useClassNamesForArrayFields: true
-  persistentEdits:
-    enabled: true
   fixes:
     nameResolutionDec2023: true
     nameResolutionFeb2025: true
@@ -30,7 +28,8 @@ generation:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: body
   versioningStrategy: automatic
-  persistentEdits: {}
+  persistentEdits: 
+    enabled: true
   tests:
     generateTests: false
     generateNewTests: true
