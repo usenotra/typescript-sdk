@@ -10,6 +10,7 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 ## Summary
 
 ## Table of Contents
+<!-- $toc-max-depth=2 -->
 * [@usenotra/sdk](#usenotrasdk)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
@@ -93,6 +94,9 @@ run();
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
 
 </details>
+<!-- End Available Resources and Operations [operations] -->
+
+<!-- Start Standalone functions [standalone-funcs] -->
 ## Standalone functions
 
 All the methods listed above are available as standalone functions. These
@@ -111,6 +115,9 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
 
 </details>
+<!-- End Standalone functions [standalone-funcs] -->
+
+<!-- Start Retries [retries] -->
 ## Retries
 
 Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
@@ -175,6 +182,9 @@ async function run() {
 run();
 
 ```
+<!-- End Retries [retries] -->
+
+<!-- Start Error Handling [errors] -->
 ## Error Handling
 
 [`NotraError`](./src/models/errors/notra-error.ts) is the base class for all HTTP error responses. It has the following properties:
@@ -245,6 +255,9 @@ run();
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
+<!-- End Error Handling [errors] -->
+
+<!-- Start Server Selection [server] -->
 ## Server Selection
 
 ### Override Server URL Per-Client
@@ -269,6 +282,9 @@ async function run() {
 run();
 
 ```
+<!-- End Server Selection [server] -->
+
+<!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
 
 The TypeScript SDK makes API calls using an `HTTPClient` that wraps the native
@@ -319,6 +335,9 @@ httpClient.addHook("requestError", (error, request) => {
 
 const sdk = new Notra({ httpClient: httpClient });
 ```
+<!-- End Custom HTTP Client [http-client] -->
+
+<!-- Start Debugging [debug] -->
 ## Debugging
 
 You can setup your SDK to emit debug logs for SDK requests and responses.
@@ -335,6 +354,9 @@ const sdk = new Notra({ debugLogger: console });
 ```
 
 You can also enable a default debug logger by setting an environment variable `NOTRA_DEBUG` to true.
+<!-- End Debugging [debug] -->
+
+<!-- Placeholder for Future Speakeasy SDK Sections -->
 # Development
 
 ## Maturity
