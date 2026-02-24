@@ -3,6 +3,14 @@
   "version": "0.0.1",
   "author": "Speakeasy",
   "type": "module",
+  "files": [
+    "dist/",
+    "FUNCTIONS.md",
+    "RUNTIMES.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
   "tshy": {
     "sourceDialects": [
       "@usenotra/sdk/source"
@@ -18,13 +26,16 @@
       "./*": "./src/*.ts"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usenotra/notra-typescript.git"
+  },
   "sideEffects": false,
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tshy",
     "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "eslint": "^9.26.0",

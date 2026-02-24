@@ -5,20 +5,11 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=@usenotra/sdk&utm_campaign=typescript)
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
 
-
 <br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/notra/notra). Delete this section before > publishing to a package manager.
 
-<!-- Start Summary [summary] -->
 ## Summary
 
-Notra API: OpenAPI schema for authenticated content endpoints.
-<!-- End Summary [summary] -->
-
-<!-- Start Table of Contents [toc] -->
 ## Table of Contents
-<!-- $toc-max-depth=2 -->
 * [@usenotra/sdk](#usenotrasdk)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
@@ -35,52 +26,11 @@ Notra API: OpenAPI schema for authenticated content endpoints.
   * [Maturity](#maturity)
   * [Contributions](#contributions)
 
-<!-- End Table of Contents [toc] -->
-
-<!-- Start SDK Installation [installation] -->
-## SDK Installation
-
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
-### NPM
-
 ```bash
-npm add <UNSET>
+npm install @usenotra/sdk
 ```
-
-### PNPM
-
-```bash
-pnpm add <UNSET>
-```
-
-### Bun
-
-```bash
-bun add <UNSET>
-```
-
-### Yarn
-
-```bash
-yarn add <UNSET>
-```
-
-> [!NOTE]
-> This package is published with CommonJS and ES Modules (ESM) support.
-<!-- End SDK Installation [installation] -->
-
-<!-- Start Requirements [requirements] -->
-## Requirements
-
-For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
-<!-- End Requirements [requirements] -->
-
-<!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage
 
 ### Example
@@ -103,9 +53,6 @@ async function run() {
 run();
 
 ```
-<!-- End SDK Example Usage [usage] -->
-
-<!-- Start Authentication [security] -->
 ## Authentication
 
 ### Per-Client Security Schemes
@@ -135,9 +82,6 @@ async function run() {
 run();
 
 ```
-<!-- End Authentication [security] -->
-
-<!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
 
 <details open>
@@ -149,9 +93,6 @@ run();
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
 
 </details>
-<!-- End Available Resources and Operations [operations] -->
-
-<!-- Start Standalone functions [standalone-funcs] -->
 ## Standalone functions
 
 All the methods listed above are available as standalone functions. These
@@ -170,9 +111,6 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
 
 </details>
-<!-- End Standalone functions [standalone-funcs] -->
-
-<!-- Start Retries [retries] -->
 ## Retries
 
 Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
@@ -237,9 +175,6 @@ async function run() {
 run();
 
 ```
-<!-- End Retries [retries] -->
-
-<!-- Start Error Handling [errors] -->
 ## Error Handling
 
 [`NotraError`](./src/models/errors/notra-error.ts) is the base class for all HTTP error responses. It has the following properties:
@@ -310,9 +245,6 @@ run();
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
-<!-- End Error Handling [errors] -->
-
-<!-- Start Server Selection [server] -->
 ## Server Selection
 
 ### Override Server URL Per-Client
@@ -337,9 +269,6 @@ async function run() {
 run();
 
 ```
-<!-- End Server Selection [server] -->
-
-<!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
 
 The TypeScript SDK makes API calls using an `HTTPClient` that wraps the native
@@ -390,9 +319,6 @@ httpClient.addHook("requestError", (error, request) => {
 
 const sdk = new Notra({ httpClient: httpClient });
 ```
-<!-- End Custom HTTP Client [http-client] -->
-
-<!-- Start Debugging [debug] -->
 ## Debugging
 
 You can setup your SDK to emit debug logs for SDK requests and responses.
@@ -409,10 +335,6 @@ const sdk = new Notra({ debugLogger: console });
 ```
 
 You can also enable a default debug logger by setting an environment variable `NOTRA_DEBUG` to true.
-<!-- End Debugging [debug] -->
-
-<!-- Placeholder for Future Speakeasy SDK Sections -->
-
 # Development
 
 ## Maturity
