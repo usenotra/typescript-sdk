@@ -1,6 +1,7 @@
 {
   "name": "@usenotra/sdk",
-  "version": "0.0.2",
+  "version": "0.0.1",
+  "author": "Speakeasy",
   "type": "module",
   "files": [
     "dist/",
