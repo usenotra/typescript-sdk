@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:1beb8f9ac0e252d0534690fd52a87d54e22763e03bfbd90f532c3c6114195521
         tags:
             - latest
+            - speakeasy-sdk-regen-1771962057
             - 1.0.0
 targets:
     notra:
@@ -14,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:365a1cf76ad405d35194655d49e8cf029472c410ff8eca0eecc22e501dccbfa7
         sourceBlobDigest: sha256:1beb8f9ac0e252d0534690fd52a87d54e22763e03bfbd90f532c3c6114195521
         codeSamplesNamespace: notra-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:36dc6d4c9bb548eab303ac04a1db019997585e359d1e71ce4d964158a93f497a
+        codeSamplesRevisionDigest: sha256:64aa41741070da3ecf995d00fafb4f66df48a05ed50e8cb69f810519365afe9a
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -29,6 +30,9 @@ workflow:
         notra:
             target: typescript
             source: Notra API
+            publish:
+                npm:
+                    token: $npm_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/notra/notra/notra-api-typescript-code-samples
