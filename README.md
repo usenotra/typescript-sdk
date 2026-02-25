@@ -17,14 +17,11 @@ Notra API: OpenAPI schema for authenticated content endpoints.
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
 * [@usenotra/sdk](#usenotrasdk)
+  * [SDK Installation](#sdk-installation)
+  * [Requirements](#requirements)
   * [SDK Example Usage](#sdk-example-usage)
   * [Authentication](#authentication)
   * [Available Resources and Operations](#available-resources-and-operations)
-  * [SDK Installation](#sdk-installation)
-  * [Requirements](#requirements)
-  * [SDK Example Usage](#sdk-example-usage-1)
-  * [Authentication](#authentication-1)
-  * [Available Resources and Operations](#available-resources-and-operations-1)
   * [Standalone functions](#standalone-functions)
   * [Retries](#retries)
   * [Error Handling](#error-handling)

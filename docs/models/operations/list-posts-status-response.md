@@ -1,11 +1,11 @@
-# GetPostMetadataStatus
+# ListPostsStatusResponse
 
 ## Example Usage
 
 ```typescript
-import { GetPostMetadataStatus } from "@usenotra/sdk/models/operations";
+import { ListPostsStatusResponse } from "@usenotra/sdk/models/operations";
 
-let value: GetPostMetadataStatus = "draft";
+let value: ListPostsStatusResponse = "published";
 ```
 
 ## Values

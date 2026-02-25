@@ -35,6 +35,29 @@ export type GetPostStatusUnion =
   | GetPostStatusQueryParamEnum1
   | Array<GetPostStatusQueryParamEnum2>;
 
+export const GetPostContentTypeEnum2 = {
+  Changelog: "changelog",
+  LinkedinPost: "linkedin_post",
+} as const;
+export type GetPostContentTypeEnum2 = ClosedEnum<
+  typeof GetPostContentTypeEnum2
+>;
+
+export const GetPostContentTypeEnum1 = {
+  Changelog: "changelog",
+  LinkedinPost: "linkedin_post",
+} as const;
+export type GetPostContentTypeEnum1 = ClosedEnum<
+  typeof GetPostContentTypeEnum1
+>;
+
+/**
+ * Filter by content type. Repeat the query param to pass multiple values.
+ */
+export type GetPostContentTypeUnion =
+  | GetPostContentTypeEnum1
+  | Array<GetPostContentTypeEnum2>;
+
 export type GetPostRequest = {
   organizationId: string;
   postId: string;
@@ -45,13 +68,20 @@ export type GetPostRequest = {
     | GetPostStatusQueryParamEnum1
     | Array<GetPostStatusQueryParamEnum2>
     | undefined;
+  /**
+   * Filter by content type. Repeat the query param to pass multiple values.
+   */
+  contentType?:
+    | GetPostContentTypeEnum1
+    | Array<GetPostContentTypeEnum2>
+    | undefined;
 };
 
-export const GetPostPostStatus = {
+export const GetPostStatusResponse = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type GetPostPostStatus = OpenEnum<typeof GetPostPostStatus>;
+export type GetPostStatusResponse = OpenEnum<typeof GetPostStatusResponse>;
 
 export type GetPostPost = {
   id: string;
@@ -60,19 +90,9 @@ export type GetPostPost = {
   markdown: string;
   contentType: string;
   sourceMetadata?: any | undefined;
-  status: GetPostPostStatus;
+  status: GetPostStatusResponse;
   createdAt: string;
   updatedAt: string;
-};
-
-export const GetPostMetadataStatus = {
-  Draft: "draft",
-  Published: "published",
-} as const;
-export type GetPostMetadataStatus = OpenEnum<typeof GetPostMetadataStatus>;
-
-export type GetPostMetadata = {
-  status: Array<GetPostMetadataStatus>;
 };
 
 /**
@@ -80,7 +100,6 @@ export type GetPostMetadata = {
  */
 export type GetPostResponse = {
   post: GetPostPost | null;
-  metadata: GetPostMetadata;
 };
 
 /** @internal */
@@ -114,10 +133,41 @@ export function getPostStatusUnionToJSON(
 }
 
 /** @internal */
+export const GetPostContentTypeEnum2$outboundSchema: z.ZodMiniEnum<
+  typeof GetPostContentTypeEnum2
+> = z.enum(GetPostContentTypeEnum2);
+
+/** @internal */
+export const GetPostContentTypeEnum1$outboundSchema: z.ZodMiniEnum<
+  typeof GetPostContentTypeEnum1
+> = z.enum(GetPostContentTypeEnum1);
+
+/** @internal */
+export type GetPostContentTypeUnion$Outbound = string | Array<string>;
+
+/** @internal */
+export const GetPostContentTypeUnion$outboundSchema: z.ZodMiniType<
+  GetPostContentTypeUnion$Outbound,
+  GetPostContentTypeUnion
+> = smartUnion([
+  GetPostContentTypeEnum1$outboundSchema,
+  z.array(GetPostContentTypeEnum2$outboundSchema),
+]);
+
+export function getPostContentTypeUnionToJSON(
+  getPostContentTypeUnion: GetPostContentTypeUnion,
+): string {
+  return JSON.stringify(
+    GetPostContentTypeUnion$outboundSchema.parse(getPostContentTypeUnion),
+  );
+}
+
+/** @internal */
 export type GetPostRequest$Outbound = {
   organizationId: string;
   postId: string;
   status?: string | Array<string> | undefined;
+  contentType?: string | Array<string> | undefined;
 };
 
 /** @internal */
@@ -133,6 +183,12 @@ export const GetPostRequest$outboundSchema: z.ZodMiniType<
       z.array(GetPostStatusQueryParamEnum2$outboundSchema),
     ]),
   ),
+  contentType: z.optional(
+    smartUnion([
+      GetPostContentTypeEnum1$outboundSchema,
+      z.array(GetPostContentTypeEnum2$outboundSchema),
+    ]),
+  ),
 });
 
 export function getPostRequestToJSON(getPostRequest: GetPostRequest): string {
@@ -140,10 +196,10 @@ export function getPostRequestToJSON(getPostRequest: GetPostRequest): string {
 }
 
 /** @internal */
-export const GetPostPostStatus$inboundSchema: z.ZodMiniType<
-  GetPostPostStatus,
+export const GetPostStatusResponse$inboundSchema: z.ZodMiniType<
+  GetPostStatusResponse,
   unknown
-> = openEnums.inboundSchema(GetPostPostStatus);
+> = openEnums.inboundSchema(GetPostStatusResponse);
 
 /** @internal */
 export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
@@ -154,7 +210,7 @@ export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
     markdown: types.string(),
     contentType: types.string(),
     sourceMetadata: types.optional(z.any()),
-    status: GetPostPostStatus$inboundSchema,
+    status: GetPostStatusResponse$inboundSchema,
     createdAt: types.string(),
     updatedAt: types.string(),
   });
@@ -170,36 +226,11 @@ export function getPostPostFromJSON(
 }
 
 /** @internal */
-export const GetPostMetadataStatus$inboundSchema: z.ZodMiniType<
-  GetPostMetadataStatus,
-  unknown
-> = openEnums.inboundSchema(GetPostMetadataStatus);
-
-/** @internal */
-export const GetPostMetadata$inboundSchema: z.ZodMiniType<
-  GetPostMetadata,
-  unknown
-> = z.object({
-  status: z.array(GetPostMetadataStatus$inboundSchema),
-});
-
-export function getPostMetadataFromJSON(
-  jsonString: string,
-): SafeParseResult<GetPostMetadata, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetPostMetadata$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetPostMetadata' from JSON`,
-  );
-}
-
-/** @internal */
 export const GetPostResponse$inboundSchema: z.ZodMiniType<
   GetPostResponse,
   unknown
 > = z.object({
   post: types.nullable(z.lazy(() => GetPostPost$inboundSchema)),
-  metadata: z.lazy(() => GetPostMetadata$inboundSchema),
 });
 
 export function getPostResponseFromJSON(
