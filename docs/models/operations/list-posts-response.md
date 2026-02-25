@@ -28,18 +28,12 @@ let value: ListPostsResponse = {
     totalPages: 323907,
     totalItems: 113078,
   },
-  metadata: {
-    status: [
-      "draft",
-    ],
-  },
 };
 ```
 
 ## Fields
 
-| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `posts`                                                                        | [operations.ListPostsPost](../../models/operations/list-posts-post.md)[]       | :heavy_check_mark:                                                             | N/A                                                                            |
-| `pagination`                                                                   | [operations.Pagination](../../models/operations/pagination.md)                 | :heavy_check_mark:                                                             | N/A                                                                            |
-| `metadata`                                                                     | [operations.ListPostsMetadata](../../models/operations/list-posts-metadata.md) | :heavy_check_mark:                                                             | N/A                                                                            |
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `posts`                                                                  | [operations.ListPostsPost](../../models/operations/list-posts-post.md)[] | :heavy_check_mark:                                                       | N/A                                                                      |
+| `pagination`                                                             | [operations.Pagination](../../models/operations/pagination.md)           | :heavy_check_mark:                                                       | N/A                                                                      |
