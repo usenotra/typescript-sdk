@@ -47,6 +47,29 @@ export type ListPostsStatusUnion =
   | ListPostsStatusQueryParamEnum1
   | Array<ListPostsStatusQueryParamEnum2>;
 
+export const ListPostsContentTypeEnum2 = {
+  Changelog: "changelog",
+  LinkedinPost: "linkedin_post",
+} as const;
+export type ListPostsContentTypeEnum2 = ClosedEnum<
+  typeof ListPostsContentTypeEnum2
+>;
+
+export const ListPostsContentTypeEnum1 = {
+  Changelog: "changelog",
+  LinkedinPost: "linkedin_post",
+} as const;
+export type ListPostsContentTypeEnum1 = ClosedEnum<
+  typeof ListPostsContentTypeEnum1
+>;
+
+/**
+ * Filter by content type. Repeat the query param to pass multiple values.
+ */
+export type ListPostsContentTypeUnion =
+  | ListPostsContentTypeEnum1
+  | Array<ListPostsContentTypeEnum2>;
+
 export type ListPostsRequest = {
   organizationId: string;
   /**
@@ -68,13 +91,20 @@ export type ListPostsRequest = {
     | ListPostsStatusQueryParamEnum1
     | Array<ListPostsStatusQueryParamEnum2>
     | undefined;
+  /**
+   * Filter by content type. Repeat the query param to pass multiple values.
+   */
+  contentType?:
+    | ListPostsContentTypeEnum1
+    | Array<ListPostsContentTypeEnum2>
+    | undefined;
 };
 
-export const ListPostsPostStatus = {
+export const ListPostsStatusResponse = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type ListPostsPostStatus = OpenEnum<typeof ListPostsPostStatus>;
+export type ListPostsStatusResponse = OpenEnum<typeof ListPostsStatusResponse>;
 
 export type ListPostsPost = {
   id: string;
@@ -83,7 +113,7 @@ export type ListPostsPost = {
   markdown: string;
   contentType: string;
   sourceMetadata?: any | undefined;
-  status: ListPostsPostStatus;
+  status: ListPostsStatusResponse;
   createdAt: string;
   updatedAt: string;
 };
@@ -97,23 +127,12 @@ export type Pagination = {
   totalItems: number;
 };
 
-export const ListPostsMetadataStatus = {
-  Draft: "draft",
-  Published: "published",
-} as const;
-export type ListPostsMetadataStatus = OpenEnum<typeof ListPostsMetadataStatus>;
-
-export type ListPostsMetadata = {
-  status: Array<ListPostsMetadataStatus>;
-};
-
 /**
  * Posts fetched successfully
  */
 export type ListPostsResponse = {
   posts: Array<ListPostsPost>;
   pagination: Pagination;
-  metadata: ListPostsMetadata;
 };
 
 /** @internal */
@@ -150,12 +169,43 @@ export function listPostsStatusUnionToJSON(
 }
 
 /** @internal */
+export const ListPostsContentTypeEnum2$outboundSchema: z.ZodMiniEnum<
+  typeof ListPostsContentTypeEnum2
+> = z.enum(ListPostsContentTypeEnum2);
+
+/** @internal */
+export const ListPostsContentTypeEnum1$outboundSchema: z.ZodMiniEnum<
+  typeof ListPostsContentTypeEnum1
+> = z.enum(ListPostsContentTypeEnum1);
+
+/** @internal */
+export type ListPostsContentTypeUnion$Outbound = string | Array<string>;
+
+/** @internal */
+export const ListPostsContentTypeUnion$outboundSchema: z.ZodMiniType<
+  ListPostsContentTypeUnion$Outbound,
+  ListPostsContentTypeUnion
+> = smartUnion([
+  ListPostsContentTypeEnum1$outboundSchema,
+  z.array(ListPostsContentTypeEnum2$outboundSchema),
+]);
+
+export function listPostsContentTypeUnionToJSON(
+  listPostsContentTypeUnion: ListPostsContentTypeUnion,
+): string {
+  return JSON.stringify(
+    ListPostsContentTypeUnion$outboundSchema.parse(listPostsContentTypeUnion),
+  );
+}
+
+/** @internal */
 export type ListPostsRequest$Outbound = {
   organizationId: string;
   sort: string;
   limit: number;
   page: number;
   status?: string | Array<string> | undefined;
+  contentType?: string | Array<string> | undefined;
 };
 
 /** @internal */
@@ -173,6 +223,12 @@ export const ListPostsRequest$outboundSchema: z.ZodMiniType<
       z.array(ListPostsStatusQueryParamEnum2$outboundSchema),
     ]),
   ),
+  contentType: z.optional(
+    smartUnion([
+      ListPostsContentTypeEnum1$outboundSchema,
+      z.array(ListPostsContentTypeEnum2$outboundSchema),
+    ]),
+  ),
 });
 
 export function listPostsRequestToJSON(
@@ -184,10 +240,10 @@ export function listPostsRequestToJSON(
 }
 
 /** @internal */
-export const ListPostsPostStatus$inboundSchema: z.ZodMiniType<
-  ListPostsPostStatus,
+export const ListPostsStatusResponse$inboundSchema: z.ZodMiniType<
+  ListPostsStatusResponse,
   unknown
-> = openEnums.inboundSchema(ListPostsPostStatus);
+> = openEnums.inboundSchema(ListPostsStatusResponse);
 
 /** @internal */
 export const ListPostsPost$inboundSchema: z.ZodMiniType<
@@ -200,7 +256,7 @@ export const ListPostsPost$inboundSchema: z.ZodMiniType<
   markdown: types.string(),
   contentType: types.string(),
   sourceMetadata: types.optional(z.any()),
-  status: ListPostsPostStatus$inboundSchema,
+  status: ListPostsStatusResponse$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),
 });
@@ -237,37 +293,12 @@ export function paginationFromJSON(
 }
 
 /** @internal */
-export const ListPostsMetadataStatus$inboundSchema: z.ZodMiniType<
-  ListPostsMetadataStatus,
-  unknown
-> = openEnums.inboundSchema(ListPostsMetadataStatus);
-
-/** @internal */
-export const ListPostsMetadata$inboundSchema: z.ZodMiniType<
-  ListPostsMetadata,
-  unknown
-> = z.object({
-  status: z.array(ListPostsMetadataStatus$inboundSchema),
-});
-
-export function listPostsMetadataFromJSON(
-  jsonString: string,
-): SafeParseResult<ListPostsMetadata, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListPostsMetadata$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListPostsMetadata' from JSON`,
-  );
-}
-
-/** @internal */
 export const ListPostsResponse$inboundSchema: z.ZodMiniType<
   ListPostsResponse,
   unknown
 > = z.object({
   posts: z.array(z.lazy(() => ListPostsPost$inboundSchema)),
   pagination: z.lazy(() => Pagination$inboundSchema),
-  metadata: z.lazy(() => ListPostsMetadata$inboundSchema),
 });
 
 export function listPostsResponseFromJSON(

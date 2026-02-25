@@ -101,6 +101,7 @@ async function $do(
   const path = pathToFunc("/v1/{organizationId}/posts/{postId}")(pathParams);
 
   const query = encodeFormQuery({
+    "contentType": payload.contentType,
     "status": payload.status,
   });
 
