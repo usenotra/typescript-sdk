@@ -10,10 +10,11 @@ let value: ListPostsPost = {
   title: "<value>",
   content: "<value>",
   markdown: "<value>",
+  recommendations: "<value>",
   contentType: "<value>",
-  status: "draft",
-  createdAt: "1729686244994",
-  updatedAt: "1735607641695",
+  status: "published",
+  createdAt: "1705774837654",
+  updatedAt: "1735685117010",
 };
 ```
 
@@ -25,6 +26,7 @@ let value: ListPostsPost = {
 | `title`                                                                                     | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
 | `content`                                                                                   | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
 | `markdown`                                                                                  | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `recommendations`                                                                           | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
 | `contentType`                                                                               | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
 | `sourceMetadata`                                                                            | *any*                                                                                       | :heavy_minus_sign:                                                                          | N/A                                                                                         |
 | `status`                                                                                    | [operations.ListPostsStatusResponse](../../models/operations/list-posts-status-response.md) | :heavy_check_mark:                                                                          | N/A                                                                                         |

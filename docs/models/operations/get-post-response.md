@@ -13,10 +13,11 @@ let value: GetPostResponse = {
     title: "<value>",
     content: "<value>",
     markdown: "<value>",
+    recommendations: "<value>",
     contentType: "<value>",
-    status: "published",
-    createdAt: "1719670566745",
-    updatedAt: "1735673244851",
+    status: "draft",
+    createdAt: "1729720265781",
+    updatedAt: "1735666808271",
   },
 };
 ```

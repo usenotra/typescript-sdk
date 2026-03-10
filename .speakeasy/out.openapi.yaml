@@ -158,6 +158,7 @@
                           "title": { "type": "string" },
                           "content": { "type": "string" },
                           "markdown": { "type": "string" },
+                          "recommendations": { "type": ["string", "null"] },
                           "contentType": { "type": "string" },
                           "sourceMetadata": {},
                           "status": {
@@ -172,6 +173,7 @@
                           "title",
                           "content",
                           "markdown",
+                          "recommendations",
                           "contentType",
                           "status",
                           "createdAt",
@@ -337,6 +339,7 @@
                         "title": { "type": "string" },
                         "content": { "type": "string" },
                         "markdown": { "type": "string" },
+                        "recommendations": { "type": ["string", "null"] },
                         "contentType": { "type": "string" },
                         "sourceMetadata": {},
                         "status": {
@@ -351,6 +354,7 @@
                         "title",
                         "content",
                         "markdown",
+                        "recommendations",
                         "contentType",
                         "status",
                         "createdAt",
