@@ -38,6 +38,8 @@ export type GetPostStatusUnion =
 export const GetPostContentTypeEnum2 = {
   Changelog: "changelog",
   LinkedinPost: "linkedin_post",
+  TwitterPost: "twitter_post",
+  BlogPost: "blog_post",
 } as const;
 export type GetPostContentTypeEnum2 = ClosedEnum<
   typeof GetPostContentTypeEnum2
@@ -46,6 +48,8 @@ export type GetPostContentTypeEnum2 = ClosedEnum<
 export const GetPostContentTypeEnum1 = {
   Changelog: "changelog",
   LinkedinPost: "linkedin_post",
+  TwitterPost: "twitter_post",
+  BlogPost: "blog_post",
 } as const;
 export type GetPostContentTypeEnum1 = ClosedEnum<
   typeof GetPostContentTypeEnum1

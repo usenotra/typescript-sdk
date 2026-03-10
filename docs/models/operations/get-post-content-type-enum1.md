@@ -11,5 +11,5 @@ let value: GetPostContentTypeEnum1 = "changelog";
 ## Values
 
 ```typescript
-"changelog" | "linkedin_post"
+"changelog" | "linkedin_post" | "twitter_post" | "blog_post"
 ```
