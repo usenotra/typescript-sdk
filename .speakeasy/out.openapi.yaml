@@ -110,14 +110,27 @@
           {
             "schema": {
               "anyOf": [
-                { "type": "string", "enum": ["changelog", "linkedin_post"] },
+                {
+                  "type": "string",
+                  "enum": [
+                    "changelog",
+                    "linkedin_post",
+                    "twitter_post",
+                    "blog_post"
+                  ]
+                },
                 {
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "enum": ["changelog", "linkedin_post"]
+                    "enum": [
+                      "changelog",
+                      "linkedin_post",
+                      "twitter_post",
+                      "blog_post"
+                    ]
                   },
-                  "maxItems": 2
+                  "maxItems": 4
                 }
               ],
               "description": "Filter by content type. Repeat the query param to pass multiple values."
@@ -278,14 +291,27 @@
           {
             "schema": {
               "anyOf": [
-                { "type": "string", "enum": ["changelog", "linkedin_post"] },
+                {
+                  "type": "string",
+                  "enum": [
+                    "changelog",
+                    "linkedin_post",
+                    "twitter_post",
+                    "blog_post"
+                  ]
+                },
                 {
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "enum": ["changelog", "linkedin_post"]
+                    "enum": [
+                      "changelog",
+                      "linkedin_post",
+                      "twitter_post",
+                      "blog_post"
+                    ]
                   },
-                  "maxItems": 2
+                  "maxItems": 4
                 }
               ],
               "description": "Filter by content type. Repeat the query param to pass multiple values."

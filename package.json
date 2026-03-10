@@ -1,6 +1,6 @@
 {
   "name": "@usenotra/sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Speakeasy",
   "type": "module",
   "files": [
@@ -40,7 +40,7 @@
     "@eslint/js": "^9.26.0",
     "eslint": "^9.26.0",
     "globals": "^15.14.0",
-    "tshy": "^2.0.0",
+    "tshy": "^3.3.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.26.0"
   },
