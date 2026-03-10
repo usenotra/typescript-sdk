@@ -8,7 +8,7 @@ Filter by content type. Repeat the query param to pass multiple values.
 ### `operations.GetPostContentTypeEnum1`
 
 ```typescript
-const value: operations.GetPostContentTypeEnum1 = "linkedin_post";
+const value: operations.GetPostContentTypeEnum1 = "blog_post";
 ```
 
 ### `operations.GetPostContentTypeEnum2[]`
