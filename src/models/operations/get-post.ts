@@ -92,6 +92,7 @@ export type GetPostPost = {
   title: string;
   content: string;
   markdown: string;
+  recommendations: string | null;
   contentType: string;
   sourceMetadata?: any | undefined;
   status: GetPostStatusResponse;
@@ -212,6 +213,7 @@ export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
     title: types.string(),
     content: types.string(),
     markdown: types.string(),
+    recommendations: types.nullable(types.string()),
     contentType: types.string(),
     sourceMetadata: types.optional(z.any()),
     status: GetPostStatusResponse$inboundSchema,

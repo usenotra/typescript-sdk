@@ -10,10 +10,11 @@ let value: GetPostPost = {
   title: "<value>",
   content: "<value>",
   markdown: "<value>",
+  recommendations: "<value>",
   contentType: "<value>",
-  status: "published",
-  createdAt: "1704263512857",
-  updatedAt: "1735613684057",
+  status: "draft",
+  createdAt: "1707980325238",
+  updatedAt: "1735609831832",
 };
 ```
 
@@ -25,6 +26,7 @@ let value: GetPostPost = {
 | `title`                                                                                 | *string*                                                                                | :heavy_check_mark:                                                                      | N/A                                                                                     |
 | `content`                                                                               | *string*                                                                                | :heavy_check_mark:                                                                      | N/A                                                                                     |
 | `markdown`                                                                              | *string*                                                                                | :heavy_check_mark:                                                                      | N/A                                                                                     |
+| `recommendations`                                                                       | *string*                                                                                | :heavy_check_mark:                                                                      | N/A                                                                                     |
 | `contentType`                                                                           | *string*                                                                                | :heavy_check_mark:                                                                      | N/A                                                                                     |
 | `sourceMetadata`                                                                        | *any*                                                                                   | :heavy_minus_sign:                                                                      | N/A                                                                                     |
 | `status`                                                                                | [operations.GetPostStatusResponse](../../models/operations/get-post-status-response.md) | :heavy_check_mark:                                                                      | N/A                                                                                     |
