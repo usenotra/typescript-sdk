@@ -115,6 +115,7 @@ export type ListPostsPost = {
   title: string;
   content: string;
   markdown: string;
+  recommendations: string | null;
   contentType: string;
   sourceMetadata?: any | undefined;
   status: ListPostsStatusResponse;
@@ -258,6 +259,7 @@ export const ListPostsPost$inboundSchema: z.ZodMiniType<
   title: types.string(),
   content: types.string(),
   markdown: types.string(),
+  recommendations: types.nullable(types.string()),
   contentType: types.string(),
   sourceMetadata: types.optional(z.any()),
   status: ListPostsStatusResponse$inboundSchema,
