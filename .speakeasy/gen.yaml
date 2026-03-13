@@ -19,8 +19,8 @@ generation:
     sharedNestedComponentsJan2026: true
     nameOverrideFeb2026: true
   auth:
-    oAuth2ClientCredentialsEnabled: true
-    oAuth2PasswordEnabled: true
+    oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
     hoistGlobalSecurity: true
   inferSSEOverload: true
   sdkHooksConfigAccess: true
@@ -35,7 +35,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.0.5
+  version: 0.0.6
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}

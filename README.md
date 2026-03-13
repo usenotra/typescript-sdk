@@ -86,9 +86,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  });
+  const result = await notra.content.listPosts({});
 
   console.log(result);
 }
@@ -118,9 +116,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  });
+  const result = await notra.content.listPosts({});
 
   console.log(result);
 }
@@ -179,9 +175,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  }, {
+  const result = await notra.content.listPosts({}, {
     retries: {
       strategy: "backoff",
       backoff: {
@@ -220,9 +214,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  });
+  const result = await notra.content.listPosts({});
 
   console.log(result);
 }
@@ -257,9 +249,7 @@ const notra = new Notra({
 
 async function run() {
   try {
-    const result = await notra.content.listPosts({
-      organizationId: "org_123",
-    });
+    const result = await notra.content.listPosts({});
 
     console.log(result);
   } catch (error) {
@@ -320,9 +310,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  });
+  const result = await notra.content.listPosts({});
 
   console.log(result);
 }
