@@ -63,7 +63,6 @@ export type GetPostContentTypeUnion =
   | Array<GetPostContentTypeEnum2>;
 
 export type GetPostRequest = {
-  organizationId: string;
   postId: string;
   /**
    * Filter by status. Repeat the query param to pass multiple values.
@@ -169,7 +168,6 @@ export function getPostContentTypeUnionToJSON(
 
 /** @internal */
 export type GetPostRequest$Outbound = {
-  organizationId: string;
   postId: string;
   status?: string | Array<string> | undefined;
   contentType?: string | Array<string> | undefined;
@@ -180,7 +178,6 @@ export const GetPostRequest$outboundSchema: z.ZodMiniType<
   GetPostRequest$Outbound,
   GetPostRequest
 > = z.object({
-  organizationId: z.string(),
   postId: z.string(),
   status: z.optional(
     smartUnion([

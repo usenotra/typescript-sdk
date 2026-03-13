@@ -14,7 +14,7 @@ export class Content extends ClientSDK {
    * List posts
    */
   async listPosts(
-    request: operations.ListPostsRequest,
+    request?: operations.ListPostsRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.ListPostsResponse> {
     return unwrapAsync(contentListPosts(

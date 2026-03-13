@@ -5,7 +5,7 @@
 
 import * as z from "zod/v4-mini";
 import { NotraCore } from "../core.js";
-import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  */
 export function contentListPosts(
   client: NotraCore,
-  request: operations.ListPostsRequest,
+  request?: operations.ListPostsRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -57,7 +57,7 @@ export function contentListPosts(
 
 async function $do(
   client: NotraCore,
-  request: operations.ListPostsRequest,
+  request?: operations.ListPostsRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
@@ -78,7 +78,8 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => z.parse(operations.ListPostsRequest$outboundSchema, value),
+    (value) =>
+      z.parse(z.optional(operations.ListPostsRequest$outboundSchema), value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -87,21 +88,14 @@ async function $do(
   const payload = parsed.value;
   const body = null;
 
-  const pathParams = {
-    organizationId: encodeSimple("organizationId", payload.organizationId, {
-      explode: false,
-      charEncoding: "percent",
-    }),
-  };
-
-  const path = pathToFunc("/v1/{organizationId}/posts")(pathParams);
+  const path = pathToFunc("/v1/posts")();
 
   const query = encodeFormQuery({
-    "contentType": payload.contentType,
-    "limit": payload.limit,
-    "page": payload.page,
-    "sort": payload.sort,
-    "status": payload.status,
+    "contentType": payload?.contentType,
+    "limit": payload?.limit,
+    "page": payload?.page,
+    "sort": payload?.sort,
+    "status": payload?.status,
   });
 
   const headers = new Headers(compactMap({

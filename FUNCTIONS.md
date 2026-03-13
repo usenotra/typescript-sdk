@@ -29,9 +29,7 @@ const notra = new NotraCore({
 });
 
 async function run() {
-  const res = await contentListPosts(notra, {
-    organizationId: "org_123",
-  });
+  const res = await contentListPosts(notra, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
