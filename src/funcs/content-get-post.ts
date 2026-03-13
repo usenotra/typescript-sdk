@@ -88,17 +88,13 @@ async function $do(
   const body = null;
 
   const pathParams = {
-    organizationId: encodeSimple("organizationId", payload.organizationId, {
-      explode: false,
-      charEncoding: "percent",
-    }),
     postId: encodeSimple("postId", payload.postId, {
       explode: false,
       charEncoding: "percent",
     }),
   };
 
-  const path = pathToFunc("/v1/{organizationId}/posts/{postId}")(pathParams);
+  const path = pathToFunc("/v1/posts/{postId}")(pathParams);
 
   const query = encodeFormQuery({
     "contentType": payload.contentType,

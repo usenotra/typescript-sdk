@@ -2,7 +2,7 @@
 
 ## Overview
 
-Read content for the authenticated organization
+Read content. Organization is inferred from the API key (identity.externalId).
 
 ### Available Operations
 
@@ -15,7 +15,7 @@ List posts
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="listPosts" method="get" path="/v1/{organizationId}/posts" -->
+<!-- UsageSnippet language="typescript" operationID="listPosts" method="get" path="/v1/posts" -->
 ```typescript
 import { Notra } from "@usenotra/sdk";
 
@@ -24,9 +24,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  });
+  const result = await notra.content.listPosts({});
 
   console.log(result);
 }
@@ -49,9 +47,7 @@ const notra = new NotraCore({
 });
 
 async function run() {
-  const res = await contentListPosts(notra, {
-    organizationId: "org_123",
-  });
+  const res = await contentListPosts(notra, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -90,7 +86,7 @@ Get a single post
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getPost" method="get" path="/v1/{organizationId}/posts/{postId}" -->
+<!-- UsageSnippet language="typescript" operationID="getPost" method="get" path="/v1/posts/{postId}" -->
 ```typescript
 import { Notra } from "@usenotra/sdk";
 
@@ -100,7 +96,6 @@ const notra = new Notra({
 
 async function run() {
   const result = await notra.content.getPost({
-    organizationId: "org_123",
     postId: "post_123",
   });
 
@@ -126,7 +121,6 @@ const notra = new NotraCore({
 
 async function run() {
   const res = await contentGetPost(notra, {
-    organizationId: "org_123",
     postId: "post_123",
   });
   if (res.ok) {

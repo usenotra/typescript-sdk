@@ -75,7 +75,6 @@ export type ListPostsContentTypeUnion =
   | Array<ListPostsContentTypeEnum2>;
 
 export type ListPostsRequest = {
-  organizationId: string;
   /**
    * Sort by creation date
    */
@@ -205,7 +204,6 @@ export function listPostsContentTypeUnionToJSON(
 
 /** @internal */
 export type ListPostsRequest$Outbound = {
-  organizationId: string;
   sort: string;
   limit: number;
   page: number;
@@ -218,7 +216,6 @@ export const ListPostsRequest$outboundSchema: z.ZodMiniType<
   ListPostsRequest$Outbound,
   ListPostsRequest
 > = z.object({
-  organizationId: z.string(),
   sort: z._default(Sort$outboundSchema, "desc"),
   limit: z._default(z.int(), 10),
   page: z._default(z.int(), 1),

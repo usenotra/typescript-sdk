@@ -19,9 +19,7 @@ const notra = new Notra({
 });
 
 async function main() {
-  const result = await notra.content.listPosts({
-    organizationId: "org_123",
-  });
+  const result = await notra.content.listPosts({});
 
   console.log(result);
 }
