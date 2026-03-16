@@ -6,16 +6,9 @@
     "description": "OpenAPI schema for authenticated content endpoints."
   },
   "servers": [
-    {
-      "url": "https://api.usenotra.com",
-      "description": "Production"
-    }
+    { "url": "https://api.usenotra.com", "description": "Production" }
   ],
-  "security": [
-    {
-      "BearerAuth": []
-    }
-  ],
+  "security": [{ "BearerAuth": [] }],
   "tags": [
     {
       "name": "Content",
@@ -34,14 +27,8 @@
     "schemas": {
       "ErrorResponse": {
         "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "error"
-        ]
+        "properties": { "error": { "type": "string" } },
+        "required": ["error"]
       }
     },
     "parameters": {}
@@ -49,19 +36,14 @@
   "paths": {
     "/v1/posts": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "listPosts",
         "summary": "List posts",
         "parameters": [
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ],
+              "enum": ["asc", "desc"],
               "default": "desc",
               "description": "Sort by creation date",
               "example": "desc"
@@ -101,22 +83,10 @@
           {
             "schema": {
               "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "draft",
-                    "published"
-                  ]
-                },
+                { "type": "string", "enum": ["draft", "published"] },
                 {
                   "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "draft",
-                      "published"
-                    ]
-                  },
+                  "items": { "type": "string", "enum": ["draft", "published"] },
                   "maxItems": 2
                 }
               ],
@@ -174,41 +144,19 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "content": {
-                            "type": "string"
-                          },
-                          "markdown": {
-                            "type": "string"
-                          },
-                          "recommendations": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          },
-                          "contentType": {
-                            "type": "string"
-                          },
+                          "id": { "type": "string" },
+                          "title": { "type": "string" },
+                          "content": { "type": "string" },
+                          "markdown": { "type": "string" },
+                          "recommendations": { "type": ["string", "null"] },
+                          "contentType": { "type": "string" },
                           "sourceMetadata": {},
                           "status": {
                             "type": "string",
-                            "enum": [
-                              "draft",
-                              "published"
-                            ]
+                            "enum": ["draft", "published"]
                           },
-                          "createdAt": {
-                            "type": "string"
-                          },
-                          "updatedAt": {
-                            "type": "string"
-                          }
+                          "createdAt": { "type": "string" },
+                          "updatedAt": { "type": "string" }
                         },
                         "required": [
                           "id",
@@ -226,36 +174,18 @@
                     "pagination": {
                       "type": "object",
                       "properties": {
-                        "limit": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "currentPage": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
+                        "limit": { "type": "integer", "minimum": 1 },
+                        "currentPage": { "type": "integer", "minimum": 1 },
                         "nextPage": {
-                          "type": [
-                            "integer",
-                            "null"
-                          ],
+                          "type": ["integer", "null"],
                           "minimum": 1
                         },
                         "previousPage": {
-                          "type": [
-                            "integer",
-                            "null"
-                          ],
+                          "type": ["integer", "null"],
                           "minimum": 1
                         },
-                        "totalPages": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "totalItems": {
-                          "type": "integer",
-                          "minimum": 0
-                        }
+                        "totalPages": { "type": "integer", "minimum": 1 },
+                        "totalItems": { "type": "integer", "minimum": 0 }
                       },
                       "required": [
                         "limit",
@@ -267,10 +197,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "posts",
-                    "pagination"
-                  ]
+                  "required": ["posts", "pagination"]
                 }
               }
             }
@@ -279,9 +206,7 @@
             "description": "Invalid path params or query",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -289,9 +214,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -299,9 +222,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -309,9 +230,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -320,9 +239,7 @@
     },
     "/v1/posts/{postId}": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "getPost",
         "summary": "Get a single post",
         "parameters": [
@@ -346,46 +263,21 @@
                   "type": "object",
                   "properties": {
                     "post": {
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": ["object", "null"],
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "title": {
-                          "type": "string"
-                        },
-                        "content": {
-                          "type": "string"
-                        },
-                        "markdown": {
-                          "type": "string"
-                        },
-                        "recommendations": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
-                        },
-                        "contentType": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "title": { "type": "string" },
+                        "content": { "type": "string" },
+                        "markdown": { "type": "string" },
+                        "recommendations": { "type": ["string", "null"] },
+                        "contentType": { "type": "string" },
                         "sourceMetadata": {},
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "draft",
-                            "published"
-                          ]
+                          "enum": ["draft", "published"]
                         },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" }
                       },
                       "required": [
                         "id",
@@ -400,9 +292,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "post"
-                  ]
+                  "required": ["post"]
                 }
               }
             }
@@ -411,9 +301,7 @@
             "description": "Invalid path params",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -421,9 +309,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -431,9 +317,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -441,18 +325,14 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
         }
       },
       "delete": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "deletePost",
         "summary": "Delete a single post",
         "parameters": [
@@ -474,14 +354,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id"
-                  ]
+                  "properties": { "id": { "type": "string" } },
+                  "required": ["id"]
                 }
               }
             }
@@ -490,9 +364,7 @@
             "description": "Invalid path params",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -500,9 +372,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -510,9 +380,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -520,9 +388,7 @@
             "description": "Post not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -530,9 +396,136 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Content"],
+        "operationId": "updatePost",
+        "summary": "Update a single post",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "example": "post_123"
+            },
+            "required": true,
+            "in": "path",
+            "name": "postId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "example": "Ship notes for week 11"
+                  },
+                  "markdown": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "# Ship notes\n\nWe shipped a faster editor."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["draft", "published"],
+                    "example": "published"
+                  }
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "title": { "type": "string" },
+                        "content": { "type": "string" },
+                        "markdown": { "type": "string" },
+                        "recommendations": { "type": ["string", "null"] },
+                        "contentType": { "type": "string" },
+                        "sourceMetadata": {},
+                        "status": {
+                          "type": "string",
+                          "enum": ["draft", "published"]
+                        },
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" }
+                      },
+                      "required": [
+                        "id",
+                        "title",
+                        "content",
+                        "markdown",
+                        "recommendations",
+                        "contentType",
+                        "status",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    }
+                  },
+                  "required": ["post"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid path params or request body",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Authentication service unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }

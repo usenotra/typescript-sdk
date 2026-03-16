@@ -137,6 +137,7 @@ run();
 * [listPosts](docs/sdks/content/README.md#listposts) - List posts
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
 * [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
+* [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -159,6 +160,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
 - [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
+- [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
