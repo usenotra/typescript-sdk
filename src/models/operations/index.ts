@@ -6,3 +6,4 @@
 export * from "./delete-post.js";
 export * from "./get-post.js";
 export * from "./list-posts.js";
+export * from "./update-post.js";

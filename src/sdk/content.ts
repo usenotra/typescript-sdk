@@ -6,6 +6,7 @@
 import { contentDeletePost } from "../funcs/content-delete-post.js";
 import { contentGetPost } from "../funcs/content-get-post.js";
 import { contentListPosts } from "../funcs/content-list-posts.js";
+import { contentUpdatePost } from "../funcs/content-update-post.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -47,6 +48,20 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.DeletePostResponse> {
     return unwrapAsync(contentDeletePost(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a single post
+   */
+  async updatePost(
+    request: operations.UpdatePostRequest,
+    options?: RequestOptions,
+  ): Promise<operations.UpdatePostResponse> {
+    return unwrapAsync(contentUpdatePost(
       this,
       request,
       options,
