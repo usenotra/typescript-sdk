@@ -24,55 +24,43 @@ export const Sort = {
  */
 export type Sort = ClosedEnum<typeof Sort>;
 
-export const ListPostsStatusQueryParamEnum2 = {
+export const StatusQueryParamEnum2 = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type ListPostsStatusQueryParamEnum2 = ClosedEnum<
-  typeof ListPostsStatusQueryParamEnum2
->;
+export type StatusQueryParamEnum2 = ClosedEnum<typeof StatusQueryParamEnum2>;
 
-export const ListPostsStatusQueryParamEnum1 = {
+export const StatusQueryParamEnum1 = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type ListPostsStatusQueryParamEnum1 = ClosedEnum<
-  typeof ListPostsStatusQueryParamEnum1
->;
+export type StatusQueryParamEnum1 = ClosedEnum<typeof StatusQueryParamEnum1>;
 
 /**
  * Filter by status. Repeat the query param to pass multiple values.
  */
-export type ListPostsStatusUnion =
-  | ListPostsStatusQueryParamEnum1
-  | Array<ListPostsStatusQueryParamEnum2>;
+export type Status = StatusQueryParamEnum1 | Array<StatusQueryParamEnum2>;
 
-export const ListPostsContentTypeEnum2 = {
+export const ContentTypeEnum2 = {
   Changelog: "changelog",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
   BlogPost: "blog_post",
 } as const;
-export type ListPostsContentTypeEnum2 = ClosedEnum<
-  typeof ListPostsContentTypeEnum2
->;
+export type ContentTypeEnum2 = ClosedEnum<typeof ContentTypeEnum2>;
 
-export const ListPostsContentTypeEnum1 = {
+export const ContentTypeEnum1 = {
   Changelog: "changelog",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
   BlogPost: "blog_post",
 } as const;
-export type ListPostsContentTypeEnum1 = ClosedEnum<
-  typeof ListPostsContentTypeEnum1
->;
+export type ContentTypeEnum1 = ClosedEnum<typeof ContentTypeEnum1>;
 
 /**
  * Filter by content type. Repeat the query param to pass multiple values.
  */
-export type ListPostsContentTypeUnion =
-  | ListPostsContentTypeEnum1
-  | Array<ListPostsContentTypeEnum2>;
+export type ContentType = ContentTypeEnum1 | Array<ContentTypeEnum2>;
 
 export type ListPostsRequest = {
   /**
@@ -90,17 +78,11 @@ export type ListPostsRequest = {
   /**
    * Filter by status. Repeat the query param to pass multiple values.
    */
-  status?:
-    | ListPostsStatusQueryParamEnum1
-    | Array<ListPostsStatusQueryParamEnum2>
-    | undefined;
+  status?: StatusQueryParamEnum1 | Array<StatusQueryParamEnum2> | undefined;
   /**
    * Filter by content type. Repeat the query param to pass multiple values.
    */
-  contentType?:
-    | ListPostsContentTypeEnum1
-    | Array<ListPostsContentTypeEnum2>
-    | undefined;
+  contentType?: ContentTypeEnum1 | Array<ContentTypeEnum2> | undefined;
 };
 
 export const ListPostsStatusResponse = {
@@ -143,63 +125,53 @@ export type ListPostsResponse = {
 export const Sort$outboundSchema: z.ZodMiniEnum<typeof Sort> = z.enum(Sort);
 
 /** @internal */
-export const ListPostsStatusQueryParamEnum2$outboundSchema: z.ZodMiniEnum<
-  typeof ListPostsStatusQueryParamEnum2
-> = z.enum(ListPostsStatusQueryParamEnum2);
+export const StatusQueryParamEnum2$outboundSchema: z.ZodMiniEnum<
+  typeof StatusQueryParamEnum2
+> = z.enum(StatusQueryParamEnum2);
 
 /** @internal */
-export const ListPostsStatusQueryParamEnum1$outboundSchema: z.ZodMiniEnum<
-  typeof ListPostsStatusQueryParamEnum1
-> = z.enum(ListPostsStatusQueryParamEnum1);
+export const StatusQueryParamEnum1$outboundSchema: z.ZodMiniEnum<
+  typeof StatusQueryParamEnum1
+> = z.enum(StatusQueryParamEnum1);
 
 /** @internal */
-export type ListPostsStatusUnion$Outbound = string | Array<string>;
+export type Status$Outbound = string | Array<string>;
 
 /** @internal */
-export const ListPostsStatusUnion$outboundSchema: z.ZodMiniType<
-  ListPostsStatusUnion$Outbound,
-  ListPostsStatusUnion
-> = smartUnion([
-  ListPostsStatusQueryParamEnum1$outboundSchema,
-  z.array(ListPostsStatusQueryParamEnum2$outboundSchema),
-]);
+export const Status$outboundSchema: z.ZodMiniType<Status$Outbound, Status> =
+  smartUnion([
+    StatusQueryParamEnum1$outboundSchema,
+    z.array(StatusQueryParamEnum2$outboundSchema),
+  ]);
 
-export function listPostsStatusUnionToJSON(
-  listPostsStatusUnion: ListPostsStatusUnion,
-): string {
-  return JSON.stringify(
-    ListPostsStatusUnion$outboundSchema.parse(listPostsStatusUnion),
-  );
+export function statusToJSON(status: Status): string {
+  return JSON.stringify(Status$outboundSchema.parse(status));
 }
 
 /** @internal */
-export const ListPostsContentTypeEnum2$outboundSchema: z.ZodMiniEnum<
-  typeof ListPostsContentTypeEnum2
-> = z.enum(ListPostsContentTypeEnum2);
+export const ContentTypeEnum2$outboundSchema: z.ZodMiniEnum<
+  typeof ContentTypeEnum2
+> = z.enum(ContentTypeEnum2);
 
 /** @internal */
-export const ListPostsContentTypeEnum1$outboundSchema: z.ZodMiniEnum<
-  typeof ListPostsContentTypeEnum1
-> = z.enum(ListPostsContentTypeEnum1);
+export const ContentTypeEnum1$outboundSchema: z.ZodMiniEnum<
+  typeof ContentTypeEnum1
+> = z.enum(ContentTypeEnum1);
 
 /** @internal */
-export type ListPostsContentTypeUnion$Outbound = string | Array<string>;
+export type ContentType$Outbound = string | Array<string>;
 
 /** @internal */
-export const ListPostsContentTypeUnion$outboundSchema: z.ZodMiniType<
-  ListPostsContentTypeUnion$Outbound,
-  ListPostsContentTypeUnion
+export const ContentType$outboundSchema: z.ZodMiniType<
+  ContentType$Outbound,
+  ContentType
 > = smartUnion([
-  ListPostsContentTypeEnum1$outboundSchema,
-  z.array(ListPostsContentTypeEnum2$outboundSchema),
+  ContentTypeEnum1$outboundSchema,
+  z.array(ContentTypeEnum2$outboundSchema),
 ]);
 
-export function listPostsContentTypeUnionToJSON(
-  listPostsContentTypeUnion: ListPostsContentTypeUnion,
-): string {
-  return JSON.stringify(
-    ListPostsContentTypeUnion$outboundSchema.parse(listPostsContentTypeUnion),
-  );
+export function contentTypeToJSON(contentType: ContentType): string {
+  return JSON.stringify(ContentType$outboundSchema.parse(contentType));
 }
 
 /** @internal */
@@ -221,14 +193,14 @@ export const ListPostsRequest$outboundSchema: z.ZodMiniType<
   page: z._default(z.int(), 1),
   status: z.optional(
     smartUnion([
-      ListPostsStatusQueryParamEnum1$outboundSchema,
-      z.array(ListPostsStatusQueryParamEnum2$outboundSchema),
+      StatusQueryParamEnum1$outboundSchema,
+      z.array(StatusQueryParamEnum2$outboundSchema),
     ]),
   ),
   contentType: z.optional(
     smartUnion([
-      ListPostsContentTypeEnum1$outboundSchema,
-      z.array(ListPostsContentTypeEnum2$outboundSchema),
+      ContentTypeEnum1$outboundSchema,
+      z.array(ContentTypeEnum2$outboundSchema),
     ]),
   ),
 });
