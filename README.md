@@ -136,6 +136,7 @@ run();
 
 * [listPosts](docs/sdks/content/README.md#listposts) - List posts
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
+* [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -155,6 +156,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
 - [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
 
@@ -275,7 +277,7 @@ run();
 ### Error Classes
 **Primary errors:**
 * [`NotraError`](./src/models/errors/notra-error.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/error-response.ts): Invalid path params or query.
+  * [`ErrorResponse`](./src/models/errors/error-response.ts): Generic error.
 
 <details><summary>Less common errors (6)</summary>
 

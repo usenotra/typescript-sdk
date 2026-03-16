@@ -3,5 +3,6 @@
  * @generated-id: 0d9ffaf774d2
  */
 
+export * from "./delete-post.js";
 export * from "./get-post.js";
 export * from "./list-posts.js";

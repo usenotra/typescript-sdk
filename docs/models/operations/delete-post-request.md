@@ -1,11 +1,11 @@
-# GetPostRequest
+# DeletePostRequest
 
 ## Example Usage
 
 ```typescript
-import { GetPostRequest } from "@usenotra/sdk/models/operations";
+import { DeletePostRequest } from "@usenotra/sdk/models/operations";
 
-let value: GetPostRequest = {
+let value: DeletePostRequest = {
   postId: "post_123",
 };
 ```

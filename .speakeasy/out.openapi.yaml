@@ -335,68 +335,6 @@
             "required": true,
             "in": "path",
             "name": "postId"
-          },
-          {
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "draft",
-                    "published"
-                  ]
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "draft",
-                      "published"
-                    ]
-                  },
-                  "maxItems": 2
-                }
-              ],
-              "description": "Filter by status. Repeat the query param to pass multiple values."
-            },
-            "required": false,
-            "description": "Filter by status. Repeat the query param to pass multiple values.",
-            "name": "status",
-            "in": "query"
-          },
-          {
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "changelog",
-                    "linkedin_post",
-                    "twitter_post",
-                    "blog_post"
-                  ]
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "changelog",
-                      "linkedin_post",
-                      "twitter_post",
-                      "blog_post"
-                    ]
-                  },
-                  "maxItems": 4
-                }
-              ],
-              "description": "Filter by content type. Repeat the query param to pass multiple values."
-            },
-            "required": false,
-            "description": "Filter by content type. Repeat the query param to pass multiple values.",
-            "name": "contentType",
-            "in": "query"
           }
         ],
         "responses": {
@@ -470,7 +408,7 @@
             }
           },
           "400": {
-            "description": "Invalid path params or query",
+            "description": "Invalid path params",
             "content": {
               "application/json": {
                 "schema": {
@@ -491,6 +429,95 @@
           },
           "403": {
             "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Authentication service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Content"
+        ],
+        "operationId": "deletePost",
+        "summary": "Delete a single post",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "example": "post_123"
+            },
+            "required": true,
+            "in": "path",
+            "name": "postId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid path params",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
             "content": {
               "application/json": {
                 "schema": {

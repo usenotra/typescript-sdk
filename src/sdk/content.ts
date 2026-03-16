@@ -3,6 +3,7 @@
  * @generated-id: 152cac8c63c4
  */
 
+import { contentDeletePost } from "../funcs/content-delete-post.js";
 import { contentGetPost } from "../funcs/content-get-post.js";
 import { contentListPosts } from "../funcs/content-list-posts.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -32,6 +33,20 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetPostResponse> {
     return unwrapAsync(contentGetPost(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a single post
+   */
+  async deletePost(
+    request: operations.DeletePostRequest,
+    options?: RequestOptions,
+  ): Promise<operations.DeletePostResponse> {
+    return unwrapAsync(contentDeletePost(
       this,
       request,
       options,
