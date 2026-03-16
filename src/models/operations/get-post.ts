@@ -6,85 +6,20 @@
 import * as z from "zod/v4-mini";
 import { safeParse } from "../../lib/schemas.js";
 import * as openEnums from "../../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
-import { smartUnion } from "../../types/smart-union.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
-
-export const GetPostStatusQueryParamEnum2 = {
-  Draft: "draft",
-  Published: "published",
-} as const;
-export type GetPostStatusQueryParamEnum2 = ClosedEnum<
-  typeof GetPostStatusQueryParamEnum2
->;
-
-export const GetPostStatusQueryParamEnum1 = {
-  Draft: "draft",
-  Published: "published",
-} as const;
-export type GetPostStatusQueryParamEnum1 = ClosedEnum<
-  typeof GetPostStatusQueryParamEnum1
->;
-
-/**
- * Filter by status. Repeat the query param to pass multiple values.
- */
-export type GetPostStatusUnion =
-  | GetPostStatusQueryParamEnum1
-  | Array<GetPostStatusQueryParamEnum2>;
-
-export const GetPostContentTypeEnum2 = {
-  Changelog: "changelog",
-  LinkedinPost: "linkedin_post",
-  TwitterPost: "twitter_post",
-  BlogPost: "blog_post",
-} as const;
-export type GetPostContentTypeEnum2 = ClosedEnum<
-  typeof GetPostContentTypeEnum2
->;
-
-export const GetPostContentTypeEnum1 = {
-  Changelog: "changelog",
-  LinkedinPost: "linkedin_post",
-  TwitterPost: "twitter_post",
-  BlogPost: "blog_post",
-} as const;
-export type GetPostContentTypeEnum1 = ClosedEnum<
-  typeof GetPostContentTypeEnum1
->;
-
-/**
- * Filter by content type. Repeat the query param to pass multiple values.
- */
-export type GetPostContentTypeUnion =
-  | GetPostContentTypeEnum1
-  | Array<GetPostContentTypeEnum2>;
 
 export type GetPostRequest = {
   postId: string;
-  /**
-   * Filter by status. Repeat the query param to pass multiple values.
-   */
-  status?:
-    | GetPostStatusQueryParamEnum1
-    | Array<GetPostStatusQueryParamEnum2>
-    | undefined;
-  /**
-   * Filter by content type. Repeat the query param to pass multiple values.
-   */
-  contentType?:
-    | GetPostContentTypeEnum1
-    | Array<GetPostContentTypeEnum2>
-    | undefined;
 };
 
-export const GetPostStatusResponse = {
+export const GetPostStatus = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type GetPostStatusResponse = OpenEnum<typeof GetPostStatusResponse>;
+export type GetPostStatus = OpenEnum<typeof GetPostStatus>;
 
 export type GetPostPost = {
   id: string;
@@ -94,7 +29,7 @@ export type GetPostPost = {
   recommendations: string | null;
   contentType: string;
   sourceMetadata?: any | undefined;
-  status: GetPostStatusResponse;
+  status: GetPostStatus;
   createdAt: string;
   updatedAt: string;
 };
@@ -107,70 +42,8 @@ export type GetPostResponse = {
 };
 
 /** @internal */
-export const GetPostStatusQueryParamEnum2$outboundSchema: z.ZodMiniEnum<
-  typeof GetPostStatusQueryParamEnum2
-> = z.enum(GetPostStatusQueryParamEnum2);
-
-/** @internal */
-export const GetPostStatusQueryParamEnum1$outboundSchema: z.ZodMiniEnum<
-  typeof GetPostStatusQueryParamEnum1
-> = z.enum(GetPostStatusQueryParamEnum1);
-
-/** @internal */
-export type GetPostStatusUnion$Outbound = string | Array<string>;
-
-/** @internal */
-export const GetPostStatusUnion$outboundSchema: z.ZodMiniType<
-  GetPostStatusUnion$Outbound,
-  GetPostStatusUnion
-> = smartUnion([
-  GetPostStatusQueryParamEnum1$outboundSchema,
-  z.array(GetPostStatusQueryParamEnum2$outboundSchema),
-]);
-
-export function getPostStatusUnionToJSON(
-  getPostStatusUnion: GetPostStatusUnion,
-): string {
-  return JSON.stringify(
-    GetPostStatusUnion$outboundSchema.parse(getPostStatusUnion),
-  );
-}
-
-/** @internal */
-export const GetPostContentTypeEnum2$outboundSchema: z.ZodMiniEnum<
-  typeof GetPostContentTypeEnum2
-> = z.enum(GetPostContentTypeEnum2);
-
-/** @internal */
-export const GetPostContentTypeEnum1$outboundSchema: z.ZodMiniEnum<
-  typeof GetPostContentTypeEnum1
-> = z.enum(GetPostContentTypeEnum1);
-
-/** @internal */
-export type GetPostContentTypeUnion$Outbound = string | Array<string>;
-
-/** @internal */
-export const GetPostContentTypeUnion$outboundSchema: z.ZodMiniType<
-  GetPostContentTypeUnion$Outbound,
-  GetPostContentTypeUnion
-> = smartUnion([
-  GetPostContentTypeEnum1$outboundSchema,
-  z.array(GetPostContentTypeEnum2$outboundSchema),
-]);
-
-export function getPostContentTypeUnionToJSON(
-  getPostContentTypeUnion: GetPostContentTypeUnion,
-): string {
-  return JSON.stringify(
-    GetPostContentTypeUnion$outboundSchema.parse(getPostContentTypeUnion),
-  );
-}
-
-/** @internal */
 export type GetPostRequest$Outbound = {
   postId: string;
-  status?: string | Array<string> | undefined;
-  contentType?: string | Array<string> | undefined;
 };
 
 /** @internal */
@@ -179,18 +52,6 @@ export const GetPostRequest$outboundSchema: z.ZodMiniType<
   GetPostRequest
 > = z.object({
   postId: z.string(),
-  status: z.optional(
-    smartUnion([
-      GetPostStatusQueryParamEnum1$outboundSchema,
-      z.array(GetPostStatusQueryParamEnum2$outboundSchema),
-    ]),
-  ),
-  contentType: z.optional(
-    smartUnion([
-      GetPostContentTypeEnum1$outboundSchema,
-      z.array(GetPostContentTypeEnum2$outboundSchema),
-    ]),
-  ),
 });
 
 export function getPostRequestToJSON(getPostRequest: GetPostRequest): string {
@@ -198,10 +59,10 @@ export function getPostRequestToJSON(getPostRequest: GetPostRequest): string {
 }
 
 /** @internal */
-export const GetPostStatusResponse$inboundSchema: z.ZodMiniType<
-  GetPostStatusResponse,
+export const GetPostStatus$inboundSchema: z.ZodMiniType<
+  GetPostStatus,
   unknown
-> = openEnums.inboundSchema(GetPostStatusResponse);
+> = openEnums.inboundSchema(GetPostStatus);
 
 /** @internal */
 export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
@@ -213,7 +74,7 @@ export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
     recommendations: types.nullable(types.string()),
     contentType: types.string(),
     sourceMetadata: types.optional(z.any()),
-    status: GetPostStatusResponse$inboundSchema,
+    status: GetPostStatus$inboundSchema,
     createdAt: types.string(),
     updatedAt: types.string(),
   });
