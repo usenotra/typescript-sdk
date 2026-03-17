@@ -8,33 +8,28 @@ Posts fetched successfully
 import { ListPostsResponse } from "@usenotra/sdk/models/operations";
 
 let value: ListPostsResponse = {
-  posts: [
-    {
-      id: "<id>",
-      title: "<value>",
-      content: "<value>",
-      markdown: "<value>",
-      recommendations: "<value>",
-      contentType: "<value>",
-      status: "published",
-      createdAt: "1730647563531",
-      updatedAt: "1735673399029",
-    },
-  ],
+  organization: {
+    id: "<id>",
+    slug: "<value>",
+    name: "<value>",
+    logo: "<value>",
+  },
+  posts: [],
   pagination: {
-    limit: 140204,
-    currentPage: 47158,
-    nextPage: 315951,
-    previousPage: 113078,
-    totalPages: 957433,
-    totalItems: 458950,
+    limit: 661824,
+    currentPage: 840118,
+    nextPage: 140204,
+    previousPage: null,
+    totalPages: 204075,
+    totalItems: 315951,
   },
 };
 ```
 
 ## Fields
 
-| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `posts`                                                                  | [operations.ListPostsPost](../../models/operations/list-posts-post.md)[] | :heavy_check_mark:                                                       | N/A                                                                      |
-| `pagination`                                                             | [operations.Pagination](../../models/operations/pagination.md)           | :heavy_check_mark:                                                       | N/A                                                                      |
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `organization`                                                                         | [operations.ListPostsOrganization](../../models/operations/list-posts-organization.md) | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `posts`                                                                                | [operations.ListPostsPost](../../models/operations/list-posts-post.md)[]               | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `pagination`                                                                           | [operations.Pagination](../../models/operations/pagination.md)                         | :heavy_check_mark:                                                                     | N/A                                                                                    |
