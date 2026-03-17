@@ -15,6 +15,13 @@ export type GetPostRequest = {
   postId: string;
 };
 
+export type GetPostOrganization = {
+  id: string;
+  slug: string;
+  name: string;
+  logo: string | null;
+};
+
 export const GetPostStatus = {
   Draft: "draft",
   Published: "published",
@@ -38,6 +45,7 @@ export type GetPostPost = {
  * Post fetched successfully
  */
 export type GetPostResponse = {
+  organization: GetPostOrganization;
   post: GetPostPost | null;
 };
 
@@ -56,6 +64,27 @@ export const GetPostRequest$outboundSchema: z.ZodMiniType<
 
 export function getPostRequestToJSON(getPostRequest: GetPostRequest): string {
   return JSON.stringify(GetPostRequest$outboundSchema.parse(getPostRequest));
+}
+
+/** @internal */
+export const GetPostOrganization$inboundSchema: z.ZodMiniType<
+  GetPostOrganization,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  logo: types.nullable(types.string()),
+});
+
+export function getPostOrganizationFromJSON(
+  jsonString: string,
+): SafeParseResult<GetPostOrganization, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetPostOrganization$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetPostOrganization' from JSON`,
+  );
 }
 
 /** @internal */
@@ -94,6 +123,7 @@ export const GetPostResponse$inboundSchema: z.ZodMiniType<
   GetPostResponse,
   unknown
 > = z.object({
+  organization: z.lazy(() => GetPostOrganization$inboundSchema),
   post: types.nullable(z.lazy(() => GetPostPost$inboundSchema)),
 });
 

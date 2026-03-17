@@ -8,6 +8,12 @@ Post updated successfully
 import { UpdatePostResponse } from "@usenotra/sdk/models/operations";
 
 let value: UpdatePostResponse = {
+  organization: {
+    id: "<id>",
+    slug: "<value>",
+    name: "<value>",
+    logo: "<value>",
+  },
   post: {
     id: "<id>",
     title: "<value>",
@@ -15,15 +21,16 @@ let value: UpdatePostResponse = {
     markdown: "<value>",
     recommendations: "<value>",
     contentType: "<value>",
-    status: "draft",
-    createdAt: "1721309192654",
-    updatedAt: "1735628335128",
+    status: "published",
+    createdAt: "1713328027557",
+    updatedAt: "1735636377110",
   },
 };
 ```
 
 ## Fields
 
-| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `post`                                                                   | [operations.UpdatePostPost](../../models/operations/update-post-post.md) | :heavy_check_mark:                                                       | N/A                                                                      |
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `organization`                                                                           | [operations.UpdatePostOrganization](../../models/operations/update-post-organization.md) | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `post`                                                                                   | [operations.UpdatePostPost](../../models/operations/update-post-post.md)                 | :heavy_check_mark:                                                                       | N/A                                                                                      |

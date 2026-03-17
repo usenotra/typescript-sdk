@@ -85,6 +85,13 @@ export type ListPostsRequest = {
   contentType?: ContentTypeEnum1 | Array<ContentTypeEnum2> | undefined;
 };
 
+export type ListPostsOrganization = {
+  id: string;
+  slug: string;
+  name: string;
+  logo: string | null;
+};
+
 export const ListPostsStatusResponse = {
   Draft: "draft",
   Published: "published",
@@ -117,6 +124,7 @@ export type Pagination = {
  * Posts fetched successfully
  */
 export type ListPostsResponse = {
+  organization: ListPostsOrganization;
   posts: Array<ListPostsPost>;
   pagination: Pagination;
 };
@@ -214,6 +222,27 @@ export function listPostsRequestToJSON(
 }
 
 /** @internal */
+export const ListPostsOrganization$inboundSchema: z.ZodMiniType<
+  ListPostsOrganization,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  logo: types.nullable(types.string()),
+});
+
+export function listPostsOrganizationFromJSON(
+  jsonString: string,
+): SafeParseResult<ListPostsOrganization, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListPostsOrganization$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListPostsOrganization' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListPostsStatusResponse$inboundSchema: z.ZodMiniType<
   ListPostsStatusResponse,
   unknown
@@ -272,6 +301,7 @@ export const ListPostsResponse$inboundSchema: z.ZodMiniType<
   ListPostsResponse,
   unknown
 > = z.object({
+  organization: z.lazy(() => ListPostsOrganization$inboundSchema),
   posts: z.array(z.lazy(() => ListPostsPost$inboundSchema)),
   pagination: z.lazy(() => Pagination$inboundSchema),
 });
