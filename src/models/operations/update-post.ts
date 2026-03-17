@@ -28,6 +28,13 @@ export type UpdatePostRequest = {
   body: UpdatePostRequestBody;
 };
 
+export type UpdatePostOrganization = {
+  id: string;
+  slug: string;
+  name: string;
+  logo: string | null;
+};
+
 export const UpdatePostStatusResponse = {
   Draft: "draft",
   Published: "published",
@@ -53,6 +60,7 @@ export type UpdatePostPost = {
  * Post updated successfully
  */
 export type UpdatePostResponse = {
+  organization: UpdatePostOrganization;
   post: UpdatePostPost;
 };
 
@@ -109,6 +117,27 @@ export function updatePostRequestToJSON(
 }
 
 /** @internal */
+export const UpdatePostOrganization$inboundSchema: z.ZodMiniType<
+  UpdatePostOrganization,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  logo: types.nullable(types.string()),
+});
+
+export function updatePostOrganizationFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdatePostOrganization, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdatePostOrganization$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdatePostOrganization' from JSON`,
+  );
+}
+
+/** @internal */
 export const UpdatePostStatusResponse$inboundSchema: z.ZodMiniType<
   UpdatePostStatusResponse,
   unknown
@@ -146,6 +175,7 @@ export const UpdatePostResponse$inboundSchema: z.ZodMiniType<
   UpdatePostResponse,
   unknown
 > = z.object({
+  organization: z.lazy(() => UpdatePostOrganization$inboundSchema),
   post: z.lazy(() => UpdatePostPost$inboundSchema),
 });
 

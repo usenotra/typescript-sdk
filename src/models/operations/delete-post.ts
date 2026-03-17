@@ -13,11 +13,19 @@ export type DeletePostRequest = {
   postId: string;
 };
 
+export type DeletePostOrganization = {
+  id: string;
+  slug: string;
+  name: string;
+  logo: string | null;
+};
+
 /**
  * Post deleted successfully
  */
 export type DeletePostResponse = {
   id: string;
+  organization: DeletePostOrganization;
 };
 
 /** @internal */
@@ -42,11 +50,33 @@ export function deletePostRequestToJSON(
 }
 
 /** @internal */
+export const DeletePostOrganization$inboundSchema: z.ZodMiniType<
+  DeletePostOrganization,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  logo: types.nullable(types.string()),
+});
+
+export function deletePostOrganizationFromJSON(
+  jsonString: string,
+): SafeParseResult<DeletePostOrganization, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => DeletePostOrganization$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DeletePostOrganization' from JSON`,
+  );
+}
+
+/** @internal */
 export const DeletePostResponse$inboundSchema: z.ZodMiniType<
   DeletePostResponse,
   unknown
 > = z.object({
   id: types.string(),
+  organization: z.lazy(() => DeletePostOrganization$inboundSchema),
 });
 
 export function deletePostResponseFromJSON(
