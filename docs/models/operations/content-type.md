@@ -5,17 +5,15 @@ Filter by content type. Repeat the query param to pass multiple values.
 
 ## Supported Types
 
-### `operations.ContentTypeEnum1`
+### `operations.ListPostsContentTypeEnum1`
 
 ```typescript
-const value: operations.ContentTypeEnum1 = "twitter_post";
+const value: operations.ListPostsContentTypeEnum1 = "blog_post";
 ```
 
-### `operations.ContentTypeEnum2[]`
+### `operations.ListPostsContentTypeEnum2[]`
 
 ```typescript
-const value: operations.ContentTypeEnum2[] = [
-  "blog_post",
-];
+const value: operations.ListPostsContentTypeEnum2[] = [];
 ```
 

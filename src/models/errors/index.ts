@@ -3,6 +3,7 @@
  * @generated-id: c4e22507cb83
  */
 
+export * from "./create-post-generation.js";
 export * from "./error-response.js";
 export * from "./http-client-errors.js";
 export * from "./notra-default-error.js";

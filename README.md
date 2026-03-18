@@ -138,6 +138,11 @@ run();
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
 * [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
 * [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
+* [createPostGeneration](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
+* [listBrandIdentities](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
+* [getBrandIdentity](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
+* [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
+* [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -157,8 +162,13 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 - [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
+- [`contentGetBrandIdentity`](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
 - [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
+- [`contentGetPostGeneration`](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
+- [`contentListBrandIdentities`](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
+- [`contentListIntegrations`](docs/sdks/content/README.md#listintegrations) - List available integrations
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 
@@ -281,7 +291,7 @@ run();
 * [`NotraError`](./src/models/errors/notra-error.ts): The base class for HTTP error responses.
   * [`ErrorResponse`](./src/models/errors/error-response.ts): Generic error.
 
-<details><summary>Less common errors (6)</summary>
+<details><summary>Less common errors (7)</summary>
 
 <br />
 
@@ -294,9 +304,12 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 9 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
