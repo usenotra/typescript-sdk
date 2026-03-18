@@ -3,8 +3,13 @@
  * @generated-id: 152cac8c63c4
  */
 
+import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
 import { contentDeletePost } from "../funcs/content-delete-post.js";
+import { contentGetBrandIdentity } from "../funcs/content-get-brand-identity.js";
+import { contentGetPostGeneration } from "../funcs/content-get-post-generation.js";
 import { contentGetPost } from "../funcs/content-get-post.js";
+import { contentListBrandIdentities } from "../funcs/content-list-brand-identities.js";
+import { contentListIntegrations } from "../funcs/content-list-integrations.js";
 import { contentListPosts } from "../funcs/content-list-posts.js";
 import { contentUpdatePost } from "../funcs/content-update-post.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -62,6 +67,72 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.UpdatePostResponse> {
     return unwrapAsync(contentUpdatePost(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Queue async post generation
+   */
+  async createPostGeneration(
+    request: operations.CreatePostGenerationRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreatePostGenerationResponse> {
+    return unwrapAsync(contentCreatePostGeneration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List available brand identities
+   */
+  async listBrandIdentities(
+    options?: RequestOptions,
+  ): Promise<operations.ListBrandIdentitiesResponse> {
+    return unwrapAsync(contentListBrandIdentities(
+      this,
+      options,
+    ));
+  }
+
+  /**
+   * Get a single brand identity
+   */
+  async getBrandIdentity(
+    request: operations.GetBrandIdentityRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GetBrandIdentityResponse> {
+    return unwrapAsync(contentGetBrandIdentity(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List available integrations
+   */
+  async listIntegrations(
+    options?: RequestOptions,
+  ): Promise<operations.ListIntegrationsResponse> {
+    return unwrapAsync(contentListIntegrations(
+      this,
+      options,
+    ));
+  }
+
+  /**
+   * Get async post generation status
+   */
+  async getPostGeneration(
+    request: operations.GetPostGenerationRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GetPostGenerationResponse> {
+    return unwrapAsync(contentGetPostGeneration(
       this,
       request,
       options,

@@ -1,11 +1,11 @@
-# UpdatePostStatusResponse
+# ListPostsPostStatus
 
 ## Example Usage
 
 ```typescript
-import { UpdatePostStatusResponse } from "@usenotra/sdk/models/operations";
+import { ListPostsPostStatus } from "@usenotra/sdk/models/operations";
 
-let value: UpdatePostStatusResponse = "draft";
+let value: ListPostsPostStatus = "published";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
