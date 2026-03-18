@@ -10,6 +10,11 @@ Read content. Organization is inferred from the API key (identity.externalId).
 * [getPost](#getpost) - Get a single post
 * [deletePost](#deletepost) - Delete a single post
 * [updatePost](#updatepost) - Update a single post
+* [createPostGeneration](#createpostgeneration) - Queue async post generation
+* [listBrandIdentities](#listbrandidentities) - List available brand identities
+* [getBrandIdentity](#getbrandidentity) - Get a single brand identity
+* [listIntegrations](#listintegrations) - List available integrations
+* [getPostGeneration](#getpostgeneration) - Get async post generation status
 
 ## listPosts
 
@@ -314,5 +319,410 @@ run();
 | Error Type               | Status Code              | Content Type             |
 | ------------------------ | ------------------------ | ------------------------ |
 | errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## createPostGeneration
+
+Queue async post generation
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="createPostGeneration" method="post" path="/v1/posts/generate" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.createPostGeneration({
+    contentType: "blog_post",
+    brandVoiceId: "voice_123",
+    brandIdentityId: "voice_123",
+    repositoryIds: [
+      "repo_1",
+      "repo_2",
+    ],
+    integrations: {
+      github: [
+        "integration_1",
+        "integration_2",
+      ],
+    },
+    github: {
+      repositories: [
+        {
+          owner: "usenotra",
+          repo: "notra",
+        },
+      ],
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentCreatePostGeneration } from "@usenotra/sdk/funcs/content-create-post-generation.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentCreatePostGeneration(notra, {
+    contentType: "blog_post",
+    brandVoiceId: "voice_123",
+    brandIdentityId: "voice_123",
+    repositoryIds: [
+      "repo_1",
+      "repo_2",
+    ],
+    integrations: {
+      github: [
+        "integration_1",
+        "integration_2",
+      ],
+    },
+    github: {
+      repositories: [
+        {
+          owner: "usenotra",
+          repo: "notra",
+        },
+      ],
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentCreatePostGeneration failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.CreatePostGenerationRequest](../../models/operations/create-post-generation-request.md)                                                                            | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.CreatePostGenerationResponse](../../models/operations/create-post-generation-response.md)\>**
+
+### Errors
+
+| Error Type                     | Status Code                    | Content Type                   |
+| ------------------------------ | ------------------------------ | ------------------------------ |
+| errors.ErrorResponse           | 400, 401, 403                  | application/json               |
+| errors.ServiceUnavailableError | 503                            | application/json               |
+| errors.NotraDefaultError       | 4XX, 5XX                       | \*/\*                          |
+
+## listBrandIdentities
+
+List available brand identities
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listBrandIdentities" method="get" path="/v1/brand-identities" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.listBrandIdentities();
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentListBrandIdentities } from "@usenotra/sdk/funcs/content-list-brand-identities.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentListBrandIdentities(notra);
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentListBrandIdentities failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.ListBrandIdentitiesResponse](../../models/operations/list-brand-identities-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 401, 403, 404            | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## getBrandIdentity
+
+Get a single brand identity
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getBrandIdentity" method="get" path="/v1/brand-identities/{brandIdentityId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.getBrandIdentity({
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentGetBrandIdentity } from "@usenotra/sdk/funcs/content-get-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentGetBrandIdentity(notra, {
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentGetBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetBrandIdentityRequest](../../models/operations/get-brand-identity-request.md)                                                                                    | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GetBrandIdentityResponse](../../models/operations/get-brand-identity-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## listIntegrations
+
+List available integrations
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listIntegrations" method="get" path="/v1/integrations" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.listIntegrations();
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentListIntegrations } from "@usenotra/sdk/funcs/content-list-integrations.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentListIntegrations(notra);
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentListIntegrations failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.ListIntegrationsResponse](../../models/operations/list-integrations-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 401, 403, 404            | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## getPostGeneration
+
+Get async post generation status
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getPostGeneration" method="get" path="/v1/posts/generate/{jobId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.getPostGeneration({
+    jobId: "job_123",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentGetPostGeneration } from "@usenotra/sdk/funcs/content-get-post-generation.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentGetPostGeneration(notra, {
+    jobId: "job_123",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentGetPostGeneration failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetPostGenerationRequest](../../models/operations/get-post-generation-request.md)                                                                                  | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GetPostGenerationResponse](../../models/operations/get-post-generation-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 401, 403, 404            | application/json         |
 | errors.ErrorResponse     | 503                      | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |

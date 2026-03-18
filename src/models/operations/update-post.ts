@@ -35,13 +35,11 @@ export type UpdatePostOrganization = {
   logo: string | null;
 };
 
-export const UpdatePostStatusResponse = {
+export const UpdatePostPostStatus = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type UpdatePostStatusResponse = OpenEnum<
-  typeof UpdatePostStatusResponse
->;
+export type UpdatePostPostStatus = OpenEnum<typeof UpdatePostPostStatus>;
 
 export type UpdatePostPost = {
   id: string;
@@ -51,7 +49,7 @@ export type UpdatePostPost = {
   recommendations: string | null;
   contentType: string;
   sourceMetadata?: any | undefined;
-  status: UpdatePostStatusResponse;
+  status: UpdatePostPostStatus;
   createdAt: string;
   updatedAt: string;
 };
@@ -138,10 +136,10 @@ export function updatePostOrganizationFromJSON(
 }
 
 /** @internal */
-export const UpdatePostStatusResponse$inboundSchema: z.ZodMiniType<
-  UpdatePostStatusResponse,
+export const UpdatePostPostStatus$inboundSchema: z.ZodMiniType<
+  UpdatePostPostStatus,
   unknown
-> = openEnums.inboundSchema(UpdatePostStatusResponse);
+> = openEnums.inboundSchema(UpdatePostPostStatus);
 
 /** @internal */
 export const UpdatePostPost$inboundSchema: z.ZodMiniType<
@@ -155,7 +153,7 @@ export const UpdatePostPost$inboundSchema: z.ZodMiniType<
   recommendations: types.nullable(types.string()),
   contentType: types.string(),
   sourceMetadata: types.optional(z.any()),
-  status: UpdatePostStatusResponse$inboundSchema,
+  status: UpdatePostPostStatus$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),
 });
