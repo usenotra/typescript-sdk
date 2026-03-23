@@ -5,6 +5,7 @@
 
 import { contentCreateBrandIdentity } from "../funcs/content-create-brand-identity.js";
 import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
+import { contentDeleteBrandIdentity } from "../funcs/content-delete-brand-identity.js";
 import { contentDeletePost } from "../funcs/content-delete-post.js";
 import { contentGetBrandIdentityGeneration } from "../funcs/content-get-brand-identity-generation.js";
 import { contentGetBrandIdentity } from "../funcs/content-get-brand-identity.js";
@@ -155,6 +156,23 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.UpdateBrandIdentityResponse> {
     return unwrapAsync(contentUpdateBrandIdentity(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a single brand identity
+   *
+   * @remarks
+   * Deletes a non-default brand identity and disables any automation triggers that reference it.
+   */
+  async deleteBrandIdentity(
+    request: operations.DeleteBrandIdentityRequest,
+    options?: RequestOptions,
+  ): Promise<operations.DeleteBrandIdentityResponse> {
+    return unwrapAsync(contentDeleteBrandIdentity(
       this,
       request,
       options,

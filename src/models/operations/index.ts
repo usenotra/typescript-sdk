@@ -5,6 +5,7 @@
 
 export * from "./create-brand-identity.js";
 export * from "./create-post-generation.js";
+export * from "./delete-brand-identity.js";
 export * from "./delete-post.js";
 export * from "./get-brand-identity-generation.js";
 export * from "./get-brand-identity.js";
