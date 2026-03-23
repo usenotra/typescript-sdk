@@ -3,14 +3,17 @@
  * @generated-id: 152cac8c63c4
  */
 
+import { contentCreateBrandIdentity } from "../funcs/content-create-brand-identity.js";
 import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
 import { contentDeletePost } from "../funcs/content-delete-post.js";
+import { contentGetBrandIdentityGeneration } from "../funcs/content-get-brand-identity-generation.js";
 import { contentGetBrandIdentity } from "../funcs/content-get-brand-identity.js";
 import { contentGetPostGeneration } from "../funcs/content-get-post-generation.js";
 import { contentGetPost } from "../funcs/content-get-post.js";
 import { contentListBrandIdentities } from "../funcs/content-list-brand-identities.js";
 import { contentListIntegrations } from "../funcs/content-list-integrations.js";
 import { contentListPosts } from "../funcs/content-list-posts.js";
+import { contentUpdateBrandIdentity } from "../funcs/content-update-brand-identity.js";
 import { contentUpdatePost } from "../funcs/content-update-post.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -100,6 +103,34 @@ export class Content extends ClientSDK {
   }
 
   /**
+   * Queue async brand identity generation
+   */
+  async createBrandIdentity(
+    request: operations.CreateBrandIdentityRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateBrandIdentityResponse> {
+    return unwrapAsync(contentCreateBrandIdentity(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get async brand identity generation status
+   */
+  async getBrandIdentityGeneration(
+    request: operations.GetBrandIdentityGenerationRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GetBrandIdentityGenerationResponse> {
+    return unwrapAsync(contentGetBrandIdentityGeneration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Get a single brand identity
    */
   async getBrandIdentity(
@@ -107,6 +138,23 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetBrandIdentityResponse> {
     return unwrapAsync(contentGetBrandIdentity(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a single brand identity
+   *
+   * @remarks
+   * Updates brand identity fields. Pass isDefault: true to make the target brand identity the organization's default.
+   */
+  async updateBrandIdentity(
+    request: operations.UpdateBrandIdentityRequest,
+    options?: RequestOptions,
+  ): Promise<operations.UpdateBrandIdentityResponse> {
+    return unwrapAsync(contentUpdateBrandIdentity(
       this,
       request,
       options,

@@ -94,7 +94,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/v1/posts/generate/{jobId}")(pathParams);
 
   const headers = new Headers(compactMap({

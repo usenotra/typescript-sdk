@@ -12,7 +12,10 @@ Read content. Organization is inferred from the API key (identity.externalId).
 * [updatePost](#updatepost) - Update a single post
 * [createPostGeneration](#createpostgeneration) - Queue async post generation
 * [listBrandIdentities](#listbrandidentities) - List available brand identities
+* [createBrandIdentity](#createbrandidentity) - Queue async brand identity generation
+* [getBrandIdentityGeneration](#getbrandidentitygeneration) - Get async brand identity generation status
 * [getBrandIdentity](#getbrandidentity) - Get a single brand identity
+* [updateBrandIdentity](#updatebrandidentity) - Update a single brand identity
 * [listIntegrations](#listintegrations) - List available integrations
 * [getPostGeneration](#getpostgeneration) - Get async post generation status
 
@@ -507,6 +510,158 @@ run();
 | errors.ErrorResponse     | 503                      | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
 
+## createBrandIdentity
+
+Queue async brand identity generation
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="createBrandIdentity" method="post" path="/v1/brand-identities/generate" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.createBrandIdentity({
+    name: "Notra",
+    websiteUrl: "https://usenotra.com",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentCreateBrandIdentity } from "@usenotra/sdk/funcs/content-create-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentCreateBrandIdentity(notra, {
+    name: "Notra",
+    websiteUrl: "https://usenotra.com",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentCreateBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.CreateBrandIdentityRequest](../../models/operations/create-brand-identity-request.md)                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.CreateBrandIdentityResponse](../../models/operations/create-brand-identity-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## getBrandIdentityGeneration
+
+Get async brand identity generation status
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getBrandIdentityGeneration" method="get" path="/v1/brand-identities/generate/{jobId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.getBrandIdentityGeneration({
+    jobId: "brand_job_123",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentGetBrandIdentityGeneration } from "@usenotra/sdk/funcs/content-get-brand-identity-generation.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentGetBrandIdentityGeneration(notra, {
+    jobId: "brand_job_123",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentGetBrandIdentityGeneration failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetBrandIdentityGenerationRequest](../../models/operations/get-brand-identity-generation-request.md)                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GetBrandIdentityGenerationResponse](../../models/operations/get-brand-identity-generation-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
 ## getBrandIdentity
 
 Get a single brand identity
@@ -579,6 +734,248 @@ run();
 | Error Type               | Status Code              | Content Type             |
 | ------------------------ | ------------------------ | ------------------------ |
 | errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## updateBrandIdentity
+
+Updates brand identity fields. Pass isDefault: true to make the target brand identity the organization's default.
+
+### Example Usage: setCustomTone
+
+<!-- UsageSnippet language="typescript" operationID="updateBrandIdentity" method="patch" path="/v1/brand-identities/{brandIdentityId}" example="setCustomTone" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.updateBrandIdentity({
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {
+      customTone: "Warm, sharp, and opinionated",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentUpdateBrandIdentity } from "@usenotra/sdk/funcs/content-update-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentUpdateBrandIdentity(notra, {
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {
+      customTone: "Warm, sharp, and opinionated",
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentUpdateBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: setDefault
+
+<!-- UsageSnippet language="typescript" operationID="updateBrandIdentity" method="patch" path="/v1/brand-identities/{brandIdentityId}" example="setDefault" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.updateBrandIdentity({
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentUpdateBrandIdentity } from "@usenotra/sdk/funcs/content-update-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentUpdateBrandIdentity(notra, {
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentUpdateBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: switchToPresetTone
+
+<!-- UsageSnippet language="typescript" operationID="updateBrandIdentity" method="patch" path="/v1/brand-identities/{brandIdentityId}" example="switchToPresetTone" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.updateBrandIdentity({
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {
+      toneProfile: "Professional",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentUpdateBrandIdentity } from "@usenotra/sdk/funcs/content-update-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentUpdateBrandIdentity(notra, {
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {
+      toneProfile: "Professional",
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentUpdateBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+### Example Usage: updateAndSetDefault
+
+<!-- UsageSnippet language="typescript" operationID="updateBrandIdentity" method="patch" path="/v1/brand-identities/{brandIdentityId}" example="updateAndSetDefault" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.updateBrandIdentity({
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {
+      name: "Notra Marketing",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentUpdateBrandIdentity } from "@usenotra/sdk/funcs/content-update-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentUpdateBrandIdentity(notra, {
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    body: {
+      name: "Notra Marketing",
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentUpdateBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.UpdateBrandIdentityRequest](../../models/operations/update-brand-identity-request.md)                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.UpdateBrandIdentityResponse](../../models/operations/update-brand-identity-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
 | errors.ErrorResponse     | 503                      | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
 

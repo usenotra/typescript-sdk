@@ -1,24 +1,24 @@
-# ListBrandIdentitiesBrandIdentity
+# UpdateBrandIdentityBrandIdentity
 
 ## Example Usage
 
 ```typescript
-import { ListBrandIdentitiesBrandIdentity } from "@usenotra/sdk/models/operations";
+import { UpdateBrandIdentityBrandIdentity } from "@usenotra/sdk/models/operations";
 
-let value: ListBrandIdentitiesBrandIdentity = {
+let value: UpdateBrandIdentityBrandIdentity = {
   id: "<id>",
   name: "<value>",
-  isDefault: true,
-  websiteUrl: "https://witty-grandson.name/",
-  companyName: "Pollich Inc",
-  companyDescription: null,
+  isDefault: false,
+  websiteUrl: "https://somber-popularity.name/",
+  companyName: "Weber Group",
+  companyDescription: "<value>",
   toneProfile: "<value>",
   customTone: "<value>",
   customInstructions: "<value>",
   audience: "<value>",
   language: "<value>",
-  createdAt: "1730091145354",
-  updatedAt: "1735687247840",
+  createdAt: "1714165977052",
+  updatedAt: "1735658641805",
 };
 ```
 
