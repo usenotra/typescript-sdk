@@ -17,6 +17,16 @@ export type GetBrandIdentityBrandIdentity = {
   id: string;
   name: string;
   isDefault: boolean;
+  websiteUrl: string;
+  companyName: string | null;
+  companyDescription: string | null;
+  toneProfile: string | null;
+  customTone: string | null;
+  customInstructions: string | null;
+  audience: string | null;
+  language: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type GetBrandIdentityOrganization = {
@@ -63,6 +73,16 @@ export const GetBrandIdentityBrandIdentity$inboundSchema: z.ZodMiniType<
   id: types.string(),
   name: types.string(),
   isDefault: types.boolean(),
+  websiteUrl: types.string(),
+  companyName: types.nullable(types.string()),
+  companyDescription: types.nullable(types.string()),
+  toneProfile: types.nullable(types.string()),
+  customTone: types.nullable(types.string()),
+  customInstructions: types.nullable(types.string()),
+  audience: types.nullable(types.string()),
+  language: types.nullable(types.string()),
+  createdAt: types.string(),
+  updatedAt: types.string(),
 });
 
 export function getBrandIdentityBrandIdentityFromJSON(
