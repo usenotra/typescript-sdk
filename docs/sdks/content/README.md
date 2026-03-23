@@ -16,6 +16,7 @@ Read content. Organization is inferred from the API key (identity.externalId).
 * [getBrandIdentityGeneration](#getbrandidentitygeneration) - Get async brand identity generation status
 * [getBrandIdentity](#getbrandidentity) - Get a single brand identity
 * [updateBrandIdentity](#updatebrandidentity) - Update a single brand identity
+* [deleteBrandIdentity](#deletebrandidentity) - Delete a single brand identity
 * [listIntegrations](#listintegrations) - List available integrations
 * [getPostGeneration](#getpostgeneration) - Get async post generation status
 
@@ -976,6 +977,81 @@ run();
 | Error Type               | Status Code              | Content Type             |
 | ------------------------ | ------------------------ | ------------------------ |
 | errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## deleteBrandIdentity
+
+Deletes a non-default brand identity and disables any automation triggers that reference it.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="deleteBrandIdentity" method="delete" path="/v1/brand-identities/{brandIdentityId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.deleteBrandIdentity({
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentDeleteBrandIdentity } from "@usenotra/sdk/funcs/content-delete-brand-identity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentDeleteBrandIdentity(notra, {
+    brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentDeleteBrandIdentity failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.DeleteBrandIdentityRequest](../../models/operations/delete-brand-identity-request.md)                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.DeleteBrandIdentityResponse](../../models/operations/delete-brand-identity-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
 | errors.ErrorResponse     | 503                      | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
 
