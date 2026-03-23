@@ -140,7 +140,10 @@ run();
 * [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
 * [createPostGeneration](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 * [listBrandIdentities](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
+* [createBrandIdentity](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
+* [getBrandIdentityGeneration](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
 * [getBrandIdentity](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
+* [updateBrandIdentity](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 * [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
 * [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 
@@ -162,14 +165,17 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 - [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 - [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
 - [`contentGetBrandIdentity`](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
+- [`contentGetBrandIdentityGeneration`](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
 - [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
 - [`contentGetPostGeneration`](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 - [`contentListBrandIdentities`](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
 - [`contentListIntegrations`](docs/sdks/content/README.md#listintegrations) - List available integrations
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
+- [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 
 </details>
@@ -304,7 +310,7 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 9 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 12 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

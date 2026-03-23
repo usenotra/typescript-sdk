@@ -1,24 +1,24 @@
 lockVersion: 2.0.0
 id: 104db2d6-9bbd-4701-8824-eae3c56579e7
 management:
-  docChecksum: 1445c039bcaccb3fb04c89ea43a2fa0a
+  docChecksum: 8b2ee73d09525c381f42da28d909a002
   docVersion: 1.0.0
-  speakeasyVersion: 1.757.1
-  generationVersion: 2.866.2
-  releaseVersion: 0.1.0
-  configChecksum: b20888cacba064bf734d13b897f7ddab
+  speakeasyVersion: 1.759.1
+  generationVersion: 2.869.10
+  releaseVersion: 0.1.1
+  configChecksum: 6a6d944be55f5b1eb37083433370eed5
   repoURL: https://github.com/usenotra/typescript-sdk.git
   installationURL: https://github.com/usenotra/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 27e89269-d0bf-4946-a2b5-4bca03ba8da7
-  pristine_commit_hash: f9724b7027d33c5958d90daa2045e3498f70cd1f
-  pristine_tree_hash: c26f73c39cd49294da23ac7c8816a58071672c17
+  generation_id: dd9c9bab-d2e1-4ea4-9e9c-17b16e9a41e8
+  pristine_commit_hash: efd5feb2cd9c59e65d2fb7eb0c3588eabaf70331
+  pristine_tree_hash: a0c4991605efba2c0d73e2ae32668d4f2b2d46b4
 features:
   typescript:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.14
-    core: 3.26.42
+    core: 3.26.43
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.1
     enumUnions: 0.1.0
@@ -86,6 +86,30 @@ trackedFiles:
     id: 1965a49fd87b
     last_write_checksum: sha1:a35ec10d4e7c90cc64221bb9ccf537ca5500b53f
     pristine_git_object: fba7dd0ec7da743cfcb7d1f54c53075caa41cecb
+  docs/models/operations/create-brand-identity-job.md:
+    id: 8e78c2c1950b
+    last_write_checksum: sha1:a383b4abb4541bf062835f64678187fcea78c33f
+    pristine_git_object: 3afd2cea75d863b50311eda861edf120517a845c
+  docs/models/operations/create-brand-identity-organization.md:
+    id: 6b0bef62661c
+    last_write_checksum: sha1:ca7abbe8e29d296aec6d5f12b63157544a01610a
+    pristine_git_object: 656bc6ae8802b17fd54282e942820448f0951700
+  docs/models/operations/create-brand-identity-request.md:
+    id: 2b84a0c36c7a
+    last_write_checksum: sha1:4e5559a1ede5f755ad6873810920c8e96fb2acf5
+    pristine_git_object: fd2e3e4baf35d4b05ecc6626ef4c9f1e1be3ae7c
+  docs/models/operations/create-brand-identity-response.md:
+    id: ce878ea7056c
+    last_write_checksum: sha1:e68029da9df302904cb79e2a5df43c660839d516
+    pristine_git_object: 4b3ca44e78358483e02895ea5156f27a48c5fa11
+  docs/models/operations/create-brand-identity-status.md:
+    id: 4e73ef9e6241
+    last_write_checksum: sha1:ba7996b5a70b1010b4a4470a021080716821805a
+    pristine_git_object: 9b09c5cbfe33169fe5efb361e323639ade3e510f
+  docs/models/operations/create-brand-identity-step.md:
+    id: c335c6202b5c
+    last_write_checksum: sha1:33afa7d9b1097224928320f6a537c7a0944815a3
+    pristine_git_object: f2de565dd3d4528c2a62663b1bbb7a45ef7aa3db
   docs/models/operations/create-post-generation-content-type-response.md:
     id: d7902754eb62
     last_write_checksum: sha1:875d1eed2349a1a2e1915796377a73ca55ec144f
@@ -144,8 +168,32 @@ trackedFiles:
     pristine_git_object: 49d0bea0dcec917e852e927c2c76532cc6dac0c2
   docs/models/operations/get-brand-identity-brand-identity.md:
     id: 375c560f6340
-    last_write_checksum: sha1:b55b5072603914645b953f37303705148894b53e
-    pristine_git_object: 8716312d35c5997827594ebdf74348b25cda6383
+    last_write_checksum: sha1:d63503e40b891604b9f0e922c0b53a64818a5d9f
+    pristine_git_object: 55192e19145acad6373d9f46309fee8c48544f0a
+  docs/models/operations/get-brand-identity-generation-job.md:
+    id: d39ffb5d359b
+    last_write_checksum: sha1:cd5c1e265fdd1137faa95735e3e26cad09cb40eb
+    pristine_git_object: 21bdd31b686d49c661fe77f7b1502e7ba97a7e67
+  docs/models/operations/get-brand-identity-generation-organization.md:
+    id: b6d97d2477ea
+    last_write_checksum: sha1:8e3ebb12a1177f89904aa3ae0b770449e9162f65
+    pristine_git_object: 67ea1d7c250c33f5ace328e8fd225b005d4c1ab9
+  docs/models/operations/get-brand-identity-generation-request.md:
+    id: 63923eadc35b
+    last_write_checksum: sha1:314933dee87a3e301937107a6e03141436902f56
+    pristine_git_object: 99e84a741f18856636141e329fcafa1ebc4eb87e
+  docs/models/operations/get-brand-identity-generation-response.md:
+    id: 38d6ff325d94
+    last_write_checksum: sha1:eefa58f20dd19a026e263b3afe0c8d96f6f42fa2
+    pristine_git_object: e068c17e5d1be5aa213ca69d1743088f47d7e9aa
+  docs/models/operations/get-brand-identity-generation-status.md:
+    id: ccfb7f040d40
+    last_write_checksum: sha1:85df3bd09f0dda5fd0f588ecb5958dec7a833072
+    pristine_git_object: 6f4cfe47c47f5da7d353eab1db64903429a2deef
+  docs/models/operations/get-brand-identity-generation-step.md:
+    id: 3ee9b2878bd8
+    last_write_checksum: sha1:233d6d2f44aa028ca02f809d5cdf2269b3fe96f4
+    pristine_git_object: 32b6105daa89f4cf43e2472435843619b1804993
   docs/models/operations/get-brand-identity-organization.md:
     id: 87cd0955c5be
     last_write_checksum: sha1:4927ccff86f4a9ba211d6129cf46f08793094bf1
@@ -156,8 +204,8 @@ trackedFiles:
     pristine_git_object: 0c355f2c4494694ca66771fef7b8ab541658cad7
   docs/models/operations/get-brand-identity-response.md:
     id: 3240a43f1cda
-    last_write_checksum: sha1:4840bad6c21a74fb75231cd22311ef2de242dcb2
-    pristine_git_object: ed400399f5241f63a353181547bc6cec9db67951
+    last_write_checksum: sha1:8a3d2ae87c5637766267b8aa3484bf6b1502263a
+    pristine_git_object: 26714815d2a46c2bbc904fc301c66c6d9154614d
   docs/models/operations/get-post-generation-content-type.md:
     id: 9b2b770824c6
     last_write_checksum: sha1:145da75e6bc763e57931c5746efa628415f18fb5
@@ -210,10 +258,14 @@ trackedFiles:
     id: c81024c5774d
     last_write_checksum: sha1:9e6e11a799747a6f195f47060dfb58b97451769f
     pristine_git_object: 0be19f55d90b5709458e834a9c5739384b5056fb
+  docs/models/operations/language.md:
+    id: 3d6e5101abf9
+    last_write_checksum: sha1:e8c27e532325ec18212696e031443dedeea0c864
+    pristine_git_object: 7af6c786b6bd770d0b3db758bdd9200ca30dea00
   docs/models/operations/list-brand-identities-brand-identity.md:
     id: f13a9efc60c6
-    last_write_checksum: sha1:1daa2791fe41cfeba2e22fe6174465fef8a332cb
-    pristine_git_object: 95a6d9498bdec3ebc78e81a60571a34c175c7d96
+    last_write_checksum: sha1:62d051b5a5b43f0794dbc529956409e6a99fdc35
+    pristine_git_object: 2e022f01c26cd64190e3e48173f42576a7353e7c
   docs/models/operations/list-brand-identities-organization.md:
     id: 2af107d88811
     last_write_checksum: sha1:704e3c8da91af043d6b4117fe4bfbc3cf46f0d4c
@@ -310,10 +362,34 @@ trackedFiles:
     id: a42267b6f2cb
     last_write_checksum: sha1:207183d4ec1ac79755c674ea550e9314992a600e
     pristine_git_object: 25c0ea4ebe026e502a00db99397938787507b3ea
+  docs/models/operations/tone-profile.md:
+    id: 9dd9ebe08a3f
+    last_write_checksum: sha1:d4203027ea003f7280ebe57adb19fd860c44de9b
+    pristine_git_object: dd07546d574f286594d46788ad9c99a9567626e9
   docs/models/operations/type.md:
     id: 8e39682ca85e
     last_write_checksum: sha1:8b34651e5e8b3c08171ae3dd2e092e4ca741d4a4
     pristine_git_object: b1249080f474103913841a978e9fd4d3d46be0fc
+  docs/models/operations/update-brand-identity-brand-identity.md:
+    id: 83c168a3de7b
+    last_write_checksum: sha1:65e5db2552e6e4701c460cb7758a2a96b592831f
+    pristine_git_object: 03f610373f36c70589a8d64f1e83a6d841f5732b
+  docs/models/operations/update-brand-identity-organization.md:
+    id: 1c14712f8423
+    last_write_checksum: sha1:c4c19a8581301225128ae47056842b3dbd6b64bc
+    pristine_git_object: 1fa241f18d44cf5db7d6f57eb43375f81b34510f
+  docs/models/operations/update-brand-identity-request-body.md:
+    id: 41bae8814d0f
+    last_write_checksum: sha1:c24971effb3430dd7d4562d0166b43cbcc7da07a
+    pristine_git_object: fdf6374ce85c600a0edcabaf669cd60d503fe19c
+  docs/models/operations/update-brand-identity-request.md:
+    id: 1c2e487c35bc
+    last_write_checksum: sha1:930e168475b56384e7b48b4886b22561cb9ab1cc
+    pristine_git_object: bdd104838bd956d1eae0441811d8e50c21f23df3
+  docs/models/operations/update-brand-identity-response.md:
+    id: 760acd9b415f
+    last_write_checksum: sha1:e27962ad99b06a75c58f4097cfd7c56d266fa923
+    pristine_git_object: 361bc7fd8122ab368414f57c01432f5d4eb0e4a3
   docs/models/operations/update-post-organization.md:
     id: 605156f1b58d
     last_write_checksum: sha1:710e266f03cba7209d6d1675543eaf510b1511e0
@@ -344,8 +420,8 @@ trackedFiles:
     pristine_git_object: 9224384295d93cd566ab540021dd0d2c6081b78a
   docs/sdks/content/README.md:
     id: de1d68ebc2ba
-    last_write_checksum: sha1:b1cb8c952ce53539118ec45592fa843d6ad5ca4d
-    pristine_git_object: 90c891faeed4e7ca337ef7b9b88bbe0b2e85fa60
+    last_write_checksum: sha1:01a9b138575cf582f3c3581dfb179e0dbddc03cd
+    pristine_git_object: a7323bee1e9479745d5df6cc4ecdd5782373d6b5
   eslint.config.mjs:
     id: 461c8d07f6da
     last_write_checksum: sha1:9398f326377fe47f67af2df6eb6370750c0790b4
@@ -368,36 +444,44 @@ trackedFiles:
     pristine_git_object: 3023ce82381e2e8aa2d621788c5bf096cc0419b4
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:89f3f97e9ec505ff4f300fd46ee14aad00475f63
-    pristine_git_object: 17b97dab5bda380d145397e3fd1ec3d41d27b39d
+    last_write_checksum: sha1:88f535d430ed206ef85c1675194d4be3b18f0071
+    pristine_git_object: 781ecf5eb3c3a62e137219246289c3eed0a21e52
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:409d5107c42cc0e68bdd33adda65b33b60ed1d53
-    pristine_git_object: 8556e6675eb5a672375956fb415d6a816d5659d2
+    last_write_checksum: sha1:095f2636166abf24d7563115ebd85a76d9780306
+    pristine_git_object: 76179222900e0b0b9969a8ebccb0cab8900fb57f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:e8d638e0e6a2cda3f4c932a136d971d10a1ef6f4
     pristine_git_object: 874be62eb436e30f8e9b0add956d1af7ff49562a
+  src/funcs/content-create-brand-identity.ts:
+    id: c50a20aae23d
+    last_write_checksum: sha1:1726f3da429f84cc3e83809a8f875f8a9610613f
+    pristine_git_object: c628100479281953def3f07269dc120732fc1e78
   src/funcs/content-create-post-generation.ts:
     id: 98af39cd80f7
     last_write_checksum: sha1:899455d0c653bf62a0799f163ca78d6ab3e9365f
     pristine_git_object: 91847c25a8e70fa8081a7bdadc50f1c2f67634ae
   src/funcs/content-delete-post.ts:
     id: fda0df7f5a63
-    last_write_checksum: sha1:75c707df67daeb9d05f8ccd0368482103a4370ef
-    pristine_git_object: f4985c7f1c64544be9b15e6691665a5db9202240
+    last_write_checksum: sha1:3fd89ed59a408f5edc8f34ddf8b7ca5ac46e75e5
+    pristine_git_object: 0fecfbfb37eddc455d211670633edb9d945f8940
+  src/funcs/content-get-brand-identity-generation.ts:
+    id: ffd6d415ba7f
+    last_write_checksum: sha1:53e09de65dffa9b959baa1ce44c874281f5df2ee
+    pristine_git_object: a97981955242c0420d71daa2fa6ed7e3b28f7514
   src/funcs/content-get-brand-identity.ts:
     id: 03f8d78751bf
-    last_write_checksum: sha1:9a5a1057d631b1917a0a7a4f4cbd9223939afb41
-    pristine_git_object: bfb5be836eea6c4aa6cfff24a008a5ed9da35755
+    last_write_checksum: sha1:4bdd358a4ac856e1a9f68ebe3e6bbae797cab904
+    pristine_git_object: 43a692acd6b893198fa74d9a2cae7b962db9d82f
   src/funcs/content-get-post-generation.ts:
     id: 865dd7c6bbd2
-    last_write_checksum: sha1:0d22e363aa03001d419c1f43ef9e348924fdf032
-    pristine_git_object: f5f6abf8088a3df1a1aeb67b91cbc5a1c395b08f
+    last_write_checksum: sha1:9e21f8e907dcf1c9fc3fbd043bbee8894fb7f316
+    pristine_git_object: 98b12163bbbdff91b49d69fc22d74375f91e26f0
   src/funcs/content-get-post.ts:
     id: 83c5138f18b7
-    last_write_checksum: sha1:975b3a565da70c241e424937be78a21cc07babb5
-    pristine_git_object: 4ec535b41b8918267acd833b627bed286b1c5855
+    last_write_checksum: sha1:6319ecaee6553a771f3f94a0481e3e083123b157
+    pristine_git_object: 6ea283c746cc7a568ff0c2a439985b660c9bebc7
   src/funcs/content-list-brand-identities.ts:
     id: 16a4dc502392
     last_write_checksum: sha1:06b76f8675f504901cf1bb1e3cfcdf28563e6756
@@ -410,10 +494,14 @@ trackedFiles:
     id: 5aecd17911ee
     last_write_checksum: sha1:392bf75c53b14b9230fb91807259386d53f1f54a
     pristine_git_object: b88b41ec29f7e8da6cbef19053f061b2450b8c57
+  src/funcs/content-update-brand-identity.ts:
+    id: 28cbfeedb6e7
+    last_write_checksum: sha1:c6daac85ebc53ae16b89b24a43cf8748d4574620
+    pristine_git_object: aceddda200a7b1c11fa656719d716169d24d6ca4
   src/funcs/content-update-post.ts:
     id: 5d2a35992bdf
-    last_write_checksum: sha1:5c39ba67169d984252e9b0a18a21fa6780c52363
-    pristine_git_object: 69e0fbdbe9321ba65d25a9b5097fc40541d8563c
+    last_write_checksum: sha1:eed34f9ae4593d091892f507701d4e1ca14a0745
+    pristine_git_object: d93646a378f1d31d285f33802f6ba462f42babf8
   src/hooks/hooks.ts:
     id: a2463fc6f69b
     last_write_checksum: sha1:590a74da042cdec4e3ea22ef2f042b25373d9a61
@@ -436,8 +524,8 @@ trackedFiles:
     pristine_git_object: 0b2543a00780f8844dcd1fbdcbc51a91262d91bc
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:1355239ebfd0a11d0ab613ba2918ab3e804d8e3b
-    pristine_git_object: d1ba45d6cd25b9a41dbb59f70cdab04caa67c6ef
+    last_write_checksum: sha1:e28378eac4f56f3999798d3d318164f330c9a845
+    pristine_git_object: 666744583d696cbc9fcaac167a46a5008fa7c64f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -484,16 +572,16 @@ trackedFiles:
     pristine_git_object: a417a1acae2650a0a7df4827d8bd30c4f6a6a90c
   src/lib/sdks.ts:
     id: 8a6d91f1218d
-    last_write_checksum: sha1:dc85159f80f98e17550d93f066d5e2f71913026f
-    pristine_git_object: 93a5712d57be1288980ddd06f3b6143ad61db308
+    last_write_checksum: sha1:be283c98b545c60c0feab21d90cb00252d56e737
+    pristine_git_object: 098d845dd5deba2b0a83c75a835e31f8d74f3d58
   src/lib/security.ts:
     id: 0502afa7922e
     last_write_checksum: sha1:e4e8852399fb3c8914c6bc2a80e2abc37fea044b
     pristine_git_object: dbaeb946adfb14b946e80090e1e6e2bf96c4481b
   src/lib/url.ts:
     id: b0057e24ed76
-    last_write_checksum: sha1:d20760633113236809e01329fa51899bc286721a
-    pristine_git_object: 99835829bf94169c99cfa82dbb933424972caed0
+    last_write_checksum: sha1:70b18fda795b71861339376c441d5605ad6f6594
+    pristine_git_object: e4f870ddddfb3745e52ab6b53c168025243e28c3
   src/models/errors/create-post-generation.ts:
     id: 7dbce1fca443
     last_write_checksum: sha1:00121ee9fbf952d0cdf413092624e5bef334614a
@@ -530,6 +618,10 @@ trackedFiles:
     id: f93644b0f37e
     last_write_checksum: sha1:2a62eebaf48b6f3fc2303b1037ac4646d2b7ba3d
     pristine_git_object: d74bddfd2a232800efba1f63b83d24d3ef708dd4
+  src/models/operations/create-brand-identity.ts:
+    id: 3a526dc77340
+    last_write_checksum: sha1:653c813d17d752312ec82e2f5b3602fa823ca6c3
+    pristine_git_object: 0f53d32d84ab142c1c2229c52ed0f086a685d729
   src/models/operations/create-post-generation.ts:
     id: ccf209b5fa39
     last_write_checksum: sha1:c050676b72e5b38a2a5b3f18f83a36ff6d0c9d7c
@@ -538,10 +630,14 @@ trackedFiles:
     id: 2d3c4c4d46f8
     last_write_checksum: sha1:17c967f94c386b5eb22bd82c1dae39d1c40ec98e
     pristine_git_object: 24219f84148125c2e4a848df19499ade89c37a66
+  src/models/operations/get-brand-identity-generation.ts:
+    id: 93f74a5f9fc3
+    last_write_checksum: sha1:dfc0ea65a3fbf998fa531d167dd588e8696869bb
+    pristine_git_object: 989d9b72dab71df8d2be7d3e9655a669cf0ae834
   src/models/operations/get-brand-identity.ts:
     id: 50373c394be6
-    last_write_checksum: sha1:911c6439cf7fdd38369b7cee4e56be6cf7117e84
-    pristine_git_object: fb747c57d62a14a43dfd23985c84f6332d67eb36
+    last_write_checksum: sha1:b2dd2b8afed81d2cfaf0b3a3ab07f4e594b8853c
+    pristine_git_object: 019e8c2f1bba460b6db266e2f6f45d8140652608
   src/models/operations/get-post-generation.ts:
     id: f1aa086e191f
     last_write_checksum: sha1:7f7541d236ea49a6d17f0c5b62a7b5af7e95f666
@@ -552,12 +648,12 @@ trackedFiles:
     pristine_git_object: 2a30d517f5fde3368702f93300c678f2ea30b5e0
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:8d08b900055241e240d5b910914e98d06332bc0b
-    pristine_git_object: 5594738942b4f543c81de10422039d3ca93f45da
+    last_write_checksum: sha1:b33049e22edac23012369b6715b65f6f52cb4946
+    pristine_git_object: f3e65eb32f65dfa43c2fb93c8e882417289f4fa7
   src/models/operations/list-brand-identities.ts:
     id: b6c2a57f8394
-    last_write_checksum: sha1:70a2d03dbd8d244d9ce72e65ff9097f851eabb7a
-    pristine_git_object: f0bef0b4220f54bff801fb59f508742a75e5a688
+    last_write_checksum: sha1:be076ef49c4ffb8f128724f6bf086cc4fbe21840
+    pristine_git_object: 7f5070d47bcbaeccf88f6dcea38f3073696d5d81
   src/models/operations/list-integrations.ts:
     id: 981d7d35cd08
     last_write_checksum: sha1:43a6ae2d56a7bb6c1f7074397251f732d41b7981
@@ -566,6 +662,10 @@ trackedFiles:
     id: 30fabba813c1
     last_write_checksum: sha1:c90ed74d56adeddc4c392a9ba45fbd6539b9a736
     pristine_git_object: 91dd94ad18e54031ae13e460c488e467b8f37f5b
+  src/models/operations/update-brand-identity.ts:
+    id: b6c925ab7473
+    last_write_checksum: sha1:a7a571c4ca253a77edfb11833704ad7baab0c974
+    pristine_git_object: 536821fda983a1b09148363b093b3ed9cd256b0c
   src/models/operations/update-post.ts:
     id: ca5a5edf4af7
     last_write_checksum: sha1:44a8e6a5da6cf5cc8910063ca2fafb6275763b37
@@ -576,8 +676,8 @@ trackedFiles:
     pristine_git_object: abdbeb9934be467e8d5b38c009530844f7fe57c5
   src/sdk/content.ts:
     id: 152cac8c63c4
-    last_write_checksum: sha1:24ffd60d66ba0bd4797a29d14066eec09a45a059
-    pristine_git_object: 2ca9de7aab64923a4a86b908d40eb1b4f0c2c0b6
+    last_write_checksum: sha1:7ce7a1d048e797159aec87840ddd42dbe45b926c
+    pristine_git_object: faa6b33eee1d530258c101f84b0d125803e866d6
   src/sdk/index.ts:
     id: a857902a703f
     last_write_checksum: sha1:54cdd8319bfbee269b54b8c56988fc0a678f2ec3
@@ -725,7 +825,7 @@ examples:
           brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
       responses:
         "200":
-          application/json: {"brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+          application/json: {"brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true, "websiteUrl": "https://gigantic-traffic.com", "companyName": "Brekke, Stroman and Quigley", "companyDescription": "<value>", "toneProfile": "<value>", "customTone": "<value>", "customInstructions": "<value>", "audience": "<value>", "language": "<value>", "createdAt": "1717435164937", "updatedAt": "1735669492575"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
         "400":
           application/json: {"error": "<value>"}
         "503":
@@ -751,11 +851,100 @@ examples:
           application/json: {"error": "<value>"}
         "503":
           application/json: {"error": "<value>"}
+  createBrandIdentity:
+    speakeasy-default-create-brand-identity:
+      requestBody:
+        application/json: {"name": "Notra", "websiteUrl": "https://usenotra.com"}
+      responses:
+        "202":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}, "job": {"id": "<id>", "organizationId": "<id>", "brandIdentityId": "<id>", "status": "failed", "step": "scraping", "currentStep": 100282, "totalSteps": 176151, "workflowRunId": "<id>", "error": "<value>", "createdAt": "1733137559138", "updatedAt": "1735628928850", "completedAt": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
+  getBrandIdentityGeneration:
+    speakeasy-default-get-brand-identity-generation:
+      parameters:
+        path:
+          jobId: "brand_job_123"
+      responses:
+        "200":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}, "job": {"id": "<id>", "organizationId": "<id>", "brandIdentityId": "<id>", "status": "running", "step": "extracting", "currentStep": 657232, "totalSteps": 398137, "workflowRunId": null, "error": "<value>", "createdAt": "1718426933581", "updatedAt": "1735619421641", "completedAt": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
+  updateBrandIdentity:
+    setDefault:
+      parameters:
+        path:
+          brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
+      requestBody:
+        application/json: {"isDefault": true}
+      responses:
+        "200":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true, "websiteUrl": "https://wee-interviewer.com", "companyName": "Langosh, Kerluke and Grant", "companyDescription": "<value>", "toneProfile": "<value>", "customTone": "<value>", "customInstructions": "<value>", "audience": null, "language": "<value>", "createdAt": "1707903628669", "updatedAt": "1735633642211"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
+    updateAndSetDefault:
+      parameters:
+        path:
+          brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
+      requestBody:
+        application/json: {"name": "Notra Marketing", "isDefault": true}
+      responses:
+        "200":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true, "websiteUrl": "https://wee-interviewer.com", "companyName": "Langosh, Kerluke and Grant", "companyDescription": "<value>", "toneProfile": "<value>", "customTone": "<value>", "customInstructions": "<value>", "audience": null, "language": "<value>", "createdAt": "1707903628669", "updatedAt": "1735633642211"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
+    switchToPresetTone:
+      parameters:
+        path:
+          brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
+      requestBody:
+        application/json: {"toneProfile": "Professional", "isDefault": true}
+      responses:
+        "200":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true, "websiteUrl": "https://wee-interviewer.com", "companyName": "Langosh, Kerluke and Grant", "companyDescription": "<value>", "toneProfile": "<value>", "customTone": "<value>", "customInstructions": "<value>", "audience": null, "language": "<value>", "createdAt": "1707903628669", "updatedAt": "1735633642211"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
+    setCustomTone:
+      parameters:
+        path:
+          brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
+      requestBody:
+        application/json: {"customTone": "Warm, sharp, and opinionated", "isDefault": true}
+      responses:
+        "200":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true, "websiteUrl": "https://wee-interviewer.com", "companyName": "Langosh, Kerluke and Grant", "companyDescription": "<value>", "toneProfile": "<value>", "customTone": "<value>", "customInstructions": "<value>", "audience": null, "language": "<value>", "createdAt": "1707903628669", "updatedAt": "1735633642211"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
+    speakeasy-default-update-brand-identity:
+      parameters:
+        path:
+          brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
+      requestBody:
+        application/json: {"name": "Notra", "websiteUrl": "https://usenotra.com", "companyName": "Notra", "companyDescription": "AI-native content workflows for software teams.", "toneProfile": "Professional", "customTone": "Clear, direct, and technically confident", "customInstructions": "Avoid hype. Prioritize concrete examples.", "audience": "Engineering leaders and developer tooling teams.", "language": "English", "isDefault": true}
+      responses:
+        "200":
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "brandIdentity": {"id": "<id>", "name": "<value>", "isDefault": true, "websiteUrl": "https://wee-interviewer.com", "companyName": "Langosh, Kerluke and Grant", "companyDescription": "<value>", "toneProfile": "<value>", "customTone": "<value>", "customInstructions": "<value>", "audience": null, "language": "<value>", "createdAt": "1707903628669", "updatedAt": "1735633642211"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `notra.content.createPostGeneration()`: **Added**
-  * `notra.content.listBrandIdentities()`: **Added**
-  * `notra.content.getBrandIdentity()`: **Added**
-  * `notra.content.listIntegrations()`: **Added**
-  * `notra.content.getPostGeneration()`: **Added**
+  * `notra.content.createBrandIdentity()`: **Added**
+  * `notra.content.getBrandIdentityGeneration()`: **Added**
+  * `notra.content.updateBrandIdentity()`: **Added**
+  * `notra.content.listBrandIdentities()`:  `response.brandIdentities[]` **Changed**
+  * `notra.content.getBrandIdentity()`:  `response.brandIdentity` **Changed**
