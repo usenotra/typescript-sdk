@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 104db2d6-9bbd-4701-8824-eae3c56579e7
 management:
-  docChecksum: 8b2ee73d09525c381f42da28d909a002
+  docChecksum: fc0734b1916522d4d261eeebec5505e6
   docVersion: 1.0.0
   speakeasyVersion: 1.759.1
   generationVersion: 2.869.10
-  releaseVersion: 0.1.1
-  configChecksum: 6a6d944be55f5b1eb37083433370eed5
+  releaseVersion: 0.1.2
+  configChecksum: efacae00a8776e87162ae75b14e658b8
   repoURL: https://github.com/usenotra/typescript-sdk.git
   installationURL: https://github.com/usenotra/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: dd9c9bab-d2e1-4ea4-9e9c-17b16e9a41e8
-  pristine_commit_hash: efd5feb2cd9c59e65d2fb7eb0c3588eabaf70331
-  pristine_tree_hash: a0c4991605efba2c0d73e2ae32668d4f2b2d46b4
+  generation_id: 1b082529-6aaf-470f-af69-a82a937ff168
+  pristine_commit_hash: bb632ab6c762895756a1365456771fe4ddeb49e7
+  pristine_tree_hash: 9cce411b436caa3567af27099ba61e9bccdb521c
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -150,6 +150,18 @@ trackedFiles:
     id: f015b6ce03d5
     last_write_checksum: sha1:157d258ec66934fe9d9c6cba915ed31520143bc2
     pristine_git_object: 664044deb866da9784840b96daed9e2880506050
+  docs/models/operations/delete-brand-identity-organization.md:
+    id: 422e9d42e8b6
+    last_write_checksum: sha1:831958ba8973e9898f00bf74fae47d37bb72eedf
+    pristine_git_object: 693f92af2820652cda8bc266d049d32b0fedcc40
+  docs/models/operations/delete-brand-identity-request.md:
+    id: 4c337d0e51fc
+    last_write_checksum: sha1:784a531f4616c6da86cb72183ec42f59f985bf41
+    pristine_git_object: e447ad189c60849cf3f4c208f2cbb591744d6705
+  docs/models/operations/delete-brand-identity-response.md:
+    id: b3e5bfb196ca
+    last_write_checksum: sha1:9c097d31a05e387644b4cfa74d5bdd2d61fd6822
+    pristine_git_object: eb5caaa0225ac44c090fa6430c76d8a5691d04e5
   docs/models/operations/delete-post-organization.md:
     id: fb56ca47903d
     last_write_checksum: sha1:781f5c46ddb30d6594f6aad39cfcc6b72845ba8d
@@ -162,6 +174,14 @@ trackedFiles:
     id: dd37710fe41a
     last_write_checksum: sha1:e4ed0fc2d7de63bef26b98d41ca4944b733f88ce
     pristine_git_object: 1c4c8d2238c944c08d436b43c3a3eadee23c4440
+  docs/models/operations/disabled-event.md:
+    id: 58aee0de0be6
+    last_write_checksum: sha1:73cccf2085fb1a7392f3fb54d00a857f6df0e7a7
+    pristine_git_object: c67fb75ddea33bc4fe57f873d32e84e0f4015b3f
+  docs/models/operations/disabled-schedule.md:
+    id: f2490ab6643d
+    last_write_checksum: sha1:499e24b6ac0b8e2b226001db9dbe20072feb0761
+    pristine_git_object: 204156d2380ececb64131725cdca1de817566034
   docs/models/operations/event.md:
     id: 692313a333f0
     last_write_checksum: sha1:3694b0b98d8c967e1d7a628efc993af24a596f2c
@@ -420,8 +440,8 @@ trackedFiles:
     pristine_git_object: 9224384295d93cd566ab540021dd0d2c6081b78a
   docs/sdks/content/README.md:
     id: de1d68ebc2ba
-    last_write_checksum: sha1:01a9b138575cf582f3c3581dfb179e0dbddc03cd
-    pristine_git_object: a7323bee1e9479745d5df6cc4ecdd5782373d6b5
+    last_write_checksum: sha1:bff1984371269d15b3e94d5d43683c9e55485cc7
+    pristine_git_object: b25834469219d8eb732d504ae28b361e9280d26d
   eslint.config.mjs:
     id: 461c8d07f6da
     last_write_checksum: sha1:9398f326377fe47f67af2df6eb6370750c0790b4
@@ -444,12 +464,12 @@ trackedFiles:
     pristine_git_object: 3023ce82381e2e8aa2d621788c5bf096cc0419b4
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:88f535d430ed206ef85c1675194d4be3b18f0071
-    pristine_git_object: 781ecf5eb3c3a62e137219246289c3eed0a21e52
+    last_write_checksum: sha1:226fe5004bc798c117a3a7e618634af9f83d2165
+    pristine_git_object: 9ad72d999db00a64ae0e97f5192521f01e2ffa5a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:095f2636166abf24d7563115ebd85a76d9780306
-    pristine_git_object: 76179222900e0b0b9969a8ebccb0cab8900fb57f
+    last_write_checksum: sha1:69ce9ef1a28bc2cc02e750e378fc726dbd4265ee
+    pristine_git_object: 7abdf98723868edeb1e8adde3b61b291aa0dbc1c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:e8d638e0e6a2cda3f4c932a136d971d10a1ef6f4
@@ -462,6 +482,10 @@ trackedFiles:
     id: 98af39cd80f7
     last_write_checksum: sha1:899455d0c653bf62a0799f163ca78d6ab3e9365f
     pristine_git_object: 91847c25a8e70fa8081a7bdadc50f1c2f67634ae
+  src/funcs/content-delete-brand-identity.ts:
+    id: b8c74552291d
+    last_write_checksum: sha1:472146a344a1778c7a8ce800fcce7e72554a369c
+    pristine_git_object: 009df71a198c7657a586a13ab5c6d1bbc9cf8f93
   src/funcs/content-delete-post.ts:
     id: fda0df7f5a63
     last_write_checksum: sha1:3fd89ed59a408f5edc8f34ddf8b7ca5ac46e75e5
@@ -524,8 +548,8 @@ trackedFiles:
     pristine_git_object: 0b2543a00780f8844dcd1fbdcbc51a91262d91bc
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:e28378eac4f56f3999798d3d318164f330c9a845
-    pristine_git_object: 666744583d696cbc9fcaac167a46a5008fa7c64f
+    last_write_checksum: sha1:9aebc4814c843cc8e56ef64368eb227d42ad1f08
+    pristine_git_object: d608b415e77f22c1795328fe8dd42343cc87c375
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -626,6 +650,10 @@ trackedFiles:
     id: ccf209b5fa39
     last_write_checksum: sha1:c050676b72e5b38a2a5b3f18f83a36ff6d0c9d7c
     pristine_git_object: f446ee27ae9ba951440bfb6ebaad3acb6353aa77
+  src/models/operations/delete-brand-identity.ts:
+    id: 51a49c0e750b
+    last_write_checksum: sha1:f6c43990e61d8ae481a36d3084987a0e3b412104
+    pristine_git_object: faf5717e297407e2e4dbb9b54d9a3fe41c80eb35
   src/models/operations/delete-post.ts:
     id: 2d3c4c4d46f8
     last_write_checksum: sha1:17c967f94c386b5eb22bd82c1dae39d1c40ec98e
@@ -648,8 +676,8 @@ trackedFiles:
     pristine_git_object: 2a30d517f5fde3368702f93300c678f2ea30b5e0
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:b33049e22edac23012369b6715b65f6f52cb4946
-    pristine_git_object: f3e65eb32f65dfa43c2fb93c8e882417289f4fa7
+    last_write_checksum: sha1:941d253a657053d29d785729ce0fd47eed3e608b
+    pristine_git_object: 56b6ac43df660ca0a3f2320387f9a03ed6c5ae76
   src/models/operations/list-brand-identities.ts:
     id: b6c2a57f8394
     last_write_checksum: sha1:be076ef49c4ffb8f128724f6bf086cc4fbe21840
@@ -676,8 +704,8 @@ trackedFiles:
     pristine_git_object: abdbeb9934be467e8d5b38c009530844f7fe57c5
   src/sdk/content.ts:
     id: 152cac8c63c4
-    last_write_checksum: sha1:7ce7a1d048e797159aec87840ddd42dbe45b926c
-    pristine_git_object: faa6b33eee1d530258c101f84b0d125803e866d6
+    last_write_checksum: sha1:fa99767628b0464bbb6896c7c56c32138d653089
+    pristine_git_object: f57a1a7abf628a3ca900b5ddd22c8a80d96161a1
   src/sdk/index.ts:
     id: a857902a703f
     last_write_checksum: sha1:54cdd8319bfbee269b54b8c56988fc0a678f2ec3
@@ -940,11 +968,19 @@ examples:
           application/json: {"error": "<value>"}
         "503":
           application/json: {"error": "<value>"}
+  deleteBrandIdentity:
+    speakeasy-default-delete-brand-identity:
+      parameters:
+        path:
+          brandIdentityId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "disabledSchedules": [{"id": "<id>", "name": "<value>"}], "disabledEvents": [{"id": "<id>", "name": "<value>"}]}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
+          application/json: {"error": "<value>"}
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `notra.content.createBrandIdentity()`: **Added**
-  * `notra.content.getBrandIdentityGeneration()`: **Added**
-  * `notra.content.updateBrandIdentity()`: **Added**
-  * `notra.content.listBrandIdentities()`:  `response.brandIdentities[]` **Changed**
-  * `notra.content.getBrandIdentity()`:  `response.brandIdentity` **Changed**
+  * `notra.content.deleteBrandIdentity()`: **Added**
