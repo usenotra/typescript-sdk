@@ -4,6 +4,7 @@
  */
 
 export * from "./create-brand-identity.js";
+export * from "./create-git-hub-integration.js";
 export * from "./create-post-generation.js";
 export * from "./delete-brand-identity.js";
 export * from "./delete-post.js";

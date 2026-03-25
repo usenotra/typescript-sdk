@@ -4,6 +4,7 @@
  */
 
 import { contentCreateBrandIdentity } from "../funcs/content-create-brand-identity.js";
+import { contentCreateGitHubIntegration } from "../funcs/content-create-git-hub-integration.js";
 import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
 import { contentDeleteBrandIdentity } from "../funcs/content-delete-brand-identity.js";
 import { contentDeletePost } from "../funcs/content-delete-post.js";
@@ -187,6 +188,20 @@ export class Content extends ClientSDK {
   ): Promise<operations.ListIntegrationsResponse> {
     return unwrapAsync(contentListIntegrations(
       this,
+      options,
+    ));
+  }
+
+  /**
+   * Create a GitHub integration
+   */
+  async createGitHubIntegration(
+    request: operations.CreateGitHubIntegrationRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateGitHubIntegrationResponse> {
+    return unwrapAsync(contentCreateGitHubIntegration(
+      this,
+      request,
       options,
     ));
   }

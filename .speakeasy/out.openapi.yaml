@@ -39,9 +39,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "error"
-        ]
+        "required": ["error"]
       }
     },
     "parameters": {}
@@ -49,19 +47,14 @@
   "paths": {
     "/v1/posts": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "listPosts",
         "summary": "List posts",
         "parameters": [
           {
             "schema": {
               "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ],
+              "enum": ["asc", "desc"],
               "default": "desc",
               "description": "Sort by creation date",
               "example": "desc"
@@ -103,19 +96,13 @@
               "anyOf": [
                 {
                   "type": "string",
-                  "enum": [
-                    "draft",
-                    "published"
-                  ]
+                  "enum": ["draft", "published"]
                 },
                 {
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "enum": [
-                      "draft",
-                      "published"
-                    ]
+                    "enum": ["draft", "published"]
                   },
                   "maxItems": 2
                 }
@@ -182,18 +169,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "posts": {
                       "type": "array",
@@ -213,10 +192,7 @@
                             "type": "string"
                           },
                           "recommendations": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "contentType": {
                             "type": "string"
@@ -224,10 +200,7 @@
                           "sourceMetadata": {},
                           "status": {
                             "type": "string",
-                            "enum": [
-                              "draft",
-                              "published"
-                            ]
+                            "enum": ["draft", "published"]
                           },
                           "createdAt": {
                             "type": "string"
@@ -261,17 +234,11 @@
                           "minimum": 1
                         },
                         "nextPage": {
-                          "type": [
-                            "integer",
-                            "null"
-                          ],
+                          "type": ["integer", "null"],
                           "minimum": 1
                         },
                         "previousPage": {
-                          "type": [
-                            "integer",
-                            "null"
-                          ],
+                          "type": ["integer", "null"],
                           "minimum": 1
                         },
                         "totalPages": {
@@ -293,11 +260,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "posts",
-                    "pagination"
-                  ]
+                  "required": ["organization", "posts", "pagination"]
                 }
               }
             }
@@ -357,9 +320,7 @@
     },
     "/v1/posts/{postId}": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "getPost",
         "summary": "Get a single post",
         "parameters": [
@@ -395,24 +356,13 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "post": {
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": ["object", "null"],
                       "properties": {
                         "id": {
                           "type": "string"
@@ -427,10 +377,7 @@
                           "type": "string"
                         },
                         "recommendations": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "contentType": {
                           "type": "string"
@@ -438,10 +385,7 @@
                         "sourceMetadata": {},
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "draft",
-                            "published"
-                          ]
+                          "enum": ["draft", "published"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -463,10 +407,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "post"
-                  ]
+                  "required": ["organization", "post"]
                 }
               }
             }
@@ -524,9 +465,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "deletePost",
         "summary": "Delete a single post",
         "parameters": [
@@ -565,24 +504,13 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     }
                   },
-                  "required": [
-                    "id",
-                    "organization"
-                  ]
+                  "required": ["id", "organization"]
                 }
               }
             }
@@ -640,9 +568,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "updatePost",
         "summary": "Update a single post",
         "parameters": [
@@ -677,10 +603,7 @@
                   },
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "draft",
-                      "published"
-                    ],
+                    "enum": ["draft", "published"],
                     "example": "published"
                   }
                 }
@@ -709,18 +632,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "post": {
                       "type": "object",
@@ -738,10 +653,7 @@
                           "type": "string"
                         },
                         "recommendations": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "contentType": {
                           "type": "string"
@@ -749,10 +661,7 @@
                         "sourceMetadata": {},
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "draft",
-                            "published"
-                          ]
+                          "enum": ["draft", "published"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -774,10 +683,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "post"
-                  ]
+                  "required": ["organization", "post"]
                 }
               }
             }
@@ -837,9 +743,7 @@
     },
     "/v1/posts/generate": {
       "post": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "createPostGeneration",
         "summary": "Queue async post generation",
         "requestBody": {
@@ -877,10 +781,7 @@
                     "example": "voice_123"
                   },
                   "brandIdentityId": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "minLength": 1,
                     "example": "voice_123"
                   },
@@ -890,10 +791,7 @@
                       "type": "string",
                       "minLength": 1
                     },
-                    "example": [
-                      "repo_1",
-                      "repo_2"
-                    ]
+                    "example": ["repo_1", "repo_2"]
                   },
                   "integrations": {
                     "type": "object",
@@ -905,10 +803,7 @@
                           "minLength": 1
                         },
                         "minItems": 1,
-                        "example": [
-                          "integration_1",
-                          "integration_2"
-                        ]
+                        "example": ["integration_1", "integration_2"]
                       }
                     }
                   },
@@ -929,17 +824,12 @@
                               "minLength": 1
                             }
                           },
-                          "required": [
-                            "owner",
-                            "repo"
-                          ]
+                          "required": ["owner", "repo"]
                         },
                         "minItems": 1
                       }
                     },
-                    "required": [
-                      "repositories"
-                    ],
+                    "required": ["repositories"],
                     "example": {
                       "repositories": [
                         {
@@ -997,10 +887,7 @@
                               "type": "number"
                             }
                           },
-                          "required": [
-                            "repositoryId",
-                            "number"
-                          ]
+                          "required": ["repositoryId", "number"]
                         }
                       },
                       "releaseTagNames": {
@@ -1020,10 +907,7 @@
                                   "type": "string"
                                 }
                               },
-                              "required": [
-                                "repositoryId",
-                                "tagName"
-                              ]
+                              "required": ["repositoryId", "tagName"]
                             }
                           ]
                         }
@@ -1031,9 +915,7 @@
                     }
                   }
                 },
-                "required": [
-                  "contentType"
-                ]
+                "required": ["contentType"]
               }
             }
           }
@@ -1059,18 +941,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "job": {
                       "type": "object",
@@ -1083,12 +957,7 @@
                         },
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "queued",
-                            "running",
-                            "completed",
-                            "failed"
-                          ]
+                          "enum": ["queued", "running", "completed", "failed"]
                         },
                         "contentType": {
                           "type": "string",
@@ -1116,35 +985,20 @@
                           }
                         },
                         "brandVoiceId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "workflowRunId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "postId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "error": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "source": {
                           "type": "string",
-                          "enum": [
-                            "api",
-                            "dashboard"
-                          ]
+                          "enum": ["api", "dashboard"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -1153,10 +1007,7 @@
                           "type": "string"
                         },
                         "completedAt": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
                       "required": [
@@ -1177,10 +1028,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "job"
-                  ]
+                  "required": ["organization", "job"]
                 }
               }
             }
@@ -1215,6 +1063,16 @@
               }
             }
           },
+          "404": {
+            "description": "Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Content generation is unavailable",
             "content": {
@@ -1229,9 +1087,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "error"
-                  ]
+                  "required": ["error"]
                 }
               }
             }
@@ -1241,9 +1097,7 @@
     },
     "/v1/brand-identities": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "listBrandIdentities",
         "summary": "List available brand identities",
         "responses": {
@@ -1267,18 +1121,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "brandIdentities": {
                       "type": "array",
@@ -1298,46 +1144,25 @@
                             "type": "string"
                           },
                           "companyName": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "companyDescription": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "toneProfile": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "customTone": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "customInstructions": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "audience": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "language": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "createdAt": {
                             "type": "string"
@@ -1364,10 +1189,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "organization",
-                    "brandIdentities"
-                  ]
+                  "required": ["organization", "brandIdentities"]
                 }
               }
             }
@@ -1417,9 +1239,7 @@
     },
     "/v1/brand-identities/generate": {
       "post": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "createBrandIdentity",
         "summary": "Queue async brand identity generation",
         "requestBody": {
@@ -1441,9 +1261,7 @@
                     "example": "https://usenotra.com"
                   }
                 },
-                "required": [
-                  "websiteUrl"
-                ]
+                "required": ["websiteUrl"]
               }
             }
           }
@@ -1469,18 +1287,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "job": {
                       "type": "object",
@@ -1496,24 +1306,11 @@
                         },
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "queued",
-                            "running",
-                            "completed",
-                            "failed"
-                          ]
+                          "enum": ["queued", "running", "completed", "failed"]
                         },
                         "step": {
-                          "type": [
-                            "string",
-                            "null"
-                          ],
-                          "enum": [
-                            "scraping",
-                            "extracting",
-                            "saving",
-                            null
-                          ]
+                          "type": ["string", "null"],
+                          "enum": ["scraping", "extracting", "saving", null]
                         },
                         "currentStep": {
                           "type": "integer",
@@ -1524,16 +1321,10 @@
                           "minimum": 1
                         },
                         "workflowRunId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "error": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -1542,10 +1333,7 @@
                           "type": "string"
                         },
                         "completedAt": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
                       "required": [
@@ -1564,10 +1352,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "job"
-                  ]
+                  "required": ["organization", "job"]
                 }
               }
             }
@@ -1637,9 +1422,7 @@
     },
     "/v1/brand-identities/generate/{jobId}": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "getBrandIdentityGeneration",
         "summary": "Get async brand identity generation status",
         "parameters": [
@@ -1675,18 +1458,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "job": {
                       "type": "object",
@@ -1702,24 +1477,11 @@
                         },
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "queued",
-                            "running",
-                            "completed",
-                            "failed"
-                          ]
+                          "enum": ["queued", "running", "completed", "failed"]
                         },
                         "step": {
-                          "type": [
-                            "string",
-                            "null"
-                          ],
-                          "enum": [
-                            "scraping",
-                            "extracting",
-                            "saving",
-                            null
-                          ]
+                          "type": ["string", "null"],
+                          "enum": ["scraping", "extracting", "saving", null]
                         },
                         "currentStep": {
                           "type": "integer",
@@ -1730,16 +1492,10 @@
                           "minimum": 1
                         },
                         "workflowRunId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "error": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -1748,10 +1504,7 @@
                           "type": "string"
                         },
                         "completedAt": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
                       "required": [
@@ -1770,10 +1523,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "job"
-                  ]
+                  "required": ["organization", "job"]
                 }
               }
             }
@@ -1833,9 +1583,7 @@
     },
     "/v1/brand-identities/{brandIdentityId}": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "getBrandIdentity",
         "summary": "Get a single brand identity",
         "parameters": [
@@ -1859,10 +1607,7 @@
                   "type": "object",
                   "properties": {
                     "brandIdentity": {
-                      "type": [
-                        "object",
-                        "null"
-                      ],
+                      "type": ["object", "null"],
                       "properties": {
                         "id": {
                           "type": "string"
@@ -1877,46 +1622,25 @@
                           "type": "string"
                         },
                         "companyName": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "companyDescription": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "toneProfile": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "customTone": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "customInstructions": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "audience": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "language": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -1954,24 +1678,13 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     }
                   },
-                  "required": [
-                    "brandIdentity",
-                    "organization"
-                  ]
+                  "required": ["brandIdentity", "organization"]
                 }
               }
             }
@@ -2029,9 +1742,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "updateBrandIdentity",
         "summary": "Update a single brand identity",
         "description": "Updates brand identity fields. Pass isDefault: true to make the target brand identity the organization's default.",
@@ -2066,26 +1777,17 @@
                     "example": "https://usenotra.com"
                   },
                   "companyName": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "minLength": 1,
                     "example": "Notra"
                   },
                   "companyDescription": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "minLength": 10,
                     "example": "AI-native content workflows for software teams."
                   },
                   "toneProfile": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "enum": [
                       "Conversational",
                       "Professional",
@@ -2097,33 +1799,21 @@
                     "description": "Set a preset tone profile. When provided without customTone, any saved custom tone is cleared."
                   },
                   "customTone": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "example": "Clear, direct, and technically confident",
                     "description": "Provide a custom tone override. Send an empty string or null to clear it."
                   },
                   "customInstructions": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "example": "Avoid hype. Prioritize concrete examples."
                   },
                   "audience": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "minLength": 10,
                     "example": "Engineering leaders and developer tooling teams."
                   },
                   "language": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "enum": [
                       "English",
                       "Spanish",
@@ -2159,9 +1849,7 @@
                   },
                   "isDefault": {
                     "type": "boolean",
-                    "enum": [
-                      true
-                    ],
+                    "enum": [true],
                     "example": true,
                     "description": "Set this brand identity as the organization's default. Only true is accepted."
                   }
@@ -2218,18 +1906,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "brandIdentity": {
                       "type": "object",
@@ -2247,46 +1927,25 @@
                           "type": "string"
                         },
                         "companyName": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "companyDescription": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "toneProfile": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "customTone": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "customInstructions": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "audience": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "language": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -2312,10 +1971,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "organization",
-                    "brandIdentity"
-                  ]
+                  "required": ["organization", "brandIdentity"]
                 }
               }
             }
@@ -2383,9 +2039,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "deleteBrandIdentity",
         "summary": "Delete a single brand identity",
         "description": "Deletes a non-default brand identity and disables any automation triggers that reference it.",
@@ -2425,18 +2079,10 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     },
                     "disabledSchedules": {
                       "type": "array",
@@ -2450,10 +2096,7 @@
                             "type": "string"
                           }
                         },
-                        "required": [
-                          "id",
-                          "name"
-                        ]
+                        "required": ["id", "name"]
                       }
                     },
                     "disabledEvents": {
@@ -2468,10 +2111,7 @@
                             "type": "string"
                           }
                         },
-                        "required": [
-                          "id",
-                          "name"
-                        ]
+                        "required": ["id", "name"]
                       }
                     }
                   },
@@ -2540,9 +2180,7 @@
     },
     "/v1/integrations": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "listIntegrations",
         "summary": "List available integrations",
         "responses": {
@@ -2565,22 +2203,13 @@
                             "type": "string"
                           },
                           "owner": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "repo": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           },
                           "defaultBranch": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": ["string", "null"]
                           }
                         },
                         "required": [
@@ -2613,26 +2242,13 @@
                           "type": "string"
                         },
                         "logo": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
-                      "required": [
-                        "id",
-                        "slug",
-                        "name",
-                        "logo"
-                      ]
+                      "required": ["id", "slug", "name", "logo"]
                     }
                   },
-                  "required": [
-                    "github",
-                    "slack",
-                    "linear",
-                    "organization"
-                  ]
+                  "required": ["github", "slack", "linear", "organization"]
                 }
               }
             }
@@ -2680,11 +2296,165 @@
         }
       }
     },
+    "/v1/integrations/github": {
+      "post": {
+        "tags": ["Content"],
+        "operationId": "createGitHubIntegration",
+        "summary": "Create a GitHub integration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "repo": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "branch": {
+                    "type": ["string", "null"],
+                    "minLength": 1
+                  },
+                  "token": {
+                    "type": ["string", "null"],
+                    "minLength": 1
+                  }
+                },
+                "required": ["owner", "repo"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "GitHub integration created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "github": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "owner": {
+                          "type": ["string", "null"]
+                        },
+                        "repo": {
+                          "type": ["string", "null"]
+                        },
+                        "defaultBranch": {
+                          "type": ["string", "null"]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "displayName",
+                        "owner",
+                        "repo",
+                        "defaultBranch"
+                      ]
+                    },
+                    "organization": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "logo": {
+                          "type": ["string", "null"]
+                        }
+                      },
+                      "required": ["id", "slug", "name", "logo"]
+                    }
+                  },
+                  "required": ["github", "organization"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or GitHub repository access error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Repository already connected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Authentication or integration service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/posts/generate/{jobId}": {
       "get": {
-        "tags": [
-          "Content"
-        ],
+        "tags": ["Content"],
         "operationId": "getPostGeneration",
         "summary": "Get async post generation status",
         "parameters": [
@@ -2718,12 +2488,7 @@
                         },
                         "status": {
                           "type": "string",
-                          "enum": [
-                            "queued",
-                            "running",
-                            "completed",
-                            "failed"
-                          ]
+                          "enum": ["queued", "running", "completed", "failed"]
                         },
                         "contentType": {
                           "type": "string",
@@ -2751,35 +2516,20 @@
                           }
                         },
                         "brandVoiceId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "workflowRunId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "postId": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "error": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         },
                         "source": {
                           "type": "string",
-                          "enum": [
-                            "api",
-                            "dashboard"
-                          ]
+                          "enum": ["api", "dashboard"]
                         },
                         "createdAt": {
                           "type": "string"
@@ -2788,10 +2538,7 @@
                           "type": "string"
                         },
                         "completedAt": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
+                          "type": ["string", "null"]
                         }
                       },
                       "required": [
@@ -2842,10 +2589,7 @@
                             "type": "string"
                           },
                           "metadata": {
-                            "type": [
-                              "object",
-                              "null"
-                            ],
+                            "type": ["object", "null"],
                             "additionalProperties": {}
                           }
                         },
@@ -2860,10 +2604,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "job",
-                    "events"
-                  ]
+                  "required": ["job", "events"]
                 }
               }
             }
