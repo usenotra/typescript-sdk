@@ -261,6 +261,7 @@ async function run() {
     postId: "post_123",
     body: {
       title: "Ship notes for week 11",
+      slug: "ship-notes-week-11",
       markdown: "# Ship notes\n\nWe shipped a faster editor.",
       status: "published",
     },
@@ -291,6 +292,7 @@ async function run() {
     postId: "post_123",
     body: {
       title: "Ship notes for week 11",
+      slug: "ship-notes-week-11",
       markdown: "# Ship notes\n\nWe shipped a faster editor.",
       status: "published",
     },

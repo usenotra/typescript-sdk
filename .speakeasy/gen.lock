@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 104db2d6-9bbd-4701-8824-eae3c56579e7
 management:
-  docChecksum: 7efe9529971c36400afb0e68182b1976
+  docChecksum: c0659e5c1e020254bcaccb9df77e5b54
   docVersion: 1.0.0
   speakeasyVersion: 1.759.3
   generationVersion: 2.869.25
-  releaseVersion: 1.0.0
-  configChecksum: 521a6d9c23a6676a963276821ca926be
+  releaseVersion: 1.0.1
+  configChecksum: ba5ab015483323d50cabcffeb6ce8ea6
   repoURL: https://github.com/usenotra/typescript-sdk.git
   installationURL: https://github.com/usenotra/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 50c93220-0491-4f47-9bb1-b166cdbe64d7
-  pristine_commit_hash: d9dcaecec1f2d8099f35d8fad6c14c9aeda85184
-  pristine_tree_hash: 317bb497bcbd8345472d8f4362bffe02211af1cf
+  generation_id: 5a8db870-a17d-46aa-9ec4-15c8add797e2
+  pristine_commit_hash: 3164a449804012fc35be0ca9b536c63cc5486dcf
+  pristine_tree_hash: 059ac627831d0fb6550af8d1b2dc35ec6c5bca21
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -276,16 +276,16 @@ trackedFiles:
     pristine_git_object: 99bc42c29f531b4f8828031649a7407881db26d6
   docs/models/operations/get-post-post.md:
     id: d37b5a72250d
-    last_write_checksum: sha1:6d763b387d83a3b0fab0459ffb0bd3722d5307b3
-    pristine_git_object: 85a5949295a6b5dc62865459dff2367dc40b6012
+    last_write_checksum: sha1:855d483ecdcc3f25b2e07a5f8d8a61672a75c948
+    pristine_git_object: bb840476fa85569a473296a0a36d3ad176195ef4
   docs/models/operations/get-post-request.md:
     id: 9897149141ba
     last_write_checksum: sha1:6f044a4e519bff81aede8d7751f1ac4f064eeb52
     pristine_git_object: 62da964cba0b9ad4b6a9f4eaf87cb82cc8a21045
   docs/models/operations/get-post-response.md:
     id: 3feaa200a64e
-    last_write_checksum: sha1:30b1fb8c97e6e4607055e133d130d434f8a8a590
-    pristine_git_object: 0e08352569c6f525ee339930f9c28b44a3787025
+    last_write_checksum: sha1:e418e36d085a5b4cc576bc883dfa2e483bce647f
+    pristine_git_object: 54477020b544a2f6d832118c45042bbd28d42cc8
   docs/models/operations/get-post-status.md:
     id: 56eff950512d
     last_write_checksum: sha1:8c22856a5ce8c8750ad4fc69ffd4fbae9a776bdb
@@ -348,8 +348,8 @@ trackedFiles:
     pristine_git_object: 89c512efb01557e323daadd52a9710e5212fa4f2
   docs/models/operations/list-posts-post.md:
     id: 4048643950b3
-    last_write_checksum: sha1:02db095b61d913047abb745e1ea772e0cc3ad102
-    pristine_git_object: e7e233840ee881596857bc338d752e15b133ea16
+    last_write_checksum: sha1:feb3e4eb1d267f826c3340dd110cd55c538ee2d2
+    pristine_git_object: f2aee20a3a5dbfa7fc7e7f7ae0cd543fb074e7cb
   docs/models/operations/list-posts-request.md:
     id: 5eb90fd12240
     last_write_checksum: sha1:c79f55e73f855331edf618116ba8a2cfe1e8eb4e
@@ -444,28 +444,28 @@ trackedFiles:
     pristine_git_object: 54386a37fed15f3de944735ddbd0c75f714b0b6f
   docs/models/operations/update-post-post.md:
     id: 8d3ea07498df
-    last_write_checksum: sha1:bd3a3d96ccfafa247d7c7183c396051b73fd38d4
-    pristine_git_object: c6ba9137ce3734a08069302c902611fde186033a
+    last_write_checksum: sha1:8844a17541c23003cc1530277e6953488cde4f08
+    pristine_git_object: 5d6e557d0e8673e96eaf0ed6ae445c9ba93d978e
   docs/models/operations/update-post-request-body.md:
     id: 0e4ef2a22ee5
-    last_write_checksum: sha1:24031189484843e433aa03b8495e5c1df29da38a
-    pristine_git_object: 19f3df273c807978d523a0a28a53ade3c817a7ff
+    last_write_checksum: sha1:076de0fbaa70fdaaa3eb90eb8302d8156ea02489
+    pristine_git_object: c3d8c9e59ea6d73de636f508560279106f3b16e4
   docs/models/operations/update-post-request.md:
     id: 59d9ae11714c
-    last_write_checksum: sha1:a9056b0424f97a0f66ae7d4bdf2beab487a28dcb
-    pristine_git_object: 1a2d27e7a899389518b5aec00c74677b8741cc82
+    last_write_checksum: sha1:e877b754126f31bb5a782875db75d41a3238ab0d
+    pristine_git_object: 3892c40eaf521b62ce06e363b4377116bf063ceb
   docs/models/operations/update-post-response.md:
     id: 205b36d90e52
-    last_write_checksum: sha1:410d1e564fa87c2af92809912fa547f746f790c6
-    pristine_git_object: 79cc8c8f1b41fb96036e540d4671ba72e489a9c7
+    last_write_checksum: sha1:e6304f9fdf97581bfd83fcd9b4236fbe2599af86
+    pristine_git_object: 389092a2c407655e01f20e19444eaf5c50d7bed4
   docs/models/security.md:
     id: 452e4d4eb67a
     last_write_checksum: sha1:15488897d4114f4d012a0627bb78a7206bd69b73
     pristine_git_object: 9224384295d93cd566ab540021dd0d2c6081b78a
   docs/sdks/content/README.md:
     id: de1d68ebc2ba
-    last_write_checksum: sha1:9210e7a38fe452aa02f3e3488d3448c44014a48d
-    pristine_git_object: 08f7c92bed0fa7e6ed4b75cd49c4c805045c0b7e
+    last_write_checksum: sha1:4316e46980b0fcfcc3b5f008508a5a9810caa67a
+    pristine_git_object: 8f86282f3e5c58919d9f780da8a070bce5b04b33
   eslint.config.mjs:
     id: 461c8d07f6da
     last_write_checksum: sha1:9398f326377fe47f67af2df6eb6370750c0790b4
@@ -488,12 +488,12 @@ trackedFiles:
     pristine_git_object: 3023ce82381e2e8aa2d621788c5bf096cc0419b4
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:0fbc824adca6ae98bb5d953578afda925926c868
-    pristine_git_object: 73be3ed95ea4646ac9c3e2fced9fc4e4ca0d6222
+    last_write_checksum: sha1:caf03aa512fe7d9ab8174c73573c6a59df8dbef0
+    pristine_git_object: ba4737bb1874dd351e75388c2ea9e77f85044e97
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f535afe44eb05578664f03eeb07c60b5a8222935
-    pristine_git_object: 3a9ea1858ce9927339029bfee3848373e8ecf2f4
+    last_write_checksum: sha1:92d8fa10cf132065f5334c6c82c0cf5bd4d56799
+    pristine_git_object: 3671008865a4443f8b4a8d82d7ca2e410eff7bf2
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:e8d638e0e6a2cda3f4c932a136d971d10a1ef6f4
@@ -576,8 +576,8 @@ trackedFiles:
     pristine_git_object: 0b2543a00780f8844dcd1fbdcbc51a91262d91bc
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:1c1930ed9fbbbccb9cad5b9b42a86644422c0850
-    pristine_git_object: b0a990bac407f1d47a2cf4ff47a7787143c81663
+    last_write_checksum: sha1:4e998865640a198848a4e440ced02820167d02f1
+    pristine_git_object: d2bb40ee3ba3ce9ffb9747eb02619b56d945584c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -704,8 +704,8 @@ trackedFiles:
     pristine_git_object: db54f696dbf87c51167861129aedc1e9052f8bed
   src/models/operations/get-post.ts:
     id: e9168f4e2a0d
-    last_write_checksum: sha1:2e5f5761a5245eea8a752a5fd67f2f5646d09cd0
-    pristine_git_object: 2a30d517f5fde3368702f93300c678f2ea30b5e0
+    last_write_checksum: sha1:53f29f59a54a2c74d9c4a9f8dc5e64cce74e75ef
+    pristine_git_object: b08d461bf78a116a0e9bafcd4eca3c2b73c2b617
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
     last_write_checksum: sha1:d32281b6193305017d443abde82349e00b709d1f
@@ -720,16 +720,16 @@ trackedFiles:
     pristine_git_object: 0d1a6828c7aaab56a4b65673a20c1940f5b19ce0
   src/models/operations/list-posts.ts:
     id: 30fabba813c1
-    last_write_checksum: sha1:c90ed74d56adeddc4c392a9ba45fbd6539b9a736
-    pristine_git_object: 91dd94ad18e54031ae13e460c488e467b8f37f5b
+    last_write_checksum: sha1:32b310ef69f3a7979006ef6617423f3a89be75f6
+    pristine_git_object: e1238e5eb8399b2385c0403f219246422a4c9af8
   src/models/operations/update-brand-identity.ts:
     id: b6c925ab7473
     last_write_checksum: sha1:a7a571c4ca253a77edfb11833704ad7baab0c974
     pristine_git_object: 536821fda983a1b09148363b093b3ed9cd256b0c
   src/models/operations/update-post.ts:
     id: ca5a5edf4af7
-    last_write_checksum: sha1:44a8e6a5da6cf5cc8910063ca2fafb6275763b37
-    pristine_git_object: 6f7335a3d5e6c1a0b44df4a3c1ae3c5e48c2f69e
+    last_write_checksum: sha1:ee6e3740e9c6144641a9c96112647d4445a9d402
+    pristine_git_object: 95394a39ed645030bceb7ca2187231b863268da7
   src/models/security.ts:
     id: d90c6c784ca5
     last_write_checksum: sha1:71406f2a940327891c0342c6c0c97eac6312c79b
@@ -827,7 +827,7 @@ examples:
           postId: "post_123"
       responses:
         "200":
-          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "post": {"id": "<id>", "title": "<value>", "content": "<value>", "markdown": "<value>", "recommendations": "<value>", "contentType": "<value>", "status": "draft", "createdAt": "1717103742320", "updatedAt": "1735642854932"}}
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "post": {"id": "<id>", "title": "<value>", "slug": "<value>", "content": "<value>", "markdown": "<value>", "recommendations": "<value>", "contentType": "<value>", "status": "draft", "createdAt": "1717103742320", "updatedAt": "1735642854932"}}
         "400":
           application/json: {"error": "<value>"}
         "503":
@@ -850,10 +850,10 @@ examples:
         path:
           postId: "post_123"
       requestBody:
-        application/json: {"title": "Ship notes for week 11", "markdown": "# Ship notes\n\nWe shipped a faster editor.", "status": "published"}
+        application/json: {"title": "Ship notes for week 11", "slug": "ship-notes-week-11", "markdown": "# Ship notes\n\nWe shipped a faster editor.", "status": "published"}
       responses:
         "200":
-          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "post": {"id": "<id>", "title": "<value>", "content": "<value>", "markdown": "<value>", "recommendations": "<value>", "contentType": "<value>", "status": "draft", "createdAt": "1732025581232", "updatedAt": "1735676376364"}}
+          application/json: {"organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "post": {"id": "<id>", "title": "<value>", "slug": "<value>", "content": "<value>", "markdown": "<value>", "recommendations": "<value>", "contentType": "<value>", "status": "draft", "createdAt": "1732025581232", "updatedAt": "1735676376364"}}
         "400":
           application/json: {"error": "<value>"}
         "503":
@@ -1024,7 +1024,4 @@ examples:
         "503":
           application/json: {"error": "<value>"}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `notra.content.createPostGeneration()`:  `request` **Changed** (Breaking ⚠️)
-  * `notra.content.listIntegrations()`:  `response.linear[]` **Changed** (Breaking ⚠️)
+releaseNotes: "## Typescript SDK Changes:\n* `notra.content.listPosts()`:  `response.posts[].slug` **Added**\n* `notra.content.getPost()`:  `response.post.slug` **Added**\n* `notra.content.updatePost()`: \n  *  `request.body.slug` **Added**\n  *  `response.post.slug` **Added**\n"
