@@ -19,6 +19,7 @@ export type StatusRequest = ClosedEnum<typeof StatusRequest>;
 
 export type UpdatePostRequestBody = {
   title?: string | undefined;
+  slug?: string | null | undefined;
   markdown?: string | undefined;
   status?: StatusRequest | undefined;
 };
@@ -44,6 +45,7 @@ export type UpdatePostPostStatus = OpenEnum<typeof UpdatePostPostStatus>;
 export type UpdatePostPost = {
   id: string;
   title: string;
+  slug: string | null;
   content: string;
   markdown: string;
   recommendations: string | null;
@@ -69,6 +71,7 @@ export const StatusRequest$outboundSchema: z.ZodMiniEnum<typeof StatusRequest> =
 /** @internal */
 export type UpdatePostRequestBody$Outbound = {
   title?: string | undefined;
+  slug?: string | null | undefined;
   markdown?: string | undefined;
   status?: string | undefined;
 };
@@ -79,6 +82,7 @@ export const UpdatePostRequestBody$outboundSchema: z.ZodMiniType<
   UpdatePostRequestBody
 > = z.object({
   title: z.optional(z.string()),
+  slug: z.optional(z.nullable(z.string())),
   markdown: z.optional(z.string()),
   status: z.optional(StatusRequest$outboundSchema),
 });
@@ -148,6 +152,7 @@ export const UpdatePostPost$inboundSchema: z.ZodMiniType<
 > = z.object({
   id: types.string(),
   title: types.string(),
+  slug: types.nullable(types.string()),
   content: types.string(),
   markdown: types.string(),
   recommendations: types.nullable(types.string()),

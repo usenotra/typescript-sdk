@@ -31,6 +31,7 @@ export type GetPostStatus = OpenEnum<typeof GetPostStatus>;
 export type GetPostPost = {
   id: string;
   title: string;
+  slug: string | null;
   content: string;
   markdown: string;
   recommendations: string | null;
@@ -98,6 +99,7 @@ export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
   .object({
     id: types.string(),
     title: types.string(),
+    slug: types.nullable(types.string()),
     content: types.string(),
     markdown: types.string(),
     recommendations: types.nullable(types.string()),

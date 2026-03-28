@@ -17,13 +17,14 @@ let value: GetPostResponse = {
   post: {
     id: "<id>",
     title: "<value>",
+    slug: "<value>",
     content: "<value>",
     markdown: "<value>",
     recommendations: "<value>",
     contentType: "<value>",
     status: "published",
-    createdAt: "1727370886848",
-    updatedAt: "1735674997411",
+    createdAt: "1730359957430",
+    updatedAt: "1735647084124",
   },
 };
 ```

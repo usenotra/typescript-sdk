@@ -17,13 +17,14 @@ let value: UpdatePostResponse = {
   post: {
     id: "<id>",
     title: "<value>",
+    slug: "<value>",
     content: "<value>",
     markdown: "<value>",
     recommendations: "<value>",
     contentType: "<value>",
-    status: "published",
-    createdAt: "1713328027557",
-    updatedAt: "1735636377110",
+    status: "draft",
+    createdAt: "1716263384859",
+    updatedAt: "1735678933296",
   },
 };
 ```

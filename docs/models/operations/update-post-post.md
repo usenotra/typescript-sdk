@@ -8,13 +8,14 @@ import { UpdatePostPost } from "@usenotra/sdk/models/operations";
 let value: UpdatePostPost = {
   id: "<id>",
   title: "<value>",
+  slug: "<value>",
   content: "<value>",
   markdown: "<value>",
   recommendations: "<value>",
   contentType: "<value>",
-  status: "published",
-  createdAt: "1707041591056",
-  updatedAt: "1735658824297",
+  status: "draft",
+  createdAt: "1724456702558",
+  updatedAt: "1735626603283",
 };
 ```
 
@@ -24,6 +25,7 @@ let value: UpdatePostPost = {
 | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `id`                                                                                  | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
 | `title`                                                                               | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
+| `slug`                                                                                | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
 | `content`                                                                             | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
 | `markdown`                                                                            | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
 | `recommendations`                                                                     | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
