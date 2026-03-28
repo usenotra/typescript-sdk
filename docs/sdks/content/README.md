@@ -350,10 +350,16 @@ async function run() {
       "repo_1",
       "repo_2",
     ],
+    linearIntegrationIds: [
+      "linear_integration_1",
+    ],
     integrations: {
       github: [
         "integration_1",
         "integration_2",
+      ],
+      linear: [
+        "linear_integration_1",
       ],
     },
     github: {
@@ -395,10 +401,16 @@ async function run() {
       "repo_1",
       "repo_2",
     ],
+    linearIntegrationIds: [
+      "linear_integration_1",
+    ],
     integrations: {
       github: [
         "integration_1",
         "integration_2",
+      ],
+      linear: [
+        "linear_integration_1",
       ],
     },
     github: {
