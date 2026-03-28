@@ -22,9 +22,7 @@ let value: ListIntegrationsResponse = {
     "<value 2>",
     "<value 3>",
   ],
-  linear: [
-    "<value 1>",
-  ],
+  linear: [],
   organization: {
     id: "<id>",
     slug: "<value>",
@@ -40,5 +38,5 @@ let value: ListIntegrationsResponse = {
 | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `github`                                                                                             | [operations.ListIntegrationsGithub](../../models/operations/list-integrations-github.md)[]           | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
 | `slack`                                                                                              | *any*[]                                                                                              | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
-| `linear`                                                                                             | *any*[]                                                                                              | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
+| `linear`                                                                                             | [operations.Linear](../../models/operations/linear.md)[]                                             | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
 | `organization`                                                                                       | [operations.ListIntegrationsOrganization](../../models/operations/list-integrations-organization.md) | :heavy_check_mark:                                                                                   | N/A                                                                                                  |

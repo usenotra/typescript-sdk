@@ -15,4 +15,4 @@ let value: DataPoints = {};
 | `includePullRequests` | *boolean*             | :heavy_minus_sign:    | N/A                   |
 | `includeCommits`      | *boolean*             | :heavy_minus_sign:    | N/A                   |
 | `includeReleases`     | *boolean*             | :heavy_minus_sign:    | N/A                   |
-| `includeLinearIssues` | *boolean*             | :heavy_minus_sign:    | N/A                   |
+| `includeLinearData`   | *boolean*             | :heavy_minus_sign:    | N/A                   |

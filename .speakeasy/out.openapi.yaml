@@ -6,16 +6,9 @@
     "description": "OpenAPI schema for authenticated content endpoints."
   },
   "servers": [
-    {
-      "url": "https://api.usenotra.com",
-      "description": "Production"
-    }
+    { "url": "https://api.usenotra.com", "description": "Production" }
   ],
-  "security": [
-    {
-      "BearerAuth": []
-    }
-  ],
+  "security": [{ "BearerAuth": [] }],
   "tags": [
     {
       "name": "Content",
@@ -34,11 +27,7 @@
     "schemas": {
       "ErrorResponse": {
         "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          }
-        },
+        "properties": { "error": { "type": "string" } },
         "required": ["error"]
       }
     },
@@ -94,16 +83,10 @@
           {
             "schema": {
               "anyOf": [
-                {
-                  "type": "string",
-                  "enum": ["draft", "published"]
-                },
+                { "type": "string", "enum": ["draft", "published"] },
                 {
                   "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": ["draft", "published"]
-                  },
+                  "items": { "type": "string", "enum": ["draft", "published"] },
                   "maxItems": 2
                 }
               ],
@@ -159,18 +142,10 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
@@ -179,35 +154,19 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "content": {
-                            "type": "string"
-                          },
-                          "markdown": {
-                            "type": "string"
-                          },
-                          "recommendations": {
-                            "type": ["string", "null"]
-                          },
-                          "contentType": {
-                            "type": "string"
-                          },
+                          "id": { "type": "string" },
+                          "title": { "type": "string" },
+                          "content": { "type": "string" },
+                          "markdown": { "type": "string" },
+                          "recommendations": { "type": ["string", "null"] },
+                          "contentType": { "type": "string" },
                           "sourceMetadata": {},
                           "status": {
                             "type": "string",
                             "enum": ["draft", "published"]
                           },
-                          "createdAt": {
-                            "type": "string"
-                          },
-                          "updatedAt": {
-                            "type": "string"
-                          }
+                          "createdAt": { "type": "string" },
+                          "updatedAt": { "type": "string" }
                         },
                         "required": [
                           "id",
@@ -225,14 +184,8 @@
                     "pagination": {
                       "type": "object",
                       "properties": {
-                        "limit": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "currentPage": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
+                        "limit": { "type": "integer", "minimum": 1 },
+                        "currentPage": { "type": "integer", "minimum": 1 },
                         "nextPage": {
                           "type": ["integer", "null"],
                           "minimum": 1
@@ -241,14 +194,8 @@
                           "type": ["integer", "null"],
                           "minimum": 1
                         },
-                        "totalPages": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "totalItems": {
-                          "type": "integer",
-                          "minimum": 0
-                        }
+                        "totalPages": { "type": "integer", "minimum": 1 },
+                        "totalItems": { "type": "integer", "minimum": 0 }
                       },
                       "required": [
                         "limit",
@@ -269,9 +216,7 @@
             "description": "Invalid path params or query",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -279,9 +224,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -289,9 +232,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -299,9 +240,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -309,9 +248,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -346,53 +283,29 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
                     "post": {
                       "type": ["object", "null"],
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "title": {
-                          "type": "string"
-                        },
-                        "content": {
-                          "type": "string"
-                        },
-                        "markdown": {
-                          "type": "string"
-                        },
-                        "recommendations": {
-                          "type": ["string", "null"]
-                        },
-                        "contentType": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "title": { "type": "string" },
+                        "content": { "type": "string" },
+                        "markdown": { "type": "string" },
+                        "recommendations": { "type": ["string", "null"] },
+                        "contentType": { "type": "string" },
                         "sourceMetadata": {},
                         "status": {
                           "type": "string",
                           "enum": ["draft", "published"]
                         },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" }
                       },
                       "required": [
                         "id",
@@ -416,9 +329,7 @@
             "description": "Invalid path params",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -426,9 +337,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -436,9 +345,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -446,9 +353,7 @@
             "description": "Post or organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -456,9 +361,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -488,24 +391,14 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "string"
-                    },
+                    "id": { "type": "string" },
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     }
@@ -519,9 +412,7 @@
             "description": "Invalid path params",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -529,9 +420,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -539,9 +428,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -549,9 +436,7 @@
             "description": "Post not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -559,9 +444,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -622,53 +505,29 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
                     "post": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "title": {
-                          "type": "string"
-                        },
-                        "content": {
-                          "type": "string"
-                        },
-                        "markdown": {
-                          "type": "string"
-                        },
-                        "recommendations": {
-                          "type": ["string", "null"]
-                        },
-                        "contentType": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "title": { "type": "string" },
+                        "content": { "type": "string" },
+                        "markdown": { "type": "string" },
+                        "recommendations": { "type": ["string", "null"] },
+                        "contentType": { "type": "string" },
                         "sourceMetadata": {},
                         "status": {
                           "type": "string",
                           "enum": ["draft", "published"]
                         },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" }
                       },
                       "required": [
                         "id",
@@ -692,9 +551,7 @@
             "description": "Invalid path params or request body",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -702,9 +559,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -712,9 +567,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -722,9 +575,7 @@
             "description": "Post not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -732,9 +583,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -787,23 +636,30 @@
                   },
                   "repositoryIds": {
                     "type": "array",
-                    "items": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "example": ["repo_1", "repo_2"]
+                    "items": { "type": "string", "minLength": 1 },
+                    "example": ["repo_1", "repo_2"],
+                    "description": "Deprecated. Use integrations.github with GitHub integration IDs instead."
+                  },
+                  "linearIntegrationIds": {
+                    "type": "array",
+                    "items": { "type": "string", "minLength": 1 },
+                    "example": ["linear_integration_1"],
+                    "description": "Deprecated. Use integrations.linear with Linear integration IDs instead."
                   },
                   "integrations": {
                     "type": "object",
                     "properties": {
                       "github": {
                         "type": "array",
-                        "items": {
-                          "type": "string",
-                          "minLength": 1
-                        },
+                        "items": { "type": "string", "minLength": 1 },
                         "minItems": 1,
                         "example": ["integration_1", "integration_2"]
+                      },
+                      "linear": {
+                        "type": "array",
+                        "items": { "type": "string", "minLength": 1 },
+                        "minItems": 1,
+                        "example": ["linear_integration_1"]
                       }
                     }
                   },
@@ -815,14 +671,8 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "owner": {
-                              "type": "string",
-                              "minLength": 1
-                            },
-                            "repo": {
-                              "type": "string",
-                              "minLength": 1
-                            }
+                            "owner": { "type": "string", "minLength": 1 },
+                            "repo": { "type": "string", "minLength": 1 }
                           },
                           "required": ["owner", "repo"]
                         },
@@ -831,12 +681,7 @@
                     },
                     "required": ["repositories"],
                     "example": {
-                      "repositories": [
-                        {
-                          "owner": "usenotra",
-                          "repo": "notra"
-                        }
-                      ]
+                      "repositories": [{ "owner": "usenotra", "repo": "notra" }]
                     }
                   },
                   "dataPoints": {
@@ -846,15 +691,9 @@
                         "type": "boolean",
                         "default": true
                       },
-                      "includeCommits": {
-                        "type": "boolean",
-                        "default": true
-                      },
-                      "includeReleases": {
-                        "type": "boolean",
-                        "default": true
-                      },
-                      "includeLinearIssues": {
+                      "includeCommits": { "type": "boolean", "default": true },
+                      "includeReleases": { "type": "boolean", "default": true },
+                      "includeLinearData": {
                         "type": "boolean",
                         "default": false
                       }
@@ -863,7 +702,7 @@
                       "includePullRequests": true,
                       "includeCommits": true,
                       "includeReleases": true,
-                      "includeLinearIssues": false
+                      "includeLinearData": false
                     }
                   },
                   "selectedItems": {
@@ -871,21 +710,15 @@
                     "properties": {
                       "commitShas": {
                         "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
+                        "items": { "type": "string" }
                       },
                       "pullRequestNumbers": {
                         "type": "array",
                         "items": {
                           "type": "object",
                           "properties": {
-                            "repositoryId": {
-                              "type": "string"
-                            },
-                            "number": {
-                              "type": "number"
-                            }
+                            "repositoryId": { "type": "string" },
+                            "number": { "type": "number" }
                           },
                           "required": ["repositoryId", "number"]
                         }
@@ -894,22 +727,27 @@
                         "type": "array",
                         "items": {
                           "anyOf": [
-                            {
-                              "type": "string"
-                            },
+                            { "type": "string" },
                             {
                               "type": "object",
                               "properties": {
-                                "repositoryId": {
-                                  "type": "string"
-                                },
-                                "tagName": {
-                                  "type": "string"
-                                }
+                                "repositoryId": { "type": "string" },
+                                "tagName": { "type": "string" }
                               },
                               "required": ["repositoryId", "tagName"]
                             }
                           ]
+                        }
+                      },
+                      "linearIssueIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "integrationId": { "type": "string" },
+                            "issueId": { "type": "string" }
+                          },
+                          "required": ["integrationId", "issueId"]
                         }
                       }
                     }
@@ -931,30 +769,18 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
                     "job": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "organizationId": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "organizationId": { "type": "string" },
                         "status": {
                           "type": "string",
                           "enum": ["queued", "running", "completed", "failed"]
@@ -980,35 +806,19 @@
                         },
                         "repositoryIds": {
                           "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
+                          "items": { "type": "string" }
                         },
-                        "brandVoiceId": {
-                          "type": ["string", "null"]
-                        },
-                        "workflowRunId": {
-                          "type": ["string", "null"]
-                        },
-                        "postId": {
-                          "type": ["string", "null"]
-                        },
-                        "error": {
-                          "type": ["string", "null"]
-                        },
+                        "brandVoiceId": { "type": ["string", "null"] },
+                        "workflowRunId": { "type": ["string", "null"] },
+                        "postId": { "type": ["string", "null"] },
+                        "error": { "type": ["string", "null"] },
                         "source": {
                           "type": "string",
                           "enum": ["api", "dashboard"]
                         },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        },
-                        "completedAt": {
-                          "type": ["string", "null"]
-                        }
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" },
+                        "completedAt": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -1037,9 +847,7 @@
             "description": "Invalid request body",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1047,9 +855,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1057,9 +863,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1067,9 +871,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1080,12 +882,8 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "jobId": {
-                      "type": "string"
-                    }
+                    "error": { "type": "string" },
+                    "jobId": { "type": "string" }
                   },
                   "required": ["error"]
                 }
@@ -1111,18 +909,10 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
@@ -1131,45 +921,19 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "isDefault": {
-                            "type": "boolean"
-                          },
-                          "websiteUrl": {
-                            "type": "string"
-                          },
-                          "companyName": {
-                            "type": ["string", "null"]
-                          },
-                          "companyDescription": {
-                            "type": ["string", "null"]
-                          },
-                          "toneProfile": {
-                            "type": ["string", "null"]
-                          },
-                          "customTone": {
-                            "type": ["string", "null"]
-                          },
-                          "customInstructions": {
-                            "type": ["string", "null"]
-                          },
-                          "audience": {
-                            "type": ["string", "null"]
-                          },
-                          "language": {
-                            "type": ["string", "null"]
-                          },
-                          "createdAt": {
-                            "type": "string"
-                          },
-                          "updatedAt": {
-                            "type": "string"
-                          }
+                          "id": { "type": "string" },
+                          "name": { "type": "string" },
+                          "isDefault": { "type": "boolean" },
+                          "websiteUrl": { "type": "string" },
+                          "companyName": { "type": ["string", "null"] },
+                          "companyDescription": { "type": ["string", "null"] },
+                          "toneProfile": { "type": ["string", "null"] },
+                          "customTone": { "type": ["string", "null"] },
+                          "customInstructions": { "type": ["string", "null"] },
+                          "audience": { "type": ["string", "null"] },
+                          "language": { "type": ["string", "null"] },
+                          "createdAt": { "type": "string" },
+                          "updatedAt": { "type": "string" }
                         },
                         "required": [
                           "id",
@@ -1198,9 +962,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1208,9 +970,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1218,9 +978,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1228,9 +986,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -1277,33 +1033,19 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
                     "job": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "organizationId": {
-                          "type": "string"
-                        },
-                        "brandIdentityId": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "organizationId": { "type": "string" },
+                        "brandIdentityId": { "type": "string" },
                         "status": {
                           "type": "string",
                           "enum": ["queued", "running", "completed", "failed"]
@@ -1312,29 +1054,13 @@
                           "type": ["string", "null"],
                           "enum": ["scraping", "extracting", "saving", null]
                         },
-                        "currentStep": {
-                          "type": "integer",
-                          "minimum": 0
-                        },
-                        "totalSteps": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "workflowRunId": {
-                          "type": ["string", "null"]
-                        },
-                        "error": {
-                          "type": ["string", "null"]
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        },
-                        "completedAt": {
-                          "type": ["string", "null"]
-                        }
+                        "currentStep": { "type": "integer", "minimum": 0 },
+                        "totalSteps": { "type": "integer", "minimum": 1 },
+                        "workflowRunId": { "type": ["string", "null"] },
+                        "error": { "type": ["string", "null"] },
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" },
+                        "completedAt": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -1361,9 +1087,7 @@
             "description": "Invalid request body",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1371,9 +1095,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1381,9 +1103,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1391,9 +1111,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1401,9 +1119,7 @@
             "description": "Brand identity name already exists",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1411,9 +1127,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -1448,33 +1162,19 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
                     "job": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "organizationId": {
-                          "type": "string"
-                        },
-                        "brandIdentityId": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "organizationId": { "type": "string" },
+                        "brandIdentityId": { "type": "string" },
                         "status": {
                           "type": "string",
                           "enum": ["queued", "running", "completed", "failed"]
@@ -1483,29 +1183,13 @@
                           "type": ["string", "null"],
                           "enum": ["scraping", "extracting", "saving", null]
                         },
-                        "currentStep": {
-                          "type": "integer",
-                          "minimum": 0
-                        },
-                        "totalSteps": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "workflowRunId": {
-                          "type": ["string", "null"]
-                        },
-                        "error": {
-                          "type": ["string", "null"]
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        },
-                        "completedAt": {
-                          "type": ["string", "null"]
-                        }
+                        "currentStep": { "type": "integer", "minimum": 0 },
+                        "totalSteps": { "type": "integer", "minimum": 1 },
+                        "workflowRunId": { "type": ["string", "null"] },
+                        "error": { "type": ["string", "null"] },
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" },
+                        "completedAt": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -1532,9 +1216,7 @@
             "description": "Invalid path params",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1542,9 +1224,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1552,9 +1232,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1562,9 +1240,7 @@
             "description": "Brand identity analysis job not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1572,9 +1248,7 @@
             "description": "Brand analysis is unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -1609,45 +1283,19 @@
                     "brandIdentity": {
                       "type": ["object", "null"],
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "isDefault": {
-                          "type": "boolean"
-                        },
-                        "websiteUrl": {
-                          "type": "string"
-                        },
-                        "companyName": {
-                          "type": ["string", "null"]
-                        },
-                        "companyDescription": {
-                          "type": ["string", "null"]
-                        },
-                        "toneProfile": {
-                          "type": ["string", "null"]
-                        },
-                        "customTone": {
-                          "type": ["string", "null"]
-                        },
-                        "customInstructions": {
-                          "type": ["string", "null"]
-                        },
-                        "audience": {
-                          "type": ["string", "null"]
-                        },
-                        "language": {
-                          "type": ["string", "null"]
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "isDefault": { "type": "boolean" },
+                        "websiteUrl": { "type": "string" },
+                        "companyName": { "type": ["string", "null"] },
+                        "companyDescription": { "type": ["string", "null"] },
+                        "toneProfile": { "type": ["string", "null"] },
+                        "customTone": { "type": ["string", "null"] },
+                        "customInstructions": { "type": ["string", "null"] },
+                        "audience": { "type": ["string", "null"] },
+                        "language": { "type": ["string", "null"] },
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" }
                       },
                       "required": [
                         "id",
@@ -1668,18 +1316,10 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     }
@@ -1693,9 +1333,7 @@
             "description": "Invalid path params",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1703,9 +1341,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1713,9 +1349,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1723,9 +1357,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1733,9 +1365,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -1858,28 +1488,19 @@
               "examples": {
                 "setDefault": {
                   "summary": "Set as default",
-                  "value": {
-                    "isDefault": true
-                  }
+                  "value": { "isDefault": true }
                 },
                 "updateAndSetDefault": {
                   "summary": "Rename and set as default",
-                  "value": {
-                    "name": "Notra Marketing",
-                    "isDefault": true
-                  }
+                  "value": { "name": "Notra Marketing", "isDefault": true }
                 },
                 "switchToPresetTone": {
                   "summary": "Switch custom tone to preset",
-                  "value": {
-                    "toneProfile": "Professional"
-                  }
+                  "value": { "toneProfile": "Professional" }
                 },
                 "setCustomTone": {
                   "summary": "Set custom tone",
-                  "value": {
-                    "customTone": "Warm, sharp, and opinionated"
-                  }
+                  "value": { "customTone": "Warm, sharp, and opinionated" }
                 }
               }
             }
@@ -1896,63 +1517,29 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
                     "brandIdentity": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "isDefault": {
-                          "type": "boolean"
-                        },
-                        "websiteUrl": {
-                          "type": "string"
-                        },
-                        "companyName": {
-                          "type": ["string", "null"]
-                        },
-                        "companyDescription": {
-                          "type": ["string", "null"]
-                        },
-                        "toneProfile": {
-                          "type": ["string", "null"]
-                        },
-                        "customTone": {
-                          "type": ["string", "null"]
-                        },
-                        "customInstructions": {
-                          "type": ["string", "null"]
-                        },
-                        "audience": {
-                          "type": ["string", "null"]
-                        },
-                        "language": {
-                          "type": ["string", "null"]
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "isDefault": { "type": "boolean" },
+                        "websiteUrl": { "type": "string" },
+                        "companyName": { "type": ["string", "null"] },
+                        "companyDescription": { "type": ["string", "null"] },
+                        "toneProfile": { "type": ["string", "null"] },
+                        "customTone": { "type": ["string", "null"] },
+                        "customInstructions": { "type": ["string", "null"] },
+                        "audience": { "type": ["string", "null"] },
+                        "language": { "type": ["string", "null"] },
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" }
                       },
                       "required": [
                         "id",
@@ -1980,9 +1567,7 @@
             "description": "Invalid path params or request body",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -1990,9 +1575,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2000,9 +1583,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2010,9 +1591,7 @@
             "description": "Brand identity not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2020,9 +1599,7 @@
             "description": "Brand identity name already exists",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2030,9 +1607,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -2063,24 +1638,14 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "string"
-                    },
+                    "id": { "type": "string" },
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     },
@@ -2089,12 +1654,8 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          }
+                          "id": { "type": "string" },
+                          "name": { "type": "string" }
                         },
                         "required": ["id", "name"]
                       }
@@ -2104,12 +1665,8 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          }
+                          "id": { "type": "string" },
+                          "name": { "type": "string" }
                         },
                         "required": ["id", "name"]
                       }
@@ -2129,9 +1686,7 @@
             "description": "Cannot delete the default brand identity",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2139,9 +1694,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2149,9 +1702,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2159,9 +1710,7 @@
             "description": "Brand identity not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2169,9 +1718,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -2196,21 +1743,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "displayName": {
-                            "type": "string"
-                          },
-                          "owner": {
-                            "type": ["string", "null"]
-                          },
-                          "repo": {
-                            "type": ["string", "null"]
-                          },
-                          "defaultBranch": {
-                            "type": ["string", "null"]
-                          }
+                          "id": { "type": "string" },
+                          "displayName": { "type": "string" },
+                          "owner": { "type": ["string", "null"] },
+                          "repo": { "type": ["string", "null"] },
+                          "defaultBranch": { "type": ["string", "null"] }
                         },
                         "required": [
                           "id",
@@ -2221,29 +1758,38 @@
                         ]
                       }
                     },
-                    "slack": {
-                      "type": "array",
-                      "items": {}
-                    },
+                    "slack": { "type": "array", "items": {} },
                     "linear": {
                       "type": "array",
-                      "items": {}
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "displayName": { "type": "string" },
+                          "linearOrganizationId": { "type": "string" },
+                          "linearOrganizationName": {
+                            "type": ["string", "null"]
+                          },
+                          "linearTeamId": { "type": ["string", "null"] },
+                          "linearTeamName": { "type": ["string", "null"] }
+                        },
+                        "required": [
+                          "id",
+                          "displayName",
+                          "linearOrganizationId",
+                          "linearOrganizationName",
+                          "linearTeamId",
+                          "linearTeamName"
+                        ]
+                      }
                     },
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     }
@@ -2257,9 +1803,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2267,9 +1811,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2277,9 +1819,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2287,9 +1827,7 @@
             "description": "Authentication service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -2308,22 +1846,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "owner": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "repo": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "branch": {
-                    "type": ["string", "null"],
-                    "minLength": 1
-                  },
-                  "token": {
-                    "type": ["string", "null"],
-                    "minLength": 1
-                  }
+                  "owner": { "type": "string", "minLength": 1 },
+                  "repo": { "type": "string", "minLength": 1 },
+                  "branch": { "type": ["string", "null"], "minLength": 1 },
+                  "token": { "type": ["string", "null"], "minLength": 1 }
                 },
                 "required": ["owner", "repo"]
               }
@@ -2341,21 +1867,11 @@
                     "github": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "displayName": {
-                          "type": "string"
-                        },
-                        "owner": {
-                          "type": ["string", "null"]
-                        },
-                        "repo": {
-                          "type": ["string", "null"]
-                        },
-                        "defaultBranch": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "displayName": { "type": "string" },
+                        "owner": { "type": ["string", "null"] },
+                        "repo": { "type": ["string", "null"] },
+                        "defaultBranch": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -2368,18 +1884,10 @@
                     "organization": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "slug": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "logo": {
-                          "type": ["string", "null"]
-                        }
+                        "id": { "type": "string" },
+                        "slug": { "type": "string" },
+                        "name": { "type": "string" },
+                        "logo": { "type": ["string", "null"] }
                       },
                       "required": ["id", "slug", "name", "logo"]
                     }
@@ -2393,9 +1901,7 @@
             "description": "Invalid request body or GitHub repository access error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2403,9 +1909,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2413,9 +1917,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2423,9 +1925,7 @@
             "description": "Organization not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2433,9 +1933,7 @@
             "description": "Repository already connected",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2443,9 +1941,7 @@
             "description": "Authentication or integration service unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -2480,12 +1976,8 @@
                     "job": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "organizationId": {
-                          "type": "string"
-                        },
+                        "id": { "type": "string" },
+                        "organizationId": { "type": "string" },
                         "status": {
                           "type": "string",
                           "enum": ["queued", "running", "completed", "failed"]
@@ -2511,35 +2003,19 @@
                         },
                         "repositoryIds": {
                           "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
+                          "items": { "type": "string" }
                         },
-                        "brandVoiceId": {
-                          "type": ["string", "null"]
-                        },
-                        "workflowRunId": {
-                          "type": ["string", "null"]
-                        },
-                        "postId": {
-                          "type": ["string", "null"]
-                        },
-                        "error": {
-                          "type": ["string", "null"]
-                        },
+                        "brandVoiceId": { "type": ["string", "null"] },
+                        "workflowRunId": { "type": ["string", "null"] },
+                        "postId": { "type": ["string", "null"] },
+                        "error": { "type": ["string", "null"] },
                         "source": {
                           "type": "string",
                           "enum": ["api", "dashboard"]
                         },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        },
-                        "completedAt": {
-                          "type": ["string", "null"]
-                        }
+                        "createdAt": { "type": "string" },
+                        "updatedAt": { "type": "string" },
+                        "completedAt": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -2563,12 +2039,8 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "jobId": {
-                            "type": "string"
-                          },
+                          "id": { "type": "string" },
+                          "jobId": { "type": "string" },
                           "type": {
                             "type": "string",
                             "enum": [
@@ -2582,12 +2054,8 @@
                               "failed"
                             ]
                           },
-                          "message": {
-                            "type": "string"
-                          },
-                          "createdAt": {
-                            "type": "string"
-                          },
+                          "message": { "type": "string" },
+                          "createdAt": { "type": "string" },
                           "metadata": {
                             "type": ["object", "null"],
                             "additionalProperties": {}
@@ -2613,9 +2081,7 @@
             "description": "Missing or invalid API key",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2623,9 +2089,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2633,9 +2097,7 @@
             "description": "Generation job not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           },
@@ -2643,9 +2105,7 @@
             "description": "Content generation is unavailable",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }

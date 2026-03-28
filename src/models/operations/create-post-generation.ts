@@ -31,6 +31,7 @@ export type LookbackWindowRequest = ClosedEnum<typeof LookbackWindowRequest>;
 
 export type Integrations = {
   github?: Array<string> | undefined;
+  linear?: Array<string> | undefined;
 };
 
 export type Repository = {
@@ -46,7 +47,7 @@ export type DataPoints = {
   includePullRequests?: boolean | undefined;
   includeCommits?: boolean | undefined;
   includeReleases?: boolean | undefined;
-  includeLinearIssues?: boolean | undefined;
+  includeLinearData?: boolean | undefined;
 };
 
 export type PullRequestNumber = {
@@ -61,10 +62,16 @@ export type ReleaseTagName = {
 
 export type ReleaseTagNameUnion = ReleaseTagName | string;
 
+export type LinearIssueId = {
+  integrationId: string;
+  issueId: string;
+};
+
 export type SelectedItems = {
   commitShas?: Array<string> | undefined;
   pullRequestNumbers?: Array<PullRequestNumber> | undefined;
   releaseTagNames?: Array<ReleaseTagName | string> | undefined;
+  linearIssueIds?: Array<LinearIssueId> | undefined;
 };
 
 export type CreatePostGenerationRequest = {
@@ -72,7 +79,14 @@ export type CreatePostGenerationRequest = {
   lookbackWindow?: LookbackWindowRequest | undefined;
   brandVoiceId?: string | undefined;
   brandIdentityId?: string | null | undefined;
+  /**
+   * Deprecated. Use integrations.github with GitHub integration IDs instead.
+   */
   repositoryIds?: Array<string> | undefined;
+  /**
+   * Deprecated. Use integrations.linear with Linear integration IDs instead.
+   */
+  linearIntegrationIds?: Array<string> | undefined;
   integrations?: Integrations | undefined;
   github?: CreatePostGenerationGithub | undefined;
   dataPoints?: DataPoints | undefined;
@@ -163,6 +177,7 @@ export const LookbackWindowRequest$outboundSchema: z.ZodMiniEnum<
 /** @internal */
 export type Integrations$Outbound = {
   github?: Array<string> | undefined;
+  linear?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -171,6 +186,7 @@ export const Integrations$outboundSchema: z.ZodMiniType<
   Integrations
 > = z.object({
   github: z.optional(z.array(z.string())),
+  linear: z.optional(z.array(z.string())),
 });
 
 export function integrationsToJSON(integrations: Integrations): string {
@@ -222,7 +238,7 @@ export type DataPoints$Outbound = {
   includePullRequests: boolean;
   includeCommits: boolean;
   includeReleases: boolean;
-  includeLinearIssues: boolean;
+  includeLinearData: boolean;
 };
 
 /** @internal */
@@ -233,7 +249,7 @@ export const DataPoints$outboundSchema: z.ZodMiniType<
   includePullRequests: z._default(z.boolean(), true),
   includeCommits: z._default(z.boolean(), true),
   includeReleases: z._default(z.boolean(), true),
-  includeLinearIssues: z._default(z.boolean(), false),
+  includeLinearData: z._default(z.boolean(), false),
 });
 
 export function dataPointsToJSON(dataPoints: DataPoints): string {
@@ -300,10 +316,30 @@ export function releaseTagNameUnionToJSON(
 }
 
 /** @internal */
+export type LinearIssueId$Outbound = {
+  integrationId: string;
+  issueId: string;
+};
+
+/** @internal */
+export const LinearIssueId$outboundSchema: z.ZodMiniType<
+  LinearIssueId$Outbound,
+  LinearIssueId
+> = z.object({
+  integrationId: z.string(),
+  issueId: z.string(),
+});
+
+export function linearIssueIdToJSON(linearIssueId: LinearIssueId): string {
+  return JSON.stringify(LinearIssueId$outboundSchema.parse(linearIssueId));
+}
+
+/** @internal */
 export type SelectedItems$Outbound = {
   commitShas?: Array<string> | undefined;
   pullRequestNumbers?: Array<PullRequestNumber$Outbound> | undefined;
   releaseTagNames?: Array<ReleaseTagName$Outbound | string> | undefined;
+  linearIssueIds?: Array<LinearIssueId$Outbound> | undefined;
 };
 
 /** @internal */
@@ -320,6 +356,9 @@ export const SelectedItems$outboundSchema: z.ZodMiniType<
       smartUnion([z.lazy(() => ReleaseTagName$outboundSchema), z.string()]),
     ),
   ),
+  linearIssueIds: z.optional(
+    z.array(z.lazy(() => LinearIssueId$outboundSchema)),
+  ),
 });
 
 export function selectedItemsToJSON(selectedItems: SelectedItems): string {
@@ -333,6 +372,7 @@ export type CreatePostGenerationRequest$Outbound = {
   brandVoiceId?: string | undefined;
   brandIdentityId?: string | null | undefined;
   repositoryIds?: Array<string> | undefined;
+  linearIntegrationIds?: Array<string> | undefined;
   integrations?: Integrations$Outbound | undefined;
   github?: CreatePostGenerationGithub$Outbound | undefined;
   dataPoints?: DataPoints$Outbound | undefined;
@@ -352,6 +392,7 @@ export const CreatePostGenerationRequest$outboundSchema: z.ZodMiniType<
   brandVoiceId: z.optional(z.string()),
   brandIdentityId: z.optional(z.nullable(z.string())),
   repositoryIds: z.optional(z.array(z.string())),
+  linearIntegrationIds: z.optional(z.array(z.string())),
   integrations: z.optional(z.lazy(() => Integrations$outboundSchema)),
   github: z.optional(z.lazy(() => CreatePostGenerationGithub$outboundSchema)),
   dataPoints: z.optional(z.lazy(() => DataPoints$outboundSchema)),
