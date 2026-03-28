@@ -110,6 +110,7 @@ export type ListPostsPostStatus = OpenEnum<typeof ListPostsPostStatus>;
 export type ListPostsPost = {
   id: string;
   title: string;
+  slug: string | null;
   content: string;
   markdown: string;
   recommendations: string | null;
@@ -264,6 +265,7 @@ export const ListPostsPost$inboundSchema: z.ZodMiniType<
 > = z.object({
   id: types.string(),
   title: types.string(),
+  slug: types.nullable(types.string()),
   content: types.string(),
   markdown: types.string(),
   recommendations: types.nullable(types.string()),
