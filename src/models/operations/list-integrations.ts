@@ -17,6 +17,15 @@ export type ListIntegrationsGithub = {
   defaultBranch: string | null;
 };
 
+export type Linear = {
+  id: string;
+  displayName: string;
+  linearOrganizationId: string;
+  linearOrganizationName: string | null;
+  linearTeamId: string | null;
+  linearTeamName: string | null;
+};
+
 export type ListIntegrationsOrganization = {
   id: string;
   slug: string;
@@ -30,7 +39,7 @@ export type ListIntegrationsOrganization = {
 export type ListIntegrationsResponse = {
   github: Array<ListIntegrationsGithub>;
   slack: Array<any>;
-  linear: Array<any>;
+  linear: Array<Linear>;
   organization: ListIntegrationsOrganization;
 };
 
@@ -53,6 +62,26 @@ export function listIntegrationsGithubFromJSON(
     jsonString,
     (x) => ListIntegrationsGithub$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ListIntegrationsGithub' from JSON`,
+  );
+}
+
+/** @internal */
+export const Linear$inboundSchema: z.ZodMiniType<Linear, unknown> = z.object({
+  id: types.string(),
+  displayName: types.string(),
+  linearOrganizationId: types.string(),
+  linearOrganizationName: types.nullable(types.string()),
+  linearTeamId: types.nullable(types.string()),
+  linearTeamName: types.nullable(types.string()),
+});
+
+export function linearFromJSON(
+  jsonString: string,
+): SafeParseResult<Linear, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Linear$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Linear' from JSON`,
   );
 }
 
@@ -84,7 +113,7 @@ export const ListIntegrationsResponse$inboundSchema: z.ZodMiniType<
 > = z.object({
   github: z.array(z.lazy(() => ListIntegrationsGithub$inboundSchema)),
   slack: z.array(z.any()),
-  linear: z.array(z.any()),
+  linear: z.array(z.lazy(() => Linear$inboundSchema)),
   organization: z.lazy(() => ListIntegrationsOrganization$inboundSchema),
 });
 
