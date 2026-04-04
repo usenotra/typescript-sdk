@@ -3,7 +3,7 @@ speakeasyVersion: latest
 sources:
     Notra API:
         inputs:
-            - location: https://docs.usenotra.com/openapi.json
+            - location: https://api.usenotra.com/openapi.json
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/notra/notra/notra-api
