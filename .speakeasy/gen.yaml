@@ -35,7 +35,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 1.0.1
+  version: 1.0.2
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -55,6 +55,7 @@ typescript:
   enumFormat: union
   envVarPrefix: NOTRA
   exportZodModelNamespace: false
+  fixEnumNameSanitization: false
   flatAdditionalProperties: true
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first

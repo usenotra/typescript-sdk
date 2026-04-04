@@ -1,11 +1,11 @@
-# DisabledSchedule
+# DeleteBrandIdentityDisabledSchedule
 
 ## Example Usage
 
 ```typescript
-import { DisabledSchedule } from "@usenotra/sdk/models/operations";
+import { DeleteBrandIdentityDisabledSchedule } from "@usenotra/sdk/models/operations";
 
-let value: DisabledSchedule = {
+let value: DeleteBrandIdentityDisabledSchedule = {
   id: "<id>",
   name: "<value>",
 };

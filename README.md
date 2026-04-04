@@ -143,10 +143,11 @@ run();
 * [createBrandIdentity](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 * [getBrandIdentityGeneration](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
 * [getBrandIdentity](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
-* [updateBrandIdentity](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 * [deleteBrandIdentity](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
+* [updateBrandIdentity](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 * [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
 * [createGitHubIntegration](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
+* [deleteIntegration](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
 * [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 
 </details>
@@ -171,6 +172,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentCreateGitHubIntegration`](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 - [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 - [`contentDeleteBrandIdentity`](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
+- [`contentDeleteIntegration`](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
 - [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
 - [`contentGetBrandIdentity`](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
 - [`contentGetBrandIdentityGeneration`](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
@@ -314,7 +316,7 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 14 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 15 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

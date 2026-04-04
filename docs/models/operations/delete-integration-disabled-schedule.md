@@ -1,11 +1,11 @@
-# DisabledEvent
+# DeleteIntegrationDisabledSchedule
 
 ## Example Usage
 
 ```typescript
-import { DisabledEvent } from "@usenotra/sdk/models/operations";
+import { DeleteIntegrationDisabledSchedule } from "@usenotra/sdk/models/operations";
 
-let value: DisabledEvent = {
+let value: DeleteIntegrationDisabledSchedule = {
   id: "<id>",
   name: "<value>",
 };
