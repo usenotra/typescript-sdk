@@ -20,12 +20,12 @@ export type DeleteBrandIdentityOrganization = {
   logo: string | null;
 };
 
-export type DisabledSchedule = {
+export type DeleteBrandIdentityDisabledSchedule = {
   id: string;
   name: string;
 };
 
-export type DisabledEvent = {
+export type DeleteBrandIdentityDisabledEvent = {
   id: string;
   name: string;
 };
@@ -36,8 +36,8 @@ export type DisabledEvent = {
 export type DeleteBrandIdentityResponse = {
   id: string;
   organization: DeleteBrandIdentityOrganization;
-  disabledSchedules: Array<DisabledSchedule>;
-  disabledEvents: Array<DisabledEvent>;
+  disabledSchedules: Array<DeleteBrandIdentityDisabledSchedule>;
+  disabledEvents: Array<DeleteBrandIdentityDisabledEvent>;
 };
 
 /** @internal */
@@ -83,40 +83,41 @@ export function deleteBrandIdentityOrganizationFromJSON(
 }
 
 /** @internal */
-export const DisabledSchedule$inboundSchema: z.ZodMiniType<
-  DisabledSchedule,
+export const DeleteBrandIdentityDisabledSchedule$inboundSchema: z.ZodMiniType<
+  DeleteBrandIdentityDisabledSchedule,
   unknown
 > = z.object({
   id: types.string(),
   name: types.string(),
 });
 
-export function disabledScheduleFromJSON(
+export function deleteBrandIdentityDisabledScheduleFromJSON(
   jsonString: string,
-): SafeParseResult<DisabledSchedule, SDKValidationError> {
+): SafeParseResult<DeleteBrandIdentityDisabledSchedule, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => DisabledSchedule$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'DisabledSchedule' from JSON`,
+    (x) =>
+      DeleteBrandIdentityDisabledSchedule$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DeleteBrandIdentityDisabledSchedule' from JSON`,
   );
 }
 
 /** @internal */
-export const DisabledEvent$inboundSchema: z.ZodMiniType<
-  DisabledEvent,
+export const DeleteBrandIdentityDisabledEvent$inboundSchema: z.ZodMiniType<
+  DeleteBrandIdentityDisabledEvent,
   unknown
 > = z.object({
   id: types.string(),
   name: types.string(),
 });
 
-export function disabledEventFromJSON(
+export function deleteBrandIdentityDisabledEventFromJSON(
   jsonString: string,
-): SafeParseResult<DisabledEvent, SDKValidationError> {
+): SafeParseResult<DeleteBrandIdentityDisabledEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => DisabledEvent$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'DisabledEvent' from JSON`,
+    (x) => DeleteBrandIdentityDisabledEvent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DeleteBrandIdentityDisabledEvent' from JSON`,
   );
 }
 
@@ -127,8 +128,12 @@ export const DeleteBrandIdentityResponse$inboundSchema: z.ZodMiniType<
 > = z.object({
   id: types.string(),
   organization: z.lazy(() => DeleteBrandIdentityOrganization$inboundSchema),
-  disabledSchedules: z.array(z.lazy(() => DisabledSchedule$inboundSchema)),
-  disabledEvents: z.array(z.lazy(() => DisabledEvent$inboundSchema)),
+  disabledSchedules: z.array(
+    z.lazy(() => DeleteBrandIdentityDisabledSchedule$inboundSchema),
+  ),
+  disabledEvents: z.array(
+    z.lazy(() => DeleteBrandIdentityDisabledEvent$inboundSchema),
+  ),
 });
 
 export function deleteBrandIdentityResponseFromJSON(
