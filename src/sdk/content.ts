@@ -7,6 +7,7 @@ import { contentCreateBrandIdentity } from "../funcs/content-create-brand-identi
 import { contentCreateGitHubIntegration } from "../funcs/content-create-git-hub-integration.js";
 import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
 import { contentDeleteBrandIdentity } from "../funcs/content-delete-brand-identity.js";
+import { contentDeleteIntegration } from "../funcs/content-delete-integration.js";
 import { contentDeletePost } from "../funcs/content-delete-post.js";
 import { contentGetBrandIdentityGeneration } from "../funcs/content-get-brand-identity-generation.js";
 import { contentGetBrandIdentity } from "../funcs/content-get-brand-identity.js";
@@ -147,23 +148,6 @@ export class Content extends ClientSDK {
   }
 
   /**
-   * Update a single brand identity
-   *
-   * @remarks
-   * Updates brand identity fields. Pass isDefault: true to make the target brand identity the organization's default.
-   */
-  async updateBrandIdentity(
-    request: operations.UpdateBrandIdentityRequest,
-    options?: RequestOptions,
-  ): Promise<operations.UpdateBrandIdentityResponse> {
-    return unwrapAsync(contentUpdateBrandIdentity(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Delete a single brand identity
    *
    * @remarks
@@ -174,6 +158,23 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.DeleteBrandIdentityResponse> {
     return unwrapAsync(contentDeleteBrandIdentity(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a single brand identity
+   *
+   * @remarks
+   * Updates brand identity fields. Pass isDefault: true to make the target brand identity the organization's default.
+   */
+  async updateBrandIdentity(
+    request: operations.UpdateBrandIdentityRequest,
+    options?: RequestOptions,
+  ): Promise<operations.UpdateBrandIdentityResponse> {
+    return unwrapAsync(contentUpdateBrandIdentity(
       this,
       request,
       options,
@@ -200,6 +201,23 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.CreateGitHubIntegrationResponse> {
     return unwrapAsync(contentCreateGitHubIntegration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Delete a single integration
+   *
+   * @remarks
+   * Deletes a GitHub or Linear integration. Any automation triggers targeting a deleted GitHub integration are disabled.
+   */
+  async deleteIntegration(
+    request: operations.DeleteIntegrationRequest,
+    options?: RequestOptions,
+  ): Promise<operations.DeleteIntegrationResponse> {
+    return unwrapAsync(contentDeleteIntegration(
       this,
       request,
       options,
