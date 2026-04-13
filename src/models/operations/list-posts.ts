@@ -9,7 +9,6 @@ import * as openEnums from "../../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
-import { smartUnion } from "../../types/smart-union.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
 /**
@@ -23,50 +22,6 @@ export const Sort = {
  * Sort by creation date
  */
 export type Sort = ClosedEnum<typeof Sort>;
-
-export const StatusQueryParamEnum2 = {
-  Draft: "draft",
-  Published: "published",
-} as const;
-export type StatusQueryParamEnum2 = ClosedEnum<typeof StatusQueryParamEnum2>;
-
-export const StatusQueryParamEnum1 = {
-  Draft: "draft",
-  Published: "published",
-} as const;
-export type StatusQueryParamEnum1 = ClosedEnum<typeof StatusQueryParamEnum1>;
-
-/**
- * Filter by status. Repeat the query param to pass multiple values.
- */
-export type Status = StatusQueryParamEnum1 | Array<StatusQueryParamEnum2>;
-
-export const ListPostsContentTypeEnum2 = {
-  Changelog: "changelog",
-  LinkedinPost: "linkedin_post",
-  TwitterPost: "twitter_post",
-  BlogPost: "blog_post",
-} as const;
-export type ListPostsContentTypeEnum2 = ClosedEnum<
-  typeof ListPostsContentTypeEnum2
->;
-
-export const ListPostsContentTypeEnum1 = {
-  Changelog: "changelog",
-  LinkedinPost: "linkedin_post",
-  TwitterPost: "twitter_post",
-  BlogPost: "blog_post",
-} as const;
-export type ListPostsContentTypeEnum1 = ClosedEnum<
-  typeof ListPostsContentTypeEnum1
->;
-
-/**
- * Filter by content type. Repeat the query param to pass multiple values.
- */
-export type ContentType =
-  | ListPostsContentTypeEnum1
-  | Array<ListPostsContentTypeEnum2>;
 
 export type ListPostsRequest = {
   /**
@@ -82,16 +37,17 @@ export type ListPostsRequest = {
    */
   page?: number | undefined;
   /**
-   * Filter by status. Repeat the query param to pass multiple values.
+   * Filter by status using a comma-separated list.
    */
-  status?: StatusQueryParamEnum1 | Array<StatusQueryParamEnum2> | undefined;
+  status?: string | undefined;
   /**
-   * Filter by content type. Repeat the query param to pass multiple values.
+   * Filter by content type using a comma-separated list.
    */
-  contentType?:
-    | ListPostsContentTypeEnum1
-    | Array<ListPostsContentTypeEnum2>
-    | undefined;
+  contentType?: string | undefined;
+  /**
+   * Filter by brand identity ID using a comma-separated list.
+   */
+  brandIdentityId?: string | undefined;
 };
 
 export type ListPostsOrganization = {
@@ -101,11 +57,11 @@ export type ListPostsOrganization = {
   logo: string | null;
 };
 
-export const ListPostsPostStatus = {
+export const ListPostsStatus = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type ListPostsPostStatus = OpenEnum<typeof ListPostsPostStatus>;
+export type ListPostsStatus = OpenEnum<typeof ListPostsStatus>;
 
 export type ListPostsPost = {
   id: string;
@@ -116,7 +72,7 @@ export type ListPostsPost = {
   recommendations: string | null;
   contentType: string;
   sourceMetadata?: any | undefined;
-  status: ListPostsPostStatus;
+  status: ListPostsStatus;
   createdAt: string;
   updatedAt: string;
 };
@@ -143,62 +99,13 @@ export type ListPostsResponse = {
 export const Sort$outboundSchema: z.ZodMiniEnum<typeof Sort> = z.enum(Sort);
 
 /** @internal */
-export const StatusQueryParamEnum2$outboundSchema: z.ZodMiniEnum<
-  typeof StatusQueryParamEnum2
-> = z.enum(StatusQueryParamEnum2);
-
-/** @internal */
-export const StatusQueryParamEnum1$outboundSchema: z.ZodMiniEnum<
-  typeof StatusQueryParamEnum1
-> = z.enum(StatusQueryParamEnum1);
-
-/** @internal */
-export type Status$Outbound = string | Array<string>;
-
-/** @internal */
-export const Status$outboundSchema: z.ZodMiniType<Status$Outbound, Status> =
-  smartUnion([
-    StatusQueryParamEnum1$outboundSchema,
-    z.array(StatusQueryParamEnum2$outboundSchema),
-  ]);
-
-export function statusToJSON(status: Status): string {
-  return JSON.stringify(Status$outboundSchema.parse(status));
-}
-
-/** @internal */
-export const ListPostsContentTypeEnum2$outboundSchema: z.ZodMiniEnum<
-  typeof ListPostsContentTypeEnum2
-> = z.enum(ListPostsContentTypeEnum2);
-
-/** @internal */
-export const ListPostsContentTypeEnum1$outboundSchema: z.ZodMiniEnum<
-  typeof ListPostsContentTypeEnum1
-> = z.enum(ListPostsContentTypeEnum1);
-
-/** @internal */
-export type ContentType$Outbound = string | Array<string>;
-
-/** @internal */
-export const ContentType$outboundSchema: z.ZodMiniType<
-  ContentType$Outbound,
-  ContentType
-> = smartUnion([
-  ListPostsContentTypeEnum1$outboundSchema,
-  z.array(ListPostsContentTypeEnum2$outboundSchema),
-]);
-
-export function contentTypeToJSON(contentType: ContentType): string {
-  return JSON.stringify(ContentType$outboundSchema.parse(contentType));
-}
-
-/** @internal */
 export type ListPostsRequest$Outbound = {
   sort: string;
   limit: number;
   page: number;
-  status?: string | Array<string> | undefined;
-  contentType?: string | Array<string> | undefined;
+  status?: string | undefined;
+  contentType?: string | undefined;
+  brandIdentityId?: string | undefined;
 };
 
 /** @internal */
@@ -209,18 +116,9 @@ export const ListPostsRequest$outboundSchema: z.ZodMiniType<
   sort: z._default(Sort$outboundSchema, "desc"),
   limit: z._default(z.int(), 10),
   page: z._default(z.int(), 1),
-  status: z.optional(
-    smartUnion([
-      StatusQueryParamEnum1$outboundSchema,
-      z.array(StatusQueryParamEnum2$outboundSchema),
-    ]),
-  ),
-  contentType: z.optional(
-    smartUnion([
-      ListPostsContentTypeEnum1$outboundSchema,
-      z.array(ListPostsContentTypeEnum2$outboundSchema),
-    ]),
-  ),
+  status: z.optional(z.string()),
+  contentType: z.optional(z.string()),
+  brandIdentityId: z.optional(z.string()),
 });
 
 export function listPostsRequestToJSON(
@@ -253,10 +151,10 @@ export function listPostsOrganizationFromJSON(
 }
 
 /** @internal */
-export const ListPostsPostStatus$inboundSchema: z.ZodMiniType<
-  ListPostsPostStatus,
+export const ListPostsStatus$inboundSchema: z.ZodMiniType<
+  ListPostsStatus,
   unknown
-> = openEnums.inboundSchema(ListPostsPostStatus);
+> = openEnums.inboundSchema(ListPostsStatus);
 
 /** @internal */
 export const ListPostsPost$inboundSchema: z.ZodMiniType<
@@ -271,7 +169,7 @@ export const ListPostsPost$inboundSchema: z.ZodMiniType<
   recommendations: types.nullable(types.string()),
   contentType: types.string(),
   sourceMetadata: types.optional(z.any()),
-  status: ListPostsPostStatus$inboundSchema,
+  status: ListPostsStatus$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),
 });
