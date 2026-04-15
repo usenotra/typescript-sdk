@@ -1,11 +1,11 @@
-# CreatePostGenerationLookbackWindowResponse
+# UpdateScheduleLookbackWindowResponse
 
 ## Example Usage
 
 ```typescript
-import { CreatePostGenerationLookbackWindowResponse } from "@usenotra/sdk/models/operations";
+import { UpdateScheduleLookbackWindowResponse } from "@usenotra/sdk/models/operations";
 
-let value: CreatePostGenerationLookbackWindowResponse = "yesterday";
+let value: UpdateScheduleLookbackWindowResponse = "last_30_days";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

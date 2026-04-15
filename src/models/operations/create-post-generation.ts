@@ -20,14 +20,16 @@ export const ContentTypeRequest = {
 } as const;
 export type ContentTypeRequest = ClosedEnum<typeof ContentTypeRequest>;
 
-export const LookbackWindowRequest = {
+export const LookbackWindowRequestBody = {
   CurrentDay: "current_day",
   Yesterday: "yesterday",
   Last7Days: "last_7_days",
   Last14Days: "last_14_days",
   Last30Days: "last_30_days",
 } as const;
-export type LookbackWindowRequest = ClosedEnum<typeof LookbackWindowRequest>;
+export type LookbackWindowRequestBody = ClosedEnum<
+  typeof LookbackWindowRequestBody
+>;
 
 export type Integrations = {
   github?: Array<string> | undefined;
@@ -76,7 +78,7 @@ export type SelectedItems = {
 
 export type CreatePostGenerationRequest = {
   contentType: ContentTypeRequest;
-  lookbackWindow?: LookbackWindowRequest | undefined;
+  lookbackWindow?: LookbackWindowRequestBody | undefined;
   brandVoiceId?: string | undefined;
   brandIdentityId?: string | null | undefined;
   /**
@@ -120,15 +122,15 @@ export type CreatePostGenerationContentTypeResponse = OpenEnum<
   typeof CreatePostGenerationContentTypeResponse
 >;
 
-export const CreatePostGenerationLookbackWindowResponse = {
+export const CreatePostGenerationJobLookbackWindow = {
   CurrentDay: "current_day",
   Yesterday: "yesterday",
   Last7Days: "last_7_days",
   Last14Days: "last_14_days",
   Last30Days: "last_30_days",
 } as const;
-export type CreatePostGenerationLookbackWindowResponse = OpenEnum<
-  typeof CreatePostGenerationLookbackWindowResponse
+export type CreatePostGenerationJobLookbackWindow = OpenEnum<
+  typeof CreatePostGenerationJobLookbackWindow
 >;
 
 export const CreatePostGenerationSource = {
@@ -144,7 +146,7 @@ export type CreatePostGenerationJob = {
   organizationId: string;
   status: CreatePostGenerationStatus;
   contentType: CreatePostGenerationContentTypeResponse;
-  lookbackWindow: CreatePostGenerationLookbackWindowResponse;
+  lookbackWindow: CreatePostGenerationJobLookbackWindow;
   repositoryIds: Array<string>;
   brandVoiceId: string | null;
   workflowRunId: string | null;
@@ -170,9 +172,9 @@ export const ContentTypeRequest$outboundSchema: z.ZodMiniEnum<
 > = z.enum(ContentTypeRequest);
 
 /** @internal */
-export const LookbackWindowRequest$outboundSchema: z.ZodMiniEnum<
-  typeof LookbackWindowRequest
-> = z.enum(LookbackWindowRequest);
+export const LookbackWindowRequestBody$outboundSchema: z.ZodMiniEnum<
+  typeof LookbackWindowRequestBody
+> = z.enum(LookbackWindowRequestBody);
 
 /** @internal */
 export type Integrations$Outbound = {
@@ -386,7 +388,7 @@ export const CreatePostGenerationRequest$outboundSchema: z.ZodMiniType<
 > = z.object({
   contentType: ContentTypeRequest$outboundSchema,
   lookbackWindow: z._default(
-    LookbackWindowRequest$outboundSchema,
+    LookbackWindowRequestBody$outboundSchema,
     "last_7_days",
   ),
   brandVoiceId: z.optional(z.string()),
@@ -442,9 +444,10 @@ export const CreatePostGenerationContentTypeResponse$inboundSchema:
     .inboundSchema(CreatePostGenerationContentTypeResponse);
 
 /** @internal */
-export const CreatePostGenerationLookbackWindowResponse$inboundSchema:
-  z.ZodMiniType<CreatePostGenerationLookbackWindowResponse, unknown> = openEnums
-    .inboundSchema(CreatePostGenerationLookbackWindowResponse);
+export const CreatePostGenerationJobLookbackWindow$inboundSchema: z.ZodMiniType<
+  CreatePostGenerationJobLookbackWindow,
+  unknown
+> = openEnums.inboundSchema(CreatePostGenerationJobLookbackWindow);
 
 /** @internal */
 export const CreatePostGenerationSource$inboundSchema: z.ZodMiniType<
@@ -461,7 +464,7 @@ export const CreatePostGenerationJob$inboundSchema: z.ZodMiniType<
   organizationId: types.string(),
   status: CreatePostGenerationStatus$inboundSchema,
   contentType: CreatePostGenerationContentTypeResponse$inboundSchema,
-  lookbackWindow: CreatePostGenerationLookbackWindowResponse$inboundSchema,
+  lookbackWindow: CreatePostGenerationJobLookbackWindow$inboundSchema,
   repositoryIds: z.array(types.string()),
   brandVoiceId: types.nullable(types.string()),
   workflowRunId: types.nullable(types.string()),
