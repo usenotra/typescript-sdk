@@ -150,6 +150,13 @@ run();
 * [deleteIntegration](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
 * [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 
+### [Schedules](docs/sdks/schedules/README.md)
+
+* [listSchedules](docs/sdks/schedules/README.md#listschedules) - List schedules
+* [createSchedule](docs/sdks/schedules/README.md#createschedule) - Create a schedule
+* [deleteSchedule](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
+* [updateSchedule](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -183,6 +190,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
 - [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
+- [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
+- [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
+- [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
+- [`schedulesUpdateSchedule`](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -316,7 +327,7 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 15 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 19 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

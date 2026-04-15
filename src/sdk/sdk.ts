@@ -5,10 +5,16 @@
 
 import { ClientSDK } from "../lib/sdks.js";
 import { Content } from "./content.js";
+import { Schedules } from "./schedules.js";
 
 export class Notra extends ClientSDK {
   private _content?: Content;
   get content(): Content {
     return (this._content ??= new Content(this._options));
+  }
+
+  private _schedules?: Schedules;
+  get schedules(): Schedules {
+    return (this._schedules ??= new Schedules(this._options));
   }
 }
