@@ -94,6 +94,20 @@ export class Content extends ClientSDK {
   }
 
   /**
+   * Get async post generation status
+   */
+  async getPostGeneration(
+    request: operations.GetPostGenerationRequest,
+    options?: RequestOptions,
+  ): Promise<operations.GetPostGenerationResponse> {
+    return unwrapAsync(contentGetPostGeneration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * List available brand identities
    */
   async listBrandIdentities(
@@ -218,20 +232,6 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.DeleteIntegrationResponse> {
     return unwrapAsync(contentDeleteIntegration(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Get async post generation status
-   */
-  async getPostGeneration(
-    request: operations.GetPostGenerationRequest,
-    options?: RequestOptions,
-  ): Promise<operations.GetPostGenerationResponse> {
-    return unwrapAsync(contentGetPostGeneration(
       this,
       request,
       options,
