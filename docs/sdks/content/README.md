@@ -324,11 +324,12 @@ run();
 
 ### Errors
 
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
-| errors.ErrorResponse     | 503                      | application/json         |
-| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 503                           | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## createPostGeneration
 
@@ -454,6 +455,7 @@ run();
 | Error Type                     | Status Code                    | Content Type                   |
 | ------------------------------ | ------------------------------ | ------------------------------ |
 | errors.ErrorResponse           | 400, 401, 403, 404             | application/json               |
+| errors.RateLimitErrorResponse  | 429                            | application/json               |
 | errors.ServiceUnavailableError | 503                            | application/json               |
 | errors.NotraDefaultError       | 4XX, 5XX                       | \*/\*                          |
 
@@ -673,11 +675,12 @@ run();
 
 ### Errors
 
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
-| errors.ErrorResponse     | 503                      | application/json         |
-| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 503                           | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## getBrandIdentityGeneration
 
@@ -1287,11 +1290,12 @@ run();
 
 ### Errors
 
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
-| errors.ErrorResponse     | 503                      | application/json         |
-| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 503                           | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## deleteIntegration
 
