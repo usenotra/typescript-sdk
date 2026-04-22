@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4-mini";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import * as openEnums from "../../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../../types/enums.js";
@@ -59,9 +60,14 @@ export type UpdatePostPost = {
 /**
  * Post updated successfully
  */
-export type UpdatePostResponse = {
+export type UpdatePostResponseBody = {
   organization: UpdatePostOrganization;
   post: UpdatePostPost;
+};
+
+export type UpdatePostResponse = {
+  headers: { [k: string]: Array<string> };
+  result: UpdatePostResponseBody;
 };
 
 /** @internal */
@@ -174,13 +180,40 @@ export function updatePostPostFromJSON(
 }
 
 /** @internal */
-export const UpdatePostResponse$inboundSchema: z.ZodMiniType<
-  UpdatePostResponse,
+export const UpdatePostResponseBody$inboundSchema: z.ZodMiniType<
+  UpdatePostResponseBody,
   unknown
 > = z.object({
   organization: z.lazy(() => UpdatePostOrganization$inboundSchema),
   post: z.lazy(() => UpdatePostPost$inboundSchema),
 });
+
+export function updatePostResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdatePostResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdatePostResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdatePostResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const UpdatePostResponse$inboundSchema: z.ZodMiniType<
+  UpdatePostResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Headers: z._default(z.record(z.string(), z.array(z.string())), {}),
+    Result: z.lazy(() => UpdatePostResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Headers": "headers",
+      "Result": "result",
+    });
+  }),
+);
 
 export function updatePostResponseFromJSON(
   jsonString: string,

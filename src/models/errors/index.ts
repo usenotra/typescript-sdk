@@ -8,5 +8,6 @@ export * from "./error-response.js";
 export * from "./http-client-errors.js";
 export * from "./notra-default-error.js";
 export * from "./notra-error.js";
+export * from "./rate-limit-error-response.js";
 export * from "./response-validation-error.js";
 export * from "./sdk-validation-error.js";

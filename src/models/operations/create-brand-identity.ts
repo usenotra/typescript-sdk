@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4-mini";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
@@ -58,9 +59,14 @@ export type CreateBrandIdentityJob = {
 /**
  * Brand identity generation queued successfully
  */
-export type CreateBrandIdentityResponse = {
+export type CreateBrandIdentityResponseBody = {
   organization: CreateBrandIdentityOrganization;
   job: CreateBrandIdentityJob;
+};
+
+export type CreateBrandIdentityResponse = {
+  headers: { [k: string]: Array<string> };
+  result: CreateBrandIdentityResponseBody;
 };
 
 /** @internal */
@@ -149,13 +155,40 @@ export function createBrandIdentityJobFromJSON(
 }
 
 /** @internal */
-export const CreateBrandIdentityResponse$inboundSchema: z.ZodMiniType<
-  CreateBrandIdentityResponse,
+export const CreateBrandIdentityResponseBody$inboundSchema: z.ZodMiniType<
+  CreateBrandIdentityResponseBody,
   unknown
 > = z.object({
   organization: z.lazy(() => CreateBrandIdentityOrganization$inboundSchema),
   job: z.lazy(() => CreateBrandIdentityJob$inboundSchema),
 });
+
+export function createBrandIdentityResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateBrandIdentityResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateBrandIdentityResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateBrandIdentityResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreateBrandIdentityResponse$inboundSchema: z.ZodMiniType<
+  CreateBrandIdentityResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Headers: z._default(z.record(z.string(), z.array(z.string())), {}),
+    Result: z.lazy(() => CreateBrandIdentityResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Headers": "headers",
+      "Result": "result",
+    });
+  }),
+);
 
 export function createBrandIdentityResponseFromJSON(
   jsonString: string,

@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4-mini";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import * as openEnums from "../../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../../types/enums.js";
@@ -161,9 +162,14 @@ export type CreatePostGenerationJob = {
 /**
  * Post generation queued successfully
  */
-export type CreatePostGenerationResponse = {
+export type CreatePostGenerationResponseBody = {
   organization: CreatePostGenerationOrganization;
   job: CreatePostGenerationJob;
+};
+
+export type CreatePostGenerationResponse = {
+  headers: { [k: string]: Array<string> };
+  result: CreatePostGenerationResponseBody;
 };
 
 /** @internal */
@@ -487,13 +493,40 @@ export function createPostGenerationJobFromJSON(
 }
 
 /** @internal */
-export const CreatePostGenerationResponse$inboundSchema: z.ZodMiniType<
-  CreatePostGenerationResponse,
+export const CreatePostGenerationResponseBody$inboundSchema: z.ZodMiniType<
+  CreatePostGenerationResponseBody,
   unknown
 > = z.object({
   organization: z.lazy(() => CreatePostGenerationOrganization$inboundSchema),
   job: z.lazy(() => CreatePostGenerationJob$inboundSchema),
 });
+
+export function createPostGenerationResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<CreatePostGenerationResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreatePostGenerationResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreatePostGenerationResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreatePostGenerationResponse$inboundSchema: z.ZodMiniType<
+  CreatePostGenerationResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Headers: z._default(z.record(z.string(), z.array(z.string())), {}),
+    Result: z.lazy(() => CreatePostGenerationResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Headers": "headers",
+      "Result": "result",
+    });
+  }),
+);
 
 export function createPostGenerationResponseFromJSON(
   jsonString: string,
