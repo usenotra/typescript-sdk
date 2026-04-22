@@ -39,6 +39,7 @@ export function contentCreateBrandIdentity(
   Result<
     operations.CreateBrandIdentityResponse,
     | errors.ErrorResponse
+    | errors.RateLimitErrorResponse
     | NotraError
     | ResponseValidationError
     | ConnectionError
@@ -65,6 +66,7 @@ async function $do(
     Result<
       operations.CreateBrandIdentityResponse,
       | errors.ErrorResponse
+      | errors.RateLimitErrorResponse
       | NotraError
       | ResponseValidationError
       | ConnectionError
@@ -149,6 +151,7 @@ async function $do(
   const [result] = await M.match<
     operations.CreateBrandIdentityResponse,
     | errors.ErrorResponse
+    | errors.RateLimitErrorResponse
     | NotraError
     | ResponseValidationError
     | ConnectionError
@@ -158,8 +161,11 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(202, operations.CreateBrandIdentityResponse$inboundSchema),
+    M.json(202, operations.CreateBrandIdentityResponse$inboundSchema, {
+      key: "Result",
+    }),
     M.jsonErr([400, 401, 403, 404, 409], errors.ErrorResponse$inboundSchema),
+    M.jsonErr(429, errors.RateLimitErrorResponse$inboundSchema, { hdrs: true }),
     M.jsonErr(503, errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

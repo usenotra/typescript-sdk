@@ -1,39 +1,46 @@
 # CreateBrandIdentityResponse
 
-Brand identity generation queued successfully
-
 ## Example Usage
 
 ```typescript
 import { CreateBrandIdentityResponse } from "@usenotra/sdk/models/operations";
 
 let value: CreateBrandIdentityResponse = {
-  organization: {
-    id: "<id>",
-    slug: "<value>",
-    name: "<value>",
-    logo: null,
+  headers: {
+    "key": [
+      "<value 1>",
+      "<value 2>",
+    ],
+    "key1": [],
   },
-  job: {
-    id: "<id>",
-    organizationId: "<id>",
-    brandIdentityId: "<id>",
-    status: "completed",
-    step: "scraping",
-    currentStep: 683313,
-    totalSteps: 102503,
-    workflowRunId: "<id>",
-    error: null,
-    createdAt: "1730997023176",
-    updatedAt: "1735686467041",
-    completedAt: "<value>",
+  result: {
+    organization: {
+      id: "<id>",
+      slug: "<value>",
+      name: "<value>",
+      logo: "<value>",
+    },
+    job: {
+      id: "<id>",
+      organizationId: "<id>",
+      brandIdentityId: "<id>",
+      status: "queued",
+      step: "scraping",
+      currentStep: 991247,
+      totalSteps: 29106,
+      workflowRunId: "<id>",
+      error: "<value>",
+      createdAt: "1733840772523",
+      updatedAt: "1735664099058",
+      completedAt: "<value>",
+    },
   },
 };
 ```
 
 ## Fields
 
-| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
-| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `organization`                                                                                              | [operations.CreateBrandIdentityOrganization](../../models/operations/create-brand-identity-organization.md) | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
-| `job`                                                                                                       | [operations.CreateBrandIdentityJob](../../models/operations/create-brand-identity-job.md)                   | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| Field                                                                                                        | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `headers`                                                                                                    | Record<string, *string*[]>                                                                                   | :heavy_check_mark:                                                                                           | N/A                                                                                                          |
+| `result`                                                                                                     | [operations.CreateBrandIdentityResponseBody](../../models/operations/create-brand-identity-response-body.md) | :heavy_check_mark:                                                                                           | N/A                                                                                                          |

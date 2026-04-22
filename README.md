@@ -314,7 +314,7 @@ run();
 * [`NotraError`](./src/models/errors/notra-error.ts): The base class for HTTP error responses.
   * [`ErrorResponse`](./src/models/errors/error-response.ts): Generic error.
 
-<details><summary>Less common errors (7)</summary>
+<details><summary>Less common errors (8)</summary>
 
 <br />
 
@@ -327,6 +327,7 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 19 methods.*
 * [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 19 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 

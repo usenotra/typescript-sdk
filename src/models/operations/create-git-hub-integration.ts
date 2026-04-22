@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4-mini";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
@@ -34,9 +35,14 @@ export type CreateGitHubIntegrationOrganization = {
 /**
  * GitHub integration created successfully
  */
-export type CreateGitHubIntegrationResponse = {
+export type CreateGitHubIntegrationResponseBody = {
   github: CreateGitHubIntegrationGithub;
   organization: CreateGitHubIntegrationOrganization;
+};
+
+export type CreateGitHubIntegrationResponse = {
+  headers: { [k: string]: Array<string> };
+  result: CreateGitHubIntegrationResponseBody;
 };
 
 /** @internal */
@@ -113,13 +119,41 @@ export function createGitHubIntegrationOrganizationFromJSON(
 }
 
 /** @internal */
-export const CreateGitHubIntegrationResponse$inboundSchema: z.ZodMiniType<
-  CreateGitHubIntegrationResponse,
+export const CreateGitHubIntegrationResponseBody$inboundSchema: z.ZodMiniType<
+  CreateGitHubIntegrationResponseBody,
   unknown
 > = z.object({
   github: z.lazy(() => CreateGitHubIntegrationGithub$inboundSchema),
   organization: z.lazy(() => CreateGitHubIntegrationOrganization$inboundSchema),
 });
+
+export function createGitHubIntegrationResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateGitHubIntegrationResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      CreateGitHubIntegrationResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateGitHubIntegrationResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreateGitHubIntegrationResponse$inboundSchema: z.ZodMiniType<
+  CreateGitHubIntegrationResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Headers: z._default(z.record(z.string(), z.array(z.string())), {}),
+    Result: z.lazy(() => CreateGitHubIntegrationResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Headers": "headers",
+      "Result": "result",
+    });
+  }),
+);
 
 export function createGitHubIntegrationResponseFromJSON(
   jsonString: string,

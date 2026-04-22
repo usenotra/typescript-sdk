@@ -39,6 +39,7 @@ export function contentCreatePostGeneration(
   Result<
     operations.CreatePostGenerationResponse,
     | errors.ErrorResponse
+    | errors.RateLimitErrorResponse
     | errors.ServiceUnavailableError
     | NotraError
     | ResponseValidationError
@@ -66,6 +67,7 @@ async function $do(
     Result<
       operations.CreatePostGenerationResponse,
       | errors.ErrorResponse
+      | errors.RateLimitErrorResponse
       | errors.ServiceUnavailableError
       | NotraError
       | ResponseValidationError
@@ -151,6 +153,7 @@ async function $do(
   const [result] = await M.match<
     operations.CreatePostGenerationResponse,
     | errors.ErrorResponse
+    | errors.RateLimitErrorResponse
     | errors.ServiceUnavailableError
     | NotraError
     | ResponseValidationError
@@ -161,8 +164,11 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(202, operations.CreatePostGenerationResponse$inboundSchema),
+    M.json(202, operations.CreatePostGenerationResponse$inboundSchema, {
+      key: "Result",
+    }),
     M.jsonErr([400, 401, 403, 404], errors.ErrorResponse$inboundSchema),
+    M.jsonErr(429, errors.RateLimitErrorResponse$inboundSchema, { hdrs: true }),
     M.jsonErr(503, errors.ServiceUnavailableError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
