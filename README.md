@@ -139,6 +139,7 @@ run();
 * [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
 * [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
 * [createPostGeneration](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
+* [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 * [listBrandIdentities](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
 * [createBrandIdentity](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 * [getBrandIdentityGeneration](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
@@ -148,7 +149,6 @@ run();
 * [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
 * [createGitHubIntegration](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 * [deleteIntegration](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
-* [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
 
 ### [Schedules](docs/sdks/schedules/README.md)
 
