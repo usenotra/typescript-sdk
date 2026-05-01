@@ -3,4 +3,9 @@
  * @generated-id: f93644b0f37e
  */
 
+export * from "./chat-session-summary.js";
+export * from "./get-chat-response.js";
+export * from "./get-chats-response.js";
 export * from "./security.js";
+export * from "./send-chat-message-queued-response.js";
+export * from "./send-chat-message-request.js";
