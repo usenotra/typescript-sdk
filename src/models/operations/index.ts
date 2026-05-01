@@ -4,6 +4,7 @@
  */
 
 export * from "./create-brand-identity.js";
+export * from "./create-chat.js";
 export * from "./create-git-hub-integration.js";
 export * from "./create-post-generation.js";
 export * from "./create-schedule.js";
@@ -13,12 +14,14 @@ export * from "./delete-post.js";
 export * from "./delete-schedule.js";
 export * from "./get-brand-identity-generation.js";
 export * from "./get-brand-identity.js";
+export * from "./get-chat.js";
 export * from "./get-post-generation.js";
 export * from "./get-post.js";
 export * from "./list-brand-identities.js";
 export * from "./list-integrations.js";
 export * from "./list-posts.js";
 export * from "./list-schedules.js";
+export * from "./post-chat-message.js";
 export * from "./update-brand-identity.js";
 export * from "./update-post.js";
 export * from "./update-schedule.js";
