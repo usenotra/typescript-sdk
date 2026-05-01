@@ -132,6 +132,13 @@ run();
 <details open>
 <summary>Available methods</summary>
 
+### [Chats](docs/sdks/chats/README.md)
+
+* [listChats](docs/sdks/chats/README.md#listchats) - List chats
+* [createChat](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
+* [getChat](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
+* [postChatMessage](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
+
 ### [Content](docs/sdks/content/README.md)
 
 * [listPosts](docs/sdks/content/README.md#listposts) - List posts
@@ -175,6 +182,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`chatsCreateChat`](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
+- [`chatsGetChat`](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
+- [`chatsListChats`](docs/sdks/chats/README.md#listchats) - List chats
+- [`chatsPostChatMessage`](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
 - [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 - [`contentCreateGitHubIntegration`](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 - [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
@@ -327,8 +338,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 19 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 19 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 23 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 23 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
