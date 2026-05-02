@@ -27,6 +27,7 @@ import { SDKValidationError } from "../models/errors/sdk-validation-error.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
+import * as types$ from "../types/primitives.js";
 
 /**
  * Post a message to an existing chat and stream the reply
@@ -37,7 +38,7 @@ export function chatsPostChatMessage(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.PostChatMessageResponse,
+    string,
     | errors.ErrorResponse
     | NotraError
     | ResponseValidationError
@@ -63,7 +64,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.PostChatMessageResponse,
+      string,
       | errors.ErrorResponse
       | NotraError
       | ResponseValidationError
@@ -98,7 +99,7 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "application/json;q=1, text/event-stream;q=0",
+    Accept: "text/event-stream",
   }));
 
   const secConfig = await extractSecurity(client._options.bearerAuth);
@@ -152,7 +153,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.PostChatMessageResponse,
+    string,
     | errors.ErrorResponse
     | NotraError
     | ResponseValidationError
@@ -163,10 +164,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.text(200, operations.PostChatMessageResponse$inboundSchema, {
-      ctype: "text/event-stream",
-    }),
-    M.json(202, operations.PostChatMessageResponse$inboundSchema),
+    M.text(200, types$.string(), { ctype: "text/event-stream" }),
     M.jsonErr([400, 401, 403, 404], errors.ErrorResponse$inboundSchema),
     M.jsonErr([500, 503], errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),

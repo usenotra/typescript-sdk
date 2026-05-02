@@ -136,6 +136,7 @@ run();
 
 * [listChats](docs/sdks/chats/README.md#listchats) - List chats
 * [createChat](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
+* [getChatByExternalChannel](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
 * [getChat](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
 * [postChatMessage](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
 
@@ -184,6 +185,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 - [`chatsCreateChat`](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
 - [`chatsGetChat`](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
+- [`chatsGetChatByExternalChannel`](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
 - [`chatsListChats`](docs/sdks/chats/README.md#listchats) - List chats
 - [`chatsPostChatMessage`](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
 - [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
@@ -338,8 +340,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 23 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 23 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 24 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 24 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
