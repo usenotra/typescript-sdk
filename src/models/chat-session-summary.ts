@@ -8,6 +8,10 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
+import {
+  ExternalChannelId,
+  ExternalChannelId$inboundSchema,
+} from "./external-channel-id.js";
 
 export type ChatSessionSummary = {
   chatId: string;
@@ -15,6 +19,7 @@ export type ChatSessionSummary = {
   createdAt: string;
   updatedAt: string;
   pinnedAt: string | null;
+  externalChannelId?: ExternalChannelId | null | undefined;
 };
 
 /** @internal */
@@ -27,6 +32,7 @@ export const ChatSessionSummary$inboundSchema: z.ZodMiniType<
   createdAt: types.string(),
   updatedAt: types.string(),
   pinnedAt: types.nullable(types.string()),
+  externalChannelId: z.optional(z.nullable(ExternalChannelId$inboundSchema)),
 });
 
 export function chatSessionSummaryFromJSON(

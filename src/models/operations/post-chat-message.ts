@@ -4,21 +4,12 @@
  */
 
 import * as z from "zod/v4-mini";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import * as types from "../../types/primitives.js";
-import { smartUnion } from "../../types/smart-union.js";
-import { SDKValidationError } from "../errors/sdk-validation-error.js";
 import * as models from "../index.js";
 
 export type PostChatMessageRequest = {
   chatId: string;
   body: models.SendChatMessageRequest;
 };
-
-export type PostChatMessageResponse =
-  | models.SendChatMessageQueuedResponse
-  | string;
 
 /** @internal */
 export type PostChatMessageRequest$Outbound = {
@@ -40,24 +31,5 @@ export function postChatMessageRequestToJSON(
 ): string {
   return JSON.stringify(
     PostChatMessageRequest$outboundSchema.parse(postChatMessageRequest),
-  );
-}
-
-/** @internal */
-export const PostChatMessageResponse$inboundSchema: z.ZodMiniType<
-  PostChatMessageResponse,
-  unknown
-> = smartUnion([
-  models.SendChatMessageQueuedResponse$inboundSchema,
-  types.string(),
-]);
-
-export function postChatMessageResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<PostChatMessageResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostChatMessageResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostChatMessageResponse' from JSON`,
   );
 }
