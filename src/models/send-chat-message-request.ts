@@ -5,6 +5,11 @@
 
 import * as z from "zod/v4-mini";
 import { ClosedEnum } from "../types/enums.js";
+import {
+  ExternalChannelId,
+  ExternalChannelId$Outbound,
+  ExternalChannelId$outboundSchema,
+} from "./external-channel-id.js";
 
 export const Model = {
   Auto: "auto",
@@ -45,6 +50,7 @@ export type SendChatMessageRequest = {
   thinkingLevel?: ThinkingLevel | undefined;
   timezone?: string | undefined;
   context?: Array<ContextGithubRepo | ContextLinearTeam> | undefined;
+  externalChannelId?: ExternalChannelId | null | undefined;
 };
 
 /** @internal */
@@ -132,6 +138,7 @@ export type SendChatMessageRequest$Outbound = {
   context?:
     | Array<ContextGithubRepo$Outbound | ContextLinearTeam$Outbound>
     | undefined;
+  externalChannelId?: ExternalChannelId$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -152,6 +159,7 @@ export const SendChatMessageRequest$outboundSchema: z.ZodMiniType<
       ),
     ])),
   ),
+  externalChannelId: z.optional(z.nullable(ExternalChannelId$outboundSchema)),
 });
 
 export function sendChatMessageRequestToJSON(

@@ -16,10 +16,11 @@ let value: ChatSessionSummary = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `chatId`           | *string*           | :heavy_check_mark: | N/A                |
-| `title`            | *string*           | :heavy_check_mark: | N/A                |
-| `createdAt`        | *string*           | :heavy_check_mark: | N/A                |
-| `updatedAt`        | *string*           | :heavy_check_mark: | N/A                |
-| `pinnedAt`         | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `chatId`                                                     | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `title`                                                      | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `createdAt`                                                  | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `updatedAt`                                                  | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `pinnedAt`                                                   | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `externalChannelId`                                          | [models.ExternalChannelId](../models/external-channel-id.md) | :heavy_minus_sign:                                           | N/A                                                          |

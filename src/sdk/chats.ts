@@ -4,6 +4,7 @@
  */
 
 import { chatsCreateChat } from "../funcs/chats-create-chat.js";
+import { chatsGetChatByExternalChannel } from "../funcs/chats-get-chat-by-external-channel.js";
 import { chatsGetChat } from "../funcs/chats-get-chat.js";
 import { chatsListChats } from "../funcs/chats-list-chats.js";
 import { chatsPostChatMessage } from "../funcs/chats-post-chat-message.js";
@@ -31,8 +32,22 @@ export class Chats extends ClientSDK {
   async createChat(
     request: models.SendChatMessageRequest,
     options?: RequestOptions,
-  ): Promise<operations.CreateChatResponse> {
+  ): Promise<string> {
     return unwrapAsync(chatsCreateChat(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a chat by external channel id
+   */
+  async getChatByExternalChannel(
+    request: operations.GetChatByExternalChannelRequest,
+    options?: RequestOptions,
+  ): Promise<models.ChatSessionSummary> {
+    return unwrapAsync(chatsGetChatByExternalChannel(
       this,
       request,
       options,
@@ -59,7 +74,7 @@ export class Chats extends ClientSDK {
   async postChatMessage(
     request: operations.PostChatMessageRequest,
     options?: RequestOptions,
-  ): Promise<operations.PostChatMessageResponse> {
+  ): Promise<string> {
     return unwrapAsync(chatsPostChatMessage(
       this,
       request,
