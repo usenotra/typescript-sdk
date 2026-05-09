@@ -1,11 +1,11 @@
-# UpdateScheduleLookbackWindowResponse
+# UpdateScheduleLookbackWindow
 
 ## Example Usage
 
 ```typescript
-import { UpdateScheduleLookbackWindowResponse } from "@usenotra/sdk/models/operations";
+import { UpdateScheduleLookbackWindow } from "@usenotra/sdk/models/operations";
 
-let value: UpdateScheduleLookbackWindowResponse = "last_30_days";
+let value: UpdateScheduleLookbackWindow = "yesterday";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
