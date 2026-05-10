@@ -1,11 +1,11 @@
-# UpdateScheduleOutputTypeResponse
+# UpdateScheduleOutputType
 
 ## Example Usage
 
 ```typescript
-import { UpdateScheduleOutputTypeResponse } from "@usenotra/sdk/models/operations";
+import { UpdateScheduleOutputType } from "@usenotra/sdk/models/operations";
 
-let value: UpdateScheduleOutputTypeResponse = "changelog";
+let value: UpdateScheduleOutputType = "blog_post";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
