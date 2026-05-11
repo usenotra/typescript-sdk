@@ -8,7 +8,7 @@ import { GetPostGenerationJob } from "@usenotra/sdk/models/operations";
 let value: GetPostGenerationJob = {
   id: "<id>",
   organizationId: "<id>",
-  status: "running",
+  status: "completed",
   contentType: "changelog",
   lookbackWindow: "last_30_days",
   repositoryIds: [

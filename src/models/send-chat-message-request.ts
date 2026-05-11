@@ -17,6 +17,8 @@ export const Model = {
   AnthropicClaudeSonnet46: "anthropic/claude-sonnet-4.6",
   AnthropicClaudeHaiku45: "anthropic/claude-haiku-4.5",
   OpenaiGpt54: "openai/gpt-5.4",
+  OpenaiGpt55: "openai/gpt-5.5",
+  MoonshotaiKimiK26: "moonshotai/kimi-k2.6",
 } as const;
 export type Model = ClosedEnum<typeof Model>;
 

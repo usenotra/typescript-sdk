@@ -7,5 +7,6 @@ export * from "./chat-session-summary.js";
 export * from "./external-channel-id.js";
 export * from "./get-chat-response.js";
 export * from "./get-chats-response.js";
+export * from "./patch-schedule-request.js";
 export * from "./security.js";
 export * from "./send-chat-message-request.js";
