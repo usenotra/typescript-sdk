@@ -1,12 +1,15 @@
-# UpdateScheduleTargetsRequest
+# UpdateScheduleTargets
 
 ## Example Usage
 
 ```typescript
-import { UpdateScheduleTargetsRequest } from "@usenotra/sdk/models/operations";
+import { UpdateScheduleTargets } from "@usenotra/sdk/models/operations";
 
-let value: UpdateScheduleTargetsRequest = {
-  repositoryIds: [],
+let value: UpdateScheduleTargets = {
+  repositoryIds: [
+    "<value 1>",
+    "<value 2>",
+  ],
 };
 ```
 

@@ -11,7 +11,7 @@ let value: GetPostGenerationResponse = {
   job: {
     id: "<id>",
     organizationId: "<id>",
-    status: "failed",
+    status: "skipped",
     contentType: "twitter_post",
     lookbackWindow: "last_14_days",
     repositoryIds: [
@@ -32,7 +32,7 @@ let value: GetPostGenerationResponse = {
     {
       id: "<id>",
       jobId: "<id>",
-      type: "completed",
+      type: "failed",
       message: "<value>",
       createdAt: "1730540074934",
       metadata: {

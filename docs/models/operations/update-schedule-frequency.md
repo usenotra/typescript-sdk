@@ -1,11 +1,11 @@
-# UpdateScheduleFrequencyResponse
+# UpdateScheduleFrequency
 
 ## Example Usage
 
 ```typescript
-import { UpdateScheduleFrequencyResponse } from "@usenotra/sdk/models/operations";
+import { UpdateScheduleFrequency } from "@usenotra/sdk/models/operations";
 
-let value: UpdateScheduleFrequencyResponse = "daily";
+let value: UpdateScheduleFrequency = "weekly";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
