@@ -13,8 +13,8 @@ let value: UpdateScheduleRequest = {
     sourceConfig: {
       cron: {
         frequency: "monthly",
-        hour: 277395,
-        minute: 829417,
+        hour: 253345,
+        minute: 762301,
       },
     },
     targets: {
@@ -22,7 +22,7 @@ let value: UpdateScheduleRequest = {
         "<value 1>",
       ],
     },
-    outputType: "twitter_post",
+    outputType: "linkedin_post",
     enabled: true,
   },
 };
@@ -30,7 +30,7 @@ let value: UpdateScheduleRequest = {
 
 ## Fields
 
-| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     | Example                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `scheduleId`                                                                                    | *string*                                                                                        | :heavy_check_mark:                                                                              | N/A                                                                                             | sched_123                                                                                       |
-| `body`                                                                                          | [operations.UpdateScheduleRequestBody](../../models/operations/update-schedule-request-body.md) | :heavy_check_mark:                                                                              | N/A                                                                                             |                                                                                                 |
+| Field                                                                 | Type                                                                  | Required                                                              | Description                                                           | Example                                                               |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `scheduleId`                                                          | *string*                                                              | :heavy_check_mark:                                                    | N/A                                                                   | sched_123                                                             |
+| `body`                                                                | [models.PatchScheduleRequest](../../models/patch-schedule-request.md) | :heavy_check_mark:                                                    | N/A                                                                   |                                                                       |

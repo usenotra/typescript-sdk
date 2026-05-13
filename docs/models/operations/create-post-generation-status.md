@@ -13,5 +13,5 @@ let value: CreatePostGenerationStatus = "queued";
 ## Values
 
 ```typescript
-"queued" | "running" | "completed" | "failed" | Unrecognized<string>
+"queued" | "running" | "completed" | "failed" | "skipped" | Unrecognized<string>
 ```

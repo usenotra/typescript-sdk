@@ -1,15 +1,14 @@
-# CreateScheduleTargetsRequest
+# TargetsRequest
 
 ## Example Usage
 
 ```typescript
-import { CreateScheduleTargetsRequest } from "@usenotra/sdk/models/operations";
+import { TargetsRequest } from "@usenotra/sdk/models/operations";
 
-let value: CreateScheduleTargetsRequest = {
+let value: TargetsRequest = {
   repositoryIds: [
     "<value 1>",
     "<value 2>",
-    "<value 3>",
   ],
 };
 ```
