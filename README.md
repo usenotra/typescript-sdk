@@ -165,6 +165,14 @@ run();
 * [deleteSchedule](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 * [updateSchedule](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
 
+### [Skills](docs/sdks/skills/README.md)
+
+* [listSkills](docs/sdks/skills/README.md#listskills) - List skills
+* [createSkill](docs/sdks/skills/README.md#createskill) - Create a skill
+* [getSkill](docs/sdks/skills/README.md#getskill) - Get a single skill
+* [deleteSkill](docs/sdks/skills/README.md#deleteskill) - Delete a skill
+* [patchSkill](docs/sdks/skills/README.md#patchskill) - Update a skill
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -207,6 +215,11 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 - [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
 - [`schedulesUpdateSchedule`](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
+- [`skillsCreateSkill`](docs/sdks/skills/README.md#createskill) - Create a skill
+- [`skillsDeleteSkill`](docs/sdks/skills/README.md#deleteskill) - Delete a skill
+- [`skillsGetSkill`](docs/sdks/skills/README.md#getskill) - Get a single skill
+- [`skillsListSkills`](docs/sdks/skills/README.md#listskills) - List skills
+- [`skillsPatchSkill`](docs/sdks/skills/README.md#patchskill) - Update a skill
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -340,8 +353,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 24 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 24 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 29 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 29 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

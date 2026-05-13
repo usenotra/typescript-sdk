@@ -7,6 +7,7 @@ import { ClientSDK } from "../lib/sdks.js";
 import { Chats } from "./chats.js";
 import { Content } from "./content.js";
 import { Schedules } from "./schedules.js";
+import { Skills } from "./skills.js";
 
 export class Notra extends ClientSDK {
   private _content?: Content;
@@ -22,5 +23,10 @@ export class Notra extends ClientSDK {
   private _chats?: Chats;
   get chats(): Chats {
     return (this._chats ??= new Chats(this._options));
+  }
+
+  private _skills?: Skills;
+  get skills(): Skills {
+    return (this._skills ??= new Skills(this._options));
   }
 }
