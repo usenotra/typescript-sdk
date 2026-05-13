@@ -20,6 +20,7 @@ export const GetPostGenerationStatus = {
   Running: "running",
   Completed: "completed",
   Failed: "failed",
+  Skipped: "skipped",
 } as const;
 export type GetPostGenerationStatus = OpenEnum<typeof GetPostGenerationStatus>;
 
@@ -76,6 +77,7 @@ export const Type = {
   PostCreated: "post_created",
   Completed: "completed",
   Failed: "failed",
+  Skipped: "skipped",
 } as const;
 export type Type = OpenEnum<typeof Type>;
 

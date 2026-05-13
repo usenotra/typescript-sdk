@@ -5,7 +5,7 @@
 ```typescript
 import { Type } from "@usenotra/sdk/models/operations";
 
-let value: Type = "queued";
+let value: Type = "workflow_triggered";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: Type = "queued";
 ## Values
 
 ```typescript
-"queued" | "workflow_triggered" | "running" | "fetching_repositories" | "generating_content" | "post_created" | "completed" | "failed" | Unrecognized<string>
+"queued" | "workflow_triggered" | "running" | "fetching_repositories" | "generating_content" | "post_created" | "completed" | "failed" | "skipped" | Unrecognized<string>
 ```

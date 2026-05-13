@@ -108,6 +108,7 @@ export const CreatePostGenerationStatus = {
   Running: "running",
   Completed: "completed",
   Failed: "failed",
+  Skipped: "skipped",
 } as const;
 export type CreatePostGenerationStatus = OpenEnum<
   typeof CreatePostGenerationStatus

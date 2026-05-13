@@ -10,172 +10,92 @@ import { ClosedEnum, OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
-
-export const UpdateScheduleSourceTypeRequest = {
-  Cron: "cron",
-} as const;
-export type UpdateScheduleSourceTypeRequest = ClosedEnum<
-  typeof UpdateScheduleSourceTypeRequest
->;
-
-export const UpdateScheduleFrequencyRequest = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
-} as const;
-export type UpdateScheduleFrequencyRequest = ClosedEnum<
-  typeof UpdateScheduleFrequencyRequest
->;
-
-export type UpdateScheduleCronRequest = {
-  frequency: UpdateScheduleFrequencyRequest;
-  hour: number;
-  minute: number;
-  dayOfWeek?: number | undefined;
-  dayOfMonth?: number | undefined;
-};
-
-export type UpdateScheduleSourceConfigRequest = {
-  cron: UpdateScheduleCronRequest;
-};
-
-export type UpdateScheduleTargetsRequest = {
-  repositoryIds: Array<string>;
-};
-
-export const UpdateScheduleOutputTypeRequest = {
-  Changelog: "changelog",
-  BlogPost: "blog_post",
-  LinkedinPost: "linkedin_post",
-  TwitterPost: "twitter_post",
-} as const;
-export type UpdateScheduleOutputTypeRequest = ClosedEnum<
-  typeof UpdateScheduleOutputTypeRequest
->;
-
-export const UpdateSchedulePublishDestinationRequest = {
-  Webflow: "webflow",
-  Framer: "framer",
-  Custom: "custom",
-} as const;
-export type UpdateSchedulePublishDestinationRequest = ClosedEnum<
-  typeof UpdateSchedulePublishDestinationRequest
->;
-
-export type UpdateScheduleOutputConfigRequest = {
-  publishDestination?: UpdateSchedulePublishDestinationRequest | undefined;
-  brandVoiceId?: string | undefined;
-};
-
-export const UpdateScheduleLookbackWindowRequest = {
-  CurrentDay: "current_day",
-  Yesterday: "yesterday",
-  Last7Days: "last_7_days",
-  Last14Days: "last_14_days",
-  Last30Days: "last_30_days",
-} as const;
-export type UpdateScheduleLookbackWindowRequest = ClosedEnum<
-  typeof UpdateScheduleLookbackWindowRequest
->;
-
-export type UpdateScheduleRequestBody = {
-  name: string;
-  sourceType: UpdateScheduleSourceTypeRequest;
-  sourceConfig: UpdateScheduleSourceConfigRequest;
-  targets: UpdateScheduleTargetsRequest;
-  outputType: UpdateScheduleOutputTypeRequest;
-  outputConfig?: UpdateScheduleOutputConfigRequest | undefined;
-  enabled: boolean;
-  autoPublish?: boolean | undefined;
-  lookbackWindow?: UpdateScheduleLookbackWindowRequest | undefined;
-};
+import * as models from "../index.js";
 
 export type UpdateScheduleRequest = {
   scheduleId: string;
-  body: UpdateScheduleRequestBody;
+  body: models.PatchScheduleRequest;
 };
 
-export const UpdateScheduleSourceTypeResponse = {
+export const UpdateScheduleSourceType = {
   Cron: "cron",
 } as const;
-export type UpdateScheduleSourceTypeResponse = ClosedEnum<
-  typeof UpdateScheduleSourceTypeResponse
+export type UpdateScheduleSourceType = ClosedEnum<
+  typeof UpdateScheduleSourceType
 >;
 
-export const UpdateScheduleFrequencyResponse = {
+export const UpdateScheduleFrequency = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
 } as const;
-export type UpdateScheduleFrequencyResponse = OpenEnum<
-  typeof UpdateScheduleFrequencyResponse
->;
+export type UpdateScheduleFrequency = OpenEnum<typeof UpdateScheduleFrequency>;
 
-export type UpdateScheduleCronResponse = {
-  frequency: UpdateScheduleFrequencyResponse;
+export type UpdateScheduleCron = {
+  frequency: UpdateScheduleFrequency;
   hour: number;
   minute: number;
   dayOfWeek?: number | undefined;
   dayOfMonth?: number | undefined;
 };
 
-export type UpdateScheduleSourceConfigResponse = {
-  cron: UpdateScheduleCronResponse;
+export type UpdateScheduleSourceConfig = {
+  cron: UpdateScheduleCron;
 };
 
-export type UpdateScheduleTargetsResponse = {
+export type UpdateScheduleTargets = {
   repositoryIds: Array<string>;
 };
 
-export const UpdateScheduleOutputTypeResponse = {
+export const UpdateScheduleOutputType = {
   Changelog: "changelog",
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
 } as const;
-export type UpdateScheduleOutputTypeResponse = OpenEnum<
-  typeof UpdateScheduleOutputTypeResponse
+export type UpdateScheduleOutputType = OpenEnum<
+  typeof UpdateScheduleOutputType
 >;
 
-export const UpdateSchedulePublishDestinationResponse = {
+export const UpdateSchedulePublishDestination = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
-export type UpdateSchedulePublishDestinationResponse = OpenEnum<
-  typeof UpdateSchedulePublishDestinationResponse
+export type UpdateSchedulePublishDestination = OpenEnum<
+  typeof UpdateSchedulePublishDestination
 >;
 
-export type UpdateScheduleOutputConfigResponse = {
-  publishDestination?: UpdateSchedulePublishDestinationResponse | undefined;
+export type UpdateScheduleOutputConfig = {
+  publishDestination?: UpdateSchedulePublishDestination | undefined;
   brandVoiceId?: string | undefined;
 };
 
-export const UpdateScheduleLookbackWindowResponse = {
+export const UpdateScheduleLookbackWindow = {
   CurrentDay: "current_day",
   Yesterday: "yesterday",
   Last7Days: "last_7_days",
   Last14Days: "last_14_days",
   Last30Days: "last_30_days",
 } as const;
-export type UpdateScheduleLookbackWindowResponse = OpenEnum<
-  typeof UpdateScheduleLookbackWindowResponse
+export type UpdateScheduleLookbackWindow = OpenEnum<
+  typeof UpdateScheduleLookbackWindow
 >;
 
 export type UpdateScheduleSchedule = {
   id: string;
   organizationId: string;
   name: string;
-  sourceType: UpdateScheduleSourceTypeResponse;
-  sourceConfig: UpdateScheduleSourceConfigResponse;
-  targets: UpdateScheduleTargetsResponse;
-  outputType: UpdateScheduleOutputTypeResponse;
-  outputConfig?: UpdateScheduleOutputConfigResponse | null | undefined;
+  sourceType: UpdateScheduleSourceType;
+  sourceConfig: UpdateScheduleSourceConfig;
+  targets: UpdateScheduleTargets;
+  outputType: UpdateScheduleOutputType;
+  outputConfig?: UpdateScheduleOutputConfig | null | undefined;
   enabled: boolean;
   autoPublish: boolean;
   createdAt: string;
   updatedAt: string;
-  lookbackWindow: UpdateScheduleLookbackWindowResponse;
+  lookbackWindow: UpdateScheduleLookbackWindow;
 };
 
 export type UpdateScheduleOrganization = {
@@ -194,179 +114,9 @@ export type UpdateScheduleResponse = {
 };
 
 /** @internal */
-export const UpdateScheduleSourceTypeRequest$outboundSchema: z.ZodMiniEnum<
-  typeof UpdateScheduleSourceTypeRequest
-> = z.enum(UpdateScheduleSourceTypeRequest);
-
-/** @internal */
-export const UpdateScheduleFrequencyRequest$outboundSchema: z.ZodMiniEnum<
-  typeof UpdateScheduleFrequencyRequest
-> = z.enum(UpdateScheduleFrequencyRequest);
-
-/** @internal */
-export type UpdateScheduleCronRequest$Outbound = {
-  frequency: string;
-  hour: number;
-  minute: number;
-  dayOfWeek?: number | undefined;
-  dayOfMonth?: number | undefined;
-};
-
-/** @internal */
-export const UpdateScheduleCronRequest$outboundSchema: z.ZodMiniType<
-  UpdateScheduleCronRequest$Outbound,
-  UpdateScheduleCronRequest
-> = z.object({
-  frequency: UpdateScheduleFrequencyRequest$outboundSchema,
-  hour: z.int(),
-  minute: z.int(),
-  dayOfWeek: z.optional(z.int()),
-  dayOfMonth: z.optional(z.int()),
-});
-
-export function updateScheduleCronRequestToJSON(
-  updateScheduleCronRequest: UpdateScheduleCronRequest,
-): string {
-  return JSON.stringify(
-    UpdateScheduleCronRequest$outboundSchema.parse(updateScheduleCronRequest),
-  );
-}
-
-/** @internal */
-export type UpdateScheduleSourceConfigRequest$Outbound = {
-  cron: UpdateScheduleCronRequest$Outbound;
-};
-
-/** @internal */
-export const UpdateScheduleSourceConfigRequest$outboundSchema: z.ZodMiniType<
-  UpdateScheduleSourceConfigRequest$Outbound,
-  UpdateScheduleSourceConfigRequest
-> = z.object({
-  cron: z.lazy(() => UpdateScheduleCronRequest$outboundSchema),
-});
-
-export function updateScheduleSourceConfigRequestToJSON(
-  updateScheduleSourceConfigRequest: UpdateScheduleSourceConfigRequest,
-): string {
-  return JSON.stringify(
-    UpdateScheduleSourceConfigRequest$outboundSchema.parse(
-      updateScheduleSourceConfigRequest,
-    ),
-  );
-}
-
-/** @internal */
-export type UpdateScheduleTargetsRequest$Outbound = {
-  repositoryIds: Array<string>;
-};
-
-/** @internal */
-export const UpdateScheduleTargetsRequest$outboundSchema: z.ZodMiniType<
-  UpdateScheduleTargetsRequest$Outbound,
-  UpdateScheduleTargetsRequest
-> = z.object({
-  repositoryIds: z.array(z.string()),
-});
-
-export function updateScheduleTargetsRequestToJSON(
-  updateScheduleTargetsRequest: UpdateScheduleTargetsRequest,
-): string {
-  return JSON.stringify(
-    UpdateScheduleTargetsRequest$outboundSchema.parse(
-      updateScheduleTargetsRequest,
-    ),
-  );
-}
-
-/** @internal */
-export const UpdateScheduleOutputTypeRequest$outboundSchema: z.ZodMiniEnum<
-  typeof UpdateScheduleOutputTypeRequest
-> = z.enum(UpdateScheduleOutputTypeRequest);
-
-/** @internal */
-export const UpdateSchedulePublishDestinationRequest$outboundSchema:
-  z.ZodMiniEnum<typeof UpdateSchedulePublishDestinationRequest> = z.enum(
-    UpdateSchedulePublishDestinationRequest,
-  );
-
-/** @internal */
-export type UpdateScheduleOutputConfigRequest$Outbound = {
-  publishDestination?: string | undefined;
-  brandVoiceId?: string | undefined;
-};
-
-/** @internal */
-export const UpdateScheduleOutputConfigRequest$outboundSchema: z.ZodMiniType<
-  UpdateScheduleOutputConfigRequest$Outbound,
-  UpdateScheduleOutputConfigRequest
-> = z.object({
-  publishDestination: z.optional(
-    UpdateSchedulePublishDestinationRequest$outboundSchema,
-  ),
-  brandVoiceId: z.optional(z.string()),
-});
-
-export function updateScheduleOutputConfigRequestToJSON(
-  updateScheduleOutputConfigRequest: UpdateScheduleOutputConfigRequest,
-): string {
-  return JSON.stringify(
-    UpdateScheduleOutputConfigRequest$outboundSchema.parse(
-      updateScheduleOutputConfigRequest,
-    ),
-  );
-}
-
-/** @internal */
-export const UpdateScheduleLookbackWindowRequest$outboundSchema: z.ZodMiniEnum<
-  typeof UpdateScheduleLookbackWindowRequest
-> = z.enum(UpdateScheduleLookbackWindowRequest);
-
-/** @internal */
-export type UpdateScheduleRequestBody$Outbound = {
-  name: string;
-  sourceType: string;
-  sourceConfig: UpdateScheduleSourceConfigRequest$Outbound;
-  targets: UpdateScheduleTargetsRequest$Outbound;
-  outputType: string;
-  outputConfig?: UpdateScheduleOutputConfigRequest$Outbound | undefined;
-  enabled: boolean;
-  autoPublish: boolean;
-  lookbackWindow: string;
-};
-
-/** @internal */
-export const UpdateScheduleRequestBody$outboundSchema: z.ZodMiniType<
-  UpdateScheduleRequestBody$Outbound,
-  UpdateScheduleRequestBody
-> = z.object({
-  name: z.string(),
-  sourceType: UpdateScheduleSourceTypeRequest$outboundSchema,
-  sourceConfig: z.lazy(() => UpdateScheduleSourceConfigRequest$outboundSchema),
-  targets: z.lazy(() => UpdateScheduleTargetsRequest$outboundSchema),
-  outputType: UpdateScheduleOutputTypeRequest$outboundSchema,
-  outputConfig: z.optional(
-    z.lazy(() => UpdateScheduleOutputConfigRequest$outboundSchema),
-  ),
-  enabled: z.boolean(),
-  autoPublish: z._default(z.boolean(), false),
-  lookbackWindow: z._default(
-    UpdateScheduleLookbackWindowRequest$outboundSchema,
-    "last_7_days",
-  ),
-});
-
-export function updateScheduleRequestBodyToJSON(
-  updateScheduleRequestBody: UpdateScheduleRequestBody,
-): string {
-  return JSON.stringify(
-    UpdateScheduleRequestBody$outboundSchema.parse(updateScheduleRequestBody),
-  );
-}
-
-/** @internal */
 export type UpdateScheduleRequest$Outbound = {
   scheduleId: string;
-  body: UpdateScheduleRequestBody$Outbound;
+  body: models.PatchScheduleRequest$Outbound;
 };
 
 /** @internal */
@@ -375,7 +125,7 @@ export const UpdateScheduleRequest$outboundSchema: z.ZodMiniType<
   UpdateScheduleRequest
 > = z.object({
   scheduleId: z.string(),
-  body: z.lazy(() => UpdateScheduleRequestBody$outboundSchema),
+  body: models.PatchScheduleRequest$outboundSchema,
 });
 
 export function updateScheduleRequestToJSON(
@@ -387,113 +137,112 @@ export function updateScheduleRequestToJSON(
 }
 
 /** @internal */
-export const UpdateScheduleSourceTypeResponse$inboundSchema: z.ZodMiniEnum<
-  typeof UpdateScheduleSourceTypeResponse
-> = z.enum(UpdateScheduleSourceTypeResponse);
+export const UpdateScheduleSourceType$inboundSchema: z.ZodMiniEnum<
+  typeof UpdateScheduleSourceType
+> = z.enum(UpdateScheduleSourceType);
 
 /** @internal */
-export const UpdateScheduleFrequencyResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleFrequencyResponse,
+export const UpdateScheduleFrequency$inboundSchema: z.ZodMiniType<
+  UpdateScheduleFrequency,
   unknown
-> = openEnums.inboundSchema(UpdateScheduleFrequencyResponse);
+> = openEnums.inboundSchema(UpdateScheduleFrequency);
 
 /** @internal */
-export const UpdateScheduleCronResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleCronResponse,
+export const UpdateScheduleCron$inboundSchema: z.ZodMiniType<
+  UpdateScheduleCron,
   unknown
 > = z.object({
-  frequency: UpdateScheduleFrequencyResponse$inboundSchema,
+  frequency: UpdateScheduleFrequency$inboundSchema,
   hour: types.number(),
   minute: types.number(),
   dayOfWeek: types.optional(types.number()),
   dayOfMonth: types.optional(types.number()),
 });
 
-export function updateScheduleCronResponseFromJSON(
+export function updateScheduleCronFromJSON(
   jsonString: string,
-): SafeParseResult<UpdateScheduleCronResponse, SDKValidationError> {
+): SafeParseResult<UpdateScheduleCron, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => UpdateScheduleCronResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UpdateScheduleCronResponse' from JSON`,
+    (x) => UpdateScheduleCron$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdateScheduleCron' from JSON`,
   );
 }
 
 /** @internal */
-export const UpdateScheduleSourceConfigResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleSourceConfigResponse,
+export const UpdateScheduleSourceConfig$inboundSchema: z.ZodMiniType<
+  UpdateScheduleSourceConfig,
   unknown
 > = z.object({
-  cron: z.lazy(() => UpdateScheduleCronResponse$inboundSchema),
+  cron: z.lazy(() => UpdateScheduleCron$inboundSchema),
 });
 
-export function updateScheduleSourceConfigResponseFromJSON(
+export function updateScheduleSourceConfigFromJSON(
   jsonString: string,
-): SafeParseResult<UpdateScheduleSourceConfigResponse, SDKValidationError> {
+): SafeParseResult<UpdateScheduleSourceConfig, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      UpdateScheduleSourceConfigResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UpdateScheduleSourceConfigResponse' from JSON`,
+    (x) => UpdateScheduleSourceConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdateScheduleSourceConfig' from JSON`,
   );
 }
 
 /** @internal */
-export const UpdateScheduleTargetsResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleTargetsResponse,
+export const UpdateScheduleTargets$inboundSchema: z.ZodMiniType<
+  UpdateScheduleTargets,
   unknown
 > = z.object({
   repositoryIds: z.array(types.string()),
 });
 
-export function updateScheduleTargetsResponseFromJSON(
+export function updateScheduleTargetsFromJSON(
   jsonString: string,
-): SafeParseResult<UpdateScheduleTargetsResponse, SDKValidationError> {
+): SafeParseResult<UpdateScheduleTargets, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => UpdateScheduleTargetsResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UpdateScheduleTargetsResponse' from JSON`,
+    (x) => UpdateScheduleTargets$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdateScheduleTargets' from JSON`,
   );
 }
 
 /** @internal */
-export const UpdateScheduleOutputTypeResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleOutputTypeResponse,
+export const UpdateScheduleOutputType$inboundSchema: z.ZodMiniType<
+  UpdateScheduleOutputType,
   unknown
-> = openEnums.inboundSchema(UpdateScheduleOutputTypeResponse);
+> = openEnums.inboundSchema(UpdateScheduleOutputType);
 
 /** @internal */
-export const UpdateSchedulePublishDestinationResponse$inboundSchema:
-  z.ZodMiniType<UpdateSchedulePublishDestinationResponse, unknown> = openEnums
-    .inboundSchema(UpdateSchedulePublishDestinationResponse);
+export const UpdateSchedulePublishDestination$inboundSchema: z.ZodMiniType<
+  UpdateSchedulePublishDestination,
+  unknown
+> = openEnums.inboundSchema(UpdateSchedulePublishDestination);
 
 /** @internal */
-export const UpdateScheduleOutputConfigResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleOutputConfigResponse,
+export const UpdateScheduleOutputConfig$inboundSchema: z.ZodMiniType<
+  UpdateScheduleOutputConfig,
   unknown
 > = z.object({
   publishDestination: types.optional(
-    UpdateSchedulePublishDestinationResponse$inboundSchema,
+    UpdateSchedulePublishDestination$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
 });
 
-export function updateScheduleOutputConfigResponseFromJSON(
+export function updateScheduleOutputConfigFromJSON(
   jsonString: string,
-): SafeParseResult<UpdateScheduleOutputConfigResponse, SDKValidationError> {
+): SafeParseResult<UpdateScheduleOutputConfig, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      UpdateScheduleOutputConfigResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UpdateScheduleOutputConfigResponse' from JSON`,
+    (x) => UpdateScheduleOutputConfig$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdateScheduleOutputConfig' from JSON`,
   );
 }
 
 /** @internal */
-export const UpdateScheduleLookbackWindowResponse$inboundSchema: z.ZodMiniType<
-  UpdateScheduleLookbackWindowResponse,
+export const UpdateScheduleLookbackWindow$inboundSchema: z.ZodMiniType<
+  UpdateScheduleLookbackWindow,
   unknown
-> = openEnums.inboundSchema(UpdateScheduleLookbackWindowResponse);
+> = openEnums.inboundSchema(UpdateScheduleLookbackWindow);
 
 /** @internal */
 export const UpdateScheduleSchedule$inboundSchema: z.ZodMiniType<
@@ -503,18 +252,18 @@ export const UpdateScheduleSchedule$inboundSchema: z.ZodMiniType<
   id: types.string(),
   organizationId: types.string(),
   name: types.string(),
-  sourceType: UpdateScheduleSourceTypeResponse$inboundSchema,
-  sourceConfig: z.lazy(() => UpdateScheduleSourceConfigResponse$inboundSchema),
-  targets: z.lazy(() => UpdateScheduleTargetsResponse$inboundSchema),
-  outputType: UpdateScheduleOutputTypeResponse$inboundSchema,
+  sourceType: UpdateScheduleSourceType$inboundSchema,
+  sourceConfig: z.lazy(() => UpdateScheduleSourceConfig$inboundSchema),
+  targets: z.lazy(() => UpdateScheduleTargets$inboundSchema),
+  outputType: UpdateScheduleOutputType$inboundSchema,
   outputConfig: z.optional(
-    z.nullable(z.lazy(() => UpdateScheduleOutputConfigResponse$inboundSchema)),
+    z.nullable(z.lazy(() => UpdateScheduleOutputConfig$inboundSchema)),
   ),
   enabled: types.boolean(),
   autoPublish: types.boolean(),
   createdAt: types.string(),
   updatedAt: types.string(),
-  lookbackWindow: UpdateScheduleLookbackWindowResponse$inboundSchema,
+  lookbackWindow: UpdateScheduleLookbackWindow$inboundSchema,
 });
 
 export function updateScheduleScheduleFromJSON(

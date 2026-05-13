@@ -8,7 +8,7 @@ import { CreatePostGenerationJob } from "@usenotra/sdk/models/operations";
 let value: CreatePostGenerationJob = {
   id: "<id>",
   organizationId: "<id>",
-  status: "running",
+  status: "completed",
   contentType: "blog_post",
   lookbackWindow: "last_7_days",
   repositoryIds: [],
