@@ -4,9 +4,18 @@
  */
 
 export * from "./chat-session-summary.js";
+export * from "./create-skill-request.js";
+export * from "./create-skill-response.js";
+export * from "./delete-skill-response.js";
 export * from "./external-channel-id.js";
 export * from "./get-chat-response.js";
 export * from "./get-chats-response.js";
+export * from "./list-skills-response.js";
 export * from "./patch-schedule-request.js";
+export * from "./patch-skill-request.js";
+export * from "./patch-skill-response.js";
 export * from "./security.js";
 export * from "./send-chat-message-request.js";
+export * from "./skill-response.js";
+export * from "./skill-summary.js";
+export * from "./skill.js";
