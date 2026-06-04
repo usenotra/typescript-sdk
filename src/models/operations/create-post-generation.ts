@@ -18,6 +18,7 @@ export const ContentTypeRequest = {
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
 export type ContentTypeRequest = ClosedEnum<typeof ContentTypeRequest>;
 
@@ -119,6 +120,7 @@ export const CreatePostGenerationContentTypeResponse = {
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
 export type CreatePostGenerationContentTypeResponse = OpenEnum<
   typeof CreatePostGenerationContentTypeResponse
