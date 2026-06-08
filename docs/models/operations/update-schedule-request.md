@@ -22,7 +22,7 @@ let value: UpdateScheduleRequest = {
         "<value 1>",
       ],
     },
-    outputType: "linkedin_post",
+    outputType: "twitter_post",
     enabled: true,
   },
 };
