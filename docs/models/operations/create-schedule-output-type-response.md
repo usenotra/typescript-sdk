@@ -5,7 +5,7 @@
 ```typescript
 import { CreateScheduleOutputTypeResponse } from "@usenotra/sdk/models/operations";
 
-let value: CreateScheduleOutputTypeResponse = "linkedin_post";
+let value: CreateScheduleOutputTypeResponse = "twitter_post";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: CreateScheduleOutputTypeResponse = "linkedin_post";
 ## Values
 
 ```typescript
-"changelog" | "blog_post" | "linkedin_post" | "twitter_post" | Unrecognized<string>
+"changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image" | Unrecognized<string>
 ```
