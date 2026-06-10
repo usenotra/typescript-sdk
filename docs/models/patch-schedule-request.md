@@ -20,7 +20,7 @@ let value: PatchScheduleRequest = {
       "<value 1>",
     ],
   },
-  outputType: "twitter_post",
+  outputType: "image",
   enabled: true,
 };
 ```
