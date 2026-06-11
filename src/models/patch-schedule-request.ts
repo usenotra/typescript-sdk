@@ -39,6 +39,7 @@ export const OutputType = {
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
 export type OutputType = ClosedEnum<typeof OutputType>;
 
