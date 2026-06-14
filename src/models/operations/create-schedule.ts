@@ -44,6 +44,7 @@ export const OutputTypeRequest = {
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
 export type OutputTypeRequest = ClosedEnum<typeof OutputTypeRequest>;
 
@@ -121,6 +122,7 @@ export const CreateScheduleOutputTypeResponse = {
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
 export type CreateScheduleOutputTypeResponse = OpenEnum<
   typeof CreateScheduleOutputTypeResponse

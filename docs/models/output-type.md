@@ -5,11 +5,11 @@
 ```typescript
 import { OutputType } from "@usenotra/sdk/models";
 
-let value: OutputType = "linkedin_post";
+let value: OutputType = "twitter_post";
 ```
 
 ## Values
 
 ```typescript
-"changelog" | "blog_post" | "linkedin_post" | "twitter_post"
+"changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image"
 ```
