@@ -23,7 +23,7 @@ let value: UpdateScheduleSchedule = {
       "<value 2>",
     ],
   },
-  outputType: "twitter_post",
+  outputType: "image",
   enabled: true,
   autoPublish: true,
   createdAt: "1732700236463",
