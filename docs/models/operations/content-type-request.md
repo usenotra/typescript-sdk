@@ -11,5 +11,5 @@ let value: ContentTypeRequest = "blog_post";
 ## Values
 
 ```typescript
-"changelog" | "blog_post" | "linkedin_post" | "twitter_post"
+"changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image"
 ```
