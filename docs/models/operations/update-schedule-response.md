@@ -26,7 +26,7 @@ let value: UpdateScheduleResponse = {
         "<value 2>",
       ],
     },
-    outputType: "twitter_post",
+    outputType: "image",
     enabled: true,
     autoPublish: true,
     createdAt: "1725338290475",
