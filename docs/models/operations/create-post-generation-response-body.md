@@ -18,7 +18,7 @@ let value: CreatePostGenerationResponseBody = {
     id: "<id>",
     organizationId: "<id>",
     status: "queued",
-    contentType: "blog_post",
+    contentType: "linkedin_post",
     lookbackWindow: "current_day",
     repositoryIds: [
       "<value 1>",
