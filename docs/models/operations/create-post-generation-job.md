@@ -9,7 +9,7 @@ let value: CreatePostGenerationJob = {
   id: "<id>",
   organizationId: "<id>",
   status: "completed",
-  contentType: "blog_post",
+  contentType: "linkedin_post",
   lookbackWindow: "last_7_days",
   repositoryIds: [],
   brandVoiceId: "<id>",
