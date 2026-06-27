@@ -8,8 +8,8 @@ import { SourceConfig } from "@usenotra/sdk/models";
 let value: SourceConfig = {
   cron: {
     frequency: "monthly",
-    hour: 253345,
-    minute: 762301,
+    hour: 140529,
+    minute: 873438,
   },
 };
 ```
