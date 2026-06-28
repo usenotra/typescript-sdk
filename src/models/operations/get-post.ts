@@ -22,6 +22,16 @@ export type GetPostOrganization = {
   logo: string | null;
 };
 
+export const GetPostContentType = {
+  Changelog: "changelog",
+  LinkedinPost: "linkedin_post",
+  TwitterPost: "twitter_post",
+  BlogPost: "blog_post",
+  InvestorUpdate: "investor_update",
+  Image: "image",
+} as const;
+export type GetPostContentType = OpenEnum<typeof GetPostContentType>;
+
 export const GetPostStatus = {
   Draft: "draft",
   Published: "published",
@@ -32,10 +42,24 @@ export type GetPostPost = {
   id: string;
   title: string;
   slug: string | null;
+  /**
+   * Rendered HTML for text posts. For image posts, this is the public CDN URL of the rendered image.
+   */
   content: string;
-  markdown: string;
+  /**
+   * Public CDN URL of the generated HTML artifact for image posts. Null for non-image posts.
+   */
+  htmlUrl: string | null;
+  /**
+   * Markdown source for text posts. Null for image posts.
+   */
+  markdown: string | null;
+  /**
+   * Legacy inline generated HTML for image posts. New generated image HTML is stored as htmlUrl. Null for non-image posts.
+   */
+  rawHtml: string | null;
   recommendations: string | null;
-  contentType: string;
+  contentType: GetPostContentType;
   sourceMetadata?: any | undefined;
   status: GetPostStatus;
   createdAt: string;
@@ -89,6 +113,12 @@ export function getPostOrganizationFromJSON(
 }
 
 /** @internal */
+export const GetPostContentType$inboundSchema: z.ZodMiniType<
+  GetPostContentType,
+  unknown
+> = openEnums.inboundSchema(GetPostContentType);
+
+/** @internal */
 export const GetPostStatus$inboundSchema: z.ZodMiniType<
   GetPostStatus,
   unknown
@@ -101,9 +131,11 @@ export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
     title: types.string(),
     slug: types.nullable(types.string()),
     content: types.string(),
-    markdown: types.string(),
+    htmlUrl: types.nullable(types.string()),
+    markdown: types.nullable(types.string()),
+    rawHtml: types.nullable(types.string()),
     recommendations: types.nullable(types.string()),
-    contentType: types.string(),
+    contentType: GetPostContentType$inboundSchema,
     sourceMetadata: types.optional(z.any()),
     status: GetPostStatus$inboundSchema,
     createdAt: types.string(),

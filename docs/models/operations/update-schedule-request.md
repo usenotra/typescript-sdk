@@ -13,16 +13,18 @@ let value: UpdateScheduleRequest = {
     sourceConfig: {
       cron: {
         frequency: "monthly",
-        hour: 253345,
-        minute: 762301,
+        hour: 140529,
+        minute: 873438,
       },
     },
     targets: {
       repositoryIds: [
         "<value 1>",
+        "<value 2>",
+        "<value 3>",
       ],
     },
-    outputType: "linkedin_post",
+    outputType: "image",
     enabled: true,
   },
 };
