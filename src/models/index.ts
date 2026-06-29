@@ -14,6 +14,7 @@ export * from "./list-skills-response.js";
 export * from "./patch-schedule-request.js";
 export * from "./patch-skill-request.js";
 export * from "./patch-skill-response.js";
+export * from "./public-status-response.js";
 export * from "./security.js";
 export * from "./send-chat-message-request.js";
 export * from "./skill-response.js";

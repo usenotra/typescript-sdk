@@ -18,6 +18,7 @@ export const ContentTypeRequest = {
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
 export type ContentTypeRequest = ClosedEnum<typeof ContentTypeRequest>;
 
@@ -114,14 +115,15 @@ export type CreatePostGenerationStatus = OpenEnum<
   typeof CreatePostGenerationStatus
 >;
 
-export const CreatePostGenerationContentTypeResponse = {
+export const CreatePostGenerationJobContentType = {
   Changelog: "changelog",
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
+  Image: "image",
 } as const;
-export type CreatePostGenerationContentTypeResponse = OpenEnum<
-  typeof CreatePostGenerationContentTypeResponse
+export type CreatePostGenerationJobContentType = OpenEnum<
+  typeof CreatePostGenerationJobContentType
 >;
 
 export const CreatePostGenerationJobLookbackWindow = {
@@ -147,7 +149,7 @@ export type CreatePostGenerationJob = {
   id: string;
   organizationId: string;
   status: CreatePostGenerationStatus;
-  contentType: CreatePostGenerationContentTypeResponse;
+  contentType: CreatePostGenerationJobContentType;
   lookbackWindow: CreatePostGenerationJobLookbackWindow;
   repositoryIds: Array<string>;
   brandVoiceId: string | null;
@@ -446,9 +448,10 @@ export const CreatePostGenerationStatus$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(CreatePostGenerationStatus);
 
 /** @internal */
-export const CreatePostGenerationContentTypeResponse$inboundSchema:
-  z.ZodMiniType<CreatePostGenerationContentTypeResponse, unknown> = openEnums
-    .inboundSchema(CreatePostGenerationContentTypeResponse);
+export const CreatePostGenerationJobContentType$inboundSchema: z.ZodMiniType<
+  CreatePostGenerationJobContentType,
+  unknown
+> = openEnums.inboundSchema(CreatePostGenerationJobContentType);
 
 /** @internal */
 export const CreatePostGenerationJobLookbackWindow$inboundSchema: z.ZodMiniType<
@@ -470,7 +473,7 @@ export const CreatePostGenerationJob$inboundSchema: z.ZodMiniType<
   id: types.string(),
   organizationId: types.string(),
   status: CreatePostGenerationStatus$inboundSchema,
-  contentType: CreatePostGenerationContentTypeResponse$inboundSchema,
+  contentType: CreatePostGenerationJobContentType$inboundSchema,
   lookbackWindow: CreatePostGenerationJobLookbackWindow$inboundSchema,
   repositoryIds: z.array(types.string()),
   brandVoiceId: types.nullable(types.string()),

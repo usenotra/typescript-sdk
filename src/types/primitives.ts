@@ -71,28 +71,6 @@ export function number(): z.ZodMiniType<number> {
   ]);
 }
 
-export function bigint(): z.ZodMiniType<bigint> {
-  return z.union([
-    z.pipe(
-      z.string(),
-      z.transform((x, ctx) => {
-        try {
-          return BigInt(x);
-        } catch (error) {
-          ctx.issues.push({
-            input: x,
-            code: "invalid_type",
-            expected: "bigint",
-            received: "string",
-          });
-          return z.NEVER;
-        }
-      }),
-    ),
-    zodDefaultToZeroValue(0n),
-  ]);
-}
-
 export function date(): z.ZodMiniType<Date> {
   return z.union([
     z.pipe(
@@ -125,10 +103,6 @@ export function literal<T extends string | number | boolean>(
   value: T,
 ): z.ZodMiniType<T> {
   return z.union([z.literal(value), zodDefaultToZeroValue(value)]);
-}
-
-export function literalBigInt<T extends bigint>(value: T): z.ZodMiniType<T> {
-  return z.pipe(z.literal(String(value)), z.transform((x) => BigInt(x))) as any;
 }
 
 export function optional<T extends z.ZodMiniType>(t: T) {
