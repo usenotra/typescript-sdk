@@ -37,6 +37,16 @@ export type UpdatePostOrganization = {
   logo: string | null;
 };
 
+export const UpdatePostContentType = {
+  Changelog: "changelog",
+  LinkedinPost: "linkedin_post",
+  TwitterPost: "twitter_post",
+  BlogPost: "blog_post",
+  InvestorUpdate: "investor_update",
+  Image: "image",
+} as const;
+export type UpdatePostContentType = OpenEnum<typeof UpdatePostContentType>;
+
 export const UpdatePostPostStatus = {
   Draft: "draft",
   Published: "published",
@@ -47,10 +57,24 @@ export type UpdatePostPost = {
   id: string;
   title: string;
   slug: string | null;
+  /**
+   * Rendered HTML for text posts. For image posts, this is the public CDN URL of the rendered image.
+   */
   content: string;
-  markdown: string;
+  /**
+   * Public CDN URL of the generated HTML artifact for image posts. Null for non-image posts.
+   */
+  htmlUrl: string | null;
+  /**
+   * Markdown source for text posts. Null for image posts.
+   */
+  markdown: string | null;
+  /**
+   * Legacy inline generated HTML for image posts. New generated image HTML is stored as htmlUrl. Null for non-image posts.
+   */
+  rawHtml: string | null;
   recommendations: string | null;
-  contentType: string;
+  contentType: UpdatePostContentType;
   sourceMetadata?: any | undefined;
   status: UpdatePostPostStatus;
   createdAt: string;
@@ -146,6 +170,12 @@ export function updatePostOrganizationFromJSON(
 }
 
 /** @internal */
+export const UpdatePostContentType$inboundSchema: z.ZodMiniType<
+  UpdatePostContentType,
+  unknown
+> = openEnums.inboundSchema(UpdatePostContentType);
+
+/** @internal */
 export const UpdatePostPostStatus$inboundSchema: z.ZodMiniType<
   UpdatePostPostStatus,
   unknown
@@ -160,9 +190,11 @@ export const UpdatePostPost$inboundSchema: z.ZodMiniType<
   title: types.string(),
   slug: types.nullable(types.string()),
   content: types.string(),
-  markdown: types.string(),
+  htmlUrl: types.nullable(types.string()),
+  markdown: types.nullable(types.string()),
+  rawHtml: types.nullable(types.string()),
   recommendations: types.nullable(types.string()),
-  contentType: types.string(),
+  contentType: UpdatePostContentType$inboundSchema,
   sourceMetadata: types.optional(z.any()),
   status: UpdatePostPostStatus$inboundSchema,
   createdAt: types.string(),

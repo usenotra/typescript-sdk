@@ -19,12 +19,14 @@ let value: UpdatePostResponseBody = {
     title: "<value>",
     slug: "<value>",
     content: "<value>",
+    htmlUrl: "https://every-gloom.info",
     markdown: "<value>",
+    rawHtml: "<value>",
     recommendations: "<value>",
-    contentType: "<value>",
+    contentType: "changelog",
     status: "published",
-    createdAt: "1711662898932",
-    updatedAt: "1735636079865",
+    createdAt: "1729551914321",
+    updatedAt: "1735639595190",
   },
 };
 ```
