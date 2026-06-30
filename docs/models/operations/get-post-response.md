@@ -19,12 +19,14 @@ let value: GetPostResponse = {
     title: "<value>",
     slug: "<value>",
     content: "<value>",
+    htmlUrl: "https://sweet-lady.net",
     markdown: "<value>",
+    rawHtml: null,
     recommendations: "<value>",
-    contentType: "<value>",
+    contentType: "twitter_post",
     status: "published",
-    createdAt: "1730359957430",
-    updatedAt: "1735647084124",
+    createdAt: "1726654645385",
+    updatedAt: "1735636543842",
   },
 };
 ```
