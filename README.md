@@ -10,7 +10,7 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 <!-- Start Summary [summary] -->
 ## Summary
 
-Notra API: OpenAPI schema for authenticated content endpoints.
+Notra API: OpenAPI schema for Notra content endpoints. Use GET /v1/status for public reachability. Error responses include recovery guidance.
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -86,7 +86,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({});
+  const result = await notra.discovery.getPublicApiStatus();
 
   console.log(result);
 }
@@ -116,7 +116,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({});
+  const result = await notra.discovery.getPublicApiStatus();
 
   console.log(result);
 }
@@ -157,6 +157,10 @@ run();
 * [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
 * [createGitHubIntegration](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 * [deleteIntegration](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
+
+### [Discovery](docs/sdks/discovery/README.md)
+
+* [getPublicApiStatus](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
 
 ### [Schedules](docs/sdks/schedules/README.md)
 
@@ -211,6 +215,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
 - [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
+- [`discoveryGetPublicApiStatus`](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
 - [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
 - [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 - [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
@@ -238,7 +243,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({}, {
+  const result = await notra.discovery.getPublicApiStatus({
     retries: {
       strategy: "backoff",
       backoff: {
@@ -277,7 +282,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({});
+  const result = await notra.discovery.getPublicApiStatus();
 
   console.log(result);
 }
@@ -338,7 +343,7 @@ run();
 ### Error Classes
 **Primary errors:**
 * [`NotraError`](./src/models/errors/notra-error.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/error-response.ts): Generic error.
+  * [`ErrorResponse`](./src/models/errors/error-response.ts): *
 
 <details><summary>Less common errors (8)</summary>
 
@@ -353,8 +358,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 29 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 29 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 30 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 30 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -377,7 +382,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({});
+  const result = await notra.discovery.getPublicApiStatus();
 
   console.log(result);
 }

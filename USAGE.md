@@ -7,7 +7,7 @@ const notra = new Notra({
 });
 
 async function run() {
-  const result = await notra.content.listPosts({});
+  const result = await notra.discovery.getPublicApiStatus();
 
   console.log(result);
 }

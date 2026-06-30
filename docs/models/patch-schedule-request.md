@@ -11,17 +11,19 @@ let value: PatchScheduleRequest = {
   sourceConfig: {
     cron: {
       frequency: "monthly",
-      hour: 253345,
-      minute: 762301,
+      hour: 140529,
+      minute: 873438,
     },
   },
   targets: {
     repositoryIds: [
       "<value 1>",
+      "<value 2>",
+      "<value 3>",
     ],
   },
-  outputType: "twitter_post",
-  enabled: true,
+  outputType: "changelog",
+  enabled: false,
 };
 ```
 

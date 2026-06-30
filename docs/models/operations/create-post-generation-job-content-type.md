@@ -1,11 +1,11 @@
-# GetPostGenerationContentType
+# CreatePostGenerationJobContentType
 
 ## Example Usage
 
 ```typescript
-import { GetPostGenerationContentType } from "@usenotra/sdk/models/operations";
+import { CreatePostGenerationJobContentType } from "@usenotra/sdk/models/operations";
 
-let value: GetPostGenerationContentType = "twitter_post";
+let value: CreatePostGenerationJobContentType = "blog_post";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

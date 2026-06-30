@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { NotraCore } from "@usenotra/sdk/core.js";
-import { contentListPosts } from "@usenotra/sdk/funcs/content-list-posts.js";
+import { discoveryGetPublicApiStatus } from "@usenotra/sdk/funcs/discovery-get-public-api-status.js";
 
 // Use `NotraCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -29,12 +29,12 @@ const notra = new NotraCore({
 });
 
 async function run() {
-  const res = await contentListPosts(notra, {});
+  const res = await discoveryGetPublicApiStatus(notra);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("contentListPosts failed:", res.error);
+    console.log("discoveryGetPublicApiStatus failed:", res.error);
   }
 }
 
