@@ -167,7 +167,7 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.DeleteIntegrationResponse$inboundSchema),
-    M.jsonErr([401, 403, 404], errors.ErrorResponse$inboundSchema),
+    M.jsonErr([400, 401, 403, 404], errors.ErrorResponse$inboundSchema),
     M.jsonErr(503, errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

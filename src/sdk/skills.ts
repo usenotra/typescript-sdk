@@ -30,7 +30,7 @@ export class Skills extends ClientSDK {
    * Create a skill
    */
   async createSkill(
-    request?: models.CreateSkillRequest | undefined,
+    request: models.CreateSkillRequest,
     options?: RequestOptions,
   ): Promise<models.CreateSkillResponse> {
     return unwrapAsync(skillsCreateSkill(
