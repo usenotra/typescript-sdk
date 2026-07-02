@@ -2,9 +2,7 @@
 ```typescript
 import { Notra } from "@usenotra/sdk";
 
-const notra = new Notra({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
+const notra = new Notra();
 
 async function run() {
   const result = await notra.discovery.getPublicApiStatus();

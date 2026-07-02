@@ -24,9 +24,7 @@ import { discoveryGetPublicApiStatus } from "@usenotra/sdk/funcs/discovery-get-p
 
 // Use `NotraCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
-const notra = new NotraCore({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
+const notra = new NotraCore();
 
 async function run() {
   const res = await discoveryGetPublicApiStatus(notra);

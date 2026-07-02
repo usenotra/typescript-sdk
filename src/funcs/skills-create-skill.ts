@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  */
 export function skillsCreateSkill(
   client: NotraCore,
-  request?: models.CreateSkillRequest | undefined,
+  request: models.CreateSkillRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -58,7 +58,7 @@ export function skillsCreateSkill(
 
 async function $do(
   client: NotraCore,
-  request?: models.CreateSkillRequest | undefined,
+  request: models.CreateSkillRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -79,17 +79,14 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      z.parse(z.optional(models.CreateSkillRequest$outboundSchema), value),
+    (value) => z.parse(models.CreateSkillRequest$outboundSchema, value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = payload === undefined
-    ? null
-    : encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/v1/skills")();
 
