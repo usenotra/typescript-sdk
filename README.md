@@ -81,9 +81,7 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 ```typescript
 import { Notra } from "@usenotra/sdk";
 
-const notra = new Notra({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
+const notra = new Notra();
 
 async function run() {
   const result = await notra.discovery.getPublicApiStatus();
@@ -238,9 +236,7 @@ To change the default retry strategy for a single API call, simply provide a ret
 ```typescript
 import { Notra } from "@usenotra/sdk";
 
-const notra = new Notra({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
+const notra = new Notra();
 
 async function run() {
   const result = await notra.discovery.getPublicApiStatus({
@@ -278,7 +274,6 @@ const notra = new Notra({
     },
     retryConnectionErrors: false,
   },
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
 });
 
 async function run() {
@@ -331,6 +326,8 @@ async function run() {
       // Depending on the method different errors may be thrown
       if (error instanceof errors.ErrorResponse) {
         console.log(error.data$.error); // string
+        console.log(error.data$.code); // string
+        console.log(error.data$.recovery); // string
       }
     }
   }
@@ -378,7 +375,6 @@ import { Notra } from "@usenotra/sdk";
 
 const notra = new Notra({
   serverURL: "https://api.usenotra.com",
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
 });
 
 async function run() {

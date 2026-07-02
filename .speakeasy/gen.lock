@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 104db2d6-9bbd-4701-8824-eae3c56579e7
 management:
-  docChecksum: 1e565b5522f3845e47ac342bac20029f
+  docChecksum: b436a8828169bb20d3f18e83dcc49631
   docVersion: 1.0.0
-  speakeasyVersion: 1.786.1
-  generationVersion: 2.913.3
-  releaseVersion: 1.3.0
-  configChecksum: ff46ace2ee2e93ff0fb4ddfdbee0dcd4
+  speakeasyVersion: 1.787.0
+  generationVersion: 2.914.0
+  releaseVersion: 1.3.1
+  configChecksum: 0c55d2f4a7d5e5cc9097cf4f3af67c4b
   repoURL: https://github.com/usenotra/typescript-sdk.git
   installationURL: https://github.com/usenotra/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 1761e2bd-59bf-4deb-9cb0-394f9bd56989
-  pristine_commit_hash: e7dd007e6ea9d2783c2718fc2023d39c47168b69
-  pristine_tree_hash: e5abb3cf7e00d0c0ece45c177cc1b9a081b0a88a
+  generation_id: 74866b79-467d-469c-824c-7420b3a6d6da
+  pristine_commit_hash: f8e5c3aeca10dc9b7b515ae8769cd40ffab797cf
+  pristine_tree_hash: b22acad409f82da38e907454b6c37b1d6eca1ca5
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -56,16 +56,16 @@ trackedFiles:
     pristine_git_object: 670ac0a62d7e568c9d44a14f5deafb8442a255d8
   FUNCTIONS.md:
     id: 21b9df02aaeb
-    last_write_checksum: sha1:b9e5167b25087b540e1baa0ad91c0f67fc785242
-    pristine_git_object: 3290950a85a9184cc277deb2e218bc85d537a883
+    last_write_checksum: sha1:6b20fa43e124322ced1bc62a1a8ef463e026e3f8
+    pristine_git_object: cade09e56fd8eaf5810d246c86c4007c64d64416
   RUNTIMES.md:
     id: 620c490847b6
     last_write_checksum: sha1:e45b854f02c357cbcfdb8c3663000e8339e16505
     pristine_git_object: 27731c3b5ace66bedc454ed5acbe15075aacd3dc
   USAGE.md:
     id: 3aed33ce6e6f
-    last_write_checksum: sha1:538e6912ba667f87760e842648c93ab090a8056a
-    pristine_git_object: 529db7487371aa8b57913728168ad2460a25b013
+    last_write_checksum: sha1:eeef0ce766d1e420837e9ee36c8a71333b554101
+    pristine_git_object: 4a96b091511acb2da593b607a1a174ca06dba922
   docs/lib/utils/retryconfig.md:
     id: 0ce9707cb848
     last_write_checksum: sha1:bc4454e196fcd219f5a78da690375a884f5ed07b
@@ -108,8 +108,8 @@ trackedFiles:
     pristine_git_object: 1d4afa1f6860e7ee243dc7c240f5340adb7549e3
   docs/models/errors/error-response.md:
     id: 42d2f6b1c814
-    last_write_checksum: sha1:5c8e7936cf2157951e78ddb0a1b6754a8a8744b4
-    pristine_git_object: 1098cd4e7b58a552fed6e0530e46fd88d860bde2
+    last_write_checksum: sha1:6301172e031a9d300d20ef5c1f28e5e1d326a866
+    pristine_git_object: b30b83a0e6b2b2068238a508fafbe731b6943dd3
   docs/models/errors/rate-limit-error-response.md:
     id: e9300bd20628
     last_write_checksum: sha1:6cbecc999d9bc940d3abb0e47a7e15a75625a3f4
@@ -620,8 +620,8 @@ trackedFiles:
     pristine_git_object: c1f1929b10fba05e982c955690d797c17f67552e
   docs/models/operations/patch-skill-request.md:
     id: 94eb08f8f0fa
-    last_write_checksum: sha1:d28922a853b9ce4e970a02e1ef1c1f81eeabc029
-    pristine_git_object: 82da5828dfbee3134efd8d56b351a1d7295ee9a5
+    last_write_checksum: sha1:a3d7ba64ee2a252cf461880bda2ddbf79b58ae50
+    pristine_git_object: 3bfb1977773c3869dde5d81dfa5fd20faf347991
   docs/models/operations/post-chat-message-request.md:
     id: 5b1e24ad5343
     last_write_checksum: sha1:eb965e7a43f7b646ad76ee3172bd11803f5487e8
@@ -868,16 +868,16 @@ trackedFiles:
     pristine_git_object: 9c8a01c4a133cd108314715305ef439547459163
   docs/sdks/content/README.md:
     id: de1d68ebc2ba
-    last_write_checksum: sha1:f722554784abcb5322b2ac03db686dc110973241
-    pristine_git_object: 709f0a6a630730f6c28281eafb7596ac528e80cd
+    last_write_checksum: sha1:691ff1ed465b46d6084927272cdd656e1511ae82
+    pristine_git_object: b350e103e4d3928d56945a175fbbd970367c265c
   docs/sdks/discovery/README.md:
     id: 905f3ba62cd7
-    last_write_checksum: sha1:683bbbd49d6591cac1576c39a4e4fc96611f032b
-    pristine_git_object: bcbeed852c3d84c508b985abd4a29f1f2a0545db
+    last_write_checksum: sha1:6349a69d4cdb00b929fab86bb1b171fe7ed53413
+    pristine_git_object: 0e672b150fdc7bb345ce30c74ce9ed872784bc28
   docs/sdks/schedules/README.md:
     id: 2f28c809a225
-    last_write_checksum: sha1:1d8c0dd2338b69c7e01fb05f3b4d4d4343948590
-    pristine_git_object: 210b5d6b474bbd249f7b9d7719828838db11b965
+    last_write_checksum: sha1:9b2dd66930fc52aa13bde0ebc101023453d19167
+    pristine_git_object: 009e73f459b12a264b547f2f31af9ebbea576adb
   docs/sdks/skills/README.md:
     id: 3a14a5c90791
     last_write_checksum: sha1:5ca23f6f53630da6b3d59cd54a1b6ec47c109197
@@ -896,20 +896,20 @@ trackedFiles:
     pristine_git_object: e5edd6a049c32fc7ff757088ae7f72f37aa74230
   examples/discoveryGetPublicApiStatus.example.ts:
     id: 725ebf2530f7
-    last_write_checksum: sha1:406a2a44e52e6fac8bff232b247648532adf0bf2
-    pristine_git_object: 5cb71482f07174a2decea4e2fe8cd801e9591055
+    last_write_checksum: sha1:ddfcc8d424f80b0384315def5e4c678e1030f9e9
+    pristine_git_object: 397e7751e876a7a4f056f8e8803e842833d55eb8
   examples/package.json:
     id: c1d7b0ec8e7e
     last_write_checksum: sha1:7a43d4472adb94fbc9c01f0dfcc6592891f29ba2
     pristine_git_object: 3023ce82381e2e8aa2d621788c5bf096cc0419b4
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:4be5595e020a26535166cd0c11e0df6c2b3b84d9
-    pristine_git_object: df361b891f9e5b0a1c456143a06cd6f65127feba
+    last_write_checksum: sha1:97853a0f96041cef561a57f919912263228500bf
+    pristine_git_object: 7f1ecc14a206a9e425fda0c4a4339287e1537324
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:e152d0bc12a2e0cbf5e4a55d831515dc0877b3ea
-    pristine_git_object: 8a8da3bee388262088b4a6aa8f7b316c1d753a9f
+    last_write_checksum: sha1:b50a7b3dc0da50cc8408a35e3dad2d50ee290692
+    pristine_git_object: ffca702f9be6913c00290bed74706159769f8e53
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:e8d638e0e6a2cda3f4c932a136d971d10a1ef6f4
@@ -952,12 +952,12 @@ trackedFiles:
     pristine_git_object: 2a0003d2a5284352810ebee4b481962391261ac7
   src/funcs/content-delete-integration.ts:
     id: f7e92a161bc6
-    last_write_checksum: sha1:03de16feb8272d29b45166e1801b195424925ab4
-    pristine_git_object: 271548515dd801c869015ad9acfbe2f2ab6e9530
+    last_write_checksum: sha1:3dbb477770d916b5b041a5479170637af2e79a3a
+    pristine_git_object: 72b514a54977e3d8eda4154954ec446d5dfe226c
   src/funcs/content-delete-post.ts:
     id: fda0df7f5a63
-    last_write_checksum: sha1:29f8ecbb62bbb768be44f42ee1b3ca7f9a7bd12e
-    pristine_git_object: bb614de02419f9fae92e1f57711b9536f433e538
+    last_write_checksum: sha1:0af46ee821514aec6fe897271998631352eb18aa
+    pristine_git_object: 5394afabfa0152b1b93ac0ebef5a9e27c964d521
   src/funcs/content-get-brand-identity-generation.ts:
     id: ffd6d415ba7f
     last_write_checksum: sha1:21c0e8a973b1a4725bd08b885d9d19f0f4e2aff4
@@ -968,8 +968,8 @@ trackedFiles:
     pristine_git_object: 29202ceb6d663d0c461759b438c3f055deff9520
   src/funcs/content-get-post-generation.ts:
     id: 865dd7c6bbd2
-    last_write_checksum: sha1:3141ceb617fed44fa2e0a7c010646efbcad59740
-    pristine_git_object: 72d54de8edd31ff12dc055e49a7267bd24e3165f
+    last_write_checksum: sha1:964fa7d402a17e9fd0e0c6800590320a59bbe1dc
+    pristine_git_object: 0f3f6c51301789ea6e2e4fbf768aeb6f0950775b
   src/funcs/content-get-post.ts:
     id: 83c5138f18b7
     last_write_checksum: sha1:d056a67b48cde36cc06addb06ad49ed398846eb3
@@ -996,28 +996,28 @@ trackedFiles:
     pristine_git_object: 26da0a0ca473c7c87d9d8ca7fac7750d993178ee
   src/funcs/discovery-get-public-api-status.ts:
     id: 7ad7c529b067
-    last_write_checksum: sha1:66f6a7a43ddd5a9e379b6e202f200974f8b44a09
-    pristine_git_object: fdf3a30f81a0b422769137419dc4b7e7911dcb8b
+    last_write_checksum: sha1:9b71ba3958db5d197c042f4aad9f52d16895fd0a
+    pristine_git_object: 1d8aa77f67a753b6c549fc8ed34882797aac1936
   src/funcs/schedules-create-schedule.ts:
     id: 81594f612b6d
-    last_write_checksum: sha1:31fb03b224e652504604568245229e5a23dec055
-    pristine_git_object: a8178cd727d77149c1e9d817d7698aeef2b3f84d
+    last_write_checksum: sha1:e7bc4f5896dfb1da3f5164a5d63886ce4715bedb
+    pristine_git_object: e061fc8de80c9a10f396689f4dabc382d8664786
   src/funcs/schedules-delete-schedule.ts:
     id: dc9372ca0463
-    last_write_checksum: sha1:f939fea658655aedbe9afa30e9d7e7d7f3c776ac
-    pristine_git_object: c52bdba976f85b393374cbc70517d20f38678543
+    last_write_checksum: sha1:13bd7d30fd9742c43713bcf16359812c4a1d40d0
+    pristine_git_object: e4e04eafe9e3218d0e532b7c040acbed79310f92
   src/funcs/schedules-list-schedules.ts:
     id: 998b631ed2dc
-    last_write_checksum: sha1:c4c027ca91903ee384655aef9a237fd5079677d1
-    pristine_git_object: 8184b3e0008985a4c6c27d8ba5b86ab0c5737952
+    last_write_checksum: sha1:5d47885a685aaedf79a2bde9eaf7feb971437177
+    pristine_git_object: 852c2045ef8d263b5f55e676d6f56e30f98345fb
   src/funcs/schedules-update-schedule.ts:
     id: b1875ab0d85c
-    last_write_checksum: sha1:422e816629d47ea4c3fc5c0b7406fa918e3feba7
-    pristine_git_object: d383fec37b87670e31b0177a825952ce70664181
+    last_write_checksum: sha1:a8cf8ceea7cb1e65d28660ff1f9afb0ec5921b86
+    pristine_git_object: 321bb11fb83fffcc1c7f4992806020f89aefbeee
   src/funcs/skills-create-skill.ts:
     id: 0e35d97f7e13
-    last_write_checksum: sha1:0f2cc735e3abe12d343eb2e1ff573dcb1f6b23f8
-    pristine_git_object: 32cebdd71498219459f45b12b22475ebcc3960da
+    last_write_checksum: sha1:aaee69f946081bbe887856c8489f313d9c5d2d7b
+    pristine_git_object: 75a0adc781655b8aab2bf2d3c1bb1c4b5a20b769
   src/funcs/skills-delete-skill.ts:
     id: c426ba56df8a
     last_write_checksum: sha1:d6e73049e52e07036217ce4a9344bd7e6afba875
@@ -1056,8 +1056,8 @@ trackedFiles:
     pristine_git_object: 0b2543a00780f8844dcd1fbdcbc51a91262d91bc
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:d9cd460bbca9eeb23adf9295de5519fc96f5f713
-    pristine_git_object: 19eff7a0a73fd66d1562d6d18653f5c0522a1bd4
+    last_write_checksum: sha1:314f421b7c9a4a50c59385e3ea3be651ab050499
+    pristine_git_object: 0cd054b228d65786f94c5d12caf9eddd8ae21f73
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:e49f64fdecc307c8d2868f6f31b3dc7d36349c8b
@@ -1128,8 +1128,8 @@ trackedFiles:
     pristine_git_object: b6605e8c907fd0f07eb68bb51904344c790edd4b
   src/models/errors/error-response.ts:
     id: 6459edd35024
-    last_write_checksum: sha1:d046573f37a940282a8c1b8c27c65351a1f71c06
-    pristine_git_object: d32712fa0c873fa6ee8ee95439fab327369f98e2
+    last_write_checksum: sha1:eb4ce8fa6e271a3c3a85ace160ade69f17542804
+    pristine_git_object: baca833844b0708b6987e5ce731b49c3efbcda36
   src/models/errors/http-client-errors.ts:
     id: 08390231aab8
     last_write_checksum: sha1:f4bd162e1ad77a0be1490fe5b40501e3d76a6e26
@@ -1264,8 +1264,8 @@ trackedFiles:
     pristine_git_object: d9fa2507b9903cfd61bd021358b5238006c4bb36
   src/models/operations/patch-skill.ts:
     id: ab9feae20421
-    last_write_checksum: sha1:d0d9b771ba70d675de793e4e2212906274ab7d6b
-    pristine_git_object: 4549ae601be815c4fdc9de64e090073ed4d2e4de
+    last_write_checksum: sha1:800a63c6634edb36cce539cf82b70d77a458bb5c
+    pristine_git_object: a7a9d8f166c3ca4ad334a20f74e3e6a04e688795
   src/models/operations/post-chat-message.ts:
     id: 6ecdd54ea9e6
     last_write_checksum: sha1:2c9604748f3829e76822ce65870bc6943ef2f30c
@@ -1344,8 +1344,8 @@ trackedFiles:
     pristine_git_object: 16ad02bd9ed8947f372d68c9d0128fc8aa1b33f5
   src/sdk/skills.ts:
     id: 847667a72f83
-    last_write_checksum: sha1:8ad6d9fe7e550eb4697e3cdbb4c60947ad5f00c3
-    pristine_git_object: 625c7fc8f692f730649247bdbd5ff0a83c5f7427
+    last_write_checksum: sha1:3a4ec868c0c136641358977edc504a4b00299792
+    pristine_git_object: 8e8a7eab1784de2380098d33038ca44d8736db19
   src/types/async.ts:
     id: fac8da972f86
     last_write_checksum: sha1:042571ad6be7fd5ce5a93b292b9c1aefc21ebff7
@@ -1515,6 +1515,8 @@ examples:
           application/json: {"error": "<value>"}
         "503":
           application/json: {"error": "<value>"}
+        "400":
+          application/json: {"error": "<value>"}
   createBrandIdentity:
     speakeasy-default-create-brand-identity:
       requestBody:
@@ -1643,6 +1645,8 @@ examples:
           application/json: {"error": "<value>"}
         "503":
           application/json: {"error": "<value>"}
+        "400":
+          application/json: {"error": "<value>"}
   listSchedules:
     speakeasy-default-list-schedules:
       parameters:
@@ -1652,6 +1656,10 @@ examples:
         "200":
           application/json: {"schedules": [{"id": "<id>", "organizationId": "<id>", "name": "<value>", "sourceType": "cron", "sourceConfig": {"cron": {"frequency": "weekly", "hour": 620668, "minute": 953687}}, "targets": {"repositoryIds": ["<value 1>"]}, "outputType": "changelog", "enabled": true, "autoPublish": true, "createdAt": "1721980740762", "updatedAt": "1735649892021", "lookbackWindow": "yesterday"}], "repositoryMap": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}}
         "401":
+          application/json: {"error": "<value>"}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
           application/json: {"error": "<value>"}
   createSchedule:
     speakeasy-default-create-schedule:
@@ -1673,6 +1681,10 @@ examples:
         "200":
           application/json: {"id": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}}
         "401":
+          application/json: {"error": "<value>"}
+        "400":
+          application/json: {"error": "<value>"}
+        "503":
           application/json: {"error": "<value>"}
   updateSchedule:
     speakeasy-default-update-schedule:
@@ -1815,4 +1827,4 @@ examples:
         "200":
           application/json: {"status": "ok", "service": "Notra API", "version": "<value>", "public": true, "authentication": {"type": "bearer", "resource_metadata": "https://serene-plumber.name", "guide": "https://unsteady-scrap.org"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `notra.content.listPosts()`:  `response.posts[]` **Changed** (Breaking ⚠️)\n* `notra.content.getPost()`:  `response.post` **Changed** (Breaking ⚠️)\n* `notra.content.updatePost()`:  `response.post` **Changed** (Breaking ⚠️)\n* `notra.chats.createChat()`: \n  *  `request.model` **Changed** (Breaking ⚠️)\n* `notra.chats.postChatMessage()`: \n  *  `request.body.model` **Changed** (Breaking ⚠️)\n* `notra.discovery.getPublicApiStatus()`: **Added**\n* `notra.content.createPostGeneration()`: \n  *  `request.contentType.enum(image)` **Added**\n  *  `response.job.contentType.enum(image)` **Added**\n* `notra.content.getPostGeneration()`:  `response.job.contentType.enum(image)` **Added**\n* `notra.schedules.listSchedules()`:  `response.schedules[].outputType.enum(image)` **Added**\n* `notra.schedules.createSchedule()`: \n  *  `request.outputType.enum(image)` **Added**\n  *  `response.schedule.outputType.enum(image)` **Added**\n* `notra.schedules.updateSchedule()`: \n  *  `request.body.outputType.enum(image)` **Added**\n  *  `response.schedule.outputType.enum(image)` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `notra.skills.createSkill()`: \n  *  `request` **Changed** (Breaking ⚠️)\n  *  `error` **Changed**\n* `notra.skills.patchSkill()`: \n  *  `request.body` **Changed** (Breaking ⚠️)\n  *  `error` **Changed**\n* `notra.content.deletePost()`:  `error` **Changed** (Breaking ⚠️)\n* `notra.content.deleteIntegration()`:  `error` **Changed**\n* `notra.schedules.createSchedule()`:  `error` **Changed**\n* `notra.content.getPostGeneration()`:  `error` **Changed**\n* `notra.content.listBrandIdentities()`:  `error` **Changed**\n* `notra.content.createBrandIdentity()`:  `error` **Changed**\n* `notra.content.getBrandIdentityGeneration()`:  `error` **Changed**\n* `notra.content.getBrandIdentity()`:  `error` **Changed**\n* `notra.content.deleteBrandIdentity()`:  `error` **Changed**\n* `notra.content.updateBrandIdentity()`:  `error` **Changed**\n* `notra.content.listIntegrations()`:  `error` **Changed**\n* `notra.content.createGitHubIntegration()`:  `error` **Changed**\n* `notra.content.listPosts()`:  `error` **Changed**\n* `notra.schedules.listSchedules()`:  `error` **Changed**\n* `notra.content.createPostGeneration()`:  `error` **Changed**\n* `notra.schedules.deleteSchedule()`:  `error` **Changed**\n* `notra.schedules.updateSchedule()`:  `error` **Changed**\n* `notra.chats.listChats()`:  `error` **Changed**\n* `notra.chats.createChat()`:  `error` **Changed**\n* `notra.chats.getChatByExternalChannel()`:  `error` **Changed**\n* `notra.chats.getChat()`:  `error` **Changed**\n* `notra.chats.postChatMessage()`:  `error` **Changed**\n* `notra.skills.listSkills()`:  `error` **Changed**\n* `notra.content.updatePost()`:  `error` **Changed**\n* `notra.skills.getSkill()`:  `error` **Changed**\n* `notra.skills.deleteSkill()`:  `error` **Changed**\n* `notra.content.getPost()`:  `error` **Changed**\n"
