@@ -9,10 +9,14 @@ import { NotraError } from "./notra-error.js";
 
 export type ErrorResponseData = {
   error: string;
+  code?: string | undefined;
+  recovery?: string | undefined;
 };
 
 export class ErrorResponse extends NotraError {
   error: string;
+  code?: string | undefined;
+  recovery?: string | undefined;
 
   /** The original data that was passed to this error instance. */
   data$: ErrorResponseData;
@@ -27,6 +31,8 @@ export class ErrorResponse extends NotraError {
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
+    if (err.code != null) this.code = err.code;
+    if (err.recovery != null) this.recovery = err.recovery;
 
     this.name = "ErrorResponse";
   }
@@ -39,6 +45,8 @@ export const ErrorResponse$inboundSchema: z.ZodMiniType<
 > = z.pipe(
   z.object({
     error: types.string(),
+    code: types.optional(types.string()),
+    recovery: types.optional(types.string()),
     request$: z.custom<Request>(x => x instanceof Request),
     response$: z.custom<Response>(x => x instanceof Response),
     body$: z.string(),

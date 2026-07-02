@@ -11,13 +11,13 @@ export type PatchSkillRequest = {
    * Skill name. Lowercase letters, digits, and hyphens only.
    */
   name: string;
-  body?: models.PatchSkillRequest | undefined;
+  body: models.PatchSkillRequest;
 };
 
 /** @internal */
 export type PatchSkillRequest$Outbound = {
   name: string;
-  body?: models.PatchSkillRequest$Outbound | undefined;
+  body: models.PatchSkillRequest$Outbound;
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const PatchSkillRequest$outboundSchema: z.ZodMiniType<
   PatchSkillRequest
 > = z.object({
   name: z.string(),
-  body: z.optional(models.PatchSkillRequest$outboundSchema),
+  body: models.PatchSkillRequest$outboundSchema,
 });
 
 export function patchSkillRequestToJSON(
