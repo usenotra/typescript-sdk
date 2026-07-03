@@ -6,10 +6,12 @@
 import * as z from "zod/v4-mini";
 import { ClosedEnum } from "../types/enums.js";
 
-export const SourceType = {
+export const PatchScheduleRequestSourceType = {
   Cron: "cron",
 } as const;
-export type SourceType = ClosedEnum<typeof SourceType>;
+export type PatchScheduleRequestSourceType = ClosedEnum<
+  typeof PatchScheduleRequestSourceType
+>;
 
 export const Frequency = {
   Daily: "daily",
@@ -26,32 +28,36 @@ export type Cron = {
   dayOfMonth?: number | undefined;
 };
 
-export type SourceConfig = {
+export type PatchScheduleRequestSourceConfig = {
   cron: Cron;
 };
 
-export type Targets = {
+export type PatchScheduleRequestTargets = {
   repositoryIds: Array<string>;
 };
 
-export const OutputType = {
+export const PatchScheduleRequestOutputType = {
   Changelog: "changelog",
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
   Image: "image",
 } as const;
-export type OutputType = ClosedEnum<typeof OutputType>;
+export type PatchScheduleRequestOutputType = ClosedEnum<
+  typeof PatchScheduleRequestOutputType
+>;
 
-export const PublishDestination = {
+export const PatchScheduleRequestPublishDestination = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
-export type PublishDestination = ClosedEnum<typeof PublishDestination>;
+export type PatchScheduleRequestPublishDestination = ClosedEnum<
+  typeof PatchScheduleRequestPublishDestination
+>;
 
-export type OutputConfig = {
-  publishDestination?: PublishDestination | undefined;
+export type PatchScheduleRequestOutputConfig = {
+  publishDestination?: PatchScheduleRequestPublishDestination | undefined;
   brandVoiceId?: string | undefined;
 };
 
@@ -66,19 +72,20 @@ export type LookbackWindow = ClosedEnum<typeof LookbackWindow>;
 
 export type PatchScheduleRequest = {
   name: string;
-  sourceType: SourceType;
-  sourceConfig: SourceConfig;
-  targets: Targets;
-  outputType: OutputType;
-  outputConfig?: OutputConfig | undefined;
+  sourceType: PatchScheduleRequestSourceType;
+  sourceConfig: PatchScheduleRequestSourceConfig;
+  targets: PatchScheduleRequestTargets;
+  outputType: PatchScheduleRequestOutputType;
+  outputConfig?: PatchScheduleRequestOutputConfig | undefined;
   enabled: boolean;
   autoPublish?: boolean | undefined;
   lookbackWindow?: LookbackWindow | undefined;
 };
 
 /** @internal */
-export const SourceType$outboundSchema: z.ZodMiniEnum<typeof SourceType> = z
-  .enum(SourceType);
+export const PatchScheduleRequestSourceType$outboundSchema: z.ZodMiniEnum<
+  typeof PatchScheduleRequestSourceType
+> = z.enum(PatchScheduleRequestSourceType);
 
 /** @internal */
 export const Frequency$outboundSchema: z.ZodMiniEnum<typeof Frequency> = z.enum(
@@ -110,63 +117,87 @@ export function cronToJSON(cron: Cron): string {
 }
 
 /** @internal */
-export type SourceConfig$Outbound = {
+export type PatchScheduleRequestSourceConfig$Outbound = {
   cron: Cron$Outbound;
 };
 
 /** @internal */
-export const SourceConfig$outboundSchema: z.ZodMiniType<
-  SourceConfig$Outbound,
-  SourceConfig
+export const PatchScheduleRequestSourceConfig$outboundSchema: z.ZodMiniType<
+  PatchScheduleRequestSourceConfig$Outbound,
+  PatchScheduleRequestSourceConfig
 > = z.object({
   cron: z.lazy(() => Cron$outboundSchema),
 });
 
-export function sourceConfigToJSON(sourceConfig: SourceConfig): string {
-  return JSON.stringify(SourceConfig$outboundSchema.parse(sourceConfig));
+export function patchScheduleRequestSourceConfigToJSON(
+  patchScheduleRequestSourceConfig: PatchScheduleRequestSourceConfig,
+): string {
+  return JSON.stringify(
+    PatchScheduleRequestSourceConfig$outboundSchema.parse(
+      patchScheduleRequestSourceConfig,
+    ),
+  );
 }
 
 /** @internal */
-export type Targets$Outbound = {
+export type PatchScheduleRequestTargets$Outbound = {
   repositoryIds: Array<string>;
 };
 
 /** @internal */
-export const Targets$outboundSchema: z.ZodMiniType<Targets$Outbound, Targets> =
-  z.object({
-    repositoryIds: z.array(z.string()),
-  });
+export const PatchScheduleRequestTargets$outboundSchema: z.ZodMiniType<
+  PatchScheduleRequestTargets$Outbound,
+  PatchScheduleRequestTargets
+> = z.object({
+  repositoryIds: z.array(z.string()),
+});
 
-export function targetsToJSON(targets: Targets): string {
-  return JSON.stringify(Targets$outboundSchema.parse(targets));
+export function patchScheduleRequestTargetsToJSON(
+  patchScheduleRequestTargets: PatchScheduleRequestTargets,
+): string {
+  return JSON.stringify(
+    PatchScheduleRequestTargets$outboundSchema.parse(
+      patchScheduleRequestTargets,
+    ),
+  );
 }
 
 /** @internal */
-export const OutputType$outboundSchema: z.ZodMiniEnum<typeof OutputType> = z
-  .enum(OutputType);
+export const PatchScheduleRequestOutputType$outboundSchema: z.ZodMiniEnum<
+  typeof PatchScheduleRequestOutputType
+> = z.enum(PatchScheduleRequestOutputType);
 
 /** @internal */
-export const PublishDestination$outboundSchema: z.ZodMiniEnum<
-  typeof PublishDestination
-> = z.enum(PublishDestination);
+export const PatchScheduleRequestPublishDestination$outboundSchema:
+  z.ZodMiniEnum<typeof PatchScheduleRequestPublishDestination> = z.enum(
+    PatchScheduleRequestPublishDestination,
+  );
 
 /** @internal */
-export type OutputConfig$Outbound = {
+export type PatchScheduleRequestOutputConfig$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
 };
 
 /** @internal */
-export const OutputConfig$outboundSchema: z.ZodMiniType<
-  OutputConfig$Outbound,
-  OutputConfig
+export const PatchScheduleRequestOutputConfig$outboundSchema: z.ZodMiniType<
+  PatchScheduleRequestOutputConfig$Outbound,
+  PatchScheduleRequestOutputConfig
 > = z.object({
-  publishDestination: z.optional(PublishDestination$outboundSchema),
+  publishDestination: z.optional(
+    PatchScheduleRequestPublishDestination$outboundSchema,
+  ),
   brandVoiceId: z.optional(z.string()),
 });
 
-export function outputConfigToJSON(outputConfig: OutputConfig): string {
-  return JSON.stringify(OutputConfig$outboundSchema.parse(outputConfig));
+export function patchScheduleRequestOutputConfigToJSON(
+  patchScheduleRequestOutputConfig: PatchScheduleRequestOutputConfig,
+): string {
+  return JSON.stringify(
+    PatchScheduleRequestOutputConfig$outboundSchema.parse(
+      patchScheduleRequestOutputConfig,
+    ),
+  );
 }
 
 /** @internal */
@@ -178,10 +209,10 @@ export const LookbackWindow$outboundSchema: z.ZodMiniEnum<
 export type PatchScheduleRequest$Outbound = {
   name: string;
   sourceType: string;
-  sourceConfig: SourceConfig$Outbound;
-  targets: Targets$Outbound;
+  sourceConfig: PatchScheduleRequestSourceConfig$Outbound;
+  targets: PatchScheduleRequestTargets$Outbound;
   outputType: string;
-  outputConfig?: OutputConfig$Outbound | undefined;
+  outputConfig?: PatchScheduleRequestOutputConfig$Outbound | undefined;
   enabled: boolean;
   autoPublish: boolean;
   lookbackWindow: string;
@@ -193,11 +224,13 @@ export const PatchScheduleRequest$outboundSchema: z.ZodMiniType<
   PatchScheduleRequest
 > = z.object({
   name: z.string(),
-  sourceType: SourceType$outboundSchema,
-  sourceConfig: z.lazy(() => SourceConfig$outboundSchema),
-  targets: z.lazy(() => Targets$outboundSchema),
-  outputType: OutputType$outboundSchema,
-  outputConfig: z.optional(z.lazy(() => OutputConfig$outboundSchema)),
+  sourceType: PatchScheduleRequestSourceType$outboundSchema,
+  sourceConfig: z.lazy(() => PatchScheduleRequestSourceConfig$outboundSchema),
+  targets: z.lazy(() => PatchScheduleRequestTargets$outboundSchema),
+  outputType: PatchScheduleRequestOutputType$outboundSchema,
+  outputConfig: z.optional(
+    z.lazy(() => PatchScheduleRequestOutputConfig$outboundSchema),
+  ),
   enabled: z.boolean(),
   autoPublish: z._default(z.boolean(), false),
   lookbackWindow: z._default(LookbackWindow$outboundSchema, "last_7_days"),
