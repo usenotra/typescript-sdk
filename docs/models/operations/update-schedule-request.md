@@ -12,9 +12,9 @@ let value: UpdateScheduleRequest = {
     sourceType: "cron",
     sourceConfig: {
       cron: {
-        frequency: "monthly",
-        hour: 140529,
-        minute: 873438,
+        frequency: "weekly",
+        hour: 796887,
+        minute: 32936,
       },
     },
     targets: {
