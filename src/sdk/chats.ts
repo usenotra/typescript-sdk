@@ -32,7 +32,7 @@ export class Chats extends ClientSDK {
   async createChat(
     request: models.SendChatMessageRequest,
     options?: RequestOptions,
-  ): Promise<string> {
+  ): Promise<operations.CreateChatResponse> {
     return unwrapAsync(chatsCreateChat(
       this,
       request,
@@ -74,7 +74,7 @@ export class Chats extends ClientSDK {
   async postChatMessage(
     request: operations.PostChatMessageRequest,
     options?: RequestOptions,
-  ): Promise<string> {
+  ): Promise<operations.PostChatMessageResponse> {
     return unwrapAsync(chatsPostChatMessage(
       this,
       request,
