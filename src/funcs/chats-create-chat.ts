@@ -25,9 +25,9 @@ import { NotraError } from "../models/errors/notra-error.js";
 import { ResponseValidationError } from "../models/errors/response-validation-error.js";
 import { SDKValidationError } from "../models/errors/sdk-validation-error.js";
 import * as models from "../models/index.js";
+import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
-import * as types$ from "../types/primitives.js";
 
 /**
  * Start a new chat and stream the reply
@@ -38,8 +38,9 @@ export function chatsCreateChat(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    string,
+    operations.CreateChatResponse,
     | errors.ErrorResponse
+    | errors.RateLimitErrorResponse
     | NotraError
     | ResponseValidationError
     | ConnectionError
@@ -64,8 +65,9 @@ async function $do(
 ): Promise<
   [
     Result<
-      string,
+      operations.CreateChatResponse,
       | errors.ErrorResponse
+      | errors.RateLimitErrorResponse
       | NotraError
       | ResponseValidationError
       | ConnectionError
@@ -147,8 +149,9 @@ async function $do(
   };
 
   const [result] = await M.match<
-    string,
+    operations.CreateChatResponse,
     | errors.ErrorResponse
+    | errors.RateLimitErrorResponse
     | NotraError
     | ResponseValidationError
     | ConnectionError
@@ -158,8 +161,12 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.text(200, types$.string(), { ctype: "text/event-stream" }),
+    M.text(200, operations.CreateChatResponse$inboundSchema, {
+      ctype: "text/event-stream",
+      key: "Result",
+    }),
     M.jsonErr([400, 401, 403, 404], errors.ErrorResponse$inboundSchema),
+    M.jsonErr(429, errors.RateLimitErrorResponse$inboundSchema, { hdrs: true }),
     M.jsonErr([500, 503], errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
