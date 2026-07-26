@@ -13,7 +13,9 @@ import {
 
 export const Model = {
   Auto: "auto",
+  AnthropicClaudeOpus5: "anthropic/claude-opus-5",
   AnthropicClaudeOpus48: "anthropic/claude-opus-4.8",
+  AnthropicClaudeSonnet5: "anthropic/claude-sonnet-5",
   AnthropicClaudeSonnet46: "anthropic/claude-sonnet-4.6",
   AnthropicClaudeHaiku45: "anthropic/claude-haiku-4.5",
   OpenaiGpt54: "openai/gpt-5.4",
