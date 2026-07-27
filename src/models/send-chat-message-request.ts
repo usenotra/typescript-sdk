@@ -13,7 +13,9 @@ import {
 
 export const Model = {
   Auto: "auto",
+  AnthropicClaudeOpus5: "anthropic/claude-opus-5",
   AnthropicClaudeOpus48: "anthropic/claude-opus-4.8",
+  AnthropicClaudeSonnet5: "anthropic/claude-sonnet-5",
   AnthropicClaudeSonnet46: "anthropic/claude-sonnet-4.6",
   AnthropicClaudeHaiku45: "anthropic/claude-haiku-4.5",
   OpenaiGpt54: "openai/gpt-5.4",
@@ -29,6 +31,12 @@ export const ThinkingLevel = {
 } as const;
 export type ThinkingLevel = ClosedEnum<typeof ThinkingLevel>;
 
+export type ContextMcpServer = {
+  type: "mcp-server";
+  integrationId: string;
+  name: string;
+};
+
 export type ContextLinearTeam = {
   type: "linear-team";
   integrationId: string;
@@ -42,7 +50,7 @@ export type ContextGithubRepo = {
   repo: string;
 };
 
-export type Context = ContextGithubRepo | ContextLinearTeam;
+export type Context = ContextGithubRepo | ContextLinearTeam | ContextMcpServer;
 
 export type SendChatMessageRequest = {
   message: string;
@@ -50,7 +58,9 @@ export type SendChatMessageRequest = {
   enableThinking?: boolean | undefined;
   thinkingLevel?: ThinkingLevel | undefined;
   timezone?: string | undefined;
-  context?: Array<ContextGithubRepo | ContextLinearTeam> | undefined;
+  context?:
+    | Array<ContextGithubRepo | ContextLinearTeam | ContextMcpServer>
+    | undefined;
   externalChannelId?: ExternalChannelId | null | undefined;
 };
 
@@ -60,6 +70,31 @@ export const Model$outboundSchema: z.ZodMiniEnum<typeof Model> = z.enum(Model);
 /** @internal */
 export const ThinkingLevel$outboundSchema: z.ZodMiniEnum<typeof ThinkingLevel> =
   z.enum(ThinkingLevel);
+
+/** @internal */
+export type ContextMcpServer$Outbound = {
+  type: "mcp-server";
+  integrationId: string;
+  name: string;
+};
+
+/** @internal */
+export const ContextMcpServer$outboundSchema: z.ZodMiniType<
+  ContextMcpServer$Outbound,
+  ContextMcpServer
+> = z.object({
+  type: z.literal("mcp-server"),
+  integrationId: z.string(),
+  name: z.string(),
+});
+
+export function contextMcpServerToJSON(
+  contextMcpServer: ContextMcpServer,
+): string {
+  return JSON.stringify(
+    ContextMcpServer$outboundSchema.parse(contextMcpServer),
+  );
+}
 
 /** @internal */
 export type ContextLinearTeam$Outbound = {
@@ -116,13 +151,15 @@ export function contextGithubRepoToJSON(
 /** @internal */
 export type Context$Outbound =
   | ContextGithubRepo$Outbound
-  | ContextLinearTeam$Outbound;
+  | ContextLinearTeam$Outbound
+  | ContextMcpServer$Outbound;
 
 /** @internal */
 export const Context$outboundSchema: z.ZodMiniType<Context$Outbound, Context> =
   z.union([
     z.lazy(() => ContextGithubRepo$outboundSchema),
     z.lazy(() => ContextLinearTeam$outboundSchema),
+    z.lazy(() => ContextMcpServer$outboundSchema),
   ]);
 
 export function contextToJSON(context: Context): string {
@@ -137,7 +174,11 @@ export type SendChatMessageRequest$Outbound = {
   thinkingLevel?: string | undefined;
   timezone?: string | undefined;
   context?:
-    | Array<ContextGithubRepo$Outbound | ContextLinearTeam$Outbound>
+    | Array<
+      | ContextGithubRepo$Outbound
+      | ContextLinearTeam$Outbound
+      | ContextMcpServer$Outbound
+    >
     | undefined;
   externalChannelId?: ExternalChannelId$Outbound | null | undefined;
 };
@@ -158,6 +199,7 @@ export const SendChatMessageRequest$outboundSchema: z.ZodMiniType<
       z.lazy(() =>
         ContextLinearTeam$outboundSchema
       ),
+      z.lazy(() => ContextMcpServer$outboundSchema),
     ])),
   ),
   externalChannelId: z.optional(z.nullable(ExternalChannelId$outboundSchema)),
