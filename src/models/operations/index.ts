@@ -3,11 +3,15 @@
  * @generated-id: 0d9ffaf774d2
  */
 
+export * from "./create-agent-session.js";
 export * from "./create-brand-identity.js";
+export * from "./create-chat.js";
+export * from "./create-event-trigger.js";
 export * from "./create-git-hub-integration.js";
 export * from "./create-post-generation.js";
 export * from "./create-schedule.js";
 export * from "./delete-brand-identity.js";
+export * from "./delete-event-trigger.js";
 export * from "./delete-integration.js";
 export * from "./delete-post.js";
 export * from "./delete-schedule.js";
@@ -16,15 +20,21 @@ export * from "./get-brand-identity-generation.js";
 export * from "./get-brand-identity.js";
 export * from "./get-chat-by-external-channel.js";
 export * from "./get-chat.js";
+export * from "./get-event-trigger.js";
 export * from "./get-post-generation.js";
 export * from "./get-post.js";
 export * from "./get-skill.js";
+export * from "./list-agent-chats.js";
 export * from "./list-brand-identities.js";
+export * from "./list-event-triggers.js";
 export * from "./list-integrations.js";
 export * from "./list-posts.js";
 export * from "./list-schedules.js";
 export * from "./patch-skill.js";
 export * from "./post-chat-message.js";
+export * from "./send-agent-session-message.js";
+export * from "./stream-agent-session-events.js";
 export * from "./update-brand-identity.js";
+export * from "./update-event-trigger.js";
 export * from "./update-post.js";
 export * from "./update-schedule.js";
