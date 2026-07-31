@@ -147,15 +147,16 @@ run();
 
 ### Response
 
-**Promise\<[string](../../models/.md)\>**
+**Promise\<[operations.CreateChatResponse](../../models/operations/create-chat-response.md)\>**
 
 ### Errors
 
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
-| errors.ErrorResponse     | 500, 503                 | application/json         |
-| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404            | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 500, 503                      | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## getChatByExternalChannel
 
@@ -380,12 +381,13 @@ run();
 
 ### Response
 
-**Promise\<[string](../../models/.md)\>**
+**Promise\<[operations.PostChatMessageResponse](../../models/operations/post-chat-message-response.md)\>**
 
 ### Errors
 
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
-| errors.ErrorResponse     | 500, 503                 | application/json         |
-| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404            | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 500, 503                      | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |

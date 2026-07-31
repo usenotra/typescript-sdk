@@ -4,11 +4,21 @@
  */
 
 import * as z from "zod/v4-mini";
+import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import * as types from "../../types/primitives.js";
+import { SDKValidationError } from "../errors/sdk-validation-error.js";
 import * as models from "../index.js";
 
 export type PostChatMessageRequest = {
   chatId: string;
   body: models.SendChatMessageRequest;
+};
+
+export type PostChatMessageResponse = {
+  headers: { [k: string]: Array<string> };
+  result: string;
 };
 
 /** @internal */
@@ -31,5 +41,32 @@ export function postChatMessageRequestToJSON(
 ): string {
   return JSON.stringify(
     PostChatMessageRequest$outboundSchema.parse(postChatMessageRequest),
+  );
+}
+
+/** @internal */
+export const PostChatMessageResponse$inboundSchema: z.ZodMiniType<
+  PostChatMessageResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Headers: z._default(z.record(z.string(), z.array(z.string())), {}),
+    Result: types.string(),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Headers": "headers",
+      "Result": "result",
+    });
+  }),
+);
+
+export function postChatMessageResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<PostChatMessageResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PostChatMessageResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostChatMessageResponse' from JSON`,
   );
 }
