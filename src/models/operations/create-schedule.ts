@@ -11,10 +11,12 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
-export const SourceTypeRequest = {
+export const CreateScheduleSourceTypeRequest = {
   Cron: "cron",
 } as const;
-export type SourceTypeRequest = ClosedEnum<typeof SourceTypeRequest>;
+export type CreateScheduleSourceTypeRequest = ClosedEnum<
+  typeof CreateScheduleSourceTypeRequest
+>;
 
 export const FrequencyRequest = {
   Daily: "daily",
@@ -31,34 +33,36 @@ export type CronRequest = {
   dayOfMonth?: number | undefined;
 };
 
-export type SourceConfigRequest = {
+export type CreateScheduleSourceConfigRequest = {
   cron: CronRequest;
 };
 
-export type TargetsRequest = {
+export type CreateScheduleTargetsRequest = {
   repositoryIds: Array<string>;
 };
 
-export const OutputTypeRequest = {
+export const CreateScheduleOutputTypeRequest = {
   Changelog: "changelog",
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
   TwitterPost: "twitter_post",
   Image: "image",
 } as const;
-export type OutputTypeRequest = ClosedEnum<typeof OutputTypeRequest>;
+export type CreateScheduleOutputTypeRequest = ClosedEnum<
+  typeof CreateScheduleOutputTypeRequest
+>;
 
-export const PublishDestinationRequest = {
+export const CreateSchedulePublishDestinationRequest = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
-export type PublishDestinationRequest = ClosedEnum<
-  typeof PublishDestinationRequest
+export type CreateSchedulePublishDestinationRequest = ClosedEnum<
+  typeof CreateSchedulePublishDestinationRequest
 >;
 
-export type OutputConfigRequest = {
-  publishDestination?: PublishDestinationRequest | undefined;
+export type CreateScheduleOutputConfigRequest = {
+  publishDestination?: CreateSchedulePublishDestinationRequest | undefined;
   brandVoiceId?: string | undefined;
 };
 
@@ -75,11 +79,11 @@ export type CreateScheduleLookbackWindowRequest = ClosedEnum<
 
 export type CreateScheduleRequest = {
   name: string;
-  sourceType: SourceTypeRequest;
-  sourceConfig: SourceConfigRequest;
-  targets: TargetsRequest;
-  outputType: OutputTypeRequest;
-  outputConfig?: OutputConfigRequest | undefined;
+  sourceType: CreateScheduleSourceTypeRequest;
+  sourceConfig: CreateScheduleSourceConfigRequest;
+  targets: CreateScheduleTargetsRequest;
+  outputType: CreateScheduleOutputTypeRequest;
+  outputConfig?: CreateScheduleOutputConfigRequest | undefined;
   enabled: boolean;
   autoPublish?: boolean | undefined;
   lookbackWindow?: CreateScheduleLookbackWindowRequest | undefined;
@@ -185,9 +189,9 @@ export type CreateScheduleResponse = {
 };
 
 /** @internal */
-export const SourceTypeRequest$outboundSchema: z.ZodMiniEnum<
-  typeof SourceTypeRequest
-> = z.enum(SourceTypeRequest);
+export const CreateScheduleSourceTypeRequest$outboundSchema: z.ZodMiniEnum<
+  typeof CreateScheduleSourceTypeRequest
+> = z.enum(CreateScheduleSourceTypeRequest);
 
 /** @internal */
 export const FrequencyRequest$outboundSchema: z.ZodMiniEnum<
@@ -220,73 +224,86 @@ export function cronRequestToJSON(cronRequest: CronRequest): string {
 }
 
 /** @internal */
-export type SourceConfigRequest$Outbound = {
+export type CreateScheduleSourceConfigRequest$Outbound = {
   cron: CronRequest$Outbound;
 };
 
 /** @internal */
-export const SourceConfigRequest$outboundSchema: z.ZodMiniType<
-  SourceConfigRequest$Outbound,
-  SourceConfigRequest
+export const CreateScheduleSourceConfigRequest$outboundSchema: z.ZodMiniType<
+  CreateScheduleSourceConfigRequest$Outbound,
+  CreateScheduleSourceConfigRequest
 > = z.object({
   cron: z.lazy(() => CronRequest$outboundSchema),
 });
 
-export function sourceConfigRequestToJSON(
-  sourceConfigRequest: SourceConfigRequest,
+export function createScheduleSourceConfigRequestToJSON(
+  createScheduleSourceConfigRequest: CreateScheduleSourceConfigRequest,
 ): string {
   return JSON.stringify(
-    SourceConfigRequest$outboundSchema.parse(sourceConfigRequest),
+    CreateScheduleSourceConfigRequest$outboundSchema.parse(
+      createScheduleSourceConfigRequest,
+    ),
   );
 }
 
 /** @internal */
-export type TargetsRequest$Outbound = {
+export type CreateScheduleTargetsRequest$Outbound = {
   repositoryIds: Array<string>;
 };
 
 /** @internal */
-export const TargetsRequest$outboundSchema: z.ZodMiniType<
-  TargetsRequest$Outbound,
-  TargetsRequest
+export const CreateScheduleTargetsRequest$outboundSchema: z.ZodMiniType<
+  CreateScheduleTargetsRequest$Outbound,
+  CreateScheduleTargetsRequest
 > = z.object({
   repositoryIds: z.array(z.string()),
 });
 
-export function targetsRequestToJSON(targetsRequest: TargetsRequest): string {
-  return JSON.stringify(TargetsRequest$outboundSchema.parse(targetsRequest));
+export function createScheduleTargetsRequestToJSON(
+  createScheduleTargetsRequest: CreateScheduleTargetsRequest,
+): string {
+  return JSON.stringify(
+    CreateScheduleTargetsRequest$outboundSchema.parse(
+      createScheduleTargetsRequest,
+    ),
+  );
 }
 
 /** @internal */
-export const OutputTypeRequest$outboundSchema: z.ZodMiniEnum<
-  typeof OutputTypeRequest
-> = z.enum(OutputTypeRequest);
+export const CreateScheduleOutputTypeRequest$outboundSchema: z.ZodMiniEnum<
+  typeof CreateScheduleOutputTypeRequest
+> = z.enum(CreateScheduleOutputTypeRequest);
 
 /** @internal */
-export const PublishDestinationRequest$outboundSchema: z.ZodMiniEnum<
-  typeof PublishDestinationRequest
-> = z.enum(PublishDestinationRequest);
+export const CreateSchedulePublishDestinationRequest$outboundSchema:
+  z.ZodMiniEnum<typeof CreateSchedulePublishDestinationRequest> = z.enum(
+    CreateSchedulePublishDestinationRequest,
+  );
 
 /** @internal */
-export type OutputConfigRequest$Outbound = {
+export type CreateScheduleOutputConfigRequest$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
 };
 
 /** @internal */
-export const OutputConfigRequest$outboundSchema: z.ZodMiniType<
-  OutputConfigRequest$Outbound,
-  OutputConfigRequest
+export const CreateScheduleOutputConfigRequest$outboundSchema: z.ZodMiniType<
+  CreateScheduleOutputConfigRequest$Outbound,
+  CreateScheduleOutputConfigRequest
 > = z.object({
-  publishDestination: z.optional(PublishDestinationRequest$outboundSchema),
+  publishDestination: z.optional(
+    CreateSchedulePublishDestinationRequest$outboundSchema,
+  ),
   brandVoiceId: z.optional(z.string()),
 });
 
-export function outputConfigRequestToJSON(
-  outputConfigRequest: OutputConfigRequest,
+export function createScheduleOutputConfigRequestToJSON(
+  createScheduleOutputConfigRequest: CreateScheduleOutputConfigRequest,
 ): string {
   return JSON.stringify(
-    OutputConfigRequest$outboundSchema.parse(outputConfigRequest),
+    CreateScheduleOutputConfigRequest$outboundSchema.parse(
+      createScheduleOutputConfigRequest,
+    ),
   );
 }
 
@@ -299,10 +316,10 @@ export const CreateScheduleLookbackWindowRequest$outboundSchema: z.ZodMiniEnum<
 export type CreateScheduleRequest$Outbound = {
   name: string;
   sourceType: string;
-  sourceConfig: SourceConfigRequest$Outbound;
-  targets: TargetsRequest$Outbound;
+  sourceConfig: CreateScheduleSourceConfigRequest$Outbound;
+  targets: CreateScheduleTargetsRequest$Outbound;
   outputType: string;
-  outputConfig?: OutputConfigRequest$Outbound | undefined;
+  outputConfig?: CreateScheduleOutputConfigRequest$Outbound | undefined;
   enabled: boolean;
   autoPublish: boolean;
   lookbackWindow: string;
@@ -314,11 +331,13 @@ export const CreateScheduleRequest$outboundSchema: z.ZodMiniType<
   CreateScheduleRequest
 > = z.object({
   name: z.string(),
-  sourceType: SourceTypeRequest$outboundSchema,
-  sourceConfig: z.lazy(() => SourceConfigRequest$outboundSchema),
-  targets: z.lazy(() => TargetsRequest$outboundSchema),
-  outputType: OutputTypeRequest$outboundSchema,
-  outputConfig: z.optional(z.lazy(() => OutputConfigRequest$outboundSchema)),
+  sourceType: CreateScheduleSourceTypeRequest$outboundSchema,
+  sourceConfig: z.lazy(() => CreateScheduleSourceConfigRequest$outboundSchema),
+  targets: z.lazy(() => CreateScheduleTargetsRequest$outboundSchema),
+  outputType: CreateScheduleOutputTypeRequest$outboundSchema,
+  outputConfig: z.optional(
+    z.lazy(() => CreateScheduleOutputConfigRequest$outboundSchema),
+  ),
   enabled: z.boolean(),
   autoPublish: z._default(z.boolean(), false),
   lookbackWindow: z._default(

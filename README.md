@@ -130,6 +130,13 @@ run();
 <details open>
 <summary>Available methods</summary>
 
+### [Agent](docs/sdks/agent/README.md)
+
+* [createAgentSession](docs/sdks/agent/README.md#createagentsession) - Start a durable agent session
+* [sendAgentSessionMessage](docs/sdks/agent/README.md#sendagentsessionmessage) - Send a follow-up message or answer a pending input request
+* [streamAgentSessionEvents](docs/sdks/agent/README.md#streamagentsessionevents) - Stream an agent session's events
+* [listAgentChats](docs/sdks/agent/README.md#listagentchats) - List agent sessions
+
 ### [Chats](docs/sdks/chats/README.md)
 
 * [listChats](docs/sdks/chats/README.md#listchats) - List chats
@@ -159,6 +166,14 @@ run();
 ### [Discovery](docs/sdks/discovery/README.md)
 
 * [getPublicApiStatus](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
+
+### [EventTriggers](docs/sdks/eventtriggers/README.md)
+
+* [listEventTriggers](docs/sdks/eventtriggers/README.md#listeventtriggers) - List event triggers
+* [createEventTrigger](docs/sdks/eventtriggers/README.md#createeventtrigger) - Create an event trigger
+* [getEventTrigger](docs/sdks/eventtriggers/README.md#geteventtrigger) - Get an event trigger
+* [deleteEventTrigger](docs/sdks/eventtriggers/README.md#deleteeventtrigger) - Delete an event trigger
+* [updateEventTrigger](docs/sdks/eventtriggers/README.md#updateeventtrigger) - Update an event trigger
 
 ### [Schedules](docs/sdks/schedules/README.md)
 
@@ -193,6 +208,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`agentCreateAgentSession`](docs/sdks/agent/README.md#createagentsession) - Start a durable agent session
+- [`agentListAgentChats`](docs/sdks/agent/README.md#listagentchats) - List agent sessions
+- [`agentSendAgentSessionMessage`](docs/sdks/agent/README.md#sendagentsessionmessage) - Send a follow-up message or answer a pending input request
+- [`agentStreamAgentSessionEvents`](docs/sdks/agent/README.md#streamagentsessionevents) - Stream an agent session's events
 - [`chatsCreateChat`](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
 - [`chatsGetChat`](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
 - [`chatsGetChatByExternalChannel`](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
@@ -214,6 +233,11 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 - [`discoveryGetPublicApiStatus`](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
+- [`eventTriggersCreateEventTrigger`](docs/sdks/eventtriggers/README.md#createeventtrigger) - Create an event trigger
+- [`eventTriggersDeleteEventTrigger`](docs/sdks/eventtriggers/README.md#deleteeventtrigger) - Delete an event trigger
+- [`eventTriggersGetEventTrigger`](docs/sdks/eventtriggers/README.md#geteventtrigger) - Get an event trigger
+- [`eventTriggersListEventTriggers`](docs/sdks/eventtriggers/README.md#listeventtriggers) - List event triggers
+- [`eventTriggersUpdateEventTrigger`](docs/sdks/eventtriggers/README.md#updateeventtrigger) - Update an event trigger
 - [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
 - [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 - [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
@@ -355,8 +379,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 4 of 30 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 30 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 10 of 39 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 39 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

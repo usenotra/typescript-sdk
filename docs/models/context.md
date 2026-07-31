@@ -23,3 +23,13 @@ const value: models.ContextLinearTeam = {
 };
 ```
 
+### `models.ContextMcpServer`
+
+```typescript
+const value: models.ContextMcpServer = {
+  type: "mcp-server",
+  integrationId: "<id>",
+  name: "<value>",
+};
+```
+
