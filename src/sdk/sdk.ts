@@ -4,9 +4,11 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { Agent } from "./agent.js";
 import { Chats } from "./chats.js";
 import { Content } from "./content.js";
 import { Discovery } from "./discovery.js";
+import { EventTriggers } from "./event-triggers.js";
 import { Schedules } from "./schedules.js";
 import { Skills } from "./skills.js";
 
@@ -26,6 +28,11 @@ export class Notra extends ClientSDK {
     return (this._schedules ??= new Schedules(this._options));
   }
 
+  private _eventTriggers?: EventTriggers;
+  get eventTriggers(): EventTriggers {
+    return (this._eventTriggers ??= new EventTriggers(this._options));
+  }
+
   private _chats?: Chats;
   get chats(): Chats {
     return (this._chats ??= new Chats(this._options));
@@ -34,5 +41,10 @@ export class Notra extends ClientSDK {
   private _skills?: Skills;
   get skills(): Skills {
     return (this._skills ??= new Skills(this._options));
+  }
+
+  private _agent?: Agent;
+  get agent(): Agent {
+    return (this._agent ??= new Agent(this._options));
   }
 }
