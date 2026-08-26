@@ -11,31 +11,35 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
-export const Source = {
+export const ExternalChannelIdSource = {
   Discord: "discord",
   Slack: "slack",
   Dashboard: "dashboard",
 } as const;
-export type Source = OpenEnum<typeof Source>;
+export type ExternalChannelIdSource = OpenEnum<typeof ExternalChannelIdSource>;
 
 export type ExternalChannelId = {
-  source: Source;
+  source: ExternalChannelIdSource;
   id?: string | undefined;
 };
 
 /** @internal */
-export const Source$inboundSchema: z.ZodMiniType<Source, unknown> = openEnums
-  .inboundSchema(Source);
+export const ExternalChannelIdSource$inboundSchema: z.ZodMiniType<
+  ExternalChannelIdSource,
+  unknown
+> = openEnums.inboundSchema(ExternalChannelIdSource);
 /** @internal */
-export const Source$outboundSchema: z.ZodMiniType<string, Source> = openEnums
-  .outboundSchema(Source);
+export const ExternalChannelIdSource$outboundSchema: z.ZodMiniType<
+  string,
+  ExternalChannelIdSource
+> = openEnums.outboundSchema(ExternalChannelIdSource);
 
 /** @internal */
 export const ExternalChannelId$inboundSchema: z.ZodMiniType<
   ExternalChannelId,
   unknown
 > = z.object({
-  source: Source$inboundSchema,
+  source: ExternalChannelIdSource$inboundSchema,
   id: types.optional(types.string()),
 });
 /** @internal */
@@ -49,7 +53,7 @@ export const ExternalChannelId$outboundSchema: z.ZodMiniType<
   ExternalChannelId$Outbound,
   ExternalChannelId
 > = z.object({
-  source: Source$outboundSchema,
+  source: ExternalChannelIdSource$outboundSchema,
   id: z.optional(z.string()),
 });
 
