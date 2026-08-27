@@ -1,11 +1,11 @@
-# Source
+# ExternalChannelIdSource
 
 ## Example Usage
 
 ```typescript
-import { Source } from "@usenotra/sdk/models";
+import { ExternalChannelIdSource } from "@usenotra/sdk/models";
 
-let value: Source = "discord";
+let value: ExternalChannelIdSource = "slack";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
