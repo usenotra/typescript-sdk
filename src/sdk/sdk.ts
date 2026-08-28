@@ -9,6 +9,7 @@ import { Chats } from "./chats.js";
 import { Content } from "./content.js";
 import { Discovery } from "./discovery.js";
 import { EventTriggers } from "./event-triggers.js";
+import { Feedback } from "./feedback.js";
 import { Schedules } from "./schedules.js";
 import { Skills } from "./skills.js";
 
@@ -41,6 +42,11 @@ export class Notra extends ClientSDK {
   private _skills?: Skills;
   get skills(): Skills {
     return (this._skills ??= new Skills(this._options));
+  }
+
+  private _feedback?: Feedback;
+  get feedback(): Feedback {
+    return (this._feedback ??= new Feedback(this._options));
   }
 
   private _agent?: Agent;
