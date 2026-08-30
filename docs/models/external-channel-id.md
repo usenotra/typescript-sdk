@@ -12,7 +12,7 @@ let value: ExternalChannelId = {
 
 ## Fields
 
-| Field                                | Type                                 | Required                             | Description                          |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `source`                             | [models.Source](../models/source.md) | :heavy_check_mark:                   | N/A                                  |
-| `id`                                 | *string*                             | :heavy_minus_sign:                   | N/A                                  |
+| Field                                                                     | Type                                                                      | Required                                                                  | Description                                                               |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `source`                                                                  | [models.ExternalChannelIdSource](../models/external-channel-id-source.md) | :heavy_check_mark:                                                        | N/A                                                                       |
+| `id`                                                                      | *string*                                                                  | :heavy_minus_sign:                                                        | N/A                                                                       |
