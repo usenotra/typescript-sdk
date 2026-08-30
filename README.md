@@ -175,6 +175,14 @@ run();
 * [deleteEventTrigger](docs/sdks/eventtriggers/README.md#deleteeventtrigger) - Delete an event trigger
 * [updateEventTrigger](docs/sdks/eventtriggers/README.md#updateeventtrigger) - Update an event trigger
 
+### [Feedback](docs/sdks/feedback/README.md)
+
+* [submitOrganizationFeedback](docs/sdks/feedback/README.md#submitorganizationfeedback) - Submit feedback to an organization's feedback URL
+* [listFeedback](docs/sdks/feedback/README.md#listfeedback) - List feedback
+* [submitFeedback](docs/sdks/feedback/README.md#submitfeedback) - Submit feedback with an API key
+* [getFeedback](docs/sdks/feedback/README.md#getfeedback) - Get a single feedback entry
+* [updateFeedback](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
+
 ### [Schedules](docs/sdks/schedules/README.md)
 
 * [listSchedules](docs/sdks/schedules/README.md#listschedules) - List schedules
@@ -238,6 +246,11 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`eventTriggersGetEventTrigger`](docs/sdks/eventtriggers/README.md#geteventtrigger) - Get an event trigger
 - [`eventTriggersListEventTriggers`](docs/sdks/eventtriggers/README.md#listeventtriggers) - List event triggers
 - [`eventTriggersUpdateEventTrigger`](docs/sdks/eventtriggers/README.md#updateeventtrigger) - Update an event trigger
+- [`feedbackGetFeedback`](docs/sdks/feedback/README.md#getfeedback) - Get a single feedback entry
+- [`feedbackListFeedback`](docs/sdks/feedback/README.md#listfeedback) - List feedback
+- [`feedbackSubmitFeedback`](docs/sdks/feedback/README.md#submitfeedback) - Submit feedback with an API key
+- [`feedbackSubmitOrganizationFeedback`](docs/sdks/feedback/README.md#submitorganizationfeedback) - Submit feedback to an organization's feedback URL
+- [`feedbackUpdateFeedback`](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
 - [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
 - [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 - [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
@@ -379,8 +392,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 10 of 39 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 39 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 12 of 44 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 44 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

@@ -11,10 +11,12 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
-export const Status = {
+export const PublicStatusResponseStatus = {
   Ok: "ok",
 } as const;
-export type Status = ClosedEnum<typeof Status>;
+export type PublicStatusResponseStatus = ClosedEnum<
+  typeof PublicStatusResponseStatus
+>;
 
 export const Service = {
   NotraAPI: "Notra API",
@@ -33,7 +35,7 @@ export type Authentication = {
 };
 
 export type PublicStatusResponse = {
-  status: Status;
+  status: PublicStatusResponseStatus;
   service: Service;
   version: string;
   public: true;
@@ -41,9 +43,9 @@ export type PublicStatusResponse = {
 };
 
 /** @internal */
-export const Status$inboundSchema: z.ZodMiniEnum<typeof Status> = z.enum(
-  Status,
-);
+export const PublicStatusResponseStatus$inboundSchema: z.ZodMiniEnum<
+  typeof PublicStatusResponseStatus
+> = z.enum(PublicStatusResponseStatus);
 
 /** @internal */
 export const Service$inboundSchema: z.ZodMiniEnum<typeof Service> = z.enum(
@@ -87,7 +89,7 @@ export const PublicStatusResponse$inboundSchema: z.ZodMiniType<
   PublicStatusResponse,
   unknown
 > = z.object({
-  status: Status$inboundSchema,
+  status: PublicStatusResponseStatus$inboundSchema,
   service: Service$inboundSchema,
   version: types.string(),
   public: types.literal(true),
