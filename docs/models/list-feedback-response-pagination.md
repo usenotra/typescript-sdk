@@ -1,17 +1,17 @@
-# Pagination
+# ListFeedbackResponsePagination
 
 ## Example Usage
 
 ```typescript
-import { Pagination } from "@usenotra/sdk/models";
+import { ListFeedbackResponsePagination } from "@usenotra/sdk/models";
 
-let value: Pagination = {
-  limit: 271635,
-  currentPage: 56105,
-  nextPage: 64883,
-  previousPage: 369974,
-  totalPages: 596301,
-  totalItems: 220064,
+let value: ListFeedbackResponsePagination = {
+  limit: 793811,
+  currentPage: 632645,
+  nextPage: 34441,
+  previousPage: 91928,
+  totalPages: 999627,
+  totalItems: 173619,
 };
 ```
 
