@@ -183,6 +183,55 @@ run();
 * [getFeedback](docs/sdks/feedback/README.md#getfeedback) - Get a single feedback entry
 * [updateFeedback](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
 
+### [Geo](docs/sdks/geo/README.md)
+
+* [listProjects](docs/sdks/geo/README.md#listprojects) - List GEO projects
+* [createProject](docs/sdks/geo/README.md#createproject) - Create a GEO project
+* [getProject](docs/sdks/geo/README.md#getproject) - Get a single GEO project
+* [deleteProject](docs/sdks/geo/README.md#deleteproject) - Delete a GEO project and all of its GEO data
+* [updateProject](docs/sdks/geo/README.md#updateproject) - Rename a GEO project or relink its brand identity
+* [getGeoSettings](docs/sdks/geo/README.md#getgeosettings) - Get a project's GEO settings
+* [updateGeoSettings](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
+* [listGeoPrompts](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
+* [createGeoPrompt](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
+* [deleteGeoPrompt](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
+* [updateGeoPrompt](docs/sdks/geo/README.md#updategeoprompt) - Enable or disable a tracked GEO prompt
+* [importGeoPrompts](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
+* [listGeoSequences](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
+* [createGeoSequence](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
+* [deleteGeoSequence](docs/sdks/geo/README.md#deletegeosequence) - Delete a GEO prompt sequence
+* [updateGeoSequence](docs/sdks/geo/README.md#updategeosequence) - Update a GEO prompt sequence
+* [runGeoSequence](docs/sdks/geo/README.md#rungeosequence) - Run a GEO prompt sequence now
+* [listGeoCompetitors](docs/sdks/geo/README.md#listgeocompetitors) - List tracked GEO competitors
+* [upsertGeoCompetitor](docs/sdks/geo/README.md#upsertgeocompetitor) - Create or update a tracked GEO competitor
+* [suggestGeoCompetitors](docs/sdks/geo/README.md#suggestgeocompetitors) - Suggest GEO competitors for a domain
+* [deleteGeoCompetitor](docs/sdks/geo/README.md#deletegeocompetitor) - Stop tracking a GEO competitor
+* [importGeoCompetitors](docs/sdks/geo/README.md#importgeocompetitors) - Bulk import GEO competitors
+* [listGeoScans](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
+* [createGeoScan](docs/sdks/geo/README.md#creategeoscan) - Trigger a GEO scan
+* [getGeoScan](docs/sdks/geo/README.md#getgeoscan) - Get a single GEO scan
+* [getGeoVisibilityOverview](docs/sdks/geo/README.md#getgeovisibilityoverview) - Get mention rates per engine
+* [getGeoVisibilityTimeseries](docs/sdks/geo/README.md#getgeovisibilitytimeseries) - Get daily mention counts per engine
+* [getGeoVisibilityPromptResults](docs/sdks/geo/README.md#getgeovisibilitypromptresults) - Get the latest answer per prompt and engine
+* [getGeoVisibilityCompetitorShare](docs/sdks/geo/README.md#getgeovisibilitycompetitorshare) - Get share of voice across tracked brands
+* [getGeoVisibilityLanguageShare](docs/sdks/geo/README.md#getgeovisibilitylanguageshare) - Get mention rates per tracked language
+* [getGeoVisibilityCompetitorDetail](docs/sdks/geo/README.md#getgeovisibilitycompetitordetail) - Get one competitor's mention history
+* [listGeoContentGaps](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
+* [listGeoContentBriefs](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
+* [planGeoContentBrief](docs/sdks/geo/README.md#plangeocontentbrief) - Plan a content brief
+* [getGeoContentBrief](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
+* [approveGeoContentBrief](docs/sdks/geo/README.md#approvegeocontentbrief) - Approve a brief and start the writer
+* [getGeoAgentReadiness](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
+* [startGeoAgentReadinessScan](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
+* [getGeoTrafficOverview](docs/sdks/geo/README.md#getgeotrafficoverview) - Get AI traffic totals and sources
+* [getGeoTrafficLog](docs/sdks/geo/README.md#getgeotrafficlog) - Get recent AI traffic events
+* [listGeoTrafficJourneys](docs/sdks/geo/README.md#listgeotrafficjourneys) - List AI traffic journeys
+* [getGeoTrafficJourney](docs/sdks/geo/README.md#getgeotrafficjourney) - Get one journey's events
+* [listGeoTrafficPages](docs/sdks/geo/README.md#listgeotrafficpages) - List the most visited pages
+* [getGeoIngestSetup](docs/sdks/geo/README.md#getgeoingestsetup) - Get the install snippets
+* [issueGeoIngestToken](docs/sdks/geo/README.md#issuegeoingesttoken) - Issue the tracking token
+* [rotateGeoIngestToken](docs/sdks/geo/README.md#rotategeoingesttoken) - Rotate the tracking token
+
 ### [Schedules](docs/sdks/schedules/README.md)
 
 * [listSchedules](docs/sdks/schedules/README.md#listschedules) - List schedules
@@ -251,6 +300,52 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`feedbackSubmitFeedback`](docs/sdks/feedback/README.md#submitfeedback) - Submit feedback with an API key
 - [`feedbackSubmitOrganizationFeedback`](docs/sdks/feedback/README.md#submitorganizationfeedback) - Submit feedback to an organization's feedback URL
 - [`feedbackUpdateFeedback`](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
+- [`geoApproveGEOContentBrief`](docs/sdks/geo/README.md#approvegeocontentbrief) - Approve a brief and start the writer
+- [`geoCreateGEOPrompt`](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
+- [`geoCreateGEOScan`](docs/sdks/geo/README.md#creategeoscan) - Trigger a GEO scan
+- [`geoCreateGEOSequence`](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
+- [`geoCreateProject`](docs/sdks/geo/README.md#createproject) - Create a GEO project
+- [`geoDeleteGEOCompetitor`](docs/sdks/geo/README.md#deletegeocompetitor) - Stop tracking a GEO competitor
+- [`geoDeleteGEOPrompt`](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
+- [`geoDeleteGEOSequence`](docs/sdks/geo/README.md#deletegeosequence) - Delete a GEO prompt sequence
+- [`geoDeleteProject`](docs/sdks/geo/README.md#deleteproject) - Delete a GEO project and all of its GEO data
+- [`geoGetGEOAgentReadiness`](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
+- [`geoGetGEOContentBrief`](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
+- [`geoGetGEOIngestSetup`](docs/sdks/geo/README.md#getgeoingestsetup) - Get the install snippets
+- [`geoGetGEOScan`](docs/sdks/geo/README.md#getgeoscan) - Get a single GEO scan
+- [`geoGetGEOSettings`](docs/sdks/geo/README.md#getgeosettings) - Get a project's GEO settings
+- [`geoGetGEOTrafficJourney`](docs/sdks/geo/README.md#getgeotrafficjourney) - Get one journey's events
+- [`geoGetGEOTrafficLog`](docs/sdks/geo/README.md#getgeotrafficlog) - Get recent AI traffic events
+- [`geoGetGEOTrafficOverview`](docs/sdks/geo/README.md#getgeotrafficoverview) - Get AI traffic totals and sources
+- [`geoGetGEOVisibilityCompetitorDetail`](docs/sdks/geo/README.md#getgeovisibilitycompetitordetail) - Get one competitor's mention history
+- [`geoGetGEOVisibilityCompetitorShare`](docs/sdks/geo/README.md#getgeovisibilitycompetitorshare) - Get share of voice across tracked brands
+- [`geoGetGEOVisibilityLanguageShare`](docs/sdks/geo/README.md#getgeovisibilitylanguageshare) - Get mention rates per tracked language
+- [`geoGetGEOVisibilityOverview`](docs/sdks/geo/README.md#getgeovisibilityoverview) - Get mention rates per engine
+- [`geoGetGEOVisibilityPromptResults`](docs/sdks/geo/README.md#getgeovisibilitypromptresults) - Get the latest answer per prompt and engine
+- [`geoGetGEOVisibilityTimeseries`](docs/sdks/geo/README.md#getgeovisibilitytimeseries) - Get daily mention counts per engine
+- [`geoGetProject`](docs/sdks/geo/README.md#getproject) - Get a single GEO project
+- [`geoImportGEOCompetitors`](docs/sdks/geo/README.md#importgeocompetitors) - Bulk import GEO competitors
+- [`geoImportGEOPrompts`](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
+- [`geoIssueGEOIngestToken`](docs/sdks/geo/README.md#issuegeoingesttoken) - Issue the tracking token
+- [`geoListGEOCompetitors`](docs/sdks/geo/README.md#listgeocompetitors) - List tracked GEO competitors
+- [`geoListGEOContentBriefs`](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
+- [`geoListGEOContentGaps`](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
+- [`geoListGEOPrompts`](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
+- [`geoListGEOScans`](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
+- [`geoListGEOSequences`](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
+- [`geoListGEOTrafficJourneys`](docs/sdks/geo/README.md#listgeotrafficjourneys) - List AI traffic journeys
+- [`geoListGEOTrafficPages`](docs/sdks/geo/README.md#listgeotrafficpages) - List the most visited pages
+- [`geoListProjects`](docs/sdks/geo/README.md#listprojects) - List GEO projects
+- [`geoPlanGEOContentBrief`](docs/sdks/geo/README.md#plangeocontentbrief) - Plan a content brief
+- [`geoRotateGEOIngestToken`](docs/sdks/geo/README.md#rotategeoingesttoken) - Rotate the tracking token
+- [`geoRunGEOSequence`](docs/sdks/geo/README.md#rungeosequence) - Run a GEO prompt sequence now
+- [`geoStartGEOAgentReadinessScan`](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
+- [`geoSuggestGEOCompetitors`](docs/sdks/geo/README.md#suggestgeocompetitors) - Suggest GEO competitors for a domain
+- [`geoUpdateGEOPrompt`](docs/sdks/geo/README.md#updategeoprompt) - Enable or disable a tracked GEO prompt
+- [`geoUpdateGEOSequence`](docs/sdks/geo/README.md#updategeosequence) - Update a GEO prompt sequence
+- [`geoUpdateGEOSettings`](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
+- [`geoUpdateProject`](docs/sdks/geo/README.md#updateproject) - Rename a GEO project or relink its brand identity
+- [`geoUpsertGEOCompetitor`](docs/sdks/geo/README.md#upsertgeocompetitor) - Create or update a tracked GEO competitor
 - [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
 - [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 - [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
@@ -392,8 +487,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 12 of 44 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 44 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 20 of 90 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 90 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

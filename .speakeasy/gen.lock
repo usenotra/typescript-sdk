@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 104db2d6-9bbd-4701-8824-eae3c56579e7
 management:
-  docChecksum: 7bb235e089e5b2c5a7e4c519a4e67a41
+  docChecksum: 765fc500305df8af2cb989b18e906ac0
   docVersion: 1.0.0
   speakeasyVersion: 1.796.2
   generationVersion: 2.933.0
-  releaseVersion: 1.3.3
-  configChecksum: 815e9fe9014bf99f220c39605d077bae
+  releaseVersion: 1.3.4
+  configChecksum: cd31cc7d7928976144d11b57e408d2f6
   repoURL: https://github.com/usenotra/typescript-sdk.git
   installationURL: https://github.com/usenotra/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 118b98b7-ec8d-4511-b805-1cd7cf3384b7
-  pristine_commit_hash: a443ec9219cfbb5e0ee46a0006b09a208c5ab061
-  pristine_tree_hash: 7ac3d21c867bf33761bd7ae3f80b319eb8ddd350
+  generation_id: a48c2bde-4a81-48eb-8104-53fcded36e5e
+  pristine_commit_hash: 8b72284106e622f569d19dc441bff91abed511b2
+  pristine_tree_hash: e4e5f654c83f463960a925480dad08993e56a8f3
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -74,14 +74,34 @@ trackedFiles:
     id: 607a730ec19a
     last_write_checksum: sha1:353aadbad596a9407d6464d25eddcaabe540883d
     pristine_git_object: 6722df00db34d6e0f7dba4d319f673dbd9a6e1b9
+  docs/models/approve-geo-content-brief-response-organization.md:
+    id: f447d2ec2012
+    last_write_checksum: sha1:e59f3b870c2a982bc5ddd1abfe045d60aaba8c0c
+    pristine_git_object: 7401f2199bf832c5ce18057e528284d8b50b87c5
+  docs/models/approve-geo-content-brief-response.md:
+    id: fbb417296d04
+    last_write_checksum: sha1:56e6418e351a5ec58f912e9bf5d11fe40f99f518
+    pristine_git_object: a7af114eadf456940497c9724e77899261b20d4b
   docs/models/authentication.md:
     id: 7c9e9c744403
     last_write_checksum: sha1:582cfa58dc02cc837e13900b004f26e30563ad81
     pristine_git_object: 86dd0f543ece72d2cf3fd4d357cfdfcabc783ca1
+  docs/models/bonus.md:
+    id: ff97ff8633b9
+    last_write_checksum: sha1:f28724d63f95fe2c1720fa1f599ea98cf5719a2e
+    pristine_git_object: 6843680dea7093803ea4fafefd728f1e6ca68c29
   docs/models/chat-session-summary.md:
     id: 4323e357d3e8
     last_write_checksum: sha1:35e899a6307430b5c0bbf724960570427e428882
     pristine_git_object: 4080d22346b60eff8dde75b2f5e36fd3bf0a1337
+  docs/models/competitor.md:
+    id: 443a25cf1ba2
+    last_write_checksum: sha1:4ca8ae7d97129d765861248d4ca3df8c1b071259
+    pristine_git_object: 7b0cce2dd47406aed81e306a1df7f4999066b194
+  docs/models/confidence.md:
+    id: df320e626ea7
+    last_write_checksum: sha1:ea1127322eb74c732f7a97c33f8fb1e6ea5e637d
+    pristine_git_object: ddfacfe9524c75256dd533d1c7d506329166526d
   docs/models/context-github-repo.md:
     id: 3b293e2f0806
     last_write_checksum: sha1:b7e39a6422c88d8ee1041e02aa7ddd380a154bc9
@@ -106,6 +126,26 @@ trackedFiles:
     id: b367a40a236d
     last_write_checksum: sha1:5ec69a409ca43363db53f93d3a8e44e7abdb536c
     pristine_git_object: f413066836643ab4605b968936755f413167002d
+  docs/models/create-geo-project-request.md:
+    id: 2308622b1788
+    last_write_checksum: sha1:4281ad6f5b421fcbddc82e10345522bb1ed271e2
+    pristine_git_object: 4611973e7b00c2e4d9897e07eb975385b57c814b
+  docs/models/create-geo-prompt-request.md:
+    id: 5caf1b56eb72
+    last_write_checksum: sha1:e77c499938d74cee1e74922efe6c27e930f77eb0
+    pristine_git_object: 36361f669e47b1b26334081df0160311c1ff201a
+  docs/models/create-geo-scan-response-organization.md:
+    id: 6a599f222196
+    last_write_checksum: sha1:457540852633683ca8b63d4bb68ac03397c0410d
+    pristine_git_object: 8a3fcf2c654bcdee4eeeb73680f7e1343172ec0e
+  docs/models/create-geo-scan-response.md:
+    id: 24d327c7812a
+    last_write_checksum: sha1:88faa160987f61e1179a5226add8d35aec052588
+    pristine_git_object: eb0973c7712d138b97173bcad3661404a7303b21
+  docs/models/create-geo-sequence-request.md:
+    id: fae84ca068f3
+    last_write_checksum: sha1:94caecbf7ba30f0a328f9011342ad935798cf407
+    pristine_git_object: a7b0866afd748e5af69848ae9697d5bd58af4e3d
   docs/models/create-skill-request.md:
     id: 98ec67f2b5cc
     last_write_checksum: sha1:26b433c1af13b310c933bb51c91057598f8efb7e
@@ -118,10 +158,38 @@ trackedFiles:
     id: 19d1544a2e8e
     last_write_checksum: sha1:34adbcb646ec5974a4ac296cfb61a0d571ffaad7
     pristine_git_object: 113e87a065186fa993803a9492208d0cb917de39
+  docs/models/delete-geo-project-response-organization.md:
+    id: a7f03b0cb9c7
+    last_write_checksum: sha1:978874f97095f583b58a3b976f629c69b6391942
+    pristine_git_object: 44b3e503ae6dc1848d9cf97ba00426ed0f8af510
+  docs/models/delete-geo-project-response.md:
+    id: 78ac45bc07aa
+    last_write_checksum: sha1:52e0f0c669fa28e0483cf41cee61a11b99c43677
+    pristine_git_object: 0cb40a5b9138e369a8ce399340d49fe6b57cb05a
+  docs/models/delete-geo-prompt-response-organization.md:
+    id: 939f646f12c3
+    last_write_checksum: sha1:b9226d4184603b77dd7d3343e897f763b9f7eea0
+    pristine_git_object: 4386e24f20dabcb4d7c3380d3c58b87685feca36
+  docs/models/delete-geo-prompt-response.md:
+    id: 80c7b1f2b232
+    last_write_checksum: sha1:079cc61b80e134cc9c2f667cba77c935d6fbc635
+    pristine_git_object: 06c8e80f9bd88db7ca676cc98534d9c2cfca6bbf
+  docs/models/delete-geo-sequence-response-organization.md:
+    id: 0a95e59e86f5
+    last_write_checksum: sha1:426a25944a18ae222d9fc781137cb9e06c8434bb
+    pristine_git_object: ada5d4bc071ba7294daebb0bece383d06b136b03
+  docs/models/delete-geo-sequence-response.md:
+    id: 15af8dc229e5
+    last_write_checksum: sha1:a1002c18a5fa9fa156b89cba9bdda9e703460984
+    pristine_git_object: 151ce475ca69657bb7965d0d4357e821978deaf3
   docs/models/delete-skill-response.md:
     id: 45ace76bd387
     last_write_checksum: sha1:28eb6e46ea7e925264ee3b8d59f18987de5849da
     pristine_git_object: 1d4afa1f6860e7ee243dc7c240f5340adb7549e3
+  docs/models/engine.md:
+    id: 85f9124a575a
+    last_write_checksum: sha1:f228c950e010c3ae6f888673e12b77ff7000e4c4
+    pristine_git_object: 36397fc23305c2e73d4ffd89ce87c393408d4464
   docs/models/errors/error-response.md:
     id: 42d2f6b1c814
     last_write_checksum: sha1:6301172e031a9d300d20ef5c1f28e5e1d326a866
@@ -134,10 +202,18 @@ trackedFiles:
     id: 700b97d1b5c0
     last_write_checksum: sha1:0a6fd88302a395b52e70a3a8dbc64b5e7dddaf2a
     pristine_git_object: 26d0ce97ffaa8b457e6c6a1ea216ed4d1fe879f8
+  docs/models/essential.md:
+    id: d39fe0e38d56
+    last_write_checksum: sha1:c6292440e5a46ffb001f0985b5698bd3dd77941e
+    pristine_git_object: d1c2a06186641ecea722b32758d6881a00a550f3
   docs/models/event-type.md:
     id: 84ffd038db32
     last_write_checksum: sha1:7a3c074e30605fcf324d854a9a2ef32de44fa394
     pristine_git_object: 9b6d634941e9383c333268985ae73b057d9565b8
+  docs/models/event.md:
+    id: 311c22a8574a
+    last_write_checksum: sha1:599226a75aa7e8866032af4c2daa13b2a7263100
+    pristine_git_object: 0629632152cb0c4fa5ff8eb1edd399f2ddc9303a
   docs/models/external-channel-id-source.md:
     id: 02af24327091
     last_write_checksum: sha1:d0fd511e39eee0cbaf20921e28484f80c736164e
@@ -174,6 +250,322 @@ trackedFiles:
     id: 1afa3fb14066
     last_write_checksum: sha1:072b45000572afba4803794812fd9d527ba84622
     pristine_git_object: b5baebf0e2112652d28638df72be781485fe1216
+  docs/models/geo-agent-readiness-report-issue.md:
+    id: 58190ebd8485
+    last_write_checksum: sha1:ae9d78228d9d0e0d84449ec1128e28ba630cc21e
+    pristine_git_object: 5239abaea745fff21d2eb80357b7496b046c7572
+  docs/models/geo-agent-readiness-report-status.md:
+    id: 38b959681587
+    last_write_checksum: sha1:bb8d24d76d7c95f4b18987176fc21fb063d6c85e
+    pristine_git_object: 89f5fe611283f52ccfe079d02ba8f0a306bcc07a
+  docs/models/geo-agent-readiness-report.md:
+    id: 141478f3c6e1
+    last_write_checksum: sha1:7600754f69fed7c45dba55836277789bbe57c17e
+    pristine_git_object: 44762faaadfb05ab96c431a2cf6531fbfb98dd39
+  docs/models/geo-agent-readiness-response-organization.md:
+    id: 20b8e0809d80
+    last_write_checksum: sha1:cc9ea4f85233e7aaf285ebe2a52852218827b387
+    pristine_git_object: 3c98f9dfb1cfbc89d1c747bbf1ffefd81aab04dc
+  docs/models/geo-agent-readiness-response.md:
+    id: 59aa023605bb
+    last_write_checksum: sha1:0f6814c9fe8756390359ea2ac8dc7827b13ca2b5
+    pristine_git_object: 05573041b9d8447f3fa563320a0b1a1b0329749b
+  docs/models/geo-agent-readiness-scan-response-organization.md:
+    id: 87adf8c14e28
+    last_write_checksum: sha1:6e2df650b75ed68afc975ddfa65576ac5d514620
+    pristine_git_object: 550fa357a671386ea63e440540be3deada1f24cb
+  docs/models/geo-agent-readiness-scan-response.md:
+    id: 0bed7cb4c273
+    last_write_checksum: sha1:58e4d321006fbdd507c393d9d342a3eada568f5d
+    pristine_git_object: fa78be6b54286b7b9cda4742c047674f0f1a841f
+  docs/models/geo-competitor-kind.md:
+    id: 35e96bb0ff32
+    last_write_checksum: sha1:bb52132ce830abecf192032ded7ab91b4d5cdb1c
+    pristine_git_object: a6fb0066b83e3b3094af888efb69f9dc9ea816b0
+  docs/models/geo-competitor-suggestions-response-organization.md:
+    id: b69b566122dc
+    last_write_checksum: sha1:e22a896015f104d3c4a856ad0747e928a697d382
+    pristine_git_object: 9e45276c7de93ffab7e0a0b5161dc7ab0b28f909
+  docs/models/geo-competitor-suggestions-response.md:
+    id: aa6a68ba30b1
+    last_write_checksum: sha1:5322d0a03dfefb02bfb939b17d80ae456043ccfe
+    pristine_git_object: 300397b8811ee3c44231fa135d2bfc24e48710be
+  docs/models/geo-competitor.md:
+    id: 31a76a7b8697
+    last_write_checksum: sha1:82100ebb2d8817e1117ebcfc461a272cec716394
+    pristine_git_object: c6f4f84fe01f7804062ab9325782b8a6ee1c3ba0
+  docs/models/geo-content-brief-detail-status.md:
+    id: df8d60b9b234
+    last_write_checksum: sha1:2238e8d733b979d0a26f53d331bbc8c35fea0690
+    pristine_git_object: b60defb4538e02428d9af6c4c5b174d9de01219b
+  docs/models/geo-content-brief-detail.md:
+    id: e1be6f112947
+    last_write_checksum: sha1:0cc4c8dbe5dbcb1c567fa2e52c15d7b98d449c63
+    pristine_git_object: 91b0f30d8c61289a291a00e9c000b9d7df3859b9
+  docs/models/geo-content-brief-document-content-subtype.md:
+    id: 5b391da15b33
+    last_write_checksum: sha1:531671af3b36e517f9b68e9f4de65a29eb10fd54
+    pristine_git_object: 0e5490ca1df7ca78b987d6551aae02e1b7579873
+  docs/models/geo-content-brief-document.md:
+    id: cde377d1ad37
+    last_write_checksum: sha1:e0360493b0342b6f19c52a3392276b5cda9aabe4
+    pristine_git_object: 2f3ce6b3733d6ad05cd648a9e44b39b435051fc3
+  docs/models/geo-content-brief-response-organization.md:
+    id: 7ab134785f6b
+    last_write_checksum: sha1:5006a17638a942431a31df762d46071eeea43769
+    pristine_git_object: 9dc55a5edbbea78fda61cb21a2ac8ebbe0edaace
+  docs/models/geo-content-brief-response.md:
+    id: 8deccf8b6abc
+    last_write_checksum: sha1:1036e2c2e9ddd9593230d37def6f3c9964078511
+    pristine_git_object: 323e679495664571c19eef800586e85c6a4c11fa
+  docs/models/geo-content-brief-summary-status.md:
+    id: 79af9c5fa16a
+    last_write_checksum: sha1:a3e5eef5772db279fa49b899a2c09f2afbad26ec
+    pristine_git_object: 7aa237514d85b8a7f8e4eb28150f845349abf928
+  docs/models/geo-content-brief-summary.md:
+    id: 0e978278f26a
+    last_write_checksum: sha1:0d4a721aa8c978410d7764a5b5bbdca419fd202d
+    pristine_git_object: fa327e131c6c81ec0643c0503a50fc015925b392
+  docs/models/geo-content-gaps-response-organization.md:
+    id: c16132b7408f
+    last_write_checksum: sha1:6e6698d44d6818cd07f9f70dedf76e53ebe743cd
+    pristine_git_object: 435600c07d4294952d168b3eccd29c5a20e07726
+  docs/models/geo-content-gaps-response.md:
+    id: 37a83bd8dfed
+    last_write_checksum: sha1:38892614efb1eba5dfdb6ca6f14de6da9938972d
+    pristine_git_object: f5cd0583176ad53a82a33069698ddf71c6a51130
+  docs/models/geo-ingest-setup-response-organization.md:
+    id: faf62f263cdd
+    last_write_checksum: sha1:49e560208ae51610f8e2f2a871c4d4c7ad9041cf
+    pristine_git_object: 47d7b8043a357419d6faefd1a74d3cc1766fcff1
+  docs/models/geo-ingest-setup-response-snippets.md:
+    id: f062a318a6cb
+    last_write_checksum: sha1:c3bc3fb49879a14c3070cc5dea0c3588514ae4e5
+    pristine_git_object: c9c90b18c9643189cc426d33f6e34d57ed05f7ef
+  docs/models/geo-ingest-setup-response.md:
+    id: 7f69a1a95527
+    last_write_checksum: sha1:68be26095e9b8122de7fb380bdaca510bac34229
+    pristine_git_object: 55cd36492891ad6096576bd39a43b8a21b536401
+  docs/models/geo-ingest-token-response-organization.md:
+    id: 9924d9df67f8
+    last_write_checksum: sha1:557edcb8d84563fafcf2df73bf3b917d543ed593
+    pristine_git_object: 933573f4a56929cfa030839d50b93f04be01bb33
+  docs/models/geo-ingest-token-response-snippets.md:
+    id: c336e57ea19c
+    last_write_checksum: sha1:91429fd52a34a426f66167665bd430af973aabfd
+    pristine_git_object: 9f2ff66ecd6ede598ab1b883499a3cbc0a73e8cf
+  docs/models/geo-ingest-token-response.md:
+    id: ce028ae09547
+    last_write_checksum: sha1:fafab2f0c46e2f32c5193504e391d0308ba9c113
+    pristine_git_object: 468a70399cfd540f19d4b6c04bb508f7249b4f1c
+  docs/models/geo-journey-detail-response-organization.md:
+    id: 85cc22d133bc
+    last_write_checksum: sha1:64c2984bc7a2fb08dc977d3253e212bc4bc57afb
+    pristine_git_object: 71e95266e755846ef71182f38c3b3f0aed2dbee0
+  docs/models/geo-journey-detail-response.md:
+    id: 3a8f544ae414
+    last_write_checksum: sha1:7d4ed782eca662374fce3e681a2688034168e51f
+    pristine_git_object: d9555fbfd098d3380c4d3ac7609afe145d5a5225
+  docs/models/geo-project-response-organization.md:
+    id: 41eaa3b94bee
+    last_write_checksum: sha1:8188ef6ed0b2686d9e3f750ef63a037373023fe5
+    pristine_git_object: f8e1d6487842a8a0224ce2e3b70e66789cf751b7
+  docs/models/geo-project-response.md:
+    id: 0e7091c1bee4
+    last_write_checksum: sha1:fae129f993e88ebd317b6f58a32dfe2fe9ef550e
+    pristine_git_object: f461870db15248ccb2ce879b32e315ad4094f359
+  docs/models/geo-project.md:
+    id: d7e3ab8d0ad2
+    last_write_checksum: sha1:9be6e24de4c2f1e5ae386b6456e3c1d348dff620
+    pristine_git_object: 98a8dc8bd8db9a810558916da66f8a6b20d16fe6
+  docs/models/geo-prompt-response-organization.md:
+    id: b46c641bb474
+    last_write_checksum: sha1:86858c86e1d13b62a0fc8f803159c8feacadde35
+    pristine_git_object: ba9d1aab885566b6bc63eb8badd92a96b8b7c43c
+  docs/models/geo-prompt-response.md:
+    id: 3d6eed790c7e
+    last_write_checksum: sha1:e65531058f398b3583a560c1fa42904110b42e41
+    pristine_git_object: de0f1891dd13e7c139cf1e2c24fb0402d4635b69
+  docs/models/geo-prompt-source.md:
+    id: 0ea79b1d2578
+    last_write_checksum: sha1:ae58bde202507f30865fdd2ac4d23ed3a8bf682a
+    pristine_git_object: 50b1be9355e85a02ab9ea9499b08fb04c3093d9a
+  docs/models/geo-prompt.md:
+    id: ba968e9bfebf
+    last_write_checksum: sha1:1f198264ddb5072e249438d0731292be2dd84314
+    pristine_git_object: 6a703dea8faa404bd14372f616b8a9371609ce75
+  docs/models/geo-scan-response-organization.md:
+    id: 3691cb81454e
+    last_write_checksum: sha1:eedc09eb88f0d90658263f71f477b4c17bbbf770
+    pristine_git_object: a884d3445831e937ac0daa92dd2603aa4f57b153
+  docs/models/geo-scan-response.md:
+    id: b8947137e16a
+    last_write_checksum: sha1:39459aed6647fb1e29a08fc5702318ed82dd3a50
+    pristine_git_object: 5de8eff4403c8459aabc8ae2598595561cb132d7
+  docs/models/geo-scan-status.md:
+    id: 4705dd240769
+    last_write_checksum: sha1:ad174f48459162d1df7b6deea2ec5048206ab9a5
+    pristine_git_object: 540ff153d94fb994677ab58b6e3e926da60cbf9f
+  docs/models/geo-scan.md:
+    id: 8b7dd797c079
+    last_write_checksum: sha1:41cd7b4d3ed947e644fec78fc1f369558e7c8442
+    pristine_git_object: 2bea79d4635db9993dfe8d9959ad4ececfc3afd8
+  docs/models/geo-sequence-response-organization.md:
+    id: c174b12c5903
+    last_write_checksum: sha1:af65dff663a990c120a8cbd8338cb3006fe4cbf2
+    pristine_git_object: 52a4ff2f5e61646e9fc2c5f63cae2bb969784ef6
+  docs/models/geo-sequence-response.md:
+    id: 6bd27662ddd3
+    last_write_checksum: sha1:eada875e4ad327b2ad6f505fea504acbe921da8c
+    pristine_git_object: 4b11030fc701cc36324ad7276bcf5cc20a70dd6e
+  docs/models/geo-sequence.md:
+    id: 5ab097569caf
+    last_write_checksum: sha1:2e7389261f53f0589b767802c50b1066302b1142
+    pristine_git_object: effb65126ef4a3c0b2c20e051e87f34b596d548e
+  docs/models/geo-settings-response-organization.md:
+    id: efc828d8600f
+    last_write_checksum: sha1:317f8fb468ea21f355ca00506fdc9af08beef03c
+    pristine_git_object: 68513223181f2e25a64aca2e27cba86f0f0779ee
+  docs/models/geo-settings-response.md:
+    id: 7a172061dedd
+    last_write_checksum: sha1:c0b7d6168cee898333ce1a6fbbed32ecd447532b
+    pristine_git_object: da099e8af89e7271ca2420188dda254dad1e94a8
+  docs/models/geo-settings.md:
+    id: 1dc43ead5a0c
+    last_write_checksum: sha1:98e17ff01ffc717358a43e16e05dbd270ffb3a75
+    pristine_git_object: 7aa6f43e2ca7d538f3a52d417d5e5a8a515faf3f
+  docs/models/geo-traffic-journeys-response-organization.md:
+    id: af6e52e57751
+    last_write_checksum: sha1:1c090fbc0a785fcd0e54607be621d214e3afd941
+    pristine_git_object: 41ee3265f00e755db4c5575d840b80679cf7f436
+  docs/models/geo-traffic-journeys-response-visitor-type.md:
+    id: 98602472febe
+    last_write_checksum: sha1:d55596de792e01f3b9deecf2f090ed61a8e51885
+    pristine_git_object: 355757101fab9fdc2ab7a8a94eec226ac4ab31cc
+  docs/models/geo-traffic-journeys-response.md:
+    id: f7008b7c87e5
+    last_write_checksum: sha1:13bce3556a21793fc9c5d795da4c3195f7b3ead9
+    pristine_git_object: 83d6eebe38bfe091d2e10170f47e4e17ffc198d7
+  docs/models/geo-traffic-log-response-organization.md:
+    id: 286d6b33cae9
+    last_write_checksum: sha1:552a87169e37efe2fa8678db3988f2e1aba0bf9b
+    pristine_git_object: b490be3d75471d3de10a3c531a6af6ec993f68eb
+  docs/models/geo-traffic-log-response-visitor-type.md:
+    id: b99194320c02
+    last_write_checksum: sha1:d46e576fbc73f83799958a30b2dd93cb04dcb444
+    pristine_git_object: dc006eb92bd53d556cb096bb45e075052a682c19
+  docs/models/geo-traffic-log-response.md:
+    id: d700b4d4c3e7
+    last_write_checksum: sha1:4ca3dc8f56e4a7b9ee33d097685103c78ad475f5
+    pristine_git_object: 576743a69ad62283b1a34f1b1582b2b280a74c31
+  docs/models/geo-traffic-overview-response-organization.md:
+    id: 996cda957038
+    last_write_checksum: sha1:08984dc74ef991b3f7a4c10556b5dbd46f978008
+    pristine_git_object: eeb1d1986ad04917b480ef609d71bd58bf943f66
+  docs/models/geo-traffic-overview-response-point.md:
+    id: 249bbcfac0aa
+    last_write_checksum: sha1:66bb2f315cbc61eb44be004f1209c0368066ba17
+    pristine_git_object: 3964f2f04e4718ccb297ec0d300790caf9e5270b
+  docs/models/geo-traffic-overview-response-source.md:
+    id: 7d77e47a2d50
+    last_write_checksum: sha1:9c64afa09967b9d1d017b7244396847c8cc23ffd
+    pristine_git_object: 36db89573208f11ddb4df6755ba1dbe36a066bfb
+  docs/models/geo-traffic-overview-response.md:
+    id: b807ab6fdeea
+    last_write_checksum: sha1:cfa3e1c6334293ffc19463ef70270fa1317eb8dc
+    pristine_git_object: b23b14d972f54254fc5294624b28475d38b971a6
+  docs/models/geo-traffic-pages-response-organization.md:
+    id: cd883ab067fc
+    last_write_checksum: sha1:86079066c592727d43f5155b2674a3fe2a01120b
+    pristine_git_object: 59851fdac973458b2dcfc2485ae579c28e8c1bb2
+  docs/models/geo-traffic-pages-response-visitor-type.md:
+    id: bed7618cd670
+    last_write_checksum: sha1:79db003df75cc366cb4f7d3be03d4439e5f4758f
+    pristine_git_object: fb10fb3597e695707ea91bf71de7cf530c16e7d7
+  docs/models/geo-traffic-pages-response.md:
+    id: 2702f5ecfd66
+    last_write_checksum: sha1:cf7f75c367fe96c4fdb48f5c32efaf506a706657
+    pristine_git_object: 3b7dd0a8c5b1ae21f8cbcf9781c3305123c9af05
+  docs/models/geo-visibility-competitor-detail-response-organization.md:
+    id: 5c50baa676fb
+    last_write_checksum: sha1:863970720be738dbcf0fcd73ec5c8d35f47098f5
+    pristine_git_object: 69cfd5f401f05696b3ce3bca764f647c9a04d949
+  docs/models/geo-visibility-competitor-detail-response-point.md:
+    id: 3e361be32bae
+    last_write_checksum: sha1:5e06746fa92b3878b509430bb3324c06a8773c69
+    pristine_git_object: 9d447f8a721dc8c1e251a07397b611986cbd62eb
+  docs/models/geo-visibility-competitor-detail-response.md:
+    id: 17828ebef7b9
+    last_write_checksum: sha1:5e6591263c995b7ec845f4e66d9f8e13d198c17e
+    pristine_git_object: e08c856f9b923f61cba74aaea54965336fd61645
+  docs/models/geo-visibility-competitor-share-response-organization.md:
+    id: 5b57b2b56228
+    last_write_checksum: sha1:505b9eb03780ccd8098bd33c4e169a157d939637
+    pristine_git_object: 8953376c495d693e566e25b478f740389713bbaa
+  docs/models/geo-visibility-competitor-share-response-point.md:
+    id: b849899bf438
+    last_write_checksum: sha1:b48e3023b420fbe2de414e5868b94c7cd6f17683
+    pristine_git_object: 79e4df0dd7bc5c2a16d11f72c33c632b1de0372b
+  docs/models/geo-visibility-competitor-share-response-trend.md:
+    id: 36dd5c30693f
+    last_write_checksum: sha1:d894bcc898ada197b784a5a5ed559f442645e89d
+    pristine_git_object: 3c7ab342bc8029db73261e5cddea1cf40502f54b
+  docs/models/geo-visibility-competitor-share-response.md:
+    id: 2820f4ef0996
+    last_write_checksum: sha1:43fa2efd8d5022775599131b2bd42199130eec01
+    pristine_git_object: 34a599fa5f34c2274bcc22a4809d3b260a52e5f5
+  docs/models/geo-visibility-language-share-response-organization.md:
+    id: dfdccf796b90
+    last_write_checksum: sha1:a93993204e38fff57bc7475cf4c9c15ba26a0c89
+    pristine_git_object: 63b890d60d67314d05cf45a5e0f55f7929ec3f5c
+  docs/models/geo-visibility-language-share-response-point.md:
+    id: 1bcc49fc6568
+    last_write_checksum: sha1:fd536b31beeac41c44a9d5a0b5ffa61d7fc560d7
+    pristine_git_object: 34cbd2caa7c2fec4e1a113523e01b1933c55c30c
+  docs/models/geo-visibility-language-share-response-trend.md:
+    id: 56c030aef710
+    last_write_checksum: sha1:53a9f311ef03c8504ec571bbfcea52875704c9e0
+    pristine_git_object: 82f4e449c577555dbb9a2a44fa158e2fb74eb665
+  docs/models/geo-visibility-language-share-response.md:
+    id: f958d3bfd219
+    last_write_checksum: sha1:7b99b3872a12252d2adde5bc28cf61138aff2b8d
+    pristine_git_object: 343efc02102a846e3487ed3407d4792a3d23310a
+  docs/models/geo-visibility-overview-response-organization.md:
+    id: a2058c0ae0b3
+    last_write_checksum: sha1:2360aea8b43062ee9459bc5e5fb7d793ef1775bd
+    pristine_git_object: db291324d3865d817794c696a7deace035e22848
+  docs/models/geo-visibility-overview-response.md:
+    id: 4f1059330285
+    last_write_checksum: sha1:b365b1702f6a5f19f30ed6b08686acc0af474f1b
+    pristine_git_object: 39abb7fa511e51d388719ce131c4a8b41d10716a
+  docs/models/geo-visibility-prompt-results-response-organization.md:
+    id: 650e4977f5f8
+    last_write_checksum: sha1:bf2c9d47d99c1f52d2782910dc1ff4bec19ddc0d
+    pristine_git_object: 0e39aafe719df8fc64ed6e91efe9137b27fa9aa9
+  docs/models/geo-visibility-prompt-results-response-result.md:
+    id: a42c31e8cd41
+    last_write_checksum: sha1:8fb92c388e9dc372f4a97000791a44086a770b9b
+    pristine_git_object: aeda4168a7e0aebf7098ce96eb3503be2c0c1043
+  docs/models/geo-visibility-prompt-results-response-source.md:
+    id: 68a80e6c12c1
+    last_write_checksum: sha1:18d2a0a12566321c340a5a51737985d984e91f79
+    pristine_git_object: 7c46ff6d77f8f2317239e959162bf32252c9581f
+  docs/models/geo-visibility-prompt-results-response.md:
+    id: 1189d6fd59ef
+    last_write_checksum: sha1:be3399c933b87905aeb9b777fcdf8cc1afa694de
+    pristine_git_object: c90fb923a457b0ec9a0bd02e7548dc9e4592865d
+  docs/models/geo-visibility-timeseries-response-organization.md:
+    id: 075f784d194e
+    last_write_checksum: sha1:6e518bf0525d42014e1d9f4679ea93889dc507f1
+    pristine_git_object: 06722454729dd09e67cc057a9d999232705c757f
+  docs/models/geo-visibility-timeseries-response-point.md:
+    id: 4244c162bdf0
+    last_write_checksum: sha1:60e2a8bad3b66d58b22088da12802f2c9b7bc650
+    pristine_git_object: e283bdf803e8f55c4d98472e3e3480c6b9655eca
+  docs/models/geo-visibility-timeseries-response.md:
+    id: 45dac69fa072
+    last_write_checksum: sha1:454a427feb0a1b34c7459ac8ab178ba578de806a
+    pristine_git_object: 4fc701abca0c08e67190229d69b6818307b11b2c
   docs/models/get-chat-response.md:
     id: e1abe03f7a14
     last_write_checksum: sha1:c2a3bbc9c44e7708b4a0021665fbff22d8c55e3c
@@ -182,22 +574,138 @@ trackedFiles:
     id: e2ca83110b52
     last_write_checksum: sha1:e6e6724a46d9c23b6dba3ab83270f6009fbf2710
     pristine_git_object: ca393bf4b19185deff6849fb9fc570cf48057a37
+  docs/models/history.md:
+    id: d22edc529647
+    last_write_checksum: sha1:e6d530edb8dc3fff1cbd4ea8d68250b0d1d11e66
+    pristine_git_object: 9382d9b8d2096a2a186262d5db42e75aea563864
+  docs/models/import-geo-competitors-request-kind.md:
+    id: a411fc31c770
+    last_write_checksum: sha1:4d8f4f5610ba3d72cf5cbba2bb7fab1047b5ce9f
+    pristine_git_object: 708695a3774b2bc854c68767908f2fc677ba8b73
+  docs/models/import-geo-competitors-request-row.md:
+    id: bbddf6065143
+    last_write_checksum: sha1:57d6c818d79372e37507b4ad1f942490c4a51494
+    pristine_git_object: 7049cab9518e98b60008b30d9af276fae19cebab
+  docs/models/import-geo-competitors-request.md:
+    id: 7b59dcd7e6b9
+    last_write_checksum: sha1:ab42ac5824e652a60a9da551bcace36a9543b040
+    pristine_git_object: f46209bfa62e31c6c62a24e4e39492da77fa0135
+  docs/models/import-geo-competitors-response-issue.md:
+    id: 061ff77e8861
+    last_write_checksum: sha1:9efe15609e953f6cb726302c7862ff62ec50471f
+    pristine_git_object: a908640dd4dc6864761a98abd70424eaca86b520
+  docs/models/import-geo-competitors-response-organization.md:
+    id: 4e5cec138a4f
+    last_write_checksum: sha1:9d267dbcf50a939afde65a55d13be21eb0554126
+    pristine_git_object: 4e1b58efbb2fcd2afcff2584d7c0fcb7c6029f0f
+  docs/models/import-geo-competitors-response.md:
+    id: 8939bf298dd2
+    last_write_checksum: sha1:dc35a0f452bc68f23605427cc6249576d678acdc
+    pristine_git_object: b091f4da0012e4b8fa5752df6af5334d0fe24d84
+  docs/models/import-geo-prompts-request-row.md:
+    id: 8a884030ab8a
+    last_write_checksum: sha1:5548ac18a5ca91f6cf8bec36477b7d2086035d95
+    pristine_git_object: a167dce167b81baf4d18b0ee9b0a3e9940679dbd
+  docs/models/import-geo-prompts-request.md:
+    id: 5af5e4a758a8
+    last_write_checksum: sha1:5ca67d009ef41911b96ea89ab4946a520962fb84
+    pristine_git_object: 42c35cbdd2acfff50b6ef704670d6f4f5aa64a9e
+  docs/models/import-geo-prompts-response-issue.md:
+    id: 77fec68f43b6
+    last_write_checksum: sha1:c7d7da50f5e4b3142f396d6f24f1e7e173ae3bb3
+    pristine_git_object: e66a031c475d56e71818c53efebbe2c44f4e04cd
+  docs/models/import-geo-prompts-response-organization.md:
+    id: 60a8e389ae90
+    last_write_checksum: sha1:0ff2395d60767515715e1c7bc91796012305da29
+    pristine_git_object: 3f841e77b0b9043f5c01a2a29fd1655732388cb9
+  docs/models/import-geo-prompts-response.md:
+    id: 65652d3250e8
+    last_write_checksum: sha1:c7a87c874aa5e58db71c5a759b978e391c19e7ff
+    pristine_git_object: 870f7342905490d2aa213d10bc422d1656007623
   docs/models/input-response.md:
     id: b7110466905c
     last_write_checksum: sha1:708fa7fc62e34616f1337b9e827e1a410e0ca47d
     pristine_git_object: 6dd88028218a1167362e69dc80ce74cca18c6af4
+  docs/models/internal-link.md:
+    id: 2f005e0f1cdb
+    last_write_checksum: sha1:1aa7f258ba9b550dbdd35886ae75f14f669d318b
+    pristine_git_object: c0d2ee0d4f742d9baaa73787e93875f7d6b22b8d
+  docs/models/journey.md:
+    id: 2e6d978311da
+    last_write_checksum: sha1:b7fd4339b964db8ea44747769cd7dd932ae4305c
+    pristine_git_object: 9b0da8f57a01e10a54ba0952242186f305873e29
   docs/models/list-agent-chats-response.md:
     id: 2e9a7c3c6579
     last_write_checksum: sha1:885580e01eccc85dd910dbccb152f68891829b3c
     pristine_git_object: 1bc14ebc34dc61ab1425895cf8b63defa2c9a6e0
+  docs/models/list-feedback-response-pagination.md:
+    id: 0445409dc511
+    last_write_checksum: sha1:d34fe5b6dd3a792dde4bd7d367251a1b22756783
+    pristine_git_object: abce13b099ed9b4b5fd83c18a3afd272f04ce290
   docs/models/list-feedback-response.md:
     id: 8ae6ed8b575f
-    last_write_checksum: sha1:e621ced8f182f819e994ace1ff5c38e48356528f
-    pristine_git_object: 085c9cf31d815c799c53336c089270facf9b767b
+    last_write_checksum: sha1:4c416f2b138b2c5303b361e2986d7bc8f25ee063
+    pristine_git_object: 573e57334da712945d9897f923d906474ee3d5ce
+  docs/models/list-geo-competitors-response-organization.md:
+    id: 838d0594c795
+    last_write_checksum: sha1:004c347081a588c1763708f498da8c8a5152266c
+    pristine_git_object: 0e35366635bbd8e20f9a85fa17d0746660143e57
+  docs/models/list-geo-competitors-response.md:
+    id: 5692cba41122
+    last_write_checksum: sha1:674713ae358623a8c19088c0b43554eb7ee61d9e
+    pristine_git_object: a78d7632accb12a8b1167f197f440550c19f35be
+  docs/models/list-geo-content-briefs-response-organization.md:
+    id: 0611e297961c
+    last_write_checksum: sha1:d1d161e4d4edfe974bd797dc9d9b5994029fee23
+    pristine_git_object: 18a5d3e354d604aace059fbfbd73e0d38783130f
+  docs/models/list-geo-content-briefs-response.md:
+    id: f03271e5f6aa
+    last_write_checksum: sha1:236bc314168a55ce1034c41c24c1a47a4dcff3da
+    pristine_git_object: 24cdb42de0a8bd8fe1182d27ecd057dae4b7a1ee
+  docs/models/list-geo-projects-response-organization.md:
+    id: d90da24492fa
+    last_write_checksum: sha1:f77c6bb806ea19511df8ab592a9377c93841b063
+    pristine_git_object: 12ba13ec2bb1d110c4dc7e2529e292120dfc45ec
+  docs/models/list-geo-projects-response.md:
+    id: 41c27102cd70
+    last_write_checksum: sha1:3b1c99c0f5e42ebb65e95d0679bf40902d05300c
+    pristine_git_object: bb9b6f42cc46a5ba70fb78a61277cb839ce99ddf
+  docs/models/list-geo-prompts-response-organization.md:
+    id: 8216c85c4251
+    last_write_checksum: sha1:1f01eb913524b4d5c3a4cd35ff4cb5be0c39e632
+    pristine_git_object: 4900dee42f65fce8565aa605c638a0220138dac4
+  docs/models/list-geo-prompts-response.md:
+    id: cda0f6eb9139
+    last_write_checksum: sha1:ec52b4d821135e599093c791cdf5ac6cdc266e29
+    pristine_git_object: b929465fd7a0c73c78d1288939d2b55cd3cf65c2
+  docs/models/list-geo-scans-response-organization.md:
+    id: 042efea1b1bb
+    last_write_checksum: sha1:558f9d8271c144e123bf108664f4d21b402e5641
+    pristine_git_object: 79aba7652b8f948631ad3f4aef54d5d9905aaeb4
+  docs/models/list-geo-scans-response-pagination.md:
+    id: 4f756650c98b
+    last_write_checksum: sha1:005fc19dee0200363ecad647a4b40a72f9f2cc36
+    pristine_git_object: feca23af2291e8f4562ab5912d0073cc5fcea72a
+  docs/models/list-geo-scans-response.md:
+    id: a68df2f44d92
+    last_write_checksum: sha1:849a9760cbefe1220271253ec31dbb1c3118a3d1
+    pristine_git_object: f983f87472d37b56b3bbd2bfcf355d9e79590b96
+  docs/models/list-geo-sequences-response-organization.md:
+    id: d02fbdcf1129
+    last_write_checksum: sha1:e832db68c88fb520d6b818e8e4916b0a1352146e
+    pristine_git_object: 3d7b5d5d14600e5150eb0104ee2900467f29d8e2
+  docs/models/list-geo-sequences-response.md:
+    id: 9ca0fb95a34d
+    last_write_checksum: sha1:8c42793abe12454f498ad1e0838f2de412dfcb28
+    pristine_git_object: 85db3c15720635f9a0bbd33f18ca4b529b8ecb9e
   docs/models/list-skills-response.md:
     id: e087f1b719e5
     last_write_checksum: sha1:30874f8908c220a424d588afff36d31ee27c5258
     pristine_git_object: 8df193fef0ef112336c61ef03933ac37bcace643
+  docs/models/log.md:
+    id: c836090f177b
+    last_write_checksum: sha1:ee6cc702b1f0b89ba189d151cb59b7170403e92d
+    pristine_git_object: d4e82e2843a888695b54cfbca8e47f321ac5d99c
   docs/models/lookback-window.md:
     id: 958e09ecdc1d
     last_write_checksum: sha1:f41037c8c4691906aeca91929dfe1fa6bf01fda0
@@ -206,6 +714,14 @@ trackedFiles:
     id: 66e0236ac289
     last_write_checksum: sha1:2fe8d647d3741fd08c5ee0e048c6d593d1403a93
     pristine_git_object: 20019f50a6de308a1cb0ef24b13ffef97a0d1443
+  docs/models/operations/approve-geo-content-brief-request.md:
+    id: 12f90a001937
+    last_write_checksum: sha1:2c380267f967b66b7d19dce4e2bae965262f068d
+    pristine_git_object: 373b17647b7cc316b0096de4fe4049129ff388e2
+  docs/models/operations/approve-geo-content-brief-response.md:
+    id: b9c93fb9b3ca
+    last_write_checksum: sha1:74a7cab3e8cd3666044ae9aecb6e9e925454d4fa
+    pristine_git_object: 60e94d19aad56748ab872cec9f2892ebe6601cc2
   docs/models/operations/content-type-request.md:
     id: 506bae34266b
     last_write_checksum: sha1:1bfc5f0409c9e8d22b9a19b23d5aa7bcb391bf0f
@@ -314,6 +830,22 @@ trackedFiles:
     id: efbb2884a006
     last_write_checksum: sha1:353e5d87996b6b8b029dd1cdc3b176018f919478
     pristine_git_object: f6e392036e38dd571d17f14eafaa65257a8329c5
+  docs/models/operations/create-geo-prompt-request.md:
+    id: adcb1cd4c8d3
+    last_write_checksum: sha1:fd672402eca62eb84e3ee5a66938945244ed76f0
+    pristine_git_object: 5f95f9437b0d3ddd61ece44ac1f0ecf8470785aa
+  docs/models/operations/create-geo-scan-request.md:
+    id: 783055143a84
+    last_write_checksum: sha1:a3cfe44cbdb1f6cd1de90d77f3f96392bb09dc42
+    pristine_git_object: 4af5c9ed93089755dc1bc23fe7fb634b795f10df
+  docs/models/operations/create-geo-scan-response.md:
+    id: 85689f33b654
+    last_write_checksum: sha1:c668ead337de9cbae2d9a6df6647cb0db4b0c6f6
+    pristine_git_object: bcfcc69d85fabf2e5c60156f084fd30eae5a2df0
+  docs/models/operations/create-geo-sequence-request.md:
+    id: bfeb5789d7f2
+    last_write_checksum: sha1:510e92efcbe9b69a94fc96c539db9e008f077d93
+    pristine_git_object: 3dc5853cdb5e5fcb075baed5593ea6da60c074a2
   docs/models/operations/create-git-hub-integration-github.md:
     id: 801c55db9698
     last_write_checksum: sha1:037327b8c01a3daf340550d6a77233b4078e6727
@@ -494,6 +1026,18 @@ trackedFiles:
     id: fbeceb63393d
     last_write_checksum: sha1:5a0644b3d4b11ffbcf36e61631c53bfc4494504c
     pristine_git_object: b23e8141e0e64df2b6b8198f8cad7fc15cd93823
+  docs/models/operations/delete-geo-competitor-request.md:
+    id: 3fffcfc9fde5
+    last_write_checksum: sha1:63afb34b7e434efb181ab0ef375724de3a2e8bb6
+    pristine_git_object: 4f75724a9c5717dae2111176ae78c535db68099c
+  docs/models/operations/delete-geo-prompt-request.md:
+    id: fdc345778e92
+    last_write_checksum: sha1:c73dc605b46d4ba0e3897d359aeff6238a44229b
+    pristine_git_object: 7e41af18e96c30a01deefe937298f3cc65e0e2d7
+  docs/models/operations/delete-geo-sequence-request.md:
+    id: c4728298515d
+    last_write_checksum: sha1:78a57d52f3ddb560c64a0972a834614cb6e6c9ee
+    pristine_git_object: 1e4dfb7917a04c829451c69f74432626f618b484
   docs/models/operations/delete-integration-disabled-event.md:
     id: 098bc596398c
     last_write_checksum: sha1:8a5cb2c4688fda2c363d1380f48f67e73304523c
@@ -526,6 +1070,10 @@ trackedFiles:
     id: dd37710fe41a
     last_write_checksum: sha1:e4ed0fc2d7de63bef26b98d41ca4944b733f88ce
     pristine_git_object: 1c4c8d2238c944c08d436b43c3a3eadee23c4440
+  docs/models/operations/delete-project-request.md:
+    id: 2cdb0066dc06
+    last_write_checksum: sha1:eafb36d812b9d87e3abd528b9219cca6c5aa873d
+    pristine_git_object: 1fdcacaa40a57fbdbbf5a00f758a5802f89dffac
   docs/models/operations/delete-schedule-organization.md:
     id: 0b27551cce51
     last_write_checksum: sha1:cbe8876c72b33e573c06136777683a712c2f3139
@@ -654,6 +1202,58 @@ trackedFiles:
     id: 23ca0891c29f
     last_write_checksum: sha1:207562f5d9f87d42d2749aa85a1578602a643dce
     pristine_git_object: 9f6474388bea0c717ff754690ac63f405cdeaec9
+  docs/models/operations/get-geo-agent-readiness-request.md:
+    id: 521a344d18db
+    last_write_checksum: sha1:16ba45e97dacd147a7ebacd48798a0e73da0ef0d
+    pristine_git_object: 1d0e4dbd49d1839322172f4804f6b2cc5d155ae5
+  docs/models/operations/get-geo-content-brief-request.md:
+    id: 191c327a5a8f
+    last_write_checksum: sha1:e8eb5337c0e414fe6cbcd4f6d6d103ac36b2572e
+    pristine_git_object: e5eb23b8ab94d9bcabea416e676c52941a04ed0e
+  docs/models/operations/get-geo-scan-request.md:
+    id: f72ce44d46d4
+    last_write_checksum: sha1:2fd694c9661db2b647206b9162a094ff8993e6cd
+    pristine_git_object: 17693dfaec53894ac839f380d493a25d27dbf646
+  docs/models/operations/get-geo-settings-request.md:
+    id: dcd00cd871de
+    last_write_checksum: sha1:3a992504c59be8850bb6efaa2d6f48689985a397
+    pristine_git_object: 72ba707e90c8d492a185f2b81001d664f5793317
+  docs/models/operations/get-geo-traffic-journey-request.md:
+    id: 2e1c6185a411
+    last_write_checksum: sha1:d6381181234ecdfbd58910c85f2dfe9b9c3d0aea
+    pristine_git_object: c784dd1452d1da4eceac7817b26bc813f154fbb4
+  docs/models/operations/get-geo-traffic-log-request.md:
+    id: 7effef64bacf
+    last_write_checksum: sha1:b4228a060a91b06b3bec2b6e2202d7c5578c372e
+    pristine_git_object: 6c9b00ebf62c9dd7df0f79f373b280a4f1f7e431
+  docs/models/operations/get-geo-traffic-overview-request.md:
+    id: 954153c68520
+    last_write_checksum: sha1:6f2457f708f6b7ceac5a22115c7743d26f2ed59b
+    pristine_git_object: fb41db89aa3e667757a23176e8fcaf1cc6c4a854
+  docs/models/operations/get-geo-visibility-competitor-detail-request.md:
+    id: a46f1cd47590
+    last_write_checksum: sha1:f3505124972ed94eec38f643c2ee7eef00bdb074
+    pristine_git_object: c0023b64a16d6ba41bf6f5afa934d05a8eac4528
+  docs/models/operations/get-geo-visibility-competitor-share-request.md:
+    id: cbfad67b5a3c
+    last_write_checksum: sha1:550f7a1528caae82823671d9548258228e0bbf87
+    pristine_git_object: 2e35448ca963a35e4d00d725392ce8b97f32ca59
+  docs/models/operations/get-geo-visibility-language-share-request.md:
+    id: 9134463a667d
+    last_write_checksum: sha1:1145f32c909ab030d971f2b925453c9227bd8918
+    pristine_git_object: 99df1d51e4c2adaeb1eb1c5ace0ede04cd49c9a6
+  docs/models/operations/get-geo-visibility-overview-request.md:
+    id: 03476e8fed1e
+    last_write_checksum: sha1:45ab55c3badc6399895bace2a4f77259a9f8adde
+    pristine_git_object: daf7c51567dc4e4f02d858d0b6ffbb0458163142
+  docs/models/operations/get-geo-visibility-prompt-results-request.md:
+    id: 10c3d4ffebca
+    last_write_checksum: sha1:1187f35e900c46507d836f9f2581e7272d839405
+    pristine_git_object: d1187801d07bc92e6ce446e28a1461fb4e25bf53
+  docs/models/operations/get-geo-visibility-timeseries-request.md:
+    id: 3afc175e58f0
+    last_write_checksum: sha1:16d7c8b35f717238cb0cb2ebc5ca3ef413e1e676
+    pristine_git_object: b5df4a4fe95a3e9013ad710485e2546e3aca2ca8
   docs/models/operations/get-post-content-type.md:
     id: f8fe44e7b0fd
     last_write_checksum: sha1:a7b87b6f95bcd02a50b50883df713c8bda927ed9
@@ -706,14 +1306,38 @@ trackedFiles:
     id: 56eff950512d
     last_write_checksum: sha1:8c22856a5ce8c8750ad4fc69ffd4fbae9a776bdb
     pristine_git_object: 1533bf38266f5dd189cc9e008e680e28079cb5e0
+  docs/models/operations/get-project-request.md:
+    id: a354e2cbfd4e
+    last_write_checksum: sha1:a836cfd76384af792abf2dd88ccb3bcae6fea734
+    pristine_git_object: ede35055c77e760cdaf4f3c89e1612a8d201390b
   docs/models/operations/get-skill-request.md:
     id: 545f50ef1c2c
     last_write_checksum: sha1:2811b58314e032bae31bf92787c6e382909ea515
     pristine_git_object: 048bffcb76e584f5a18daf22f690414e42717f23
+  docs/models/operations/import-geo-competitors-request.md:
+    id: 64c8fb1bf366
+    last_write_checksum: sha1:2c021ed6e589d33022a7ceabde9d304773ef8e84
+    pristine_git_object: 3edb62ac195926bab897923826410aa78540e2eb
+  docs/models/operations/import-geo-competitors-response.md:
+    id: 3622c09dfc09
+    last_write_checksum: sha1:4e7c9d93d3432a15df10aea4c105135f98f7057e
+    pristine_git_object: 23d66519550dc0e520d1bb9c7241dc12735c555f
+  docs/models/operations/import-geo-prompts-request.md:
+    id: 47dddef8d64e
+    last_write_checksum: sha1:899c638a756641ec94272a565f470ac3f9981e22
+    pristine_git_object: 8f0cda5f48fad3260c6b224e2d81ca2d6971b1c4
+  docs/models/operations/import-geo-prompts-response.md:
+    id: 49744cd93207
+    last_write_checksum: sha1:d948ba7ad80879d08dddea0bc3c3e63ed8d926b4
+    pristine_git_object: 0dbe9807640521a9da963e41d05a64d6b3d24d09
   docs/models/operations/integrations.md:
     id: c81024c5774d
     last_write_checksum: sha1:b5d9adceee82af5073dcaf666311e22824def2e6
     pristine_git_object: b175dce7940530beebb5f9d5fb908d9ca2aa8430
+  docs/models/operations/issue-geo-ingest-token-request.md:
+    id: 9214ee57bf36
+    last_write_checksum: sha1:eed784e08e9ebedeca73cbc73a1dc1393b5ec981
+    pristine_git_object: 90780eeeb45d45c13a455123033f5fa0ab6a2ac4
   docs/models/operations/kind.md:
     id: a367c5c0b637
     last_write_checksum: sha1:2865bd2f1ec8d7b2145e466c177501106f3d127c
@@ -802,6 +1426,38 @@ trackedFiles:
     id: e7c7e1aa119b
     last_write_checksum: sha1:d307f6afd56d8d80f589839a8d7b48cc80700c8d
     pristine_git_object: 9171d3ce10c06ca666351af9599592bcc894e3e9
+  docs/models/operations/list-geo-competitors-request.md:
+    id: d3eaa12ea130
+    last_write_checksum: sha1:aa3906bd1db5a230e3755448b2bce8a44f104602
+    pristine_git_object: c7be1c989fcd0e761e9125e703f52aa60b9e206e
+  docs/models/operations/list-geo-content-briefs-request.md:
+    id: e647f24d1522
+    last_write_checksum: sha1:25813b9dfbb5e8ee4861d2992f24d762e5f9e6ec
+    pristine_git_object: b7c0dbcc30b96cc0a64bab14445f37349d6f3fd1
+  docs/models/operations/list-geo-content-gaps-request.md:
+    id: 6f0ba214ddfe
+    last_write_checksum: sha1:35e77dc6d698bb28d8578bc2a07e3ea661533812
+    pristine_git_object: e79f3ada931db3db54bd52501a63e44d23a04395
+  docs/models/operations/list-geo-prompts-request.md:
+    id: 02156acd7780
+    last_write_checksum: sha1:d8072d1e83b245a90a6349159f08d6e1b9fac997
+    pristine_git_object: 0fad07fe5bf4c3443ec066c935a40da1e75990d9
+  docs/models/operations/list-geo-scans-request.md:
+    id: 79d332085e24
+    last_write_checksum: sha1:5b1dad8d23fc178bff1780594251aa4d756f023a
+    pristine_git_object: b77b7c521d3fc1155a69ca56748cc9349dc666a0
+  docs/models/operations/list-geo-sequences-request.md:
+    id: 3d7aa7dc7cac
+    last_write_checksum: sha1:e016e1d61e486ba90e38bca9592b6969cac34735
+    pristine_git_object: c1262c6b2c093934ba75081ba4e29fec8d43fad1
+  docs/models/operations/list-geo-traffic-journeys-request.md:
+    id: cf4329acf1be
+    last_write_checksum: sha1:2c98c5a166c4c7ef12c5d2c91e865ab0d23d2774
+    pristine_git_object: 4212abdc6d2ba6bac737db2db536d492053abd6b
+  docs/models/operations/list-geo-traffic-pages-request.md:
+    id: c2d748774e66
+    last_write_checksum: sha1:a928ea90a3e04e2ab286975f8ea58f7be69f18d4
+    pristine_git_object: d023ea9ab7f66f8a3d6fcc4450faf3c8409cceb4
   docs/models/operations/list-integrations-github.md:
     id: 499e984c9f81
     last_write_checksum: sha1:a233b7c25e3ca20861c6e145a2b69ddcf68d085b
@@ -902,6 +1558,14 @@ trackedFiles:
     id: 94eb08f8f0fa
     last_write_checksum: sha1:a3d7ba64ee2a252cf461880bda2ddbf79b58ae50
     pristine_git_object: 3bfb1977773c3869dde5d81dfa5fd20faf347991
+  docs/models/operations/plan-geo-content-brief-request.md:
+    id: 1d0d4d472f69
+    last_write_checksum: sha1:653138d250695c36a318daa5f847e6da30abb395
+    pristine_git_object: e082e4581f2e729d35651d9080c9a0833eccae77
+  docs/models/operations/plan-geo-content-brief-response.md:
+    id: 0c80724ff987
+    last_write_checksum: sha1:d39a55ba6569334db985eb730566e079c091a0f4
+    pristine_git_object: 44b031be541451c1a7fe71f8e9489eb67db2b752
   docs/models/operations/post-chat-message-request.md:
     id: 5b1e24ad5343
     last_write_checksum: sha1:eb965e7a43f7b646ad76ee3172bd11803f5487e8
@@ -926,6 +1590,18 @@ trackedFiles:
     id: c280336b6706
     last_write_checksum: sha1:777616c91122718dfef9b59a4e020d3f431e5ade
     pristine_git_object: 693f1be3aa7fa1035fe24b057c7daa780843c4f0
+  docs/models/operations/rotate-geo-ingest-token-request.md:
+    id: 9902fd7d8dc6
+    last_write_checksum: sha1:a4210ef1513787a7409ab37bfc0472cde6cf69b7
+    pristine_git_object: 9cceca0dfcc407d6c4deb6d8bcebf7aebcf8807f
+  docs/models/operations/run-geo-sequence-request.md:
+    id: 30a291f0f464
+    last_write_checksum: sha1:28bd4e7e7a503c14c0edeb7620ab2d122f19d698
+    pristine_git_object: f696980775ac379234a07bea25847ca58eb6bec2
+  docs/models/operations/run-geo-sequence-response.md:
+    id: ae81ff155392
+    last_write_checksum: sha1:745edc3e8b235e16a435264c3c2e4b63e99edcef
+    pristine_git_object: 73f4ca48548dd99b94550a58cce33b5f7c3db23a
   docs/models/operations/selected-items.md:
     id: 15f726b5856c
     last_write_checksum: sha1:c9b4dbd899f7ce0532892ba83d292fc15ca5bc0e
@@ -946,6 +1622,14 @@ trackedFiles:
     id: b1f65a1643be
     last_write_checksum: sha1:1a425a34cb5eb2463d50c020b5f18161a3af7167
     pristine_git_object: bf89dca5ec3165dfa0d0c12a420a2ac58588a4d5
+  docs/models/operations/start-geo-agent-readiness-scan-request.md:
+    id: 4a816917cfd6
+    last_write_checksum: sha1:8a6281febe7b7583d3ebf8c3827e03059468bb12
+    pristine_git_object: 3a79751de5c548fecc22eb851be5e4daf7790422
+  docs/models/operations/start-geo-agent-readiness-scan-response.md:
+    id: f945dc4e3254
+    last_write_checksum: sha1:fd3e2c1bc5239094a01c109e5f8b1f8be44c7bf6
+    pristine_git_object: 79c3fc9a5fc78a1316b1a2224508ba45212f9bfb
   docs/models/operations/status-request.md:
     id: cee81a205dbc
     last_write_checksum: sha1:593e7a601d2087632f631c6cbaf2f29f32fe6c78
@@ -970,6 +1654,14 @@ trackedFiles:
     id: 1b5922f69c70
     last_write_checksum: sha1:0d89596d041c1626c2d783332092a06d9223d647
     pristine_git_object: 1dc6485bcf5a04011e863a55d4176df6f1a4550d
+  docs/models/operations/suggest-geo-competitors-request.md:
+    id: 20d229fb096c
+    last_write_checksum: sha1:e5a238d89b4eebea502a3b8b799946819f4426bb
+    pristine_git_object: c4ddf92b931850929c3e89223e9a7ec3628938ff
+  docs/models/operations/suggest-geo-competitors-response.md:
+    id: e2376490fb34
+    last_write_checksum: sha1:89c710243b27432c76f60971baadcdb405dfa45d
+    pristine_git_object: 768b6b607330561227d8c4c5996651526d790929
   docs/models/operations/tone-profile.md:
     id: 9dd9ebe08a3f
     last_write_checksum: sha1:d4203027ea003f7280ebe57adb19fd860c44de9b
@@ -1046,6 +1738,18 @@ trackedFiles:
     id: 968304a5d2f8
     last_write_checksum: sha1:6a437854727169716c211892e9ae6385ceeb7574
     pristine_git_object: 288fcbdbabcbb9598fc8bfb72a3e8bc92f823ccb
+  docs/models/operations/update-geo-prompt-request.md:
+    id: 306403e26100
+    last_write_checksum: sha1:877be3097eb5c4d7f75b445fb7bdfb36b899e115
+    pristine_git_object: 6d72f718eea6c3dbdfa08c7594321089ec9f3c95
+  docs/models/operations/update-geo-sequence-request.md:
+    id: 8774851db00f
+    last_write_checksum: sha1:7b1b825167f3e19abeb35092c3da40301ff03c4a
+    pristine_git_object: e9cb272ed9c901fa1107dcb85336fd42cfc4e5bb
+  docs/models/operations/update-geo-settings-request.md:
+    id: 962b174e2347
+    last_write_checksum: sha1:35e82793a18a1221e8c0eb69f396a159c225f152
+    pristine_git_object: 97ad2a46758e8477a589b7a80a4c792dba12b94f
   docs/models/operations/update-post-content-type.md:
     id: b78f08dbcb4b
     last_write_checksum: sha1:a5c3d1199fe254f4580234fa3c5a93a5b5dc7b80
@@ -1078,6 +1782,10 @@ trackedFiles:
     id: 205b36d90e52
     last_write_checksum: sha1:d184ae5dc9ec9029d9ff48ae9418dbcd613f51a6
     pristine_git_object: 0334841648219b9793d25ecb906079175482b018
+  docs/models/operations/update-project-request.md:
+    id: 8094209c73c9
+    last_write_checksum: sha1:7dae3cad9bace242bd58afedb74050fde4245546
+    pristine_git_object: 0960b30c5bba9d77753ba4bc42945457bb70fb1d
   docs/models/operations/update-schedule-cron.md:
     id: b3ebd4c8fc49
     last_write_checksum: sha1:9fdb9aa9c8fcbff69a9509f3e6232ce26627e030
@@ -1130,10 +1838,18 @@ trackedFiles:
     id: c8ff03141481
     last_write_checksum: sha1:663afe093f0af969429272e1a452572411dae1b4
     pristine_git_object: fa3d033951a9a3a4084a4b647db246feeac23d92
-  docs/models/pagination.md:
-    id: a9ff902f6a16
-    last_write_checksum: sha1:29b7a337529e0ccf84075b7e633fceea82f316ba
-    pristine_git_object: 88726fd65ed57493285d73cddbb084d6e0aeaa51
+  docs/models/operations/upsert-geo-competitor-request.md:
+    id: 92cc68a3a2f1
+    last_write_checksum: sha1:8bcba8c95b9bd980f7274d44e4fff3c80dbf1135
+    pristine_git_object: bab5ec8442b09b52501ddc153d1f3a606aeb5054
+  docs/models/operations/visitor-type.md:
+    id: fdbf12e06a6c
+    last_write_checksum: sha1:adbdc352eedc9b96fbec99305c2697de1211101f
+    pristine_git_object: 0eaea53a77bbdc352d5e0704868b58b1e703eff6
+  docs/models/page.md:
+    id: 73616dbecb70
+    last_write_checksum: sha1:fb30e994ba42e51ee0765cebc18282687271774a
+    pristine_git_object: 6b4e606e2201ab676d2a73a45df42cf80e243425
   docs/models/patch-event-trigger-request-output-config.md:
     id: "682927562695"
     last_write_checksum: sha1:148b4be5e716f2088ec49ec82265b2bedec01ca9
@@ -1162,6 +1878,22 @@ trackedFiles:
     id: 523b949b717b
     last_write_checksum: sha1:ac8a19293dcbc5f3d417b2dc1342bcfae83d38da
     pristine_git_object: 2edca265a2018e259f1fb6a76e9553111dd0c765
+  docs/models/patch-geo-project-request.md:
+    id: 885f6bedd2b2
+    last_write_checksum: sha1:0ced53b16354fb456e45a2349d7e6f873da0d930
+    pristine_git_object: f124cc2d4f844cbd308f28608e80e97e30bf9405
+  docs/models/patch-geo-prompt-request.md:
+    id: 3905fed95001
+    last_write_checksum: sha1:5af4b245fb1e834f387e9de3535c939072a4fc07
+    pristine_git_object: 10382ed3baa1cd5c67b0c02e95bcfa07ccd672be
+  docs/models/patch-geo-sequence-request.md:
+    id: e29de6432fa9
+    last_write_checksum: sha1:303233bea03c253b752342c4b68848b583319a26
+    pristine_git_object: 6fae3e78af87617ec5ca24387b50a037fbd54527
+  docs/models/patch-geo-settings-request.md:
+    id: 4162c82bc0b2
+    last_write_checksum: sha1:5341131deb1000b1c71f0fc76d8e0364999b9f4e
+    pristine_git_object: 2708f2cdc164d269c7ddea27a1ee118d8a162ed5
   docs/models/patch-schedule-request-output-config.md:
     id: 1ba152a96688
     last_write_checksum: sha1:80e64deca5d7d9fa16a8dab8b472a2d495031bf5
@@ -1198,6 +1930,46 @@ trackedFiles:
     id: e127a12efb7e
     last_write_checksum: sha1:70355887ecab846c71d10147e1ff223a5f2d9242
     pristine_git_object: fd41df6419bde23c43220c8e0c10759a7e19a74b
+  docs/models/plan-geo-content-brief-request-content-subtype.md:
+    id: ddd5530f3214
+    last_write_checksum: sha1:2208eb1ee5d61c56c191e388caca67209a0dd2df
+    pristine_git_object: 848dd48a6733a47b2efd56aa67d11893f16882aa
+  docs/models/plan-geo-content-brief-request.md:
+    id: 4b06cc9a5ef7
+    last_write_checksum: sha1:9c7b15d8749a08723d562d65816820cb5b707fee
+    pristine_git_object: 742f25691259d1c3d127fd13f36b5673a6597c5f
+  docs/models/plan-geo-content-brief-response-organization.md:
+    id: d335f839ac2a
+    last_write_checksum: sha1:f108c61f7fb2d6c2a51fe551514313b04417bca3
+    pristine_git_object: 955cb69b6d103e6a00cf7b06456ddfcdb304fc57
+  docs/models/plan-geo-content-brief-response-status.md:
+    id: 56ad75c499d9
+    last_write_checksum: sha1:3c17c00b66b29a4f920d6ae84738f4e827134edf
+    pristine_git_object: d803e084b3c6a2706d5a7b86fb55f7c1d76a8587
+  docs/models/plan-geo-content-brief-response.md:
+    id: 86b86ff81aee
+    last_write_checksum: sha1:d768ef378e0d766380f6ad6430f1214633a117b2
+    pristine_git_object: 12f384af0d4d1d0dff10369225385034603649cf
+  docs/models/point-visitor-type.md:
+    id: 02b99c17056f
+    last_write_checksum: sha1:f86bd046e00e1e90ff9673dc828d93c959447ca2
+    pristine_git_object: ea471bd04237420f85d0b52f00f5e0a5de96f5e3
+  docs/models/prompt-gap-brief.md:
+    id: e37b67af6f26
+    last_write_checksum: sha1:dc0e5342f6cb6561ffe6c3979afd7c7d634864b2
+    pristine_git_object: cd360143a990b6b9e7147b98b84ecccdb43a1946
+  docs/models/prompt-gap-status.md:
+    id: 2e6632482479
+    last_write_checksum: sha1:3134b41421fe7227f9299da150f7ae3d260c3283
+    pristine_git_object: c53a5b5c371185ff1f2ec51eeea108656c94f79a
+  docs/models/prompt-gap.md:
+    id: ee3b7cdeabf4
+    last_write_checksum: sha1:1c680bee34350abc641d3d84e8cec864ca029d3f
+    pristine_git_object: ca8646956b0d1e165002a749eabc1ad952513066
+  docs/models/prompt.md:
+    id: faf3fe7a5a2e
+    last_write_checksum: sha1:b2876df4a849ba9cc59ae6200d51152a44a641bc
+    pristine_git_object: e5cb0cf57221bcf30113c109ce6b453051aa6485
   docs/models/public-status-response-status.md:
     id: 395350e1ab3c
     last_write_checksum: sha1:1354edf78eada4d569833e705c17415c781bccc3
@@ -1206,6 +1978,50 @@ trackedFiles:
     id: 4b263c710411
     last_write_checksum: sha1:dcb69ff2756e48788482dbd0f55c7cbb75b15744
     pristine_git_object: 9e20912f59fd037dacb5b126623923dc1a6281dc
+  docs/models/put-geo-competitor-request-kind.md:
+    id: fabe78536a25
+    last_write_checksum: sha1:1f9dd84200c603bb0de4ddc90b5fccee9e9f5fed
+    pristine_git_object: aaadc15705355461a6337767eac11a1312031c83
+  docs/models/put-geo-competitor-request.md:
+    id: 891b2e22369c
+    last_write_checksum: sha1:4d51cf754393b4a51b5d6dd7df4304f7faf4f321
+    pristine_git_object: 5cd4eb19cfd9dd19cf10f8ff0185364b51c08d7f
+  docs/models/recommended.md:
+    id: 5d1f579ef2c5
+    last_write_checksum: sha1:0c752650e46437646f56d8c5a164dba934dc3e14
+    pristine_git_object: d9e64ed5ce9ff8ef2d03fc0c570d7506734e4227
+  docs/models/result-enum.md:
+    id: 16b2466de94c
+    last_write_checksum: sha1:21c7bb1c85fe606fc7af0dd4e8b411b1cc5630f3
+    pristine_git_object: cce8b10631c077d5cb29f67eef804d9c68472964
+  docs/models/run-geo-sequence-response-organization.md:
+    id: 3ce8cb5974f5
+    last_write_checksum: sha1:6e692cc3c06bd4caa7192146719ea4be0ed8a1bc
+    pristine_git_object: 6a4bd28eb711457fb5a96e4beb191163b5a49afc
+  docs/models/run-geo-sequence-response.md:
+    id: d60fbfbe75e6
+    last_write_checksum: sha1:3958a8218ff9c7d83047ca0de4b352f9b976e8df
+    pristine_git_object: 465084b00bebd6371ea9f8957d39aea3ec53f5f5
+  docs/models/score-breakdown.md:
+    id: 9f93c3cfe8fb
+    last_write_checksum: sha1:aac2988ffb7d354e8eb0f74101a90bf69033061d
+    pristine_git_object: 0cba3b5c7c0f8b5a0e55a8317d1d391a8fc05fcc
+  docs/models/search-gap-brief.md:
+    id: 35abeda522c1
+    last_write_checksum: sha1:96b25dfc8f2f34bfbc90a3b475c728672dacece3
+    pristine_git_object: a8e08cb559a834ea48e9c4888e368d3054819047
+  docs/models/search-gap-status.md:
+    id: 7c7e02e68397
+    last_write_checksum: sha1:9878837c0b221faf63ea9a9caa7d7c832e40cdad
+    pristine_git_object: e62f10fb8e84a06031a3dcbe5b5754da7522c691
+  docs/models/search-gap.md:
+    id: 8472f6763ab8
+    last_write_checksum: sha1:2f7af733ee23b9cf26dbcadc12148a01e1efce09
+    pristine_git_object: 4358b50519df6671af2489dfc65f722887dec732
+  docs/models/section.md:
+    id: bc576b728fda
+    last_write_checksum: sha1:ba21cc0c5e8f64ac294e87f3969c36d93dd2db96
+    pristine_git_object: c1d17f1bbbdc5dfa69959968f58212c59855dd98
   docs/models/security.md:
     id: 452e4d4eb67a
     last_write_checksum: sha1:15488897d4114f4d012a0627bb78a7206bd69b73
@@ -1234,6 +2050,14 @@ trackedFiles:
     id: 894e491446cb
     last_write_checksum: sha1:4d0cb1645dc405c25e78f779f5b6c8e50e401b2a
     pristine_git_object: cccfedc56672c4acef545c590ffb4e8b21b55ee6
+  docs/models/source-kind.md:
+    id: 1fd4ddab7556
+    last_write_checksum: sha1:407ec655ec7cf768aa86109e8a1eb0cfa364ed3a
+    pristine_git_object: 558dad71c60cced6fac83dc409af9e718c8f6fc5
+  docs/models/source-visitor-type.md:
+    id: 32f604fa9fcb
+    last_write_checksum: sha1:64cf3ff561872bf65f6380924784aaaec6814bb5
+    pristine_git_object: d06ced4bdab03ffa4b0f6d00bfb50c65e41828c6
   docs/models/submit-feedback-request-kind.md:
     id: 542a6e64136e
     last_write_checksum: sha1:ca983b47ce97628144dac181a627b7db482badad
@@ -1258,6 +2082,18 @@ trackedFiles:
     id: 08a4c419bad0
     last_write_checksum: sha1:a988d0bb2e777d2bdcce476eaf90580b9cdb4151
     pristine_git_object: 4b0b80bcbc9a74363e330539d878223f8ed16d70
+  docs/models/tier.md:
+    id: 35e503617fb3
+    last_write_checksum: sha1:0ef3bb998ff2d0f19a9dc90d9f68b495ae689665
+    pristine_git_object: 119a76770b0aa480893912bcfa965c0e6920a1a7
+  docs/models/timesery.md:
+    id: 1c16c5855b9f
+    last_write_checksum: sha1:e4ae4bcfe98c10a3105d870aef6638ae1290467c
+    pristine_git_object: 7698410bb721d924e3b377c7e778c6a4e01b12dc
+  docs/models/totals.md:
+    id: b4b5833c011e
+    last_write_checksum: sha1:e71a674ee5ac00e1842c00ca98251ba263f06c82
+    pristine_git_object: ed88d0d2fd76958aa76e0077500df9206152410f
   docs/models/type-enum.md:
     id: dd04728c25f0
     last_write_checksum: sha1:3e443c089207702ebe795102b13cb9fca721e9de
@@ -1284,8 +2120,8 @@ trackedFiles:
     pristine_git_object: b350e103e4d3928d56945a175fbbd970367c265c
   docs/sdks/discovery/README.md:
     id: 905f3ba62cd7
-    last_write_checksum: sha1:6349a69d4cdb00b929fab86bb1b171fe7ed53413
-    pristine_git_object: 0e672b150fdc7bb345ce30c74ce9ed872784bc28
+    last_write_checksum: sha1:028ec7ff030ec8731e9b3d6b0e58a31aec3c0aee
+    pristine_git_object: e9d0bdf28f5496fa0e34df5f08de9c7bbb73f374
   docs/sdks/eventtriggers/README.md:
     id: f122933843ac
     last_write_checksum: sha1:a49bbe7d0946dbc784a3565079db92511649ef0c
@@ -1294,6 +2130,10 @@ trackedFiles:
     id: dabdea6b331e
     last_write_checksum: sha1:acf939afc7e513d6b73a12c22ae287f2c366c858
     pristine_git_object: 26ad9d413718d9dfe13aa7dbccab7e0862e82063
+  docs/sdks/geo/README.md:
+    id: 7502844bd29d
+    last_write_checksum: sha1:319b39686029dc0510061b14d34c43744b48c51a
+    pristine_git_object: 16f49c04bb5588e6f20ff6c78ae3f7f36f0c9c00
   docs/sdks/schedules/README.md:
     id: 2f28c809a225
     last_write_checksum: sha1:9b2dd66930fc52aa13bde0ebc101023453d19167
@@ -1324,12 +2164,12 @@ trackedFiles:
     pristine_git_object: 3023ce82381e2e8aa2d621788c5bf096cc0419b4
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:f44ffcbf08479bcfd041f8ba54e5f109435871d6
-    pristine_git_object: 3c016098b498d6f3ad7606f7b12533549e6a6a48
+    last_write_checksum: sha1:e3b5d82a96b8675aa76e440651574c5b5eb84c5c
+    pristine_git_object: af58924435d6bd3ed51ea2fb8b3746b6b906b763
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:ab308598aa51a5a2f0cd6d1454b5472e7119547d
-    pristine_git_object: 7a45bb046f7926db85bc6493e895a0a61cca88fb
+    last_write_checksum: sha1:f067096d51a17f07779b53932147425eb8ec7600
+    pristine_git_object: 3c08a123ab2d948688301a56e2909bd923a36e90
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:e8d638e0e6a2cda3f4c932a136d971d10a1ef6f4
@@ -1474,6 +2314,190 @@ trackedFiles:
     id: b0b3a0546feb
     last_write_checksum: sha1:7e86e19382e59eda008bf7465610c2b01ba9a917
     pristine_git_object: aa47ebc575d8706067fd0920ad70c504f053a981
+  src/funcs/geo-approve-geo-content-brief.ts:
+    id: e50884e93b46
+    last_write_checksum: sha1:ebc5c366a34368e5356d22b643739ee3d1af2713
+    pristine_git_object: 8505c2385666e5b54676c30e56cd91cb4328b848
+  src/funcs/geo-create-geo-prompt.ts:
+    id: 640d3d9fa1f3
+    last_write_checksum: sha1:0b9278321cd4a07ab52e94e17e84f955ae90406c
+    pristine_git_object: 46e6cd229e630fa23f74a1e42f50471adeeb8cc5
+  src/funcs/geo-create-geo-scan.ts:
+    id: 9527cce0d409
+    last_write_checksum: sha1:77e0b95f9b08648ae969ee51e049795a66c25661
+    pristine_git_object: a616a8c5b57da6195b68a46d4d200dfd124faba7
+  src/funcs/geo-create-geo-sequence.ts:
+    id: 457e975171c7
+    last_write_checksum: sha1:f62c3c294b4814e4e6b2b26c99749d15e209c4bc
+    pristine_git_object: 863917ae927b91717fd20ddc131114145d929441
+  src/funcs/geo-create-project.ts:
+    id: b96a15305639
+    last_write_checksum: sha1:5b4a5fffb4ce8dd082ad5bb171d5139894b58137
+    pristine_git_object: e97c9e3c49f7e1b034032fa705d585a011b4bb42
+  src/funcs/geo-delete-geo-competitor.ts:
+    id: 8db8ee83b0b3
+    last_write_checksum: sha1:ba917823471fa02219f1e1653e0d7f9e07807c65
+    pristine_git_object: de79d648852069c8ec28c1ed7b138c46ccae3fe5
+  src/funcs/geo-delete-geo-prompt.ts:
+    id: a230c52d3a30
+    last_write_checksum: sha1:71f6db726a0efa1d1877879d94c01b9245627a7f
+    pristine_git_object: 223feaa2678f7286725fb34642df3391be495dfc
+  src/funcs/geo-delete-geo-sequence.ts:
+    id: 820cf3b34f54
+    last_write_checksum: sha1:7633fe98c884ae40de3959ed4ef4e110977e827a
+    pristine_git_object: 9868e762fd5692d88a092c05bf5f40e1d5089cda
+  src/funcs/geo-delete-project.ts:
+    id: 6f25e89333cb
+    last_write_checksum: sha1:dd32795d5814ddb85d61eed7f1acbf243b6ad7a3
+    pristine_git_object: a2ae1928841e6fa34ee8c8cfa57b141d2509dfd3
+  src/funcs/geo-get-geo-agent-readiness.ts:
+    id: 5e9fd0cb0a43
+    last_write_checksum: sha1:c25e6be7adbd7a2dd2feee019ebf0abb588c92c2
+    pristine_git_object: 0b166c824a64230176173f61093a04cea99dddff
+  src/funcs/geo-get-geo-content-brief.ts:
+    id: 7e43e2c405c8
+    last_write_checksum: sha1:45f4b00f92f97af42cb3d174e786fbc566866838
+    pristine_git_object: 73b3aaaea345d68dbf3533a62b6ba232679a4c05
+  src/funcs/geo-get-geo-ingest-setup.ts:
+    id: 50e9f8ceaf0b
+    last_write_checksum: sha1:89c31b9ee282530b7ee92b0b82e6e1621f6cc0c5
+    pristine_git_object: a53feda76af128e4c707bf3ac4b8882f1fd8cd2e
+  src/funcs/geo-get-geo-scan.ts:
+    id: b922dacfc41e
+    last_write_checksum: sha1:ab14ba7b13c55b888bacbb717b31ef5528982b03
+    pristine_git_object: 3d1becb74fa240fab94b8cf15de1892996eaf0d0
+  src/funcs/geo-get-geo-settings.ts:
+    id: 12b8c2dc9543
+    last_write_checksum: sha1:41a80a5fc41cde96731a713089e026aab3801891
+    pristine_git_object: 4c0c4485eb649703eb49c84b974490400c5a671f
+  src/funcs/geo-get-geo-traffic-journey.ts:
+    id: 516dd4ada28a
+    last_write_checksum: sha1:e3c0f5cdf333146885e2bc6e7d12951791480191
+    pristine_git_object: be5566ee3bc87e6d20bd67511f5d61a758f3bb46
+  src/funcs/geo-get-geo-traffic-log.ts:
+    id: c99319e1f9cd
+    last_write_checksum: sha1:7ad71c96aa5c2c59a5c359a277bd9587f8a70621
+    pristine_git_object: ffc97ea7160825ef2626f8f15c2988f9607a53a4
+  src/funcs/geo-get-geo-traffic-overview.ts:
+    id: e41135352d0b
+    last_write_checksum: sha1:2cbbd6823076f38a1473724efc075cb279e754c0
+    pristine_git_object: 24451af3ea2648107b4871ad268d140f0c63d730
+  src/funcs/geo-get-geo-visibility-competitor-detail.ts:
+    id: f5f8b0fb8eb1
+    last_write_checksum: sha1:42e78474d34eef6f64bac1da579cb30200734227
+    pristine_git_object: 9b754f625727a59077818308c89a20d65c94ccd4
+  src/funcs/geo-get-geo-visibility-competitor-share.ts:
+    id: 2232b4d8586e
+    last_write_checksum: sha1:be1e40ff7e6fb7ecf30eaab784f395ae7d6bd10d
+    pristine_git_object: 86e59af1e5ff813ea4262b834e97d61b227d3d04
+  src/funcs/geo-get-geo-visibility-language-share.ts:
+    id: 48728382215c
+    last_write_checksum: sha1:7c1b540dbc7d3f24de56e276f180de524bf324a3
+    pristine_git_object: 6e166803c8d52b6c60307608e8d64de252e9465a
+  src/funcs/geo-get-geo-visibility-overview.ts:
+    id: d772381c584d
+    last_write_checksum: sha1:641cdee1fd07a1ea9a6c637956b6f220eafa864d
+    pristine_git_object: b874cef64f860515a01f4ddcfae73d0f5307a44a
+  src/funcs/geo-get-geo-visibility-prompt-results.ts:
+    id: a946cb22c88a
+    last_write_checksum: sha1:1d8028f82be0a9c63bebfcd0532c2b2880f8a6bf
+    pristine_git_object: c331263671518e147eb7eb9ee3377a905270f1a5
+  src/funcs/geo-get-geo-visibility-timeseries.ts:
+    id: 72b2b4e3d185
+    last_write_checksum: sha1:442f54f9ed0eede1301623d2820e5e522f5823ff
+    pristine_git_object: 91c7ca733a2a3d45d5358cc7afd4d8a82e78324f
+  src/funcs/geo-get-project.ts:
+    id: dfbf16a98f7a
+    last_write_checksum: sha1:f50b10e898576c3ec3e5f2cde1bcdc6f2351fd3c
+    pristine_git_object: ebbff1286a958c18704844ef9cadf673646052b0
+  src/funcs/geo-import-geo-competitors.ts:
+    id: 651427ed4f6a
+    last_write_checksum: sha1:0071b25aaa1262f221c866a0937301a24651b53a
+    pristine_git_object: 4efe9bcd4a9f29b9940bd83d51ad82dac2ef1664
+  src/funcs/geo-import-geo-prompts.ts:
+    id: bab607d5e1ac
+    last_write_checksum: sha1:08e6cdc2dd90f76e48763a862c44169790406e23
+    pristine_git_object: 1c20596d0f3670d573ca1ba636b9d500ea303348
+  src/funcs/geo-issue-geo-ingest-token.ts:
+    id: f23aee59ce59
+    last_write_checksum: sha1:d2f995997f73929408893a1e18cca38de4db0c66
+    pristine_git_object: d460089fe72dec62aef4e32ebcf1ab52f1593087
+  src/funcs/geo-list-geo-competitors.ts:
+    id: d250fa646c29
+    last_write_checksum: sha1:4394180526f42a5f517b6def7d19a5862bcd95f7
+    pristine_git_object: 334d38b65ee0d18a2cd8941ffcba916c837f99ed
+  src/funcs/geo-list-geo-content-briefs.ts:
+    id: d7e33d5a174b
+    last_write_checksum: sha1:90e195536f1b85422d80ffaf500da497b8b48ca1
+    pristine_git_object: de89970ca10fa1005a412da95578d053fde8536c
+  src/funcs/geo-list-geo-content-gaps.ts:
+    id: d564d8f27ff4
+    last_write_checksum: sha1:a4a0e20c5e6a68f0a695fcce0b16a42e636f2280
+    pristine_git_object: c674e179c9c2ed1a06c5de82615c67c0ccb0bb48
+  src/funcs/geo-list-geo-prompts.ts:
+    id: ba3341b6aaa3
+    last_write_checksum: sha1:2eef1f231829ce5bd6b4d2cab7fbcbddc14491b7
+    pristine_git_object: ba2498df5c9dc5c5fea5ee97efa7aef9b7c5943a
+  src/funcs/geo-list-geo-scans.ts:
+    id: 7dfa65aaaab6
+    last_write_checksum: sha1:222096808b61b9b2f891e284e4d36d6409501a9f
+    pristine_git_object: f9e8bd4f9bc06517c7d5b85be75c12f8e8f64693
+  src/funcs/geo-list-geo-sequences.ts:
+    id: 0dde906170e5
+    last_write_checksum: sha1:41a9d19967d312065292c50d6099ba10475f140f
+    pristine_git_object: 4481f0db33eb665258f0297a3a6512f8ae882b7c
+  src/funcs/geo-list-geo-traffic-journeys.ts:
+    id: 30988200b840
+    last_write_checksum: sha1:10b115bebada74a1575bb001bf909aee9eca1e14
+    pristine_git_object: 2ea43d4d90bbf03eabf6b27d566f5fb60775e19e
+  src/funcs/geo-list-geo-traffic-pages.ts:
+    id: 55aab0cec401
+    last_write_checksum: sha1:5c0b678994ea7f37e1b404a707c1335932ebacf1
+    pristine_git_object: 7ea6c94877cc1fc848c8a1d43e330d83b0e45a17
+  src/funcs/geo-list-projects.ts:
+    id: ca498f1bec7e
+    last_write_checksum: sha1:fe15b3876423d830f2723dbafeda90e70c1d11d4
+    pristine_git_object: 3d6effdc2630afd3ca5aee8783f2071b1979f0ee
+  src/funcs/geo-plan-geo-content-brief.ts:
+    id: 3e96df53e677
+    last_write_checksum: sha1:8240ea180e3ddcf1967f83f54c8e8c3d1060108d
+    pristine_git_object: 57de14e17ceddddbf08bd5b6f76c620c380f71be
+  src/funcs/geo-rotate-geo-ingest-token.ts:
+    id: cc0dd9c10c0a
+    last_write_checksum: sha1:58ed118810a1be03dd2fb837f18816a51d532938
+    pristine_git_object: 01284dc6b3c66230133a2261c37371b7f663ec9c
+  src/funcs/geo-run-geo-sequence.ts:
+    id: 793d8d3f743f
+    last_write_checksum: sha1:e812db9ffcaea5b8e4140def37b78482138e0ff3
+    pristine_git_object: cbdd3a8197de7f317cef1ebf3a7aa162449aeeaa
+  src/funcs/geo-start-geo-agent-readiness-scan.ts:
+    id: 33df03836ce9
+    last_write_checksum: sha1:c53d8b9d043da20c19e3aa9c595efeaf2fc76649
+    pristine_git_object: c87b5399980e93ad0ba484eb39e6957ba129f14a
+  src/funcs/geo-suggest-geo-competitors.ts:
+    id: 6843e550c885
+    last_write_checksum: sha1:98bcd06272ef1ce0f8888e2e7d6ba43d660419fb
+    pristine_git_object: d369473c8f617f308ade3f0f73c97a41eb3e8c6e
+  src/funcs/geo-update-geo-prompt.ts:
+    id: 3497424a689b
+    last_write_checksum: sha1:7cc0527905a4d720333e104ae585575c304c3a60
+    pristine_git_object: a516b58066e3950a61e523641a6a8ac66d99532b
+  src/funcs/geo-update-geo-sequence.ts:
+    id: 938e987308db
+    last_write_checksum: sha1:c731ed46816c3db6ca72bdf232a2ea7dbfab763d
+    pristine_git_object: 7129284ae0e74fabf9235d832821af82529a8a74
+  src/funcs/geo-update-geo-settings.ts:
+    id: c0dbfc6c6878
+    last_write_checksum: sha1:9f4fbfc027c5dd85bfa4363ccfa53903d54857eb
+    pristine_git_object: e1705db79f0b573c890d396540b4af607bdc69e9
+  src/funcs/geo-update-project.ts:
+    id: a355dc776c7b
+    last_write_checksum: sha1:b68516e465713c0e6b754ffcbe58c143268a3c42
+    pristine_git_object: 20d25f1a56500e9842360b09ef671656cbde286f
+  src/funcs/geo-upsert-geo-competitor.ts:
+    id: 1cd053df0a7b
+    last_write_checksum: sha1:e8c864bf0557bc30dd05ba1025ef8cfcc33dccc5
+    pristine_git_object: b35d7179cf53142754412270dbcba2689051d840
   src/funcs/schedules-create-schedule.ts:
     id: 81594f612b6d
     last_write_checksum: sha1:e7bc4f5896dfb1da3f5164a5d63886ce4715bedb
@@ -1532,8 +2556,8 @@ trackedFiles:
     pristine_git_object: 0b2543a00780f8844dcd1fbdcbc51a91262d91bc
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:dd1ac8471565c1b404077947714734c5de0cff30
-    pristine_git_object: 290888f864190b239a74144e6307f11277ed9fa7
+    last_write_checksum: sha1:cdc6af9d15be9838f088e43ed544c3b3fc38af3d
+    pristine_git_object: b411030e1e8ec30476cf41b56f506dba17352832
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:b68a019ff91cf3d6e99cc0cad3f09c9517133713
@@ -1586,6 +2610,10 @@ trackedFiles:
     id: 7ab94ea07a5b
     last_write_checksum: sha1:1904cf82945efd02fe5245083caf735751bfee6b
     pristine_git_object: 9ae5dc91614fca25cc2236daf90d7f4450eec2ed
+  src/models/approve-geo-content-brief-response.ts:
+    id: 18ae023f798e
+    last_write_checksum: sha1:2ef90056ea47411d4a22dc9eac2bad81b8013808
+    pristine_git_object: c7c742f9bc943d402c6ba608ae34e77e1ebb827e
   src/models/chat-session-summary.ts:
     id: 17665be83197
     last_write_checksum: sha1:0766c08573b54714f1239aee71c9ca1bc0708db9
@@ -1598,6 +2626,22 @@ trackedFiles:
     id: de7d9fce3f8d
     last_write_checksum: sha1:76e15504d02d3249efca77ead5a0aa8932dd809a
     pristine_git_object: edc2140eb0be79d153452a14eae545e682e8894f
+  src/models/create-geo-project-request.ts:
+    id: fbca6261ca44
+    last_write_checksum: sha1:7b6c279b89d4a1816a209782084489853c444a30
+    pristine_git_object: c0be98fbba22dc6b5a25575eaae66b4fca0dea15
+  src/models/create-geo-prompt-request.ts:
+    id: d5797d4bdb20
+    last_write_checksum: sha1:a86627e1d31d4f4ffa47e6f9623095ec7fb6f082
+    pristine_git_object: 210cbca5db434794cf8e70189c33c331d59b68e2
+  src/models/create-geo-scan-response.ts:
+    id: f53c10db0d9d
+    last_write_checksum: sha1:4c92debecd938d8175d5a2078fdfd5fc374f8f6c
+    pristine_git_object: 0bc4e228a69dafc06a067a910b8ee07ba06e30e1
+  src/models/create-geo-sequence-request.ts:
+    id: 16bef5cd1418
+    last_write_checksum: sha1:946e1b4fb623c3f3ccbe7d93f7a0aa26cbf7db1b
+    pristine_git_object: dd4781768728bcd0079f1b92303031578f6c8413
   src/models/create-skill-request.ts:
     id: a1855d659407
     last_write_checksum: sha1:eb8e39a353a3990cee8f5edb7587f2409ecf00b2
@@ -1606,6 +2650,18 @@ trackedFiles:
     id: 9e50dcaaefd8
     last_write_checksum: sha1:2a852c12f941cb2beda70f2b0271fe906fb28de7
     pristine_git_object: a98aa185d3d63e38340a7b5a5f5055961084f1a9
+  src/models/delete-geo-project-response.ts:
+    id: c5d77222295c
+    last_write_checksum: sha1:3fd06bfdd8bf4023f841f37da2c70d75e8d17ed6
+    pristine_git_object: e5457af2ac4f2696fe1d7e0159547d2bc11e1c8c
+  src/models/delete-geo-prompt-response.ts:
+    id: 6d3522971c6e
+    last_write_checksum: sha1:40b84b87ae356217c504478684b4694fc4407477
+    pristine_git_object: b26a59adec058a330d3c8f5de9e0b972a1bc2e83
+  src/models/delete-geo-sequence-response.ts:
+    id: 73177e8e51f2
+    last_write_checksum: sha1:cab0043ea32e2df39d4333e421350b9f722b2682
+    pristine_git_object: d03baf172d6295f537b15f8e5c1553510a3da3a1
   src/models/delete-skill-response.ts:
     id: 6fc256e89cec
     last_write_checksum: sha1:e37f9de766db120d8812dedf5d77e5265f6044d4
@@ -1658,6 +2714,138 @@ trackedFiles:
     id: 05b883451a49
     last_write_checksum: sha1:eb9d2b18262f04f014a1cefbbb016eada3ff652e
     pristine_git_object: 7b0964ed87adb1a101423c5126fa2722cd81084d
+  src/models/geo-agent-readiness-report.ts:
+    id: 0c18d9fd9383
+    last_write_checksum: sha1:b16d3a6e66915f32b3d6c4960b0b4467f2895554
+    pristine_git_object: 1eb5aa9c4bb3195013d94b737a0c359f3f9a9d7f
+  src/models/geo-agent-readiness-response.ts:
+    id: 0f2e3fa1ec91
+    last_write_checksum: sha1:bed073c50284a4af20bb60fee8c0bd622fe4d376
+    pristine_git_object: d8e7ddca62586b0ace5b56cbf1bb7c71bd8c429a
+  src/models/geo-agent-readiness-scan-response.ts:
+    id: dc0fcf3fa400
+    last_write_checksum: sha1:1236684d003350db3740adc23294c6f9876b3c33
+    pristine_git_object: 23e47b68ce0a8ddb9eaf01ab23277fb41c85deb3
+  src/models/geo-competitor-suggestions-response.ts:
+    id: 897a4445c7c1
+    last_write_checksum: sha1:a80efcf59d4f31dbc6de792cffe8549948d6af2f
+    pristine_git_object: 994d67e06a2c6d28085152782e32222104cb427a
+  src/models/geo-competitor.ts:
+    id: a3727cb3cc2c
+    last_write_checksum: sha1:8c1e9715cb41c11dff1362d4b56ba1da0a8051bd
+    pristine_git_object: 7826ed2679805ccf5f7e0ea977fe195366470025
+  src/models/geo-content-brief-detail.ts:
+    id: 9f825ca4c9e6
+    last_write_checksum: sha1:9fe65784fb5dbb2b00b96a315d8abee658398db0
+    pristine_git_object: 57cdba5cee4976b52472298d0fb1809514f51b25
+  src/models/geo-content-brief-document.ts:
+    id: 8a254c6d3bf3
+    last_write_checksum: sha1:b3c98ce115f04dcdaf172ba6a95f4198c1eab947
+    pristine_git_object: 7d415341dfd1100227408a392d282b1200586a88
+  src/models/geo-content-brief-response.ts:
+    id: 6d993f1e5e3e
+    last_write_checksum: sha1:fb0ae550c74579bbdd3b68a14022cb996de69ee2
+    pristine_git_object: 7a6938ad237da9e5d3f4b9b08d966513d2079df2
+  src/models/geo-content-brief-summary.ts:
+    id: e74e3d071423
+    last_write_checksum: sha1:a7b9a6ec5018c0b47c2534602a5a5c06be974ae2
+    pristine_git_object: a2e8d8b5accd0a14a9db575c595f6a9a60648df4
+  src/models/geo-content-gaps-response.ts:
+    id: 3214a3364b6e
+    last_write_checksum: sha1:09bd1001ba1657c55092d3be1d463ce4088db133
+    pristine_git_object: 4221deeb1319648bb08d3dc346b818be096dfe3d
+  src/models/geo-ingest-setup-response.ts:
+    id: 2c50e87fb509
+    last_write_checksum: sha1:7e2cd4bb539cef678a4b6ecf53338f56376bdeb0
+    pristine_git_object: 746d12e5268fb1e44f9a820d3645f85a79a8f72f
+  src/models/geo-ingest-token-response.ts:
+    id: de36f7f12371
+    last_write_checksum: sha1:7fee3c96c7923640aaaaa6b7e97d35670b7466da
+    pristine_git_object: 660cd772c2af89d676f9e1d2f6f607be03078e42
+  src/models/geo-journey-detail-response.ts:
+    id: 39eac6c70519
+    last_write_checksum: sha1:f8fdfa221d05dd146694ebbea8281afec66a8f76
+    pristine_git_object: 243043bf8f68b5ae64ad6673d9ce4a343a9d97d0
+  src/models/geo-project-response.ts:
+    id: 1e1d78ade75e
+    last_write_checksum: sha1:9a2a6e5c5f8948279a1e6ae84246f62e9af16d39
+    pristine_git_object: d8d16de91289fb1026153137b692fdd3f96b82fe
+  src/models/geo-project.ts:
+    id: 144dce007df8
+    last_write_checksum: sha1:b9094ed3173d67e29567ee17afd2e8d19a8da7ef
+    pristine_git_object: 56e77cc5548e06ad34a21dcc0d9d16e678864e92
+  src/models/geo-prompt-response.ts:
+    id: 46edcbd44166
+    last_write_checksum: sha1:d861e4404e26e1aca3986de03ad9c80727a3190b
+    pristine_git_object: 15a94c7b0362eeba3be81c77cf817c5f9f97bbe6
+  src/models/geo-prompt.ts:
+    id: 6a9f5cce1e95
+    last_write_checksum: sha1:a58cd08ee24be5c11c7405f75f8b2b3144639096
+    pristine_git_object: bf817ddb114a2a0dafb282cadbcf142ab65c3742
+  src/models/geo-scan-response.ts:
+    id: a72498f69654
+    last_write_checksum: sha1:0d954eeebd1f049448901b705ac8edf44a43cdd5
+    pristine_git_object: 618c514d1eda8405231002014578ec2b63c37ed8
+  src/models/geo-scan.ts:
+    id: c2321cb3811f
+    last_write_checksum: sha1:9fa685d2376d7802b45fe6040192bfb0dc976d13
+    pristine_git_object: 98468530858d8edb6d4709f32ca8bce2dd122d77
+  src/models/geo-sequence-response.ts:
+    id: 30d6de17e3da
+    last_write_checksum: sha1:3f3643542a5f4edbd866b392c163aaccc41fbe47
+    pristine_git_object: d2667dc1772a895c977414a96bf52df62baec26b
+  src/models/geo-sequence.ts:
+    id: 0ed4fb3be4cd
+    last_write_checksum: sha1:c31787ee255eab456b54a371093e50cb66e8d4bb
+    pristine_git_object: 40645a74a5ba5afd17aff55f442b8d355322225c
+  src/models/geo-settings-response.ts:
+    id: b315425d5d68
+    last_write_checksum: sha1:d49f1a37343944030fb7bc8e40a0a9455fc432ae
+    pristine_git_object: c7cdfdf668043d00043feeb3b4e93e9f7cff1384
+  src/models/geo-settings.ts:
+    id: ccdbac684933
+    last_write_checksum: sha1:e4b7b6fd88e8f7686996d1e57e4a4b61151463fb
+    pristine_git_object: 7429c9089596a71c882ecb597c2263079aa72fa0
+  src/models/geo-traffic-journeys-response.ts:
+    id: 9d38fca29039
+    last_write_checksum: sha1:58e3aa459e1727e19b38b8044710d4f42066f99b
+    pristine_git_object: 424514b9e5ac97429042a459e483c2790e66b2ec
+  src/models/geo-traffic-log-response.ts:
+    id: 66ca02213875
+    last_write_checksum: sha1:b12f208053e592dacd3ee68b63c31ec6d4e555aa
+    pristine_git_object: a6c6179edd86103200e6138462210d20d843afda
+  src/models/geo-traffic-overview-response.ts:
+    id: 3726decc4e46
+    last_write_checksum: sha1:200eccfeb4bdd4ac943105b84b2065ac4bf9e857
+    pristine_git_object: 02f107c7c1242ca7e7407e6581c7f15563623ccb
+  src/models/geo-traffic-pages-response.ts:
+    id: 337874f588a1
+    last_write_checksum: sha1:d1348359279cf45c0fd2a0d69f3fa615a1a93eb1
+    pristine_git_object: 62403018aeb6fb797349e9d31d819b8a72f90dbf
+  src/models/geo-visibility-competitor-detail-response.ts:
+    id: e27bd540d85b
+    last_write_checksum: sha1:b45c4c64a52962c8bdbc95d37680700913d2830a
+    pristine_git_object: 1aead2945a94407219798c4417e18ab7f63e5cdf
+  src/models/geo-visibility-competitor-share-response.ts:
+    id: b30a8314449e
+    last_write_checksum: sha1:380252ec7d5387f6408519911d8146931241045e
+    pristine_git_object: e356af31ab28ae2874c6849cce7ad1c3f8a214e0
+  src/models/geo-visibility-language-share-response.ts:
+    id: c15bbf41648a
+    last_write_checksum: sha1:156ace1074748fd1bee32d5dd26d2b651da10b8f
+    pristine_git_object: a2d6c5e6576d41c7fd744d3e55bae129bf7ea8c2
+  src/models/geo-visibility-overview-response.ts:
+    id: 09679a0ed727
+    last_write_checksum: sha1:603ab0d7c83e3fac6079749444b0afe5a3f2e9d4
+    pristine_git_object: 5c34abd973fee7c79ead56ca3cb316c893c5b743
+  src/models/geo-visibility-prompt-results-response.ts:
+    id: 27185fb2f974
+    last_write_checksum: sha1:7c076fe8f1902a134bd7cd385834bf2e0c2e64e6
+    pristine_git_object: 08c5b4dc8228f0820eedd8386ad96fcb14df2005
+  src/models/geo-visibility-timeseries-response.ts:
+    id: 105a98afc53e
+    last_write_checksum: sha1:cde4653777d087d5dae0d3f7ec9517358ed3d567
+    pristine_git_object: 775ee1197dd6adbb4062ce0bc6f37758399a8124
   src/models/get-chat-response.ts:
     id: 75c697ac8d98
     last_write_checksum: sha1:839cf6b28a28f5219c4a8834d38d9582c85f8c48
@@ -1666,22 +2854,66 @@ trackedFiles:
     id: b0091476b232
     last_write_checksum: sha1:15b2a4e40a4b021beb7402507ad20a101e1fd979
     pristine_git_object: f3da154de9157665a5f34e7a35239a64d19a6319
+  src/models/import-geo-competitors-request.ts:
+    id: 88f3919edef0
+    last_write_checksum: sha1:1152cf18489885fac654a7a98e925d0b7c456ecf
+    pristine_git_object: 4902adb5e6d512eff3606326d445efc21dc3a481
+  src/models/import-geo-competitors-response.ts:
+    id: edbb8bb3b1f4
+    last_write_checksum: sha1:f1f0d6c286ee8569fadd681ee0b0c536c0eaa6fa
+    pristine_git_object: adc2ecdef629ca7d8c975fc47db1ef3183dec0cb
+  src/models/import-geo-prompts-request.ts:
+    id: df41fc2849a8
+    last_write_checksum: sha1:2630447e4497192e4fa8b8f05fc2272bef3b723f
+    pristine_git_object: 2acfe603cf7c16a4f7f7d70b5e823dbcb710c6c9
+  src/models/import-geo-prompts-response.ts:
+    id: 8596816a33a1
+    last_write_checksum: sha1:e357c9e509b41fb80184162132b099f5e272a4ef
+    pristine_git_object: 40f3c90ed0fefe5832e2759e769342c51591106c
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:82cd8e47cf9124581d75837dcc1e25086f7b0e5a
-    pristine_git_object: 8e31de55a227de929f694bbf58cebbf4831e7070
+    last_write_checksum: sha1:e1b763bd9ad2ce30c162d0e2c16edffe689d0d4f
+    pristine_git_object: 93a999afe84ddc59710f54719c23ac674734d161
   src/models/list-agent-chats-response.ts:
     id: 0449dc7b7823
     last_write_checksum: sha1:33e198d656b42d98ae5af1e4afad3798ac87b289
     pristine_git_object: 300ed5dabf995430a14214de702e60d027cb61de
   src/models/list-feedback-response.ts:
     id: f07f3edb0829
-    last_write_checksum: sha1:ac630e4b8b70b3727de31da613bb53fe73102be3
-    pristine_git_object: b941868f09b2d0dc9653bb35dbd4b19b353d9c1d
+    last_write_checksum: sha1:dea0cc82b5d5a4179a47e2979d9c8d62cb193eba
+    pristine_git_object: 12baf8d6b5ee3e024f9cc26ce4aa08ae1f5b2760
+  src/models/list-geo-competitors-response.ts:
+    id: f4adb449c062
+    last_write_checksum: sha1:88ca5c04c33bbf10644498130508c5c5d11fc88f
+    pristine_git_object: 463ab8db474c40f57861a0702a4eb23ff281a5d1
+  src/models/list-geo-content-briefs-response.ts:
+    id: 2e6dfaa6cb5c
+    last_write_checksum: sha1:12abecbc6535910b56b0da5dbc05dbd11d371b41
+    pristine_git_object: de8986b5e6ade926f27715575fb8a70fe1f6babb
+  src/models/list-geo-projects-response.ts:
+    id: cc985237dbcd
+    last_write_checksum: sha1:206f9fa27f16e924e7a1fa0ebd70f8d04af441f0
+    pristine_git_object: 04cb12c5f6fc650e171186d34d226a65d8d04f2b
+  src/models/list-geo-prompts-response.ts:
+    id: c7343a75701f
+    last_write_checksum: sha1:e7800b2f749f77bb4af8efc57deda97ad0c28f8c
+    pristine_git_object: 2b3b29a2f5f284ae21b3fe2487f34ac43a50f1df
+  src/models/list-geo-scans-response.ts:
+    id: 0e163a66c44b
+    last_write_checksum: sha1:3f5013ff56803cfd9f985848e52ed58dc54441c1
+    pristine_git_object: 89794c7f213a33f0eb9b02d1ad9f648802a1b7e0
+  src/models/list-geo-sequences-response.ts:
+    id: 42ce1491e4ff
+    last_write_checksum: sha1:2084bd6e37aacb66fec81d524bd50c425b1d474e
+    pristine_git_object: e2f746e22350483aa2a2ecf384893e9b3a716521
   src/models/list-skills-response.ts:
     id: 1672a0186b56
     last_write_checksum: sha1:ddb3083bfb748c35c9201ace67a44e5713d43161
     pristine_git_object: eb28e054a8bd025389420a3ff2d885a365b948d3
+  src/models/operations/approve-geo-content-brief.ts:
+    id: 10726453bba6
+    last_write_checksum: sha1:7af883c2c047dc175c60db67df90c0d2a474aa8b
+    pristine_git_object: fafbf14056bde49b33365c890bd19a8dacfc6000
   src/models/operations/create-agent-session.ts:
     id: 24d308ffc504
     last_write_checksum: sha1:9206e311dfceb81fd8b3417083295e3d808f05ae
@@ -1698,6 +2930,18 @@ trackedFiles:
     id: e05fb2184cdd
     last_write_checksum: sha1:c1d83455ca15056787f78aa7c9774abd3f6d9f0a
     pristine_git_object: 9b83ada9d0c4cf7d8f46b78cea996876765647ef
+  src/models/operations/create-geo-prompt.ts:
+    id: 3ce0f3511b73
+    last_write_checksum: sha1:21f2a1649e5c0dd846c95a67a5e532f041beaa7d
+    pristine_git_object: 9f85bf3b46dd8bd5cb2593f0d666414952a89900
+  src/models/operations/create-geo-scan.ts:
+    id: ce3fc630292a
+    last_write_checksum: sha1:544d9f64f6e9909715b2396c54f9f050705893cb
+    pristine_git_object: 558c7bdcb7d9b70f9eb856ad5cbd902cc36612b0
+  src/models/operations/create-geo-sequence.ts:
+    id: e21467a02666
+    last_write_checksum: sha1:8f3b7fd32b66e1f5f9edbca33d3cd33983286c52
+    pristine_git_object: 29b7a68387ec14341816afb84d1a467898338c50
   src/models/operations/create-git-hub-integration.ts:
     id: 26fb581cbfda
     last_write_checksum: sha1:99550b0c4d9821eacd7fe6c0380b8f97e0f5718a
@@ -1718,6 +2962,18 @@ trackedFiles:
     id: 11091e3f50b4
     last_write_checksum: sha1:3c41075bb662430f8ff453e42e18706a79c350a6
     pristine_git_object: d7661cd3adf7696ee8595fd821d55fbc3caf5e13
+  src/models/operations/delete-geo-competitor.ts:
+    id: b97e2fc9242b
+    last_write_checksum: sha1:92761f2f606f0c6b870a673444a582a4b2410866
+    pristine_git_object: 88b873a7c77a57042e26cbc038212949b696c853
+  src/models/operations/delete-geo-prompt.ts:
+    id: 289475d3eedc
+    last_write_checksum: sha1:4784fd6e75334b960068f6ca13748ab5e4f1f1e7
+    pristine_git_object: a824fa6e2c574e71b32b739461d859ce1d854953
+  src/models/operations/delete-geo-sequence.ts:
+    id: f06805df0189
+    last_write_checksum: sha1:07a734b3851c56257c2f4b01037c4eb3e810c596
+    pristine_git_object: 6f472d2aa74e558f051fb661e09918d0ffd98ed6
   src/models/operations/delete-integration.ts:
     id: 5b681d37ee17
     last_write_checksum: sha1:b345c4e46412522ab71f300429e27066b3fdf240
@@ -1726,6 +2982,10 @@ trackedFiles:
     id: 2d3c4c4d46f8
     last_write_checksum: sha1:17c967f94c386b5eb22bd82c1dae39d1c40ec98e
     pristine_git_object: 24219f84148125c2e4a848df19499ade89c37a66
+  src/models/operations/delete-project.ts:
+    id: e45cb5e77cda
+    last_write_checksum: sha1:2033441a874c2b5abaf1fdb75573b7790c686bc7
+    pristine_git_object: 3073161c9a622b64806749414fad2235f53221d2
   src/models/operations/delete-schedule.ts:
     id: cc653f3e14a0
     last_write_checksum: sha1:402198f2d6bbdeb6a0a79f08cf3878b28763a06e
@@ -1758,6 +3018,58 @@ trackedFiles:
     id: ebdbe2f6d005
     last_write_checksum: sha1:31e34fd3b9c72032527b5f4ef9ce4baea0f7589e
     pristine_git_object: 0f0af2ee27b5ff0fa7f2e750b2e9ac2aa251964d
+  src/models/operations/get-geo-agent-readiness.ts:
+    id: cd97c84c2c09
+    last_write_checksum: sha1:d9a74cd5d47808cd8e6def9515569c810817e077
+    pristine_git_object: f1428774267d02c2a0747212c79fdfb21cdbcef7
+  src/models/operations/get-geo-content-brief.ts:
+    id: c6adfcbfc7f9
+    last_write_checksum: sha1:179f186f8e59df6b79476ef3fac42cc671a3f7c4
+    pristine_git_object: d8320fac2035df67f51d51eb64292125c3714a77
+  src/models/operations/get-geo-scan.ts:
+    id: 784af05606d7
+    last_write_checksum: sha1:ca890163457df8fc10da3e7166b2bbc51ac0a2ad
+    pristine_git_object: 9ed0152904a7a7fd218c8c60885a1705f00facd7
+  src/models/operations/get-geo-settings.ts:
+    id: b3ada5a24f00
+    last_write_checksum: sha1:e0eda2b7cd3c26c75283a0205ba36dd6cdfd1e3b
+    pristine_git_object: ee3d9f2953784d19617cf5519bb839114ff03137
+  src/models/operations/get-geo-traffic-journey.ts:
+    id: d4c8c263bb66
+    last_write_checksum: sha1:0e42291dbc0184fad84efe202dd84d7eca8caf9d
+    pristine_git_object: aa8f5ea383ceb27eaf800bbdd4bb6e44ae625120
+  src/models/operations/get-geo-traffic-log.ts:
+    id: 2a16f8e358a2
+    last_write_checksum: sha1:a432ef768bc5532aae120ba1ef5eff251d2b29bb
+    pristine_git_object: a501495042f5f75d4dd86b1156b7eca81f40d0c2
+  src/models/operations/get-geo-traffic-overview.ts:
+    id: 570daa51fc02
+    last_write_checksum: sha1:b837fb3143f887fcb00ff23b8131179128f3b58f
+    pristine_git_object: 261dde5d4755dab982e39e688641b3326b01c6ad
+  src/models/operations/get-geo-visibility-competitor-detail.ts:
+    id: 002bf2ad680e
+    last_write_checksum: sha1:30f0d2a306c70468a74768ac23860952de471cbd
+    pristine_git_object: 7009e297e014c7e78f28777ee6ad6ef245dcb18a
+  src/models/operations/get-geo-visibility-competitor-share.ts:
+    id: 7bc93e43ca08
+    last_write_checksum: sha1:81e2d28edb94bb63b07e104eb178c84a06ca9680
+    pristine_git_object: 07eccf631ea46fd14667a6b4d5232db2f696af13
+  src/models/operations/get-geo-visibility-language-share.ts:
+    id: ba3590c99d4a
+    last_write_checksum: sha1:5936ae93c1fcde81f2a89ac63ad1377b3b98306c
+    pristine_git_object: 93ddab56d474d3faf2ecfee15ff79dcf81e12f43
+  src/models/operations/get-geo-visibility-overview.ts:
+    id: 4bfcafd1da92
+    last_write_checksum: sha1:3d77404a7f90f5a17829748dee79d424f7a59cc9
+    pristine_git_object: 72280f0ef9201328d0b63458f010f868088896db
+  src/models/operations/get-geo-visibility-prompt-results.ts:
+    id: 6fb3231d9361
+    last_write_checksum: sha1:6af74048e2d71c6a96db971fe20583cbc008e478
+    pristine_git_object: 9e74477a034b4faa46fc7e558c79b409649abf76
+  src/models/operations/get-geo-visibility-timeseries.ts:
+    id: 24d708b2aa0e
+    last_write_checksum: sha1:2515bb4e6d05b822fca8fde05a79a51fe866fc34
+    pristine_git_object: ae812ee32cebda9b755c834e19f691c12be427e4
   src/models/operations/get-post-generation.ts:
     id: f1aa086e191f
     last_write_checksum: sha1:0250fd9473b006f7b0622e7fa89d5810d80607a6
@@ -1766,14 +3078,30 @@ trackedFiles:
     id: e9168f4e2a0d
     last_write_checksum: sha1:7e2c43fc2ed7029286ab7803de79e444181267d4
     pristine_git_object: b6b5d8ed3cb59099c443ca7c9c1108954edd5612
+  src/models/operations/get-project.ts:
+    id: e86b507a408d
+    last_write_checksum: sha1:6bbfa35efbd579b33daa0d7ad327bdb20a16ca8e
+    pristine_git_object: e66c5da9a4808f5d8e6ecbbe2854602349b13f06
   src/models/operations/get-skill.ts:
     id: 0cc4f7bf3418
     last_write_checksum: sha1:2adc0f88a5130eda34095aca31d24ed2b0f88823
     pristine_git_object: f87f08a163a297a30bedc35a3b29a394b8c38512
+  src/models/operations/import-geo-competitors.ts:
+    id: 5e40564d2317
+    last_write_checksum: sha1:a9850fd6cb4c989f34f54ed95bfee8cb4a792183
+    pristine_git_object: fbe848d2057501174a7b53f8e6a7cf46852babb3
+  src/models/operations/import-geo-prompts.ts:
+    id: 9cc51a7330a1
+    last_write_checksum: sha1:bacd81b10f7543e197082924138b2be4f4544a48
+    pristine_git_object: b4bf159520c97a344ee572dd1389e9c845d86722
   src/models/operations/index.ts:
     id: 0d9ffaf774d2
-    last_write_checksum: sha1:c1da3c49a81f046b5c707875d6aa9d5c60aed31b
-    pristine_git_object: 775c5f7341746308eb525fec03a8dd765dabe5ba
+    last_write_checksum: sha1:60fed092c96d253e9360c5e8c731d4dabd7a8ba7
+    pristine_git_object: ce264f7750580cd63c8a8bdf2edd335616ea6219
+  src/models/operations/issue-geo-ingest-token.ts:
+    id: 8a7bc85f36f5
+    last_write_checksum: sha1:3193b3236c9ee73ef9301375a27447316e113f65
+    pristine_git_object: 3be2dbf557447c434446e2d17b3792ad422969be
   src/models/operations/list-agent-chats.ts:
     id: edbc77e5a0b7
     last_write_checksum: sha1:53003d23ea9f6d22f08027169d7d7190ef735f92
@@ -1790,6 +3118,38 @@ trackedFiles:
     id: 73f5ab6050e3
     last_write_checksum: sha1:61b633ea39f67f2d181113c49b268d4ab2004981
     pristine_git_object: 1de51b3c1f21643f93144ee1b84511acdd259386
+  src/models/operations/list-geo-competitors.ts:
+    id: 05adb7ce93a3
+    last_write_checksum: sha1:1f0f6c2999acc78dd99ba533259aa7c3666f5999
+    pristine_git_object: 10b7f4f302dc6c97a7e190899550905b3ee81ca6
+  src/models/operations/list-geo-content-briefs.ts:
+    id: 3e868e2fb78b
+    last_write_checksum: sha1:20b62521d6ad36f3f1e70b30ef527bf670e07df5
+    pristine_git_object: 72559d414f693e824411adf934e30de621dec553
+  src/models/operations/list-geo-content-gaps.ts:
+    id: 6c2e7f734daf
+    last_write_checksum: sha1:65e00cfe04e7404b677688b2d5103cabc97004a8
+    pristine_git_object: f33bc27320a343efc3f2841b19e6578bc10c9fd0
+  src/models/operations/list-geo-prompts.ts:
+    id: 020bf77d32d9
+    last_write_checksum: sha1:b63c63534e4ffedbc29e3b161054b6f24a60fa6d
+    pristine_git_object: 87c4f6d006180dd2c4e17a91577eeef046a85862
+  src/models/operations/list-geo-scans.ts:
+    id: ea32b0acc3ea
+    last_write_checksum: sha1:28ada9d4ea7768ac3179faefd397e3f143cef815
+    pristine_git_object: 607061b94e4beb883086345521e142129cf7c1c8
+  src/models/operations/list-geo-sequences.ts:
+    id: 61c3f84052a0
+    last_write_checksum: sha1:eed8367eba70bf5134c77c8f6b13f5484604c94e
+    pristine_git_object: 973f7f434b13f8b6cc07630d49f12fa2ceacac13
+  src/models/operations/list-geo-traffic-journeys.ts:
+    id: 9613035da564
+    last_write_checksum: sha1:fff754deb3d6b25269543c65d426c0429edcc8dc
+    pristine_git_object: b77a907c875c1b8b84af7aec9703b62e527b64ef
+  src/models/operations/list-geo-traffic-pages.ts:
+    id: f620f6ab3a48
+    last_write_checksum: sha1:ae89e157158b40383b54b1a5f4d2f1fb46ec517c
+    pristine_git_object: 9e3d564402035d89ffbc49e9fc96667d5f8ec80a
   src/models/operations/list-integrations.ts:
     id: 981d7d35cd08
     last_write_checksum: sha1:2d4c44d5948b478716b8485b3f5f8174e1a93345
@@ -1806,14 +3166,30 @@ trackedFiles:
     id: ab9feae20421
     last_write_checksum: sha1:800a63c6634edb36cce539cf82b70d77a458bb5c
     pristine_git_object: a7a9d8f166c3ca4ad334a20f74e3e6a04e688795
+  src/models/operations/plan-geo-content-brief.ts:
+    id: 0a3b616dcea7
+    last_write_checksum: sha1:e925d71ec16591bad09adc64bd6af5b7300e1e49
+    pristine_git_object: 887ac3e0a45b9332091b2fbcdda1663cc3641990
   src/models/operations/post-chat-message.ts:
     id: 6ecdd54ea9e6
     last_write_checksum: sha1:b3ec0de4e1c29904b52620b9a5da7563da17df2b
     pristine_git_object: a17a0c320a512537fb5db34594636d4268578835
+  src/models/operations/rotate-geo-ingest-token.ts:
+    id: fe8863ec8cb3
+    last_write_checksum: sha1:fded2acb75ecf67ea12d819649c6b967b7c9a18f
+    pristine_git_object: a183c58888a00fc9018eec854d64c8632c3b89f3
+  src/models/operations/run-geo-sequence.ts:
+    id: dbde3e9cd79d
+    last_write_checksum: sha1:261f9c1889e9bd64ad52e3f0d01e1a1dca63e388
+    pristine_git_object: f68b6656417e1faa8e6effc95409f3a1c0c99dd7
   src/models/operations/send-agent-session-message.ts:
     id: a4ad324cd2b0
     last_write_checksum: sha1:67475afe5dc3cc9882888cab65e35d2ef7d277a7
     pristine_git_object: 0b4e53266b8f02953544bae1be2399099455ce25
+  src/models/operations/start-geo-agent-readiness-scan.ts:
+    id: c8e264503702
+    last_write_checksum: sha1:97f724e82849ef1cc01dc210d8ac95b4890d3a64
+    pristine_git_object: c4715f476eb828f634b28e1cc74ffc798d9cf662
   src/models/operations/stream-agent-session-events.ts:
     id: da267508cdf2
     last_write_checksum: sha1:ca56ec14ab091368435c567046a8b2e204c38451
@@ -1826,6 +3202,10 @@ trackedFiles:
     id: aa0f6dea8bab
     last_write_checksum: sha1:315e08b4aca4ac79698b91b101f9ffbdd6f537a0
     pristine_git_object: 487b210367cf729face0d45e5ea63f115cdb86bd
+  src/models/operations/suggest-geo-competitors.ts:
+    id: 941b1723b982
+    last_write_checksum: sha1:3794c645af5370bf929c49db071c42d9ebe26d45
+    pristine_git_object: 230603a2f59a058548e712382f7a26bc07e69942
   src/models/operations/update-brand-identity.ts:
     id: b6c925ab7473
     last_write_checksum: sha1:a7a571c4ca253a77edfb11833704ad7baab0c974
@@ -1838,18 +3218,54 @@ trackedFiles:
     id: 07e6f3ed648a
     last_write_checksum: sha1:42d5d5173de2c5ae0ccd0e907597b31867e61824
     pristine_git_object: 9543c9fe6ae4a72034dff18e0d6550a71a4908af
+  src/models/operations/update-geo-prompt.ts:
+    id: 5ff10927e2f7
+    last_write_checksum: sha1:009490073436d191bcb4bf7b8ed69b852ffaa162
+    pristine_git_object: adfa6e0abb5af77ec8fb4fb52e439606353209c3
+  src/models/operations/update-geo-sequence.ts:
+    id: 7b961ce4eb28
+    last_write_checksum: sha1:fe54f0841845148fe5992efaa0d59dd8261614ef
+    pristine_git_object: 108a3bc8568eb335d67c59144cb570d4ea62ffda
+  src/models/operations/update-geo-settings.ts:
+    id: 5224f0e35600
+    last_write_checksum: sha1:df2c0c74cbc87f3796f7fee95e566d1d2b2596b6
+    pristine_git_object: d88f1040e872641f96a758674659fb1086921d6d
   src/models/operations/update-post.ts:
     id: ca5a5edf4af7
     last_write_checksum: sha1:7fba16ad7e1316af8cea181a7e409bf27121e3a0
     pristine_git_object: 32ecfe111daf8ee32378fde7f6beac8a23cf4aad
+  src/models/operations/update-project.ts:
+    id: 301ac4f9113f
+    last_write_checksum: sha1:dfd51fe3d03741f09c2688ba4dce23068cad537c
+    pristine_git_object: ffc50eb59c13c80abfd330aa447fc158af8c10df
   src/models/operations/update-schedule.ts:
     id: 86622f6a610f
     last_write_checksum: sha1:38c55be14544c5c98a4f0647fd1fa58d967291ee
     pristine_git_object: 42f160d9165eb54f47a2676802760bf9a2b8b8d8
+  src/models/operations/upsert-geo-competitor.ts:
+    id: 84cadfab3947
+    last_write_checksum: sha1:ca1e3a65583808cb210e0571732c39107af5f77e
+    pristine_git_object: 3d48ffffd9a1ba19e5089ade4d5d438183089496
   src/models/patch-event-trigger-request.ts:
     id: 63d570f32edd
     last_write_checksum: sha1:eca969ee18e7111a266c5cb12206bce3c10d3872
     pristine_git_object: e58de07b86c116fc4fbd717b28a99dcde3c60f58
+  src/models/patch-geo-project-request.ts:
+    id: 39556b9163bc
+    last_write_checksum: sha1:e44163ae250818d0e2c294d67c00a2668a93e9e8
+    pristine_git_object: c033e928bcdad5313d544b5333a72f951958456d
+  src/models/patch-geo-prompt-request.ts:
+    id: be9fbc050af1
+    last_write_checksum: sha1:623cc66d25ae28b923c42a34f0a560af7bc154a7
+    pristine_git_object: a51a771af44c49b2c4ed1f4b09636ae53fd3cc46
+  src/models/patch-geo-sequence-request.ts:
+    id: 725881d18685
+    last_write_checksum: sha1:85c92a348bd6a48163331d14d35ed361ff77608e
+    pristine_git_object: b0f279bd31f735abdcc34889ea4065bdb1d659ec
+  src/models/patch-geo-settings-request.ts:
+    id: af0e72b4357f
+    last_write_checksum: sha1:bca0d0a6a9c431c5a124610107e189559735fa32
+    pristine_git_object: 4bb0db3f9a4e74cd547b2e5495f4d0937151b2fb
   src/models/patch-schedule-request.ts:
     id: 531ca59f85e3
     last_write_checksum: sha1:d9ea548597620b18318be13fe22d77017bf53a0e
@@ -1862,10 +3278,26 @@ trackedFiles:
     id: 8530aa3c0165
     last_write_checksum: sha1:99b81ae075df52da0220cbf913e25ac9a8d49225
     pristine_git_object: c160ae608d48d4e345029de1c25a1eb35a544a8c
+  src/models/plan-geo-content-brief-request.ts:
+    id: 7fe72cd1573b
+    last_write_checksum: sha1:2ce05549d7ef1bcf013a9b4441bcbb416c58af2f
+    pristine_git_object: 3ed18b168c405947e3fac37a78536d056d6e206e
+  src/models/plan-geo-content-brief-response.ts:
+    id: 766e19c7828e
+    last_write_checksum: sha1:c2d38df30bdd4de7f7240884c28fe5d549be719b
+    pristine_git_object: 10f6b90764c5e56b990333f81409187c2ea63ec2
   src/models/public-status-response.ts:
     id: 08043f4450fb
     last_write_checksum: sha1:eeec883c319fe51e45ff629496b97587f9cc7ee2
     pristine_git_object: 7b0c7977207f33d0006572130503ffb88f875cc7
+  src/models/put-geo-competitor-request.ts:
+    id: 39e66924e479
+    last_write_checksum: sha1:67e96fe0f06f8137c174659277ea4f2764bba531
+    pristine_git_object: 04f9c092ae4162d08babe23053bdc522ab4d285e
+  src/models/run-geo-sequence-response.ts:
+    id: 3351f6eb1107
+    last_write_checksum: sha1:f641893cd2561fa1a43faa904594ffb71a698670
+    pristine_git_object: 10bd8413682fed96c533dbd2e8e1734dfb30b06d
   src/models/security.ts:
     id: d90c6c784ca5
     last_write_checksum: sha1:71406f2a940327891c0342c6c0c97eac6312c79b
@@ -1926,6 +3358,10 @@ trackedFiles:
     id: 43cd9bb36140
     last_write_checksum: sha1:f89a37dff29c1d1ba0a273e36a3d4c402bed1084
     pristine_git_object: 8a78fe3a40755a00451254610cee1988d736b662
+  src/sdk/geo.ts:
+    id: 0f16083c1f96
+    last_write_checksum: sha1:ebb2da4d457f0a41107aa6ad15d6a41d9525283c
+    pristine_git_object: 47bfd4ee28ac6ce0a2b2df586367b3efaf43d6b4
   src/sdk/index.ts:
     id: a857902a703f
     last_write_checksum: sha1:54cdd8319bfbee269b54b8c56988fc0a678f2ec3
@@ -1936,8 +3372,8 @@ trackedFiles:
     pristine_git_object: b14942247bcacd05bf5432bc99695cf315f4933c
   src/sdk/sdk.ts:
     id: 784571af2f69
-    last_write_checksum: sha1:7c8d1d23a3847e9e1ebb837917ae8d11ff7cf39b
-    pristine_git_object: ed03cb4d894596db697a302809c5705ce80a2475
+    last_write_checksum: sha1:5b8bab12634a9aa68e89b0976f70150f9538c61c
+    pristine_git_object: 37573e2205be979761b26d3adf6182df7270ddd7
   src/sdk/skills.ts:
     id: 847667a72f83
     last_write_checksum: sha1:3a4ec868c0c136641358977edc504a4b00299792
@@ -2612,11 +4048,673 @@ examples:
           application/json: {"error": "<value>"}
         "503":
           application/json: {"error": "<value>"}
+  listProjects:
+    speakeasy-default-list-projects:
+      responses:
+        "200":
+          application/json: {"projects": [{"id": "<id>", "name": "<value>", "brandSettingsId": "<id>", "createdAt": "1712393261935"}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  createProject:
+    speakeasy-default-create-project:
+      requestBody:
+        application/json: {"name": "<value>"}
+      responses:
+        "201":
+          application/json: {"project": {"id": "<id>", "name": "<value>", "brandSettingsId": "<id>", "createdAt": "1732617617457"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getProject:
+    speakeasy-default-get-project:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"project": {"id": "<id>", "name": "<value>", "brandSettingsId": "<id>", "createdAt": "1733947912253"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  deleteProject:
+    speakeasy-default-delete-project:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  updateProject:
+    speakeasy-default-update-project:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"project": {"id": "<id>", "name": "<value>", "brandSettingsId": "<id>", "createdAt": "1706763028419"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoSettings:
+    speakeasy-default-get-geo-settings:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"configured": true, "settings": {"id": "<id>", "organizationId": "<id>", "projectId": "<id>", "companyName": "Ruecker and Sons", "aliases": ["<value 1>", "<value 2>"], "competitors": ["<value 1>", "<value 2>", "<value 3>"], "languages": ["<value 1>", "<value 2>"], "engines": ["<value 1>"], "enforceZdr": false, "nonZdrApprovedEngines": ["<value 1>", "<value 2>"], "enabled": true, "scanIntervalHours": 942361, "scanStartedAt": "<value>", "lastScanAt": "<value>", "isScanning": false, "createdAt": "1706897241327", "updatedAt": "1735627633525"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  updateGeoSettings:
+    speakeasy-default-update-geo-settings:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {"companyName": "Ratke - Welch", "aliases": ["<value 1>"], "languages": ["<value 1>", "<value 2>"], "engines": ["<value 1>", "<value 2>", "<value 3>"], "enforceZdr": true, "nonZdrApprovedEngines": ["<value 1>"], "enabled": false, "scanIntervalHours": 563097}
+      responses:
+        "200":
+          application/json: {"configured": true, "settings": {"id": "<id>", "organizationId": "<id>", "projectId": "<id>", "companyName": "Smith LLC", "aliases": ["<value 1>", "<value 2>"], "competitors": [], "languages": ["<value 1>", "<value 2>", "<value 3>"], "engines": ["<value 1>", "<value 2>", "<value 3>"], "enforceZdr": false, "nonZdrApprovedEngines": ["<value 1>"], "enabled": true, "scanIntervalHours": 115436, "scanStartedAt": "<value>", "lastScanAt": "<value>", "isScanning": false, "createdAt": "1723836966699", "updatedAt": "1735677429138"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoPrompts:
+    speakeasy-default-list-geo-prompts:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"configured": true, "prompts": [{"id": "<id>", "prompt": "<value>", "enabled": true, "source": "auto", "createdAt": "1729593828587"}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  createGeoPrompt:
+    speakeasy-default-create-geo-prompt:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {"prompt": "<value>"}
+      responses:
+        "201":
+          application/json: {"prompt": {"id": "<id>", "prompt": "<value>", "enabled": true, "source": "custom", "createdAt": "1726709576112"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  deleteGeoPrompt:
+    speakeasy-default-delete-geo-prompt:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          promptId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  updateGeoPrompt:
+    speakeasy-default-update-geo-prompt:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          promptId: "<id>"
+      requestBody:
+        application/json: {"enabled": true}
+      responses:
+        "200":
+          application/json: {"prompt": {"id": "<id>", "prompt": "<value>", "enabled": false, "source": "custom", "createdAt": "1729151729508"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  importGeoPrompts:
+    speakeasy-default-import-geo-prompts:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"imported": 503306, "updated": 383096, "skipped": 900023, "issues": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 820695, "remaining": 425836, "reset": 759981}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoSequences:
+    speakeasy-default-list-geo-sequences:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"sequences": [{"id": "<id>", "name": "<value>", "steps": ["<value 1>", "<value 2>", "<value 3>"], "enabled": true, "createdAt": "1715669549831"}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  createGeoSequence:
+    speakeasy-default-create-geo-sequence:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {"name": "<value>", "steps": []}
+      responses:
+        "201":
+          application/json: {"sequence": {"id": "<id>", "name": "<value>", "steps": ["<value 1>"], "enabled": true, "createdAt": "1712662679884"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  deleteGeoSequence:
+    speakeasy-default-delete-geo-sequence:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          sequenceId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  updateGeoSequence:
+    speakeasy-default-update-geo-sequence:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          sequenceId: "<id>"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"sequence": {"id": "<id>", "name": "<value>", "steps": ["<value 1>"], "enabled": false, "createdAt": "1710581892429"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  runGeoSequence:
+    speakeasy-default-run-geo-sequence:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          sequenceId: "<id>"
+      responses:
+        "200":
+          application/json: {"checks": 599775, "mentions": 414367, "engines": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 379285, "remaining": 230362, "reset": 676267}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoCompetitors:
+    speakeasy-default-list-geo-competitors:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"competitors": [{"id": "<id>", "name": "<value>", "domain": "grim-apricot.biz", "synonyms": ["<value 1>", "<value 2>", "<value 3>"], "kind": "indirect", "color": "magenta"}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  upsertGeoCompetitor:
+    speakeasy-default-upsert-geo-competitor:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {"name": "<value>", "domain": "circular-pantyhose.com"}
+      responses:
+        "200":
+          application/json: {"competitors": [{"id": "<id>", "name": "<value>", "domain": "oily-peony.net", "synonyms": [], "kind": "indirect", "color": "silver"}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  suggestGeoCompetitors:
+    speakeasy-default-suggest-geo-competitors:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          domain: "example.com"
+      responses:
+        "200":
+          application/json: {"domain": "minor-contrail.info", "field": "<value>", "competitors": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 731111, "remaining": 131740, "reset": 493449}
+        "500":
+          application/json: {"error": "<value>"}
+  deleteGeoCompetitor:
+    speakeasy-default-delete-geo-competitor:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"competitors": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  importGeoCompetitors:
+    speakeasy-default-import-geo-competitors:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"imported": 917375, "updated": 376958, "skipped": 387299, "issues": [{"line": 503381, "message": "<value>"}], "competitors": [{"id": "<id>", "name": "<value>", "domain": "exalted-scale.net", "synonyms": ["<value 1>"], "kind": "direct", "color": "sky blue"}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 610633, "remaining": 501637, "reset": 936151}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoScans:
+    speakeasy-default-list-geo-scans:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          limit: 20
+          page: 1
+      responses:
+        "200":
+          application/json: {"scans": [], "pagination": {"limit": 940731, "currentPage": 852599, "nextPage": 907338, "previousPage": 599400, "totalPages": 648329, "totalItems": 605153}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  createGeoScan:
+    speakeasy-default-create-geo-scan:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "202":
+          application/json: {"scanId": "<id>", "statusUrl": "https://teeming-devil.info/", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 289539, "remaining": 381026, "reset": 456}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoScan:
+    speakeasy-default-get-geo-scan:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          scanId: "<id>"
+      responses:
+        "200":
+          application/json: {"scan": {"id": "<id>", "projectId": "<id>", "status": "running", "startedAt": "<value>", "finishedAt": "<value>", "createdAt": "1705513072507"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoVisibilityOverview:
+    speakeasy-default-get-geo-visibility-overview:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": true, "engines": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoVisibilityTimeseries:
+    speakeasy-default-get-geo-visibility-timeseries:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": false, "points": [{"day": "<value>", "engine": "<value>", "checks": 471040, "mentions": 334902}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoVisibilityPromptResults:
+    speakeasy-default-get-geo-visibility-prompt-results:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": false, "results": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoVisibilityCompetitorShare:
+    speakeasy-default-get-geo-visibility-competitor-share:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": true, "points": [], "timeseries": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoVisibilityLanguageShare:
+    speakeasy-default-get-geo-visibility-language-share:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": true, "points": [{"language": "<value>", "checks": 862876, "mentions": 261815, "mentionRate": 7704.06, "avgPosition": 2374.54}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoVisibilityCompetitorDetail:
+    speakeasy-default-get-geo-visibility-competitor-detail:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          brand: "<value>"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": true, "points": [], "prompts": [{"promptId": "<id>", "prompt": "<value>", "engine": "<value>", "capturedAt": "<value>", "mentioned": true, "position": 48707}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoContentGaps:
+    speakeasy-default-list-geo-content-gaps:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"promptGaps": [], "searchGaps": [{"id": "<id>", "prompt": "<value>", "title": "<value>", "impressions": 5533.61, "brief": {"briefId": "<id>", "status": "approved", "postId": null, "workingTitle": "<value>"}}], "hasScanData": true, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoContentBriefs:
+    speakeasy-default-list-geo-content-briefs:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"briefs": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  planGeoContentBrief:
+    speakeasy-default-plan-geo-content-brief:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      requestBody:
+        application/json: {"topic": "<value>", "autoApprove": false}
+      responses:
+        "200":
+          application/json: {"briefId": "<id>", "brief": {"targetPrompt": "<value>", "intent": "<value>", "contentSubtype": "guide", "workingTitle": "<value>", "audience": "<value>", "jobToBeDone": "<value>", "sections": [], "questionsToAnswer": [], "internalLinks": [{"url": "https://excellent-tuber.info/", "anchor": "<value>", "why": "<value>"}], "acceptanceChecklist": ["<value 1>", "<value 2>", "<value 3>"]}, "status": "draft", "runId": "<id>", "postId": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 695287, "remaining": 602030, "reset": 633243}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoContentBrief:
+    speakeasy-default-get-geo-content-brief:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          briefId: "<id>"
+      responses:
+        "200":
+          application/json: {"brief": {"id": "<id>", "topic": "<value>", "brief": {"targetPrompt": "<value>", "intent": "<value>", "contentSubtype": "alternatives", "workingTitle": "<value>", "audience": "<value>", "jobToBeDone": "<value>", "sections": [], "questionsToAnswer": ["<value 1>", "<value 2>"], "internalLinks": [{"url": "https://ajar-rawhide.biz", "anchor": "<value>", "why": "<value>"}], "acceptanceChecklist": []}, "status": "writing", "autoApproved": false, "runId": "<id>", "postId": "<id>", "humanized": true, "error": "<value>", "createdAt": "1713115717148", "updatedAt": "1735661168178", "completedAt": null}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  approveGeoContentBrief:
+    speakeasy-default-approve-geo-content-brief:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          briefId: "<id>"
+      responses:
+        "202":
+          application/json: {"runId": "<id>", "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 992811, "remaining": 29732, "reset": 433727}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoAgentReadiness:
+    speakeasy-default-get-geo-agent-readiness:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"targetUrl": "https://odd-cake.biz/", "report": null, "scan": {"id": "<id>", "status": "running", "targetUrl": "https://crooked-council.org", "score": 6645, "scoreLabel": null, "scoreBreakdown": {"essential": {"earned": 2235.77, "available": 2148.65, "passing": 3945.02, "total": 7765.43}, "recommended": {"earned": 7088.06, "available": 4507.45, "passing": 7808.85, "total": 3891.02}, "bonus": {"points": 7998.74, "positiveSignals": 6201.84}}, "issues": [], "eligibleChecks": 969660, "reportUrl": "https://cultivated-premise.biz/", "errorMessage": "<value>", "scannedAt": "<value>", "createdAt": "1730859601116"}, "history": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  startGeoAgentReadinessScan:
+    speakeasy-default-start-geo-agent-readiness-scan:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "202":
+          application/json: {"reportId": "<id>", "alreadyRunning": false, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "429":
+          application/json: {"error": "<value>", "limit": 689328, "remaining": 426502, "reset": 768042}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoTrafficOverview:
+    speakeasy-default-get-geo-traffic-overview:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": false, "totals": {"crawler": 33153, "aiReferral": 228204}, "sources": [], "points": [{"day": "<value>", "visitorType": "ai_referral", "source": "<value>", "visits": 499070}], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoTrafficLog:
+    speakeasy-default-get-geo-traffic-log:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+      responses:
+        "200":
+          application/json: {"configured": true, "log": [], "total": 830750, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoTrafficJourneys:
+    speakeasy-default-list-geo-traffic-journeys:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": false, "journeys": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoTrafficJourney:
+    speakeasy-default-get-geo-traffic-journey:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+          journeyId: "<id>"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": false, "events": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  listGeoTrafficPages:
+    speakeasy-default-list-geo-traffic-pages:
+      parameters:
+        path:
+          projectId: "b1f2c3d4-0000-4000-8000-000000000000"
+        query:
+          from: "2026-01-31"
+          to: "2026-01-31"
+      responses:
+        "200":
+          application/json: {"configured": false, "pages": [], "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  getGeoIngestSetup:
+    speakeasy-default-get-geo-ingest-setup:
+      responses:
+        "200":
+          application/json: {"ingestUrl": "https://ashamed-sarong.biz/", "snippet": "<value>", "snippets": {"next": "<value>", "nuxt": "<value>", "netlify": "<value>"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  issueGeoIngestToken:
+    speakeasy-default-issue-geo-ingest-token:
+      responses:
+        "200":
+          application/json: {"ingestUrl": "https://trained-representation.net", "snippet": "<value>", "snippets": {"next": "<value>", "nuxt": "<value>", "netlify": "<value>"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": null}, "token": "<value>"}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
+  rotateGeoIngestToken:
+    speakeasy-default-rotate-geo-ingest-token:
+      responses:
+        "200":
+          application/json: {"ingestUrl": "https://shocked-swath.name/", "snippet": "<value>", "snippets": {"next": "<value>", "nuxt": "<value>", "netlify": "<value>"}, "organization": {"id": "<id>", "slug": "<value>", "name": "<value>", "logo": "<value>"}, "token": "<value>"}
+        "400":
+          application/json: {"error": "<value>"}
+        "500":
+          application/json: {"error": "<value>"}
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `notra.feedback.submitOrganizationFeedback()`: **Added**
-  * `notra.feedback.listFeedback()`: **Added**
-  * `notra.feedback.submitFeedback()`: **Added**
-  * `notra.feedback.getFeedback()`: **Added**
-  * `notra.feedback.updateFeedback()`: **Added**
+  * `notra.geo.listProjects()`: **Added**
+  * `notra.geo.createProject()`: **Added**
+  * `notra.geo.getProject()`: **Added**
+  * `notra.geo.deleteProject()`: **Added**
+  * `notra.geo.updateProject()`: **Added**
+  * `notra.geo.getGeoSettings()`: **Added**
+  * `notra.geo.updateGeoSettings()`: **Added**
+  * `notra.geo.listGeoPrompts()`: **Added**
+  * `notra.geo.createGeoPrompt()`: **Added**
+  * `notra.geo.deleteGeoPrompt()`: **Added**
+  * `notra.geo.updateGeoPrompt()`: **Added**
+  * `notra.geo.importGeoPrompts()`: **Added**
+  * `notra.geo.listGeoSequences()`: **Added**
+  * `notra.geo.createGeoSequence()`: **Added**
+  * `notra.geo.deleteGeoSequence()`: **Added**
+  * `notra.geo.updateGeoSequence()`: **Added**
+  * `notra.geo.runGeoSequence()`: **Added**
+  * `notra.geo.listGeoCompetitors()`: **Added**
+  * `notra.geo.upsertGeoCompetitor()`: **Added**
+  * `notra.geo.suggestGeoCompetitors()`: **Added**
+  * `notra.geo.deleteGeoCompetitor()`: **Added**
+  * `notra.geo.importGeoCompetitors()`: **Added**
+  * `notra.geo.listGeoScans()`: **Added**
+  * `notra.geo.createGeoScan()`: **Added**
+  * `notra.geo.getGeoScan()`: **Added**
+  * `notra.geo.getGeoVisibilityOverview()`: **Added**
+  * `notra.geo.getGeoVisibilityTimeseries()`: **Added**
+  * `notra.geo.getGeoVisibilityPromptResults()`: **Added**
+  * `notra.geo.getGeoVisibilityCompetitorShare()`: **Added**
+  * `notra.geo.getGeoVisibilityLanguageShare()`: **Added**
+  * `notra.geo.getGeoVisibilityCompetitorDetail()`: **Added**
+  * `notra.geo.listGeoContentGaps()`: **Added**
+  * `notra.geo.listGeoContentBriefs()`: **Added**
+  * `notra.geo.planGeoContentBrief()`: **Added**
+  * `notra.geo.getGeoContentBrief()`: **Added**
+  * `notra.geo.approveGeoContentBrief()`: **Added**
+  * `notra.geo.getGeoAgentReadiness()`: **Added**
+  * `notra.geo.startGeoAgentReadinessScan()`: **Added**
+  * `notra.geo.getGeoTrafficOverview()`: **Added**
+  * `notra.geo.getGeoTrafficLog()`: **Added**
+  * `notra.geo.listGeoTrafficJourneys()`: **Added**
+  * `notra.geo.getGeoTrafficJourney()`: **Added**
+  * `notra.geo.listGeoTrafficPages()`: **Added**
+  * `notra.geo.getGeoIngestSetup()`: **Added**
+  * `notra.geo.issueGeoIngestToken()`: **Added**
+  * `notra.geo.rotateGeoIngestToken()`: **Added**
