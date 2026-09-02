@@ -20,7 +20,7 @@ let value: ListFeedbackResponse = {
 
 ## Fields
 
-| Field                                        | Type                                         | Required                                     | Description                                  |
-| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
-| `feedback`                                   | [models.Feedback](../models/feedback.md)[]   | :heavy_check_mark:                           | N/A                                          |
-| `pagination`                                 | [models.Pagination](../models/pagination.md) | :heavy_check_mark:                           | N/A                                          |
+| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `feedback`                                                                              | [models.Feedback](../models/feedback.md)[]                                              | :heavy_check_mark:                                                                      | N/A                                                                                     |
+| `pagination`                                                                            | [models.ListFeedbackResponsePagination](../models/list-feedback-response-pagination.md) | :heavy_check_mark:                                                                      | N/A                                                                                     |

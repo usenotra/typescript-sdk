@@ -10,7 +10,7 @@ import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 import { Feedback, Feedback$inboundSchema } from "./feedback.js";
 
-export type Pagination = {
+export type ListFeedbackResponsePagination = {
   limit: number;
   currentPage: number;
   nextPage: number | null;
@@ -21,27 +21,29 @@ export type Pagination = {
 
 export type ListFeedbackResponse = {
   feedback: Array<Feedback>;
-  pagination: Pagination;
+  pagination: ListFeedbackResponsePagination;
 };
 
 /** @internal */
-export const Pagination$inboundSchema: z.ZodMiniType<Pagination, unknown> = z
-  .object({
-    limit: types.number(),
-    currentPage: types.number(),
-    nextPage: types.nullable(types.number()),
-    previousPage: types.nullable(types.number()),
-    totalPages: types.number(),
-    totalItems: types.number(),
-  });
+export const ListFeedbackResponsePagination$inboundSchema: z.ZodMiniType<
+  ListFeedbackResponsePagination,
+  unknown
+> = z.object({
+  limit: types.number(),
+  currentPage: types.number(),
+  nextPage: types.nullable(types.number()),
+  previousPage: types.nullable(types.number()),
+  totalPages: types.number(),
+  totalItems: types.number(),
+});
 
-export function paginationFromJSON(
+export function listFeedbackResponsePaginationFromJSON(
   jsonString: string,
-): SafeParseResult<Pagination, SDKValidationError> {
+): SafeParseResult<ListFeedbackResponsePagination, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Pagination$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Pagination' from JSON`,
+    (x) => ListFeedbackResponsePagination$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListFeedbackResponsePagination' from JSON`,
   );
 }
 
@@ -51,7 +53,7 @@ export const ListFeedbackResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   feedback: z.array(Feedback$inboundSchema),
-  pagination: z.lazy(() => Pagination$inboundSchema),
+  pagination: z.lazy(() => ListFeedbackResponsePagination$inboundSchema),
 });
 
 export function listFeedbackResponseFromJSON(

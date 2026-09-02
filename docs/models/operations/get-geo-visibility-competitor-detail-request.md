@@ -1,0 +1,24 @@
+# GetGeoVisibilityCompetitorDetailRequest
+
+## Example Usage
+
+```typescript
+import { GetGeoVisibilityCompetitorDetailRequest } from "@usenotra/sdk/models/operations";
+
+let value: GetGeoVisibilityCompetitorDetailRequest = {
+  projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  brand: "<value>",
+  from: "2026-01-31",
+  to: "2026-01-31",
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                | Example                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `projectId`                                                | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        | b1f2c3d4-0000-4000-8000-000000000000                       |
+| `brand`                                                    | *string*                                                   | :heavy_check_mark:                                         | Competitor brand name as reported by competitor-share.     |                                                            |
+| `days`                                                     | *number*                                                   | :heavy_minus_sign:                                         | Rolling window size in days. Ignored when from/to are set. |                                                            |
+| `from`                                                     | *string*                                                   | :heavy_minus_sign:                                         | N/A                                                        | 2026-01-31                                                 |
+| `to`                                                       | *string*                                                   | :heavy_minus_sign:                                         | N/A                                                        | 2026-01-31                                                 |

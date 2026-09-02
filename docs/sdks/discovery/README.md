@@ -2,6 +2,8 @@
 
 ## Overview
 
+Public API status and service discovery.
+
 ### Available Operations
 
 * [getPublicApiStatus](#getpublicapistatus) - Check public API reachability
