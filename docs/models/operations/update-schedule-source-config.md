@@ -8,8 +8,10 @@ import { UpdateScheduleSourceConfig } from "@usenotra/sdk/models/operations";
 let value: UpdateScheduleSourceConfig = {
   cron: {
     frequency: "weekly",
-    hour: 519591,
-    minute: 437370,
+    hour: 9,
+    minute: 0,
+    dayOfWeek: 1,
+    dayOfMonth: 1,
   },
 };
 ```

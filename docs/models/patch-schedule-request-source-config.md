@@ -8,8 +8,10 @@ import { PatchScheduleRequestSourceConfig } from "@usenotra/sdk/models";
 let value: PatchScheduleRequestSourceConfig = {
   cron: {
     frequency: "weekly",
-    hour: 796887,
-    minute: 32936,
+    hour: 9,
+    minute: 0,
+    dayOfWeek: 1,
+    dayOfMonth: 1,
   },
 };
 ```

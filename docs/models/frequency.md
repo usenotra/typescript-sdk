@@ -1,5 +1,7 @@
 # Frequency
 
+How often the schedule runs.
+
 ## Example Usage
 
 ```typescript

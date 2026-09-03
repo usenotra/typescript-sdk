@@ -1,5 +1,7 @@
 # GetBrandIdentityGenerationStatus
 
+Job state. Stop polling once it is completed or failed.
+
 ## Example Usage
 
 ```typescript

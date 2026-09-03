@@ -1,11 +1,13 @@
 # CreateScheduleFrequencyResponse
 
+How often the schedule runs.
+
 ## Example Usage
 
 ```typescript
 import { CreateScheduleFrequencyResponse } from "@usenotra/sdk/models/operations";
 
-let value: CreateScheduleFrequencyResponse = "daily";
+let value: CreateScheduleFrequencyResponse = "weekly";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

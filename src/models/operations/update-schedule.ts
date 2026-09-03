@@ -24,18 +24,39 @@ export type UpdateScheduleSourceType = ClosedEnum<
   typeof UpdateScheduleSourceType
 >;
 
+/**
+ * How often the schedule runs.
+ */
 export const UpdateScheduleFrequency = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
 } as const;
+/**
+ * How often the schedule runs.
+ */
 export type UpdateScheduleFrequency = OpenEnum<typeof UpdateScheduleFrequency>;
 
 export type UpdateScheduleCron = {
+  /**
+   * How often the schedule runs.
+   */
   frequency: UpdateScheduleFrequency;
+  /**
+   * Hour of the day to run, in UTC (0-23).
+   */
   hour: number;
+  /**
+   * Minute of the hour to run (0-59).
+   */
   minute: number;
+  /**
+   * Day of the week for weekly schedules, 0 (Sunday) to 6 (Saturday). Required when frequency is weekly.
+   */
   dayOfWeek?: number | undefined;
+  /**
+   * Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+   */
   dayOfMonth?: number | undefined;
 };
 
@@ -44,6 +65,9 @@ export type UpdateScheduleSourceConfig = {
 };
 
 export type UpdateScheduleTargets = {
+  /**
+   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   */
   repositoryIds: Array<string>;
 };
 
@@ -58,17 +82,29 @@ export type UpdateScheduleOutputType = OpenEnum<
   typeof UpdateScheduleOutputType
 >;
 
+/**
+ * Where auto-published posts are sent.
+ */
 export const UpdateSchedulePublishDestination = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
+/**
+ * Where auto-published posts are sent.
+ */
 export type UpdateSchedulePublishDestination = OpenEnum<
   typeof UpdateSchedulePublishDestination
 >;
 
 export type UpdateScheduleOutputConfig = {
+  /**
+   * Where auto-published posts are sent.
+   */
   publishDestination?: UpdateSchedulePublishDestination | undefined;
+  /**
+   * Brand identity ID to write in. Defaults to the organization's default brand identity.
+   */
   brandVoiceId?: string | undefined;
 };
 

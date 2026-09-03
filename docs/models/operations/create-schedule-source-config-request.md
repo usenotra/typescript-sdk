@@ -8,8 +8,10 @@ import { CreateScheduleSourceConfigRequest } from "@usenotra/sdk/models/operatio
 let value: CreateScheduleSourceConfigRequest = {
   cron: {
     frequency: "weekly",
-    hour: 842415,
-    minute: 663732,
+    hour: 9,
+    minute: 0,
+    dayOfWeek: 1,
+    dayOfMonth: 1,
   },
 };
 ```

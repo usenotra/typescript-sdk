@@ -1,5 +1,7 @@
 # FrequencyRequest
 
+How often the schedule runs.
+
 ## Example Usage
 
 ```typescript

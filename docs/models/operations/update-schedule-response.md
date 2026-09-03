@@ -16,22 +16,26 @@ let value: UpdateScheduleResponse = {
     sourceConfig: {
       cron: {
         frequency: "weekly",
-        hour: 519591,
-        minute: 437370,
+        hour: 9,
+        minute: 0,
+        dayOfWeek: 1,
+        dayOfMonth: 1,
       },
     },
     targets: {
       repositoryIds: [
-        "<value 1>",
-        "<value 2>",
+        "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
       ],
     },
     outputType: "image",
+    outputConfig: {
+      brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    },
     enabled: true,
-    autoPublish: true,
-    createdAt: "1725338290475",
-    updatedAt: "1735663664955",
-    lookbackWindow: "last_7_days",
+    autoPublish: false,
+    createdAt: "1726223563189",
+    updatedAt: "1735638165460",
+    lookbackWindow: "yesterday",
   },
   organization: {
     id: "<id>",

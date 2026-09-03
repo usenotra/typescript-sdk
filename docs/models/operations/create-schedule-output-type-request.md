@@ -1,11 +1,13 @@
 # CreateScheduleOutputTypeRequest
 
+Type of content each run generates.
+
 ## Example Usage
 
 ```typescript
 import { CreateScheduleOutputTypeRequest } from "@usenotra/sdk/models/operations";
 
-let value: CreateScheduleOutputTypeRequest = "blog_post";
+let value: CreateScheduleOutputTypeRequest = "changelog";
 ```
 
 ## Values
