@@ -1,5 +1,7 @@
 # ContentTypeRequest
 
+Type of content to generate.
+
 ## Example Usage
 
 ```typescript

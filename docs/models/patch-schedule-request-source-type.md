@@ -1,5 +1,7 @@
 # PatchScheduleRequestSourceType
 
+Always cron for schedules.
+
 ## Example Usage
 
 ```typescript

@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Update a schedule
+ *
+ * @remarks
+ * Replaces the schedule. Send the full schedule body; fields that are omitted are not preserved from the existing schedule.
  */
 export function schedulesUpdateSchedule(
   client: NotraCore,

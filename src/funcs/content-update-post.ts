@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Update a single post
+ *
+ * @remarks
+ * Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
  */
 export function contentUpdatePost(
   client: NotraCore,

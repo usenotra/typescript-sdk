@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Queue async post generation
+ *
+ * @remarks
+ * Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Notra does not send webhooks when the job finishes.
  */
 export function contentCreatePostGeneration(
   client: NotraCore,

@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Post a message to an existing chat and stream the reply
+ *
+ * @remarks
+ * Appends a user message to the chat and streams the assistant reply. Earlier messages in the chat are included as context automatically.
  */
 export function chatsPostChatMessage(
   client: NotraCore,

@@ -13,6 +13,9 @@ import * as types from "../../types/primitives.js";
 import { smartUnion } from "../../types/smart-union.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
+/**
+ * Type of content to generate.
+ */
 export const ContentTypeRequest = {
   Changelog: "changelog",
   BlogPost: "blog_post",
@@ -20,8 +23,14 @@ export const ContentTypeRequest = {
   TwitterPost: "twitter_post",
   Image: "image",
 } as const;
+/**
+ * Type of content to generate.
+ */
 export type ContentTypeRequest = ClosedEnum<typeof ContentTypeRequest>;
 
+/**
+ * How far back to collect source activity (commits, pull requests, releases, Linear issues).
+ */
 export const LookbackWindowRequestBody = {
   CurrentDay: "current_day",
   Yesterday: "yesterday",
@@ -29,12 +38,24 @@ export const LookbackWindowRequestBody = {
   Last14Days: "last_14_days",
   Last30Days: "last_30_days",
 } as const;
+/**
+ * How far back to collect source activity (commits, pull requests, releases, Linear issues).
+ */
 export type LookbackWindowRequestBody = ClosedEnum<
   typeof LookbackWindowRequestBody
 >;
 
+/**
+ * Source integrations to draw activity from. Omit this and github.repositories to use every connected GitHub integration.
+ */
 export type Integrations = {
+  /**
+   * GitHub integration IDs to use as sources, as returned by GET /v1/integrations.
+   */
   github?: Array<string> | undefined;
+  /**
+   * Linear integration IDs to use as sources, as returned by GET /v1/integrations.
+   */
   linear?: Array<string> | undefined;
 };
 
@@ -43,10 +64,16 @@ export type Repository = {
   repo: string;
 };
 
+/**
+ * Select connected repositories by owner and name instead of integration ID. Cannot be combined with integrations.github.
+ */
 export type CreatePostGenerationGithub = {
   repositories: Array<Repository>;
 };
 
+/**
+ * Which kinds of activity to collect from the selected sources.
+ */
 export type DataPoints = {
   includePullRequests?: boolean | undefined;
   includeCommits?: boolean | undefined;
@@ -71,6 +98,9 @@ export type LinearIssueId = {
   issueId: string;
 };
 
+/**
+ * Restrict generation to specific commits, pull requests, releases, or Linear issues instead of everything in the lookback window.
+ */
 export type SelectedItems = {
   commitShas?: Array<string> | undefined;
   pullRequestNumbers?: Array<PullRequestNumber> | undefined;
@@ -79,9 +109,21 @@ export type SelectedItems = {
 };
 
 export type CreatePostGenerationRequest = {
+  /**
+   * Type of content to generate.
+   */
   contentType: ContentTypeRequest;
+  /**
+   * How far back to collect source activity (commits, pull requests, releases, Linear issues).
+   */
   lookbackWindow?: LookbackWindowRequestBody | undefined;
+  /**
+   * Deprecated. Use brandIdentityId instead.
+   */
   brandVoiceId?: string | undefined;
+  /**
+   * Brand identity to write in. Defaults to the organization's default brand identity.
+   */
   brandIdentityId?: string | null | undefined;
   /**
    * Deprecated. Use integrations.github with GitHub integration IDs instead.
@@ -91,9 +133,21 @@ export type CreatePostGenerationRequest = {
    * Deprecated. Use integrations.linear with Linear integration IDs instead.
    */
   linearIntegrationIds?: Array<string> | undefined;
+  /**
+   * Source integrations to draw activity from. Omit this and github.repositories to use every connected GitHub integration.
+   */
   integrations?: Integrations | undefined;
+  /**
+   * Select connected repositories by owner and name instead of integration ID. Cannot be combined with integrations.github.
+   */
   github?: CreatePostGenerationGithub | undefined;
+  /**
+   * Which kinds of activity to collect from the selected sources.
+   */
   dataPoints?: DataPoints | undefined;
+  /**
+   * Restrict generation to specific commits, pull requests, releases, or Linear issues instead of everything in the lookback window.
+   */
   selectedItems?: SelectedItems | undefined;
 };
 
@@ -104,6 +158,9 @@ export type CreatePostGenerationOrganization = {
   logo: string | null;
 };
 
+/**
+ * Job state. Terminal states are completed, failed, and skipped.
+ */
 export const CreatePostGenerationStatus = {
   Queued: "queued",
   Running: "running",
@@ -111,6 +168,9 @@ export const CreatePostGenerationStatus = {
   Failed: "failed",
   Skipped: "skipped",
 } as const;
+/**
+ * Job state. Terminal states are completed, failed, and skipped.
+ */
 export type CreatePostGenerationStatus = OpenEnum<
   typeof CreatePostGenerationStatus
 >;
@@ -148,13 +208,22 @@ export type CreatePostGenerationSource = OpenEnum<
 export type CreatePostGenerationJob = {
   id: string;
   organizationId: string;
+  /**
+   * Job state. Terminal states are completed, failed, and skipped.
+   */
   status: CreatePostGenerationStatus;
   contentType: CreatePostGenerationJobContentType;
   lookbackWindow: CreatePostGenerationJobLookbackWindow;
   repositoryIds: Array<string>;
   brandVoiceId: string | null;
   workflowRunId: string | null;
+  /**
+   * ID of the generated post. Set once the job reaches completed.
+   */
   postId: string | null;
+  /**
+   * Failure reason when status is failed.
+   */
   error: string | null;
   source: CreatePostGenerationSource;
   createdAt: string;

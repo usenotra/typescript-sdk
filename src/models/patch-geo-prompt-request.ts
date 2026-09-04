@@ -6,12 +6,17 @@
 import * as z from "zod/v4-mini";
 
 export type PatchGeoPromptRequest = {
-  enabled: boolean;
+  enabled?: boolean | undefined;
+  /**
+   * Free-form labels for grouping custom prompts. Lowercased and deduplicated on save.
+   */
+  tags?: Array<string> | undefined;
 };
 
 /** @internal */
 export type PatchGeoPromptRequest$Outbound = {
-  enabled: boolean;
+  enabled?: boolean | undefined;
+  tags?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -19,7 +24,8 @@ export const PatchGeoPromptRequest$outboundSchema: z.ZodMiniType<
   PatchGeoPromptRequest$Outbound,
   PatchGeoPromptRequest
 > = z.object({
-  enabled: z.boolean(),
+  enabled: z.optional(z.boolean()),
+  tags: z.optional(z.array(z.string())),
 });
 
 export function patchGeoPromptRequestToJSON(
