@@ -12,9 +12,15 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
 export type GetPostGenerationRequest = {
+  /**
+   * Job ID returned by POST /v1/posts/generate.
+   */
   jobId: string;
 };
 
+/**
+ * Job state. Terminal states are completed, failed, and skipped.
+ */
 export const GetPostGenerationStatus = {
   Queued: "queued",
   Running: "running",
@@ -22,6 +28,9 @@ export const GetPostGenerationStatus = {
   Failed: "failed",
   Skipped: "skipped",
 } as const;
+/**
+ * Job state. Terminal states are completed, failed, and skipped.
+ */
 export type GetPostGenerationStatus = OpenEnum<typeof GetPostGenerationStatus>;
 
 export const GetPostGenerationContentType = {
@@ -55,13 +64,22 @@ export type GetPostGenerationSource = OpenEnum<typeof GetPostGenerationSource>;
 export type GetPostGenerationJob = {
   id: string;
   organizationId: string;
+  /**
+   * Job state. Terminal states are completed, failed, and skipped.
+   */
   status: GetPostGenerationStatus;
   contentType: GetPostGenerationContentType;
   lookbackWindow: GetPostGenerationLookbackWindow;
   repositoryIds: Array<string>;
   brandVoiceId: string | null;
   workflowRunId: string | null;
+  /**
+   * ID of the generated post. Set once the job reaches completed.
+   */
   postId: string | null;
+  /**
+   * Failure reason when status is failed.
+   */
   error: string | null;
   source: GetPostGenerationSource;
   createdAt: string;

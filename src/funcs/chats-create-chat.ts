@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Start a new chat and stream the reply
+ *
+ * @remarks
+ * Creates a chat session, sends the first message, and streams the assistant reply. Read the X-Chat-Id response header to continue the conversation with POST /v1/chats/{chatId}.
  */
 export function chatsCreateChat(
   client: NotraCore,

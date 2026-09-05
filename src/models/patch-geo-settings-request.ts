@@ -8,13 +8,21 @@ import * as z from "zod/v4-mini";
 export type PatchGeoSettingsRequest = {
   companyName: string;
   aliases: Array<string>;
+  /**
+   * Paths that count as a conversion when an AI referral reaches them. Prefix match. Omit to keep the stored list.
+   */
+  conversionPaths?: Array<string> | undefined;
   languages: Array<string>;
   engines: Array<string>;
   enforceZdr: boolean;
   nonZdrApprovedEngines: Array<string>;
+  /**
+   * Ids of auto-generated prompts to skip in scans. Omit to keep the current list.
+   */
+  pausedAutoPromptIds?: Array<string> | undefined;
   enabled: boolean;
   /**
-   * 24, 48, 72, 168, 336, 720
+   * Hours between automatic scans, 24-2160, in whole days (multiple of 24). Presets: 24, 48, 72, 168, 336, 720.
    */
   scanIntervalHours: number;
 };
@@ -23,10 +31,12 @@ export type PatchGeoSettingsRequest = {
 export type PatchGeoSettingsRequest$Outbound = {
   companyName: string;
   aliases: Array<string>;
+  conversionPaths?: Array<string> | undefined;
   languages: Array<string>;
   engines: Array<string>;
   enforceZdr: boolean;
   nonZdrApprovedEngines: Array<string>;
+  pausedAutoPromptIds?: Array<string> | undefined;
   enabled: boolean;
   scanIntervalHours: number;
 };
@@ -38,10 +48,12 @@ export const PatchGeoSettingsRequest$outboundSchema: z.ZodMiniType<
 > = z.object({
   companyName: z.string(),
   aliases: z.array(z.string()),
+  conversionPaths: z.optional(z.array(z.string())),
   languages: z.array(z.string()),
   engines: z.array(z.string()),
   enforceZdr: z.boolean(),
   nonZdrApprovedEngines: z.array(z.string()),
+  pausedAutoPromptIds: z.optional(z.array(z.string())),
   enabled: z.boolean(),
   scanIntervalHours: z.int(),
 });

@@ -16,28 +16,36 @@ let value: GeoSettingsResponse = {
       "<value 1>",
       "<value 2>",
     ],
-    competitors: [
+    conversionPaths: [
       "<value 1>",
       "<value 2>",
       "<value 3>",
     ],
-    languages: [],
+    competitors: [],
+    languages: [
+      "<value 1>",
+      "<value 2>",
+    ],
     engines: [
       "<value 1>",
       "<value 2>",
+      "<value 3>",
     ],
     enforceZdr: false,
     nonZdrApprovedEngines: [
       "<value 1>",
+    ],
+    pausedAutoPromptIds: [
+      "<value 1>",
       "<value 2>",
     ],
     enabled: true,
-    scanIntervalHours: 566040,
+    scanIntervalHours: 206237,
     scanStartedAt: "<value>",
     lastScanAt: "<value>",
-    isScanning: false,
-    createdAt: "1734708396424",
-    updatedAt: "1735635729599",
+    isScanning: true,
+    createdAt: "1726578150624",
+    updatedAt: "1735685702232",
   },
   organization: {
     id: "<id>",
