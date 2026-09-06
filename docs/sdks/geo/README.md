@@ -16,7 +16,7 @@ Manage generative engine optimization: projects, tracking settings, prompts, pro
 * [listGeoPrompts](#listgeoprompts) - List tracked GEO prompts
 * [createGeoPrompt](#creategeoprompt) - Track a new GEO prompt
 * [deleteGeoPrompt](#deletegeoprompt) - Stop tracking a GEO prompt
-* [updateGeoPrompt](#updategeoprompt) - Enable or disable a tracked GEO prompt
+* [updateGeoPrompt](#updategeoprompt) - Update a tracked GEO prompt
 * [importGeoPrompts](#importgeoprompts) - Bulk import GEO prompts
 * [listGeoSequences](#listgeosequences) - List GEO prompt sequences
 * [createGeoSequence](#creategeosequence) - Create a GEO prompt sequence
@@ -852,7 +852,7 @@ run();
 
 ## updateGeoPrompt
 
-Enable or disable a tracked GEO prompt
+Enable or disable a custom prompt, or replace its tags. Only custom prompts can be updated.
 
 ### Example Usage
 
@@ -868,9 +868,7 @@ async function run() {
   const result = await notra.geo.updateGeoPrompt({
     projectId: "b1f2c3d4-0000-4000-8000-000000000000",
     promptId: "<id>",
-    body: {
-      enabled: true,
-    },
+    body: {},
   });
 
   console.log(result);
@@ -897,9 +895,7 @@ async function run() {
   const res = await geoUpdateGEOPrompt(notra, {
     projectId: "b1f2c3d4-0000-4000-8000-000000000000",
     promptId: "<id>",
-    body: {
-      enabled: true,
-    },
+    body: {},
   });
   if (res.ok) {
     const { value: result } = res;
@@ -1327,7 +1323,7 @@ run();
 
 ## runGeoSequence
 
-Runs the sequence synchronously and answers with its result. The call is not queued: the request stays open for the whole run, which plays every turn against every available answer engine and can take several minutes. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own — do not retry, read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
+Runs the sequence synchronously and answers with its result. The call is not queued: the request stays open for the whole run, which plays every turn against every available answer engine and can take several minutes. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
 
 ### Example Usage
 
@@ -1871,7 +1867,7 @@ run();
 
 ## createGeoScan
 
-Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}` — poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight.
+Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight.
 
 ### Example Usage
 

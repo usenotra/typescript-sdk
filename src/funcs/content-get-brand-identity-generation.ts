@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get async brand identity generation status
+ *
+ * @remarks
+ * Returns the analysis job. job.status moves from queued to running and ends as completed or failed; job.step shows the current stage while running. Fetch the finished identity with GET /v1/brand-identities/{brandIdentityId}.
  */
 export function contentGetBrandIdentityGeneration(
   client: NotraCore,

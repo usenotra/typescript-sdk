@@ -15,11 +15,13 @@ export type GeoSettings = {
   projectId: string;
   companyName: string;
   aliases: Array<string>;
+  conversionPaths: Array<string>;
   competitors: Array<string>;
   languages: Array<string>;
   engines: Array<string>;
   enforceZdr: boolean;
   nonZdrApprovedEngines: Array<string>;
+  pausedAutoPromptIds: Array<string>;
   enabled: boolean;
   scanIntervalHours: number;
   scanStartedAt: string | null;
@@ -37,11 +39,13 @@ export const GeoSettings$inboundSchema: z.ZodMiniType<GeoSettings, unknown> = z
     projectId: types.string(),
     companyName: types.string(),
     aliases: z.array(types.string()),
+    conversionPaths: z.array(types.string()),
     competitors: z.array(types.string()),
     languages: z.array(types.string()),
     engines: z.array(types.string()),
     enforceZdr: types.boolean(),
     nonZdrApprovedEngines: z.array(types.string()),
+    pausedAutoPromptIds: z.array(types.string()),
     enabled: types.boolean(),
     scanIntervalHours: types.number(),
     scanStartedAt: types.nullable(types.string()),

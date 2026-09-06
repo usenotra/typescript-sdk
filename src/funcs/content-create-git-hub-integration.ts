@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Create a GitHub integration
+ *
+ * @remarks
+ * Checks that the repository can be read (a personal access token is required for private repositories), connects it, and enables changelog generation for it; blog post and X post outputs start disabled. A webhook secret is generated on creation. Copy the payload URL and secret from the dashboard to receive push and release events.
  */
 export function contentCreateGitHubIntegration(
   client: NotraCore,

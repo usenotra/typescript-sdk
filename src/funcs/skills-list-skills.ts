@@ -27,6 +27,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List skills
+ *
+ * @remarks
+ * Returns the organization's skills sorted by name, including built-in system skills (isSystem: true). Skill content is omitted; use GET /v1/skills/{name} to read it.
  */
 export function skillsListSkills(
   client: NotraCore,
