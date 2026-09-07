@@ -10,6 +10,8 @@ let value: PatchSkillRequest = {
   body: {
     name: "humanizer",
     description: "Polish near-final drafts so they sound natural and specific.",
+    content:
+      "# Humanizer\n\nRewrite the draft so it reads like a person wrote it. Remove filler, vary sentence length, and keep concrete details.",
   },
 };
 ```

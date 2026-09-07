@@ -1,5 +1,7 @@
 # SelectedItems
 
+Restrict generation to specific commits, pull requests, releases, or Linear issues instead of everything in the lookback window.
+
 ## Example Usage
 
 ```typescript
