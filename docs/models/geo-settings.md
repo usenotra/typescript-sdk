@@ -14,24 +14,29 @@ let value: GeoSettings = {
     "<value 1>",
     "<value 2>",
   ],
+  conversionPaths: [],
   competitors: [],
-  languages: [],
-  engines: [
+  languages: [
     "<value 1>",
   ],
-  enforceZdr: true,
-  nonZdrApprovedEngines: [
+  engines: [],
+  enforceZdr: false,
+  nonZdrApprovedEngines: [],
+  pausedAutoPromptIds: [
     "<value 1>",
     "<value 2>",
-    "<value 3>",
+  ],
+  removedAutoPromptIds: [
+    "<value 1>",
+    "<value 2>",
   ],
   enabled: true,
-  scanIntervalHours: 631122,
+  scanIntervalHours: 813480,
   scanStartedAt: "<value>",
   lastScanAt: "<value>",
   isScanning: false,
-  createdAt: "1716557159218",
-  updatedAt: "1735649940395",
+  createdAt: "1718456566926",
+  updatedAt: "1735649145181",
 };
 ```
 
@@ -44,11 +49,14 @@ let value: GeoSettings = {
 | `projectId`             | *string*                | :heavy_check_mark:      | N/A                     |
 | `companyName`           | *string*                | :heavy_check_mark:      | N/A                     |
 | `aliases`               | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `conversionPaths`       | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `competitors`           | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `languages`             | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `engines`               | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `enforceZdr`            | *boolean*               | :heavy_check_mark:      | N/A                     |
 | `nonZdrApprovedEngines` | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `pausedAutoPromptIds`   | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `removedAutoPromptIds`  | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `enabled`               | *boolean*               | :heavy_check_mark:      | N/A                     |
 | `scanIntervalHours`     | *number*                | :heavy_check_mark:      | N/A                     |
 | `scanStartedAt`         | *string*                | :heavy_check_mark:      | N/A                     |

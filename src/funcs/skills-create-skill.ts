@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Create a skill
+ *
+ * @remarks
+ * Creates a custom skill. Names must be unique within the organization.
  */
 export function skillsCreateSkill(
   client: NotraCore,

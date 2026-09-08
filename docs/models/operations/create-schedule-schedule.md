@@ -12,18 +12,26 @@ let value: CreateScheduleSchedule = {
   sourceType: "cron",
   sourceConfig: {
     cron: {
-      frequency: "monthly",
-      hour: 404812,
-      minute: 401333,
+      frequency: "weekly",
+      hour: 9,
+      minute: 0,
+      dayOfWeek: 1,
+      dayOfMonth: 1,
+      intervalDays: 3,
+      anchorDate: "2026-09-03",
     },
   },
   targets: {
     repositoryIds: [
-      "<value 1>",
-      "<value 2>",
+      "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
     ],
   },
-  outputType: "blog_post",
+  outputType: "twitter_post",
+  outputConfig: {
+    brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    instructions:
+      "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+  },
   enabled: false,
   autoPublish: false,
   createdAt: "1719960250538",

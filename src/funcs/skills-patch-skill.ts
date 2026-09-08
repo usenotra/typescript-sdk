@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Update a skill
+ *
+ * @remarks
+ * Updates the name, description, or content of a skill. System skills can be edited but not renamed.
  */
 export function skillsPatchSkill(
   client: NotraCore,
