@@ -8,8 +8,12 @@ import { ListSchedulesSourceConfig } from "@usenotra/sdk/models/operations";
 let value: ListSchedulesSourceConfig = {
   cron: {
     frequency: "weekly",
-    hour: 216746,
-    minute: 624772,
+    hour: 9,
+    minute: 0,
+    dayOfWeek: 1,
+    dayOfMonth: 1,
+    intervalDays: 3,
+    anchorDate: "2026-09-03",
   },
 };
 ```

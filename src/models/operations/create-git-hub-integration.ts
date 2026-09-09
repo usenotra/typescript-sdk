@@ -11,9 +11,21 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
 export type CreateGitHubIntegrationRequest = {
+  /**
+   * GitHub user or organization that owns the repository.
+   */
   owner: string;
+  /**
+   * Repository name without the owner.
+   */
   repo: string;
+  /**
+   * Branch to read activity from. Defaults to the repository's default branch.
+   */
   branch?: string | null | undefined;
+  /**
+   * GitHub personal access token with read access to the repository. Required for private repositories; public repositories work without one.
+   */
   token?: string | null | undefined;
 };
 

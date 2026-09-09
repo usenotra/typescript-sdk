@@ -1,11 +1,13 @@
 # PatchScheduleRequestOutputType
 
+Type of content each run generates.
+
 ## Example Usage
 
 ```typescript
 import { PatchScheduleRequestOutputType } from "@usenotra/sdk/models";
 
-let value: PatchScheduleRequestOutputType = "image";
+let value: PatchScheduleRequestOutputType = "changelog";
 ```
 
 ## Values

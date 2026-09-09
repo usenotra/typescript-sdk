@@ -1,5 +1,7 @@
 # CreateSchedulePublishDestinationResponse
 
+Where auto-published posts are sent.
+
 ## Example Usage
 
 ```typescript
