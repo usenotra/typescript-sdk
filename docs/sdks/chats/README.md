@@ -14,7 +14,7 @@ Manage chat sessions. Organization is inferred from the API key (identity.extern
 
 ## listChats
 
-List chats
+Returns the organization's chat sessions without their messages. Use GET /v1/chats/{chatId} to load a conversation.
 
 ### Example Usage
 
@@ -84,7 +84,7 @@ run();
 
 ## createChat
 
-Start a new chat and stream the reply
+Creates a chat session, sends the first message, and streams the assistant reply. Read the X-Chat-Id response header to continue the conversation with POST /v1/chats/{chatId}.
 
 ### Example Usage
 
@@ -99,6 +99,10 @@ const notra = new Notra({
 async function run() {
   const result = await notra.chats.createChat({
     message: "<value>",
+    model: "auto",
+    enableThinking: false,
+    thinkingLevel: "medium",
+    timezone: "Europe/Berlin",
   });
 
   console.log(result);
@@ -124,6 +128,10 @@ const notra = new NotraCore({
 async function run() {
   const res = await chatsCreateChat(notra, {
     message: "<value>",
+    model: "auto",
+    enableThinking: false,
+    thinkingLevel: "medium",
+    timezone: "Europe/Berlin",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -160,7 +168,7 @@ run();
 
 ## getChatByExternalChannel
 
-Get a chat by external channel id
+Looks up the chat session linked to a Discord or Slack channel. Link a chat by passing externalChannelId when you create it.
 
 ### Example Usage
 
@@ -237,7 +245,7 @@ run();
 
 ## getChat
 
-Get a single chat with messages
+Returns the chat session and its full message history in UI message format.
 
 ### Example Usage
 
@@ -312,7 +320,7 @@ run();
 
 ## postChatMessage
 
-Post a message to an existing chat and stream the reply
+Appends a user message to the chat and streams the assistant reply. Earlier messages in the chat are included as context automatically.
 
 ### Example Usage
 
@@ -329,6 +337,10 @@ async function run() {
     chatId: "chat_abc123",
     body: {
       message: "<value>",
+      model: "auto",
+      enableThinking: false,
+      thinkingLevel: "medium",
+      timezone: "Europe/Berlin",
     },
   });
 
@@ -357,6 +369,10 @@ async function run() {
     chatId: "chat_abc123",
     body: {
       message: "<value>",
+      model: "auto",
+      enableThinking: false,
+      thinkingLevel: "medium",
+      timezone: "Europe/Berlin",
     },
   });
   if (res.ok) {

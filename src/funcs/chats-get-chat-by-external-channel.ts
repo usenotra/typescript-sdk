@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get a chat by external channel id
+ *
+ * @remarks
+ * Looks up the chat session linked to a Discord or Slack channel. Link a chat by passing externalChannelId when you create it.
  */
 export function chatsGetChatByExternalChannel(
   client: NotraCore,

@@ -24,19 +24,49 @@ export type UpdateScheduleSourceType = ClosedEnum<
   typeof UpdateScheduleSourceType
 >;
 
+/**
+ * How often the schedule runs.
+ */
 export const UpdateScheduleFrequency = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
+  Custom: "custom",
 } as const;
+/**
+ * How often the schedule runs.
+ */
 export type UpdateScheduleFrequency = OpenEnum<typeof UpdateScheduleFrequency>;
 
 export type UpdateScheduleCron = {
+  /**
+   * How often the schedule runs.
+   */
   frequency: UpdateScheduleFrequency;
+  /**
+   * Hour of the day to run, in UTC (0-23).
+   */
   hour: number;
+  /**
+   * Minute of the hour to run (0-59).
+   */
   minute: number;
+  /**
+   * Day of the week for weekly schedules, 0 (Sunday) to 6 (Saturday). Required when frequency is weekly.
+   */
   dayOfWeek?: number | undefined;
+  /**
+   * Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+   */
   dayOfMonth?: number | undefined;
+  /**
+   * Run every N days (2-90). Required when frequency is custom.
+   */
+  intervalDays?: number | undefined;
+  /**
+   * UTC calendar date (YYYY-MM-DD) a custom interval counts from. Defaults to today.
+   */
+  anchorDate?: string | undefined;
 };
 
 export type UpdateScheduleSourceConfig = {
@@ -44,6 +74,9 @@ export type UpdateScheduleSourceConfig = {
 };
 
 export type UpdateScheduleTargets = {
+  /**
+   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   */
   repositoryIds: Array<string>;
 };
 
@@ -58,18 +91,34 @@ export type UpdateScheduleOutputType = OpenEnum<
   typeof UpdateScheduleOutputType
 >;
 
+/**
+ * Where auto-published posts are sent.
+ */
 export const UpdateSchedulePublishDestination = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
+/**
+ * Where auto-published posts are sent.
+ */
 export type UpdateSchedulePublishDestination = OpenEnum<
   typeof UpdateSchedulePublishDestination
 >;
 
 export type UpdateScheduleOutputConfig = {
+  /**
+   * Where auto-published posts are sent.
+   */
   publishDestination?: UpdateSchedulePublishDestination | undefined;
+  /**
+   * Brand identity ID to write in. Defaults to the organization's default brand identity.
+   */
   brandVoiceId?: string | undefined;
+  /**
+   * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
+   */
+  instructions?: string | undefined;
 };
 
 export const UpdateScheduleLookbackWindow = {
@@ -158,6 +207,8 @@ export const UpdateScheduleCron$inboundSchema: z.ZodMiniType<
   minute: types.number(),
   dayOfWeek: types.optional(types.number()),
   dayOfMonth: types.optional(types.number()),
+  intervalDays: types.optional(types.number()),
+  anchorDate: types.optional(types.string()),
 });
 
 export function updateScheduleCronFromJSON(
@@ -227,6 +278,7 @@ export const UpdateScheduleOutputConfig$inboundSchema: z.ZodMiniType<
     UpdateSchedulePublishDestination$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
+  instructions: types.optional(types.string()),
 });
 
 export function updateScheduleOutputConfigFromJSON(
