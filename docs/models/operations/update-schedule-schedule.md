@@ -13,17 +13,25 @@ let value: UpdateScheduleSchedule = {
   sourceConfig: {
     cron: {
       frequency: "weekly",
-      hour: 519591,
-      minute: 437370,
+      hour: 9,
+      minute: 0,
+      dayOfWeek: 1,
+      dayOfMonth: 1,
+      intervalDays: 3,
+      anchorDate: "2026-09-03",
     },
   },
   targets: {
     repositoryIds: [
-      "<value 1>",
-      "<value 2>",
+      "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
     ],
   },
-  outputType: "image",
+  outputType: "linkedin_post",
+  outputConfig: {
+    brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    instructions:
+      "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+  },
   enabled: true,
   autoPublish: true,
   createdAt: "1732700236463",

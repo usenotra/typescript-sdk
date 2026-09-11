@@ -35,6 +35,32 @@ export type InternalLink = {
   why: string;
 };
 
+export type GeoContentBriefDocumentEngine = {
+  engine: string;
+  mentioned: boolean;
+  position: number | null;
+};
+
+export type CompetitorMention = {
+  name: string;
+  engines: number;
+};
+
+export type CitedDomain = {
+  domain: string;
+  engines: number;
+};
+
+export type GeoContentBriefDocumentBaseline = {
+  sourcePromptId: string;
+  mentionedEngines: number;
+  totalEngines: number;
+  engines: Array<GeoContentBriefDocumentEngine>;
+  competitorMentions: Array<CompetitorMention>;
+  citedDomains: Array<CitedDomain>;
+  capturedAt: string | null;
+};
+
 export type GeoContentBriefDocument = {
   targetPrompt: string;
   intent: string;
@@ -46,6 +72,11 @@ export type GeoContentBriefDocument = {
   questionsToAnswer: Array<string>;
   internalLinks: Array<InternalLink>;
   acceptanceChecklist: Array<string>;
+  recommendedAngle?: string | undefined;
+  competitorsToCounter?: Array<string> | undefined;
+  sourcesToReference?: Array<string> | undefined;
+  missingCoverage?: Array<string> | undefined;
+  baseline?: GeoContentBriefDocumentBaseline | null | undefined;
 };
 
 /** @internal */
@@ -90,6 +121,86 @@ export function internalLinkFromJSON(
 }
 
 /** @internal */
+export const GeoContentBriefDocumentEngine$inboundSchema: z.ZodMiniType<
+  GeoContentBriefDocumentEngine,
+  unknown
+> = z.object({
+  engine: types.string(),
+  mentioned: types.boolean(),
+  position: types.nullable(types.number()),
+});
+
+export function geoContentBriefDocumentEngineFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoContentBriefDocumentEngine, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoContentBriefDocumentEngine$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoContentBriefDocumentEngine' from JSON`,
+  );
+}
+
+/** @internal */
+export const CompetitorMention$inboundSchema: z.ZodMiniType<
+  CompetitorMention,
+  unknown
+> = z.object({
+  name: types.string(),
+  engines: types.number(),
+});
+
+export function competitorMentionFromJSON(
+  jsonString: string,
+): SafeParseResult<CompetitorMention, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CompetitorMention$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CompetitorMention' from JSON`,
+  );
+}
+
+/** @internal */
+export const CitedDomain$inboundSchema: z.ZodMiniType<CitedDomain, unknown> = z
+  .object({
+    domain: types.string(),
+    engines: types.number(),
+  });
+
+export function citedDomainFromJSON(
+  jsonString: string,
+): SafeParseResult<CitedDomain, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CitedDomain$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CitedDomain' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoContentBriefDocumentBaseline$inboundSchema: z.ZodMiniType<
+  GeoContentBriefDocumentBaseline,
+  unknown
+> = z.object({
+  sourcePromptId: types.string(),
+  mentionedEngines: types.number(),
+  totalEngines: types.number(),
+  engines: z.array(z.lazy(() => GeoContentBriefDocumentEngine$inboundSchema)),
+  competitorMentions: z.array(z.lazy(() => CompetitorMention$inboundSchema)),
+  citedDomains: z.array(z.lazy(() => CitedDomain$inboundSchema)),
+  capturedAt: types.nullable(types.string()),
+});
+
+export function geoContentBriefDocumentBaselineFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoContentBriefDocumentBaseline, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoContentBriefDocumentBaseline$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoContentBriefDocumentBaseline' from JSON`,
+  );
+}
+
+/** @internal */
 export const GeoContentBriefDocument$inboundSchema: z.ZodMiniType<
   GeoContentBriefDocument,
   unknown
@@ -104,6 +215,13 @@ export const GeoContentBriefDocument$inboundSchema: z.ZodMiniType<
   questionsToAnswer: z.array(types.string()),
   internalLinks: z.array(z.lazy(() => InternalLink$inboundSchema)),
   acceptanceChecklist: z.array(types.string()),
+  recommendedAngle: types.optional(types.string()),
+  competitorsToCounter: types.optional(z.array(types.string())),
+  sourcesToReference: types.optional(z.array(types.string())),
+  missingCoverage: types.optional(z.array(types.string())),
+  baseline: z.optional(
+    z.nullable(z.lazy(() => GeoContentBriefDocumentBaseline$inboundSchema)),
+  ),
 });
 
 export function geoContentBriefDocumentFromJSON(

@@ -13,7 +13,12 @@ import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
 export type Totals = {
   crawler: number;
+  cited: number;
   aiReferral: number;
+  /**
+   * AI referral visits that reached a configured conversion path. Null when no conversion paths are set.
+   */
+  conversions: number | null;
 };
 
 export const SourceVisitorType = {
@@ -65,6 +70,10 @@ export type GeoTrafficOverviewResponse = {
    */
   configured: boolean;
   totals: Totals;
+  /**
+   * Conversions in the previous window of the same length. Null when no conversion paths are set or no comparison data exists.
+   */
+  previousConversions: number | null;
   sources: Array<GeoTrafficOverviewResponseSource>;
   points: Array<GeoTrafficOverviewResponsePoint>;
   organization: GeoTrafficOverviewResponseOrganization;
@@ -73,7 +82,9 @@ export type GeoTrafficOverviewResponse = {
 /** @internal */
 export const Totals$inboundSchema: z.ZodMiniType<Totals, unknown> = z.object({
   crawler: types.number(),
+  cited: types.number(),
   aiReferral: types.number(),
+  conversions: types.nullable(types.number()),
 });
 
 export function totalsFromJSON(
@@ -173,6 +184,7 @@ export const GeoTrafficOverviewResponse$inboundSchema: z.ZodMiniType<
 > = z.object({
   configured: types.boolean(),
   totals: z.lazy(() => Totals$inboundSchema),
+  previousConversions: types.nullable(types.number()),
   sources: z.array(
     z.lazy(() => GeoTrafficOverviewResponseSource$inboundSchema),
   ),

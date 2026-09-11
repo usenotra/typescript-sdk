@@ -2,7 +2,7 @@
 
 ## Overview
 
-Read content. Organization is inferred from the API key (identity.externalId).
+Manage posts, brand identities, and GitHub or Linear integrations, and queue content generation. Organization is inferred from the API key (identity.externalId).
 
 ### Available Operations
 
@@ -24,7 +24,7 @@ Read content. Organization is inferred from the API key (identity.externalId).
 
 ## listPosts
 
-List posts
+Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published.
 
 ### Example Usage
 
@@ -95,7 +95,7 @@ run();
 
 ## getPost
 
-Get a single post
+Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null.
 
 ### Example Usage
 
@@ -245,7 +245,7 @@ run();
 
 ## updatePost
 
-Update a single post
+Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
 
 ### Example Usage
 
@@ -333,7 +333,7 @@ run();
 
 ## createPostGeneration
 
-Queue async post generation
+Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Notra does not send webhooks when the job finishes.
 
 ### Example Usage
 
@@ -461,7 +461,7 @@ run();
 
 ## getPostGeneration
 
-Get async post generation status
+Returns the job and its event log. job.status moves from queued to running and ends as completed, failed, or skipped. job.postId is set once the post has been created; fetch it with GET /v1/posts/{postId}.
 
 ### Example Usage
 
@@ -536,7 +536,7 @@ run();
 
 ## listBrandIdentities
 
-List available brand identities
+Returns every brand identity in the organization, default identity first.
 
 ### Example Usage
 
@@ -606,7 +606,7 @@ run();
 
 ## createBrandIdentity
 
-Queue async brand identity generation
+Creates the brand identity immediately, then queues a website analysis that fills in company details, tone, and audience. The first brand identity in an organization becomes the default. Poll GET /v1/brand-identities/generate/{jobId} until job.status is completed or failed.
 
 ### Example Usage
 
@@ -684,7 +684,7 @@ run();
 
 ## getBrandIdentityGeneration
 
-Get async brand identity generation status
+Returns the analysis job. job.status moves from queued to running and ends as completed or failed; job.step shows the current stage while running. Fetch the finished identity with GET /v1/brand-identities/{brandIdentityId}.
 
 ### Example Usage
 
@@ -759,7 +759,7 @@ run();
 
 ## getBrandIdentity
 
-Get a single brand identity
+Returns the brand identity. When no brand identity with this ID exists in your organization, the response is still 200 with brandIdentity set to null.
 
 ### Example Usage
 
@@ -1151,7 +1151,7 @@ run();
 
 ## listIntegrations
 
-List available integrations
+Returns the enabled GitHub and Linear integrations for the organization. The slack array is always empty.
 
 ### Example Usage
 
@@ -1221,7 +1221,7 @@ run();
 
 ## createGitHubIntegration
 
-Create a GitHub integration
+Checks that the repository can be read (a personal access token is required for private repositories), connects it, and enables changelog generation for it; blog post and X post outputs start disabled. A webhook secret is generated on creation. Copy the payload URL and secret from the dashboard to receive push and release events.
 
 ### Example Usage
 
@@ -1237,6 +1237,8 @@ async function run() {
   const result = await notra.content.createGitHubIntegration({
     owner: "<value>",
     repo: "<value>",
+    branch: "main",
+    token: "github_pat_11ABCDEFG...",
   });
 
   console.log(result);
@@ -1263,6 +1265,8 @@ async function run() {
   const res = await contentCreateGitHubIntegration(notra, {
     owner: "<value>",
     repo: "<value>",
+    branch: "main",
+    token: "github_pat_11ABCDEFG...",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -1299,7 +1303,7 @@ run();
 
 ## deleteIntegration
 
-Deletes a GitHub or Linear integration. Any automation triggers targeting a deleted GitHub integration are disabled.
+Deletes a GitHub or Linear integration. Schedules and event triggers that target the integration are disabled and listed in the response.
 
 ### Example Usage
 

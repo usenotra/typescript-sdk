@@ -20,11 +20,19 @@ export const PromptGapStatus = {
 } as const;
 export type PromptGapStatus = OpenEnum<typeof PromptGapStatus>;
 
+export type PromptGapBaseline = {
+  mentionedEngines: number;
+  totalEngines: number;
+};
+
 export type PromptGapBrief = {
   briefId: string;
   status: PromptGapStatus;
   postId: string | null;
   workingTitle: string | null;
+  publishedAt: string | null;
+  baseline: PromptGapBaseline | null;
+  rescanned: boolean;
 };
 
 export type PromptGap = {
@@ -32,11 +40,21 @@ export type PromptGap = {
   prompt: string;
   title: string | null;
   engines: Array<string>;
+  mentionedEngines: Array<string>;
   competitors: Array<string>;
+  discoveredCompetitors: Array<string>;
   ownMentionRate: number;
   engineCoverage: number;
   opportunity: number;
+  won: boolean;
   brief: PromptGapBrief | null;
+};
+
+export type Query = {
+  query: string;
+  clicks: number;
+  impressions: number;
+  position: number;
 };
 
 export const SearchGapStatus = {
@@ -48,11 +66,58 @@ export const SearchGapStatus = {
 } as const;
 export type SearchGapStatus = OpenEnum<typeof SearchGapStatus>;
 
+export type SearchGapBaseline = {
+  mentionedEngines: number;
+  totalEngines: number;
+};
+
 export type SearchGapBrief = {
   briefId: string;
   status: SearchGapStatus;
   postId: string | null;
   workingTitle: string | null;
+  publishedAt: string | null;
+  baseline: SearchGapBaseline | null;
+  rescanned: boolean;
+};
+
+/**
+ * What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+ */
+export const Action = {
+  Create: "create",
+  Update: "update",
+  Merge: "merge",
+  Ignore: "ignore",
+} as const;
+/**
+ * What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+ */
+export type Action = OpenEnum<typeof Action>;
+
+export const GeoContentGapsResponseKind = {
+  Page: "page",
+  Post: "post",
+} as const;
+export type GeoContentGapsResponseKind = OpenEnum<
+  typeof GeoContentGapsResponseKind
+>;
+
+export type Target = {
+  kind: GeoContentGapsResponseKind;
+  id: string;
+  url: string | null;
+  title: string;
+  score: number;
+};
+
+export type Recommendation = {
+  /**
+   * What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+   */
+  action: Action;
+  reason: string;
+  targets: Array<Target>;
 };
 
 export type SearchGap = {
@@ -60,7 +125,11 @@ export type SearchGap = {
   prompt: string;
   title: string | null;
   impressions: number | null;
+  clicks: number | null;
+  position: number | null;
+  queries: Array<Query>;
   brief: SearchGapBrief | null;
+  recommendation: Recommendation;
 };
 
 export type GeoContentGapsResponseOrganization = {
@@ -87,6 +156,25 @@ export const PromptGapStatus$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(PromptGapStatus);
 
 /** @internal */
+export const PromptGapBaseline$inboundSchema: z.ZodMiniType<
+  PromptGapBaseline,
+  unknown
+> = z.object({
+  mentionedEngines: types.number(),
+  totalEngines: types.number(),
+});
+
+export function promptGapBaselineFromJSON(
+  jsonString: string,
+): SafeParseResult<PromptGapBaseline, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PromptGapBaseline$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PromptGapBaseline' from JSON`,
+  );
+}
+
+/** @internal */
 export const PromptGapBrief$inboundSchema: z.ZodMiniType<
   PromptGapBrief,
   unknown
@@ -95,6 +183,9 @@ export const PromptGapBrief$inboundSchema: z.ZodMiniType<
   status: PromptGapStatus$inboundSchema,
   postId: types.nullable(types.string()),
   workingTitle: types.nullable(types.string()),
+  publishedAt: types.nullable(types.string()),
+  baseline: types.nullable(z.lazy(() => PromptGapBaseline$inboundSchema)),
+  rescanned: types.boolean(),
 });
 
 export function promptGapBriefFromJSON(
@@ -114,10 +205,13 @@ export const PromptGap$inboundSchema: z.ZodMiniType<PromptGap, unknown> = z
     prompt: types.string(),
     title: types.nullable(types.string()),
     engines: z.array(types.string()),
+    mentionedEngines: z.array(types.string()),
     competitors: z.array(types.string()),
+    discoveredCompetitors: z.array(types.string()),
     ownMentionRate: types.number(),
     engineCoverage: types.number(),
     opportunity: types.number(),
+    won: types.boolean(),
     brief: types.nullable(z.lazy(() => PromptGapBrief$inboundSchema)),
   });
 
@@ -132,10 +226,47 @@ export function promptGapFromJSON(
 }
 
 /** @internal */
+export const Query$inboundSchema: z.ZodMiniType<Query, unknown> = z.object({
+  query: types.string(),
+  clicks: types.number(),
+  impressions: types.number(),
+  position: types.number(),
+});
+
+export function queryFromJSON(
+  jsonString: string,
+): SafeParseResult<Query, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Query$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Query' from JSON`,
+  );
+}
+
+/** @internal */
 export const SearchGapStatus$inboundSchema: z.ZodMiniType<
   SearchGapStatus,
   unknown
 > = openEnums.inboundSchema(SearchGapStatus);
+
+/** @internal */
+export const SearchGapBaseline$inboundSchema: z.ZodMiniType<
+  SearchGapBaseline,
+  unknown
+> = z.object({
+  mentionedEngines: types.number(),
+  totalEngines: types.number(),
+});
+
+export function searchGapBaselineFromJSON(
+  jsonString: string,
+): SafeParseResult<SearchGapBaseline, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SearchGapBaseline$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SearchGapBaseline' from JSON`,
+  );
+}
 
 /** @internal */
 export const SearchGapBrief$inboundSchema: z.ZodMiniType<
@@ -146,6 +277,9 @@ export const SearchGapBrief$inboundSchema: z.ZodMiniType<
   status: SearchGapStatus$inboundSchema,
   postId: types.nullable(types.string()),
   workingTitle: types.nullable(types.string()),
+  publishedAt: types.nullable(types.string()),
+  baseline: types.nullable(z.lazy(() => SearchGapBaseline$inboundSchema)),
+  rescanned: types.boolean(),
 });
 
 export function searchGapBriefFromJSON(
@@ -159,13 +293,66 @@ export function searchGapBriefFromJSON(
 }
 
 /** @internal */
+export const Action$inboundSchema: z.ZodMiniType<Action, unknown> = openEnums
+  .inboundSchema(Action);
+
+/** @internal */
+export const GeoContentGapsResponseKind$inboundSchema: z.ZodMiniType<
+  GeoContentGapsResponseKind,
+  unknown
+> = openEnums.inboundSchema(GeoContentGapsResponseKind);
+
+/** @internal */
+export const Target$inboundSchema: z.ZodMiniType<Target, unknown> = z.object({
+  kind: GeoContentGapsResponseKind$inboundSchema,
+  id: types.string(),
+  url: types.nullable(types.string()),
+  title: types.string(),
+  score: types.number(),
+});
+
+export function targetFromJSON(
+  jsonString: string,
+): SafeParseResult<Target, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Target$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Target' from JSON`,
+  );
+}
+
+/** @internal */
+export const Recommendation$inboundSchema: z.ZodMiniType<
+  Recommendation,
+  unknown
+> = z.object({
+  action: Action$inboundSchema,
+  reason: types.string(),
+  targets: z.array(z.lazy(() => Target$inboundSchema)),
+});
+
+export function recommendationFromJSON(
+  jsonString: string,
+): SafeParseResult<Recommendation, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Recommendation$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Recommendation' from JSON`,
+  );
+}
+
+/** @internal */
 export const SearchGap$inboundSchema: z.ZodMiniType<SearchGap, unknown> = z
   .object({
     id: types.string(),
     prompt: types.string(),
     title: types.nullable(types.string()),
     impressions: types.nullable(types.number()),
+    clicks: types.nullable(types.number()),
+    position: types.nullable(types.number()),
+    queries: z.array(z.lazy(() => Query$inboundSchema)),
     brief: types.nullable(z.lazy(() => SearchGapBrief$inboundSchema)),
+    recommendation: z.lazy(() => Recommendation$inboundSchema),
   });
 
 export function searchGapFromJSON(

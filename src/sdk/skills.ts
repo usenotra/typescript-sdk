@@ -16,6 +16,9 @@ import { unwrapAsync } from "../types/fp.js";
 export class Skills extends ClientSDK {
   /**
    * List skills
+   *
+   * @remarks
+   * Returns the organization's skills sorted by name, including built-in system skills (isSystem: true). Skill content is omitted; use GET /v1/skills/{name} to read it.
    */
   async listSkills(
     options?: RequestOptions,
@@ -28,6 +31,9 @@ export class Skills extends ClientSDK {
 
   /**
    * Create a skill
+   *
+   * @remarks
+   * Creates a custom skill. Names must be unique within the organization.
    */
   async createSkill(
     request: models.CreateSkillRequest,
@@ -56,6 +62,9 @@ export class Skills extends ClientSDK {
 
   /**
    * Delete a skill
+   *
+   * @remarks
+   * Deletes a custom skill. System skills cannot be deleted.
    */
   async deleteSkill(
     request: operations.DeleteSkillRequest,
@@ -70,6 +79,9 @@ export class Skills extends ClientSDK {
 
   /**
    * Update a skill
+   *
+   * @remarks
+   * Updates the name, description, or content of a skill. System skills can be edited but not renamed.
    */
   async patchSkill(
     request: operations.PatchSkillRequest,

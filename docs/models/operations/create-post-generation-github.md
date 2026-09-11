@@ -1,5 +1,7 @@
 # CreatePostGenerationGithub
 
+Select connected repositories by owner and name instead of integration ID. Cannot be combined with integrations.github.
+
 ## Example Usage
 
 ```typescript
