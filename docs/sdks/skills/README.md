@@ -14,7 +14,7 @@ Manage reusable writing skills. Organization is inferred from the API key (ident
 
 ## listSkills
 
-List skills
+Returns the organization's skills sorted by name, including built-in system skills (isSystem: true). Skill content is omitted; use GET /v1/skills/{name} to read it.
 
 ### Example Usage
 
@@ -84,7 +84,7 @@ run();
 
 ## createSkill
 
-Create a skill
+Creates a custom skill. Names must be unique within the organization.
 
 ### Example Usage
 
@@ -238,7 +238,7 @@ run();
 
 ## deleteSkill
 
-Delete a skill
+Deletes a custom skill. System skills cannot be deleted.
 
 ### Example Usage
 
@@ -313,7 +313,7 @@ run();
 
 ## patchSkill
 
-Update a skill
+Updates the name, description, or content of a skill. System skills can be edited but not renamed.
 
 ### Example Usage
 
@@ -331,6 +331,7 @@ async function run() {
     body: {
       name: "humanizer",
       description: "Polish near-final drafts so they sound natural and specific.",
+      content: "# Humanizer\n\nRewrite the draft so it reads like a person wrote it. Remove filler, vary sentence length, and keep concrete details.",
     },
   });
 
@@ -360,6 +361,7 @@ async function run() {
     body: {
       name: "humanizer",
       description: "Polish near-final drafts so they sound natural and specific.",
+      content: "# Humanizer\n\nRewrite the draft so it reads like a person wrote it. Remove filler, vary sentence length, and keep concrete details.",
     },
   });
   if (res.ok) {

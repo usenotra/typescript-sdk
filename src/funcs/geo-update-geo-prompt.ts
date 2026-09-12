@@ -30,7 +30,10 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Enable or disable a tracked GEO prompt
+ * Update a tracked GEO prompt
+ *
+ * @remarks
+ * Enable or disable a tracked prompt, or replace tags on a custom prompt.
  */
 export function geoUpdateGEOPrompt(
   client: NotraCore,

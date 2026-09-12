@@ -11,26 +11,62 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
+/**
+ * Always cron for schedules.
+ */
 export const CreateScheduleSourceTypeRequest = {
   Cron: "cron",
 } as const;
+/**
+ * Always cron for schedules.
+ */
 export type CreateScheduleSourceTypeRequest = ClosedEnum<
   typeof CreateScheduleSourceTypeRequest
 >;
 
+/**
+ * How often the schedule runs.
+ */
 export const FrequencyRequest = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
+  Custom: "custom",
 } as const;
+/**
+ * How often the schedule runs.
+ */
 export type FrequencyRequest = ClosedEnum<typeof FrequencyRequest>;
 
 export type CronRequest = {
+  /**
+   * How often the schedule runs.
+   */
   frequency: FrequencyRequest;
+  /**
+   * Hour of the day to run, in UTC (0-23).
+   */
   hour: number;
+  /**
+   * Minute of the hour to run (0-59).
+   */
   minute: number;
+  /**
+   * Day of the week for weekly schedules, 0 (Sunday) to 6 (Saturday). Required when frequency is weekly.
+   */
   dayOfWeek?: number | undefined;
+  /**
+   * Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+   */
   dayOfMonth?: number | undefined;
+  /**
+   * Run every N days (2-90). Required when frequency is custom.
+   */
+  intervalDays?: number | undefined;
+  /**
+   * UTC calendar date (YYYY-MM-DD) a custom interval counts from. Defaults to today.
+   */
+  anchorDate?: string | undefined;
 };
 
 export type CreateScheduleSourceConfigRequest = {
@@ -38,9 +74,15 @@ export type CreateScheduleSourceConfigRequest = {
 };
 
 export type CreateScheduleTargetsRequest = {
+  /**
+   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   */
   repositoryIds: Array<string>;
 };
 
+/**
+ * Type of content each run generates.
+ */
 export const CreateScheduleOutputTypeRequest = {
   Changelog: "changelog",
   BlogPost: "blog_post",
@@ -48,24 +90,46 @@ export const CreateScheduleOutputTypeRequest = {
   TwitterPost: "twitter_post",
   Image: "image",
 } as const;
+/**
+ * Type of content each run generates.
+ */
 export type CreateScheduleOutputTypeRequest = ClosedEnum<
   typeof CreateScheduleOutputTypeRequest
 >;
 
+/**
+ * Where auto-published posts are sent.
+ */
 export const CreateSchedulePublishDestinationRequest = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
+/**
+ * Where auto-published posts are sent.
+ */
 export type CreateSchedulePublishDestinationRequest = ClosedEnum<
   typeof CreateSchedulePublishDestinationRequest
 >;
 
 export type CreateScheduleOutputConfigRequest = {
+  /**
+   * Where auto-published posts are sent.
+   */
   publishDestination?: CreateSchedulePublishDestinationRequest | undefined;
+  /**
+   * Brand identity ID to write in. Defaults to the organization's default brand identity.
+   */
   brandVoiceId?: string | undefined;
+  /**
+   * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
+   */
+  instructions?: string | undefined;
 };
 
+/**
+ * How far back each run collects source activity.
+ */
 export const CreateScheduleLookbackWindowRequest = {
   CurrentDay: "current_day",
   Yesterday: "yesterday",
@@ -73,19 +137,40 @@ export const CreateScheduleLookbackWindowRequest = {
   Last14Days: "last_14_days",
   Last30Days: "last_30_days",
 } as const;
+/**
+ * How far back each run collects source activity.
+ */
 export type CreateScheduleLookbackWindowRequest = ClosedEnum<
   typeof CreateScheduleLookbackWindowRequest
 >;
 
 export type CreateScheduleRequest = {
+  /**
+   * Display name shown in the dashboard.
+   */
   name: string;
+  /**
+   * Always cron for schedules.
+   */
   sourceType: CreateScheduleSourceTypeRequest;
   sourceConfig: CreateScheduleSourceConfigRequest;
   targets: CreateScheduleTargetsRequest;
+  /**
+   * Type of content each run generates.
+   */
   outputType: CreateScheduleOutputTypeRequest;
   outputConfig?: CreateScheduleOutputConfigRequest | undefined;
+  /**
+   * Whether the schedule runs. Disabled schedules are stored but never fire.
+   */
   enabled: boolean;
+  /**
+   * Publish generated posts automatically instead of saving them as drafts.
+   */
   autoPublish?: boolean | undefined;
+  /**
+   * How far back each run collects source activity.
+   */
   lookbackWindow?: CreateScheduleLookbackWindowRequest | undefined;
 };
 
@@ -96,21 +181,51 @@ export type CreateScheduleSourceTypeResponse = ClosedEnum<
   typeof CreateScheduleSourceTypeResponse
 >;
 
+/**
+ * How often the schedule runs.
+ */
 export const CreateScheduleFrequencyResponse = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
+  Custom: "custom",
 } as const;
+/**
+ * How often the schedule runs.
+ */
 export type CreateScheduleFrequencyResponse = OpenEnum<
   typeof CreateScheduleFrequencyResponse
 >;
 
 export type CreateScheduleCronResponse = {
+  /**
+   * How often the schedule runs.
+   */
   frequency: CreateScheduleFrequencyResponse;
+  /**
+   * Hour of the day to run, in UTC (0-23).
+   */
   hour: number;
+  /**
+   * Minute of the hour to run (0-59).
+   */
   minute: number;
+  /**
+   * Day of the week for weekly schedules, 0 (Sunday) to 6 (Saturday). Required when frequency is weekly.
+   */
   dayOfWeek?: number | undefined;
+  /**
+   * Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+   */
   dayOfMonth?: number | undefined;
+  /**
+   * Run every N days (2-90). Required when frequency is custom.
+   */
+  intervalDays?: number | undefined;
+  /**
+   * UTC calendar date (YYYY-MM-DD) a custom interval counts from. Defaults to today.
+   */
+  anchorDate?: string | undefined;
 };
 
 export type CreateScheduleSourceConfigResponse = {
@@ -118,6 +233,9 @@ export type CreateScheduleSourceConfigResponse = {
 };
 
 export type CreateScheduleTargetsResponse = {
+  /**
+   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   */
   repositoryIds: Array<string>;
 };
 
@@ -132,18 +250,34 @@ export type CreateScheduleOutputTypeResponse = OpenEnum<
   typeof CreateScheduleOutputTypeResponse
 >;
 
+/**
+ * Where auto-published posts are sent.
+ */
 export const CreateSchedulePublishDestinationResponse = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
+/**
+ * Where auto-published posts are sent.
+ */
 export type CreateSchedulePublishDestinationResponse = OpenEnum<
   typeof CreateSchedulePublishDestinationResponse
 >;
 
 export type CreateScheduleOutputConfigResponse = {
+  /**
+   * Where auto-published posts are sent.
+   */
   publishDestination?: CreateSchedulePublishDestinationResponse | undefined;
+  /**
+   * Brand identity ID to write in. Defaults to the organization's default brand identity.
+   */
   brandVoiceId?: string | undefined;
+  /**
+   * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
+   */
+  instructions?: string | undefined;
 };
 
 export const CreateScheduleLookbackWindowResponse = {
@@ -205,6 +339,8 @@ export type CronRequest$Outbound = {
   minute: number;
   dayOfWeek?: number | undefined;
   dayOfMonth?: number | undefined;
+  intervalDays?: number | undefined;
+  anchorDate?: string | undefined;
 };
 
 /** @internal */
@@ -217,6 +353,8 @@ export const CronRequest$outboundSchema: z.ZodMiniType<
   minute: z.int(),
   dayOfWeek: z.optional(z.int()),
   dayOfMonth: z.optional(z.int()),
+  intervalDays: z.optional(z.int()),
+  anchorDate: z.optional(z.string()),
 });
 
 export function cronRequestToJSON(cronRequest: CronRequest): string {
@@ -284,6 +422,7 @@ export const CreateSchedulePublishDestinationRequest$outboundSchema:
 export type CreateScheduleOutputConfigRequest$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
+  instructions?: string | undefined;
 };
 
 /** @internal */
@@ -295,6 +434,7 @@ export const CreateScheduleOutputConfigRequest$outboundSchema: z.ZodMiniType<
     CreateSchedulePublishDestinationRequest$outboundSchema,
   ),
   brandVoiceId: z.optional(z.string()),
+  instructions: z.optional(z.string()),
 });
 
 export function createScheduleOutputConfigRequestToJSON(
@@ -375,6 +515,8 @@ export const CreateScheduleCronResponse$inboundSchema: z.ZodMiniType<
   minute: types.number(),
   dayOfWeek: types.optional(types.number()),
   dayOfMonth: types.optional(types.number()),
+  intervalDays: types.optional(types.number()),
+  anchorDate: types.optional(types.string()),
 });
 
 export function createScheduleCronResponseFromJSON(
@@ -444,6 +586,7 @@ export const CreateScheduleOutputConfigResponse$inboundSchema: z.ZodMiniType<
     CreateSchedulePublishDestinationResponse$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
+  instructions: types.optional(types.string()),
 });
 
 export function createScheduleOutputConfigResponseFromJSON(

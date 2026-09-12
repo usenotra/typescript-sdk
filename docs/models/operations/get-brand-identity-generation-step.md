@@ -1,5 +1,7 @@
 # GetBrandIdentityGenerationStep
 
+Current analysis step while the job is running.
+
 ## Example Usage
 
 ```typescript

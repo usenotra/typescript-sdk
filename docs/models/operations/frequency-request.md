@@ -1,5 +1,7 @@
 # FrequencyRequest
 
+How often the schedule runs.
+
 ## Example Usage
 
 ```typescript
@@ -11,5 +13,5 @@ let value: FrequencyRequest = "weekly";
 ## Values
 
 ```typescript
-"daily" | "weekly" | "monthly"
+"daily" | "weekly" | "monthly" | "custom"
 ```
