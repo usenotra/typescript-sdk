@@ -5,7 +5,7 @@
 ```typescript
 import { ExternalChannelIdSource } from "@usenotra/sdk/models";
 
-let value: ExternalChannelIdSource = "slack";
+let value: ExternalChannelIdSource = "dashboard";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: ExternalChannelIdSource = "slack";
 ## Values
 
 ```typescript
-"discord" | "slack" | "dashboard" | Unrecognized<string>
+"discord" | "slack" | "dashboard" | "agent" | Unrecognized<string>
 ```
