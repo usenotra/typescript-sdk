@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get a single post
+ *
+ * @remarks
+ * Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null.
  */
 export function contentGetPost(
   client: NotraCore,

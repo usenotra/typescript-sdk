@@ -37,8 +37,17 @@ export type ListIntegrationsOrganization = {
  * Integrations fetched successfully
  */
 export type ListIntegrationsResponse = {
+  /**
+   * Enabled GitHub integrations. One entry per connected repository.
+   */
   github: Array<ListIntegrationsGithub>;
+  /**
+   * Always empty. Slack is connected from the dashboard and is not exposed through the API.
+   */
   slack: Array<any>;
+  /**
+   * Enabled Linear integrations.
+   */
   linear: Array<Linear>;
   organization: ListIntegrationsOrganization;
 };

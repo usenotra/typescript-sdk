@@ -1,5 +1,7 @@
 # DataPoints
 
+Which kinds of activity to collect from the selected sources.
+
 ## Example Usage
 
 ```typescript

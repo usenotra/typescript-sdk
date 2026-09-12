@@ -6,11 +6,14 @@
 import * as z from "zod/v4-mini";
 import { ClosedEnum } from "../types/enums.js";
 import {
-  ExternalChannelId,
-  ExternalChannelId$Outbound,
-  ExternalChannelId$outboundSchema,
-} from "./external-channel-id.js";
+  PublicExternalChannelId,
+  PublicExternalChannelId$Outbound,
+  PublicExternalChannelId$outboundSchema,
+} from "./public-external-channel-id.js";
 
+/**
+ * Model to respond with. Defaults to auto, which lets Notra choose.
+ */
 export const Model = {
   Auto: "auto",
   AnthropicClaudeOpus5: "anthropic/claude-opus-5",
@@ -21,14 +24,23 @@ export const Model = {
   OpenaiGpt54: "openai/gpt-5.4",
   OpenaiGpt55: "openai/gpt-5.5",
 } as const;
+/**
+ * Model to respond with. Defaults to auto, which lets Notra choose.
+ */
 export type Model = ClosedEnum<typeof Model>;
 
+/**
+ * How much reasoning effort to spend when thinking is enabled.
+ */
 export const ThinkingLevel = {
   Off: "off",
   Low: "low",
   Medium: "medium",
   High: "high",
 } as const;
+/**
+ * How much reasoning effort to spend when thinking is enabled.
+ */
 export type ThinkingLevel = ClosedEnum<typeof ThinkingLevel>;
 
 export type ContextMcpServer = {
@@ -53,15 +65,36 @@ export type ContextGithubRepo = {
 export type Context = ContextGithubRepo | ContextLinearTeam | ContextMcpServer;
 
 export type SendChatMessageRequest = {
+  /**
+   * The user message to send.
+   */
   message: string;
+  /**
+   * Model to respond with. Defaults to auto, which lets Notra choose.
+   */
   model?: Model | undefined;
+  /**
+   * Allow the model to reason before answering.
+   */
   enableThinking?: boolean | undefined;
+  /**
+   * How much reasoning effort to spend when thinking is enabled.
+   */
   thinkingLevel?: ThinkingLevel | undefined;
+  /**
+   * IANA time zone used to interpret dates in the conversation.
+   */
   timezone?: string | undefined;
+  /**
+   * Integrations the assistant may use as tools in this chat: connected GitHub repositories, Linear teams, or MCP servers.
+   */
   context?:
     | Array<ContextGithubRepo | ContextLinearTeam | ContextMcpServer>
     | undefined;
-  externalChannelId?: ExternalChannelId | null | undefined;
+  /**
+   * Link the chat to a Discord or Slack channel so it can be found later with GET /v1/chats/by-external.
+   */
+  externalChannelId?: PublicExternalChannelId | undefined;
 };
 
 /** @internal */
@@ -180,7 +213,7 @@ export type SendChatMessageRequest$Outbound = {
       | ContextMcpServer$Outbound
     >
     | undefined;
-  externalChannelId?: ExternalChannelId$Outbound | null | undefined;
+  externalChannelId?: PublicExternalChannelId$Outbound | undefined;
 };
 
 /** @internal */
@@ -202,7 +235,7 @@ export const SendChatMessageRequest$outboundSchema: z.ZodMiniType<
       z.lazy(() => ContextMcpServer$outboundSchema),
     ])),
   ),
-  externalChannelId: z.optional(z.nullable(ExternalChannelId$outboundSchema)),
+  externalChannelId: z.optional(PublicExternalChannelId$outboundSchema),
 });
 
 export function sendChatMessageRequestToJSON(

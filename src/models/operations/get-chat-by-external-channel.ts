@@ -6,16 +6,28 @@
 import * as z from "zod/v4-mini";
 import { ClosedEnum } from "../../types/enums.js";
 
+/**
+ * Messaging platform the channel belongs to.
+ */
 export const GetChatByExternalChannelSource = {
   Discord: "discord",
   Slack: "slack",
 } as const;
+/**
+ * Messaging platform the channel belongs to.
+ */
 export type GetChatByExternalChannelSource = ClosedEnum<
   typeof GetChatByExternalChannelSource
 >;
 
 export type GetChatByExternalChannelRequest = {
+  /**
+   * Messaging platform the channel belongs to.
+   */
   source: GetChatByExternalChannelSource;
+  /**
+   * Channel ID on that platform.
+   */
   id: string;
 };
 

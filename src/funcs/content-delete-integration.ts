@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a single integration
  *
  * @remarks
- * Deletes a GitHub or Linear integration. Any automation triggers targeting a deleted GitHub integration are disabled.
+ * Deletes a GitHub or Linear integration. Schedules and event triggers that target the integration are disabled and listed in the response.
  */
 export function contentDeleteIntegration(
   client: NotraCore,

@@ -7,14 +7,13 @@ import { CreateScheduleTargetsResponse } from "@usenotra/sdk/models/operations";
 
 let value: CreateScheduleTargetsResponse = {
   repositoryIds: [
-    "<value 1>",
-    "<value 2>",
+    "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
   ],
 };
 ```
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `repositoryIds`    | *string*[]         | :heavy_check_mark: | N/A                |
+| Field                                                                         | Type                                                                          | Required                                                                      | Description                                                                   | Example                                                                       |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `repositoryIds`                                                               | *string*[]                                                                    | :heavy_check_mark:                                                            | GitHub integration IDs to generate from, as returned by GET /v1/integrations. | [<br/>"51c2f3aa-efdd-4e28-8e69-23fa2dfd3561"<br/>]                            |
