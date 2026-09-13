@@ -1,16 +1,16 @@
-# Engine
+# GeoVisibilityOverviewResponseEngine
 
 ## Example Usage
 
 ```typescript
-import { Engine } from "@usenotra/sdk/models";
+import { GeoVisibilityOverviewResponseEngine } from "@usenotra/sdk/models";
 
-let value: Engine = {
+let value: GeoVisibilityOverviewResponseEngine = {
   engine: "<value>",
-  checks: 918174,
-  mentions: 197186,
-  mentionRate: 8558.51,
-  avgPosition: 6226.26,
+  checks: 928448,
+  mentions: 202795,
+  mentionRate: 461.61,
+  avgPosition: 8874.47,
   lastCheckedAt: "<value>",
 };
 ```

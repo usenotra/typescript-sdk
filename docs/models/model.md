@@ -1,11 +1,13 @@
 # Model
 
+Model to respond with. Defaults to auto, which lets Notra choose.
+
 ## Example Usage
 
 ```typescript
 import { Model } from "@usenotra/sdk/models";
 
-let value: Model = "anthropic/claude-sonnet-4.6";
+let value: Model = "auto";
 ```
 
 ## Values

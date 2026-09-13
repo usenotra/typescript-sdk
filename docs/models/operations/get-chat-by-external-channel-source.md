@@ -1,5 +1,7 @@
 # GetChatByExternalChannelSource
 
+Messaging platform the channel belongs to.
+
 ## Example Usage
 
 ```typescript

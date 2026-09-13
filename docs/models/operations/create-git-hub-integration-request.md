@@ -6,16 +6,18 @@
 import { CreateGitHubIntegrationRequest } from "@usenotra/sdk/models/operations";
 
 let value: CreateGitHubIntegrationRequest = {
-  owner: "<value>",
-  repo: "<value>",
+  owner: "usenotra",
+  repo: "notra",
+  branch: "main",
+  token: "github_pat_11ABCDEFG...",
 };
 ```
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `owner`            | *string*           | :heavy_check_mark: | N/A                |
-| `repo`             | *string*           | :heavy_check_mark: | N/A                |
-| `branch`           | *string*           | :heavy_minus_sign: | N/A                |
-| `token`            | *string*           | :heavy_minus_sign: | N/A                |
+| Field                                                                                                                                     | Type                                                                                                                                      | Required                                                                                                                                  | Description                                                                                                                               | Example                                                                                                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `owner`                                                                                                                                   | *string*                                                                                                                                  | :heavy_check_mark:                                                                                                                        | GitHub user or organization that owns the repository.                                                                                     | usenotra                                                                                                                                  |
+| `repo`                                                                                                                                    | *string*                                                                                                                                  | :heavy_check_mark:                                                                                                                        | Repository name without the owner.                                                                                                        | notra                                                                                                                                     |
+| `branch`                                                                                                                                  | *string*                                                                                                                                  | :heavy_minus_sign:                                                                                                                        | Branch to read activity from. Defaults to the repository's default branch.                                                                | main                                                                                                                                      |
+| `token`                                                                                                                                   | *string*                                                                                                                                  | :heavy_minus_sign:                                                                                                                        | GitHub personal access token with read access to the repository. Required for private repositories; public repositories work without one. | github_pat_11ABCDEFG...                                                                                                                   |

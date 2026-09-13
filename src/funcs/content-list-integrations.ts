@@ -27,6 +27,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List available integrations
+ *
+ * @remarks
+ * Returns the enabled GitHub and Linear integrations for the organization. The slack array is always empty.
  */
 export function contentListIntegrations(
   client: NotraCore,

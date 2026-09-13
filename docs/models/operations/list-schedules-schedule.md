@@ -13,18 +13,25 @@ let value: ListSchedulesSchedule = {
   sourceConfig: {
     cron: {
       frequency: "weekly",
-      hour: 216746,
-      minute: 624772,
+      hour: 9,
+      minute: 0,
+      dayOfWeek: 1,
+      dayOfMonth: 1,
+      intervalDays: 3,
+      anchorDate: "2026-09-03",
     },
   },
   targets: {
     repositoryIds: [
-      "<value 1>",
-      "<value 2>",
-      "<value 3>",
+      "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
     ],
   },
-  outputType: "linkedin_post",
+  outputType: "image",
+  outputConfig: {
+    brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+    instructions:
+      "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+  },
   enabled: false,
   autoPublish: true,
   createdAt: "1706955276503",

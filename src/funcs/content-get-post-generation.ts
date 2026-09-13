@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get async post generation status
+ *
+ * @remarks
+ * Returns the job and its event log. job.status moves from queued to running and ends as completed, failed, or skipped. job.postId is set once the post has been created; fetch it with GET /v1/posts/{postId}.
  */
 export function contentGetPostGeneration(
   client: NotraCore,

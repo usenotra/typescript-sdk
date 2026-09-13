@@ -13,7 +13,11 @@ let value: ListGeoPromptsResponse = {
       prompt: "<value>",
       enabled: false,
       source: "auto",
-      createdAt: "1721079456930",
+      tags: [
+        "<value 1>",
+        "<value 2>",
+      ],
+      createdAt: "1719944859667",
     },
   ],
   organization: {

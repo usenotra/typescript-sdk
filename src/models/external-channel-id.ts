@@ -15,6 +15,7 @@ export const ExternalChannelIdSource = {
   Discord: "discord",
   Slack: "slack",
   Dashboard: "dashboard",
+  Agent: "agent",
 } as const;
 export type ExternalChannelIdSource = OpenEnum<typeof ExternalChannelIdSource>;
 
@@ -28,11 +29,6 @@ export const ExternalChannelIdSource$inboundSchema: z.ZodMiniType<
   ExternalChannelIdSource,
   unknown
 > = openEnums.inboundSchema(ExternalChannelIdSource);
-/** @internal */
-export const ExternalChannelIdSource$outboundSchema: z.ZodMiniType<
-  string,
-  ExternalChannelIdSource
-> = openEnums.outboundSchema(ExternalChannelIdSource);
 
 /** @internal */
 export const ExternalChannelId$inboundSchema: z.ZodMiniType<
@@ -42,28 +38,7 @@ export const ExternalChannelId$inboundSchema: z.ZodMiniType<
   source: ExternalChannelIdSource$inboundSchema,
   id: types.optional(types.string()),
 });
-/** @internal */
-export type ExternalChannelId$Outbound = {
-  source: string;
-  id?: string | undefined;
-};
 
-/** @internal */
-export const ExternalChannelId$outboundSchema: z.ZodMiniType<
-  ExternalChannelId$Outbound,
-  ExternalChannelId
-> = z.object({
-  source: ExternalChannelIdSource$outboundSchema,
-  id: z.optional(z.string()),
-});
-
-export function externalChannelIdToJSON(
-  externalChannelId: ExternalChannelId,
-): string {
-  return JSON.stringify(
-    ExternalChannelId$outboundSchema.parse(externalChannelId),
-  );
-}
 export function externalChannelIdFromJSON(
   jsonString: string,
 ): SafeParseResult<ExternalChannelId, SDKValidationError> {

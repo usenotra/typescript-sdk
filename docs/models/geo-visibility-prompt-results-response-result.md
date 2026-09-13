@@ -13,11 +13,12 @@ let value: GeoVisibilityPromptResultsResponseResult = {
   mentioned: false,
   position: 688696,
   sentiment: "<value>",
-  excerpt: "<value>",
-  searchQueries: [
+  competitors: [
     "<value 1>",
     "<value 2>",
   ],
+  excerpt: "<value>",
+  searchQueries: [],
   sources: [],
   lastCheckedAt: "<value>",
 };
@@ -34,6 +35,7 @@ let value: GeoVisibilityPromptResultsResponseResult = {
 | `mentioned`                                                                                                     | *boolean*                                                                                                       | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
 | `position`                                                                                                      | *number*                                                                                                        | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
 | `sentiment`                                                                                                     | *string*                                                                                                        | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
+| `competitors`                                                                                                   | *string*[]                                                                                                      | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
 | `excerpt`                                                                                                       | *string*                                                                                                        | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
 | `searchQueries`                                                                                                 | *string*[]                                                                                                      | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
 | `sources`                                                                                                       | [models.GeoVisibilityPromptResultsResponseSource](../models/geo-visibility-prompt-results-response-source.md)[] | :heavy_check_mark:                                                                                              | N/A                                                                                                             |

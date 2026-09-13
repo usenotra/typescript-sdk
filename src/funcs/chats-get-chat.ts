@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get a single chat with messages
+ *
+ * @remarks
+ * Returns the chat session and its full message history in UI message format.
  */
 export function chatsGetChat(
   client: NotraCore,

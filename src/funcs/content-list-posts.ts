@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List posts
+ *
+ * @remarks
+ * Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published.
  */
 export function contentListPosts(
   client: NotraCore,

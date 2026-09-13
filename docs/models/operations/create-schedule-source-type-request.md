@@ -1,5 +1,7 @@
 # CreateScheduleSourceTypeRequest
 
+Always cron for schedules.
+
 ## Example Usage
 
 ```typescript
