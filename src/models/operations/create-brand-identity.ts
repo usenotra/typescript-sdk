@@ -13,7 +13,13 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
 export type CreateBrandIdentityRequest = {
+  /**
+   * Display name. Must be unique within the organization. Defaults to "Untitled Brand Voice".
+   */
   name?: string | undefined;
+  /**
+   * Public website to analyze for company details, tone, and audience. The scheme is optional; https is assumed.
+   */
   websiteUrl: string;
 };
 
@@ -24,28 +30,49 @@ export type CreateBrandIdentityOrganization = {
   logo: string | null;
 };
 
+/**
+ * Job state. Stop polling once it is completed or failed.
+ */
 export const CreateBrandIdentityStatus = {
   Queued: "queued",
   Running: "running",
   Completed: "completed",
   Failed: "failed",
 } as const;
+/**
+ * Job state. Stop polling once it is completed or failed.
+ */
 export type CreateBrandIdentityStatus = OpenEnum<
   typeof CreateBrandIdentityStatus
 >;
 
+/**
+ * Current analysis step while the job is running.
+ */
 export const CreateBrandIdentityStep = {
   Scraping: "scraping",
   Extracting: "extracting",
   Saving: "saving",
 } as const;
+/**
+ * Current analysis step while the job is running.
+ */
 export type CreateBrandIdentityStep = OpenEnum<typeof CreateBrandIdentityStep>;
 
 export type CreateBrandIdentityJob = {
   id: string;
   organizationId: string;
+  /**
+   * ID of the brand identity being analyzed. The identity is created immediately and its details are filled in as the job completes.
+   */
   brandIdentityId: string;
+  /**
+   * Job state. Stop polling once it is completed or failed.
+   */
   status: CreateBrandIdentityStatus;
+  /**
+   * Current analysis step while the job is running.
+   */
   step: CreateBrandIdentityStep | null;
   currentStep: number;
   totalSteps: number;

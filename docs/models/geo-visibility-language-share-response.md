@@ -13,7 +13,10 @@ let value: GeoVisibilityLanguageShareResponse = {
       checks: 732321,
       mentions: 315317,
       mentionRate: 4120.93,
-      avgPosition: 8610.52,
+      citations: 199254,
+      visibility: 861052,
+      visibilityRate: 1633.57,
+      avgPosition: 9292.96,
     },
   ],
   organization: {

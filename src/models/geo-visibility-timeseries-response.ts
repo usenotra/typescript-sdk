@@ -14,6 +14,8 @@ export type GeoVisibilityTimeseriesResponsePoint = {
   engine: string;
   checks: number;
   mentions: number;
+  citations: number;
+  visibility: number;
   avgPosition?: number | null | undefined;
 };
 
@@ -39,6 +41,8 @@ export const GeoVisibilityTimeseriesResponsePoint$inboundSchema: z.ZodMiniType<
   engine: types.string(),
   checks: types.number(),
   mentions: types.number(),
+  citations: types.number(),
+  visibility: types.number(),
   avgPosition: z.optional(z.nullable(types.number())),
 });
 

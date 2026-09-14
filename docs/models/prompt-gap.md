@@ -13,17 +13,32 @@ let value: PromptGap = {
     "<value 1>",
     "<value 2>",
   ],
-  competitors: [
+  mentionedEngines: [
     "<value 1>",
   ],
-  ownMentionRate: 5253.77,
-  engineCoverage: 6129.72,
-  opportunity: 6874.82,
+  competitors: [
+    "<value 1>",
+    "<value 2>",
+  ],
+  discoveredCompetitors: [
+    "<value 1>",
+    "<value 2>",
+  ],
+  ownMentionRate: 6874.82,
+  engineCoverage: 7537.17,
+  opportunity: 8031.63,
+  won: false,
   brief: {
     briefId: "<id>",
-    status: "failed",
+    status: "completed",
     postId: "<id>",
     workingTitle: "<value>",
+    publishedAt: null,
+    baseline: {
+      mentionedEngines: 6893.36,
+      totalEngines: 5569.04,
+    },
+    rescanned: false,
   },
 };
 ```
@@ -36,8 +51,11 @@ let value: PromptGap = {
 | `prompt`                                               | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |
 | `title`                                                | *string*                                               | :heavy_check_mark:                                     | N/A                                                    |
 | `engines`                                              | *string*[]                                             | :heavy_check_mark:                                     | N/A                                                    |
+| `mentionedEngines`                                     | *string*[]                                             | :heavy_check_mark:                                     | N/A                                                    |
 | `competitors`                                          | *string*[]                                             | :heavy_check_mark:                                     | N/A                                                    |
+| `discoveredCompetitors`                                | *string*[]                                             | :heavy_check_mark:                                     | N/A                                                    |
 | `ownMentionRate`                                       | *number*                                               | :heavy_check_mark:                                     | N/A                                                    |
 | `engineCoverage`                                       | *number*                                               | :heavy_check_mark:                                     | N/A                                                    |
 | `opportunity`                                          | *number*                                               | :heavy_check_mark:                                     | N/A                                                    |
+| `won`                                                  | *boolean*                                              | :heavy_check_mark:                                     | N/A                                                    |
 | `brief`                                                | [models.PromptGapBrief](../models/prompt-gap-brief.md) | :heavy_check_mark:                                     | N/A                                                    |

@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Delete a skill
+ *
+ * @remarks
+ * Deletes a custom skill. System skills cannot be deleted.
  */
 export function skillsDeleteSkill(
   client: NotraCore,

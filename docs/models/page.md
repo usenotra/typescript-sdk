@@ -7,9 +7,10 @@ import { Page } from "@usenotra/sdk/models";
 
 let value: Page = {
   path: "/home",
+  host: "quick-witted-disk.info",
   source: "<value>",
-  visitorType: "human",
-  visits: 258956,
+  visitorType: "crawler",
+  visits: 55699,
   lastSeenAt: "<value>",
 };
 ```
@@ -19,6 +20,7 @@ let value: Page = {
 | Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
 | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `path`                                                                                            | *string*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `host`                                                                                            | *string*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |
 | `source`                                                                                          | *string*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |
 | `visitorType`                                                                                     | [models.GeoTrafficPagesResponseVisitorType](../models/geo-traffic-pages-response-visitor-type.md) | :heavy_check_mark:                                                                                | N/A                                                                                               |
 | `visits`                                                                                          | *number*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |

@@ -21,8 +21,10 @@ export type GeoVisibilityPromptResultsResponseResult = {
   prompt: string;
   answer: string;
   mentioned: boolean;
+  ownedSourceCited: boolean;
   position: number | null;
   sentiment: string | null;
+  competitors: Array<string>;
   excerpt: string;
   searchQueries: Array<string>;
   sources: Array<GeoVisibilityPromptResultsResponseSource>;
@@ -74,8 +76,10 @@ export const GeoVisibilityPromptResultsResponseResult$inboundSchema:
     prompt: types.string(),
     answer: types.string(),
     mentioned: types.boolean(),
+    ownedSourceCited: types.boolean(),
     position: types.nullable(types.number()),
     sentiment: types.nullable(types.string()),
+    competitors: z.array(types.string()),
     excerpt: types.string(),
     searchQueries: z.array(types.string()),
     sources: z.array(

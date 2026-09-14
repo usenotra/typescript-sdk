@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List schedules
+ *
+ * @remarks
+ * Returns the organization's cron schedules, newest first. repositoryMap maps each targeted GitHub integration ID to an owner/repo label.
  */
 export function schedulesListSchedules(
   client: NotraCore,

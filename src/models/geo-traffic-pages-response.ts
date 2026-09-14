@@ -23,6 +23,7 @@ export type GeoTrafficPagesResponseVisitorType = OpenEnum<
 
 export type Page = {
   path: string;
+  host: string;
   source: string;
   visitorType: GeoTrafficPagesResponseVisitorType;
   visits: number;
@@ -55,6 +56,7 @@ export const GeoTrafficPagesResponseVisitorType$inboundSchema: z.ZodMiniType<
 /** @internal */
 export const Page$inboundSchema: z.ZodMiniType<Page, unknown> = z.object({
   path: types.string(),
+  host: types.string(),
   source: types.string(),
   visitorType: GeoTrafficPagesResponseVisitorType$inboundSchema,
   visits: types.number(),

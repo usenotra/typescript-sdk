@@ -1,5 +1,7 @@
 # LookbackWindowRequestBody
 
+How far back to collect source activity (commits, pull requests, releases, Linear issues).
+
 ## Example Usage
 
 ```typescript

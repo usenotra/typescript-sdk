@@ -195,7 +195,7 @@ run();
 * [listGeoPrompts](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
 * [createGeoPrompt](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
 * [deleteGeoPrompt](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
-* [updateGeoPrompt](docs/sdks/geo/README.md#updategeoprompt) - Enable or disable a tracked GEO prompt
+* [updateGeoPrompt](docs/sdks/geo/README.md#updategeoprompt) - Update a tracked GEO prompt
 * [importGeoPrompts](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
 * [listGeoSequences](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
 * [createGeoSequence](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
@@ -341,7 +341,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoRunGEOSequence`](docs/sdks/geo/README.md#rungeosequence) - Run a GEO prompt sequence now
 - [`geoStartGEOAgentReadinessScan`](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
 - [`geoSuggestGEOCompetitors`](docs/sdks/geo/README.md#suggestgeocompetitors) - Suggest GEO competitors for a domain
-- [`geoUpdateGEOPrompt`](docs/sdks/geo/README.md#updategeoprompt) - Enable or disable a tracked GEO prompt
+- [`geoUpdateGEOPrompt`](docs/sdks/geo/README.md#updategeoprompt) - Update a tracked GEO prompt
 - [`geoUpdateGEOSequence`](docs/sdks/geo/README.md#updategeosequence) - Update a GEO prompt sequence
 - [`geoUpdateGEOSettings`](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
 - [`geoUpdateProject`](docs/sdks/geo/README.md#updateproject) - Rename a GEO project or relink its brand identity

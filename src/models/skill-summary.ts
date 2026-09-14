@@ -13,6 +13,9 @@ export type SkillSummary = {
   id: string;
   name: string;
   description: string;
+  /**
+   * True for built-in skills provided by Notra. System skills cannot be renamed or deleted.
+   */
   isSystem: boolean;
   updatedAt: string;
 };

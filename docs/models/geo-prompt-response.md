@@ -11,7 +11,11 @@ let value: GeoPromptResponse = {
     prompt: "<value>",
     enabled: false,
     source: "auto",
-    createdAt: "1729998763593",
+    tags: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    createdAt: "1712178450845",
   },
   organization: {
     id: "<id>",
