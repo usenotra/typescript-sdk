@@ -1,9 +1,9 @@
-speakeasyVersion: 1.796.2
+speakeasyVersion: 1.796.4
 sources:
     Notra API:
         sourceNamespace: notra-api
-        sourceRevisionDigest: sha256:a634bf7d1414293bfc805eb8806feea1f97cfd15eb593c82d79e679188da94c9
-        sourceBlobDigest: sha256:0a90b06ab66e1e1c8251e5b24f094ed36e2187fc7909221aa5e72f15483e9fd0
+        sourceRevisionDigest: sha256:fe14a314d2a01810e245ea2960b6b2c12d8a7a7621e02a0900b12069679636e0
+        sourceBlobDigest: sha256:78413e5d4d439d692e142c5fe6133439222bb0fc99fa874e3c79610a488af894
         tags:
             - latest
             - 1.0.0
@@ -11,10 +11,10 @@ targets:
     notra:
         source: Notra API
         sourceNamespace: notra-api
-        sourceRevisionDigest: sha256:a634bf7d1414293bfc805eb8806feea1f97cfd15eb593c82d79e679188da94c9
-        sourceBlobDigest: sha256:0a90b06ab66e1e1c8251e5b24f094ed36e2187fc7909221aa5e72f15483e9fd0
+        sourceRevisionDigest: sha256:fe14a314d2a01810e245ea2960b6b2c12d8a7a7621e02a0900b12069679636e0
+        sourceBlobDigest: sha256:78413e5d4d439d692e142c5fe6133439222bb0fc99fa874e3c79610a488af894
         codeSamplesNamespace: notra-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:3a15b8edb7dd430d3254ed8e8bc15e90796c86383148aea8a959b8330e5b54b6
+        codeSamplesRevisionDigest: sha256:761428c13ea92812ad816be41d4c34f2cb668253e4eb60d7407f57f512acd2a4
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

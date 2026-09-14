@@ -12,6 +12,9 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
 export type GetBrandIdentityGenerationRequest = {
+  /**
+   * Job ID returned by POST /v1/brand-identities/generate.
+   */
   jobId: string;
 };
 
@@ -22,21 +25,33 @@ export type GetBrandIdentityGenerationOrganization = {
   logo: string | null;
 };
 
+/**
+ * Job state. Stop polling once it is completed or failed.
+ */
 export const GetBrandIdentityGenerationStatus = {
   Queued: "queued",
   Running: "running",
   Completed: "completed",
   Failed: "failed",
 } as const;
+/**
+ * Job state. Stop polling once it is completed or failed.
+ */
 export type GetBrandIdentityGenerationStatus = OpenEnum<
   typeof GetBrandIdentityGenerationStatus
 >;
 
+/**
+ * Current analysis step while the job is running.
+ */
 export const GetBrandIdentityGenerationStep = {
   Scraping: "scraping",
   Extracting: "extracting",
   Saving: "saving",
 } as const;
+/**
+ * Current analysis step while the job is running.
+ */
 export type GetBrandIdentityGenerationStep = OpenEnum<
   typeof GetBrandIdentityGenerationStep
 >;
@@ -44,8 +59,17 @@ export type GetBrandIdentityGenerationStep = OpenEnum<
 export type GetBrandIdentityGenerationJob = {
   id: string;
   organizationId: string;
+  /**
+   * ID of the brand identity being analyzed. The identity is created immediately and its details are filled in as the job completes.
+   */
   brandIdentityId: string;
+  /**
+   * Job state. Stop polling once it is completed or failed.
+   */
   status: GetBrandIdentityGenerationStatus;
+  /**
+   * Current analysis step while the job is running.
+   */
   step: GetBrandIdentityGenerationStep | null;
   currentStep: number;
   totalSteps: number;

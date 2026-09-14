@@ -1,5 +1,7 @@
 # GetPostGenerationStatus
 
+Job state. Terminal states are completed, failed, and skipped.
+
 ## Example Usage
 
 ```typescript

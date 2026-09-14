@@ -19,6 +19,9 @@ export type GeoVisibilityLanguageShareResponsePoint = {
   checks: number;
   mentions: number;
   mentionRate: number;
+  citations: number;
+  visibility: number;
+  visibilityRate: number;
   avgPosition: number | null;
   trend?: Array<GeoVisibilityLanguageShareResponseTrend> | undefined;
 };
@@ -66,6 +69,9 @@ export const GeoVisibilityLanguageShareResponsePoint$inboundSchema:
     checks: types.number(),
     mentions: types.number(),
     mentionRate: types.number(),
+    citations: types.number(),
+    visibility: types.number(),
+    visibilityRate: types.number(),
     avgPosition: types.nullable(types.number()),
     trend: types.optional(
       z.array(

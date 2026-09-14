@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * Get recent AI traffic events
  *
  * @remarks
- * The most recent individual requests from AI crawlers and referrals. This endpoint has no window; use `limit` to bound it.
+ * The most recent individual requests from AI crawlers and referrals. This endpoint has no window; use `limit` to bound it. Pass `host` to keep the newest events for that hostname and its subdomains.
  */
 export function geoGetGEOTrafficLog(
   client: NotraCore,
@@ -105,6 +105,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "categories": payload.categories,
+    "host": payload.host,
     "limit": payload.limit,
     "visitorTypes": payload.visitorTypes,
   });

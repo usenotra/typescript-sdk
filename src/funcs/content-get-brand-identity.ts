@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get a single brand identity
+ *
+ * @remarks
+ * Returns the brand identity. When no brand identity with this ID exists in your organization, the response is still 200 with brandIdentity set to null.
  */
 export function contentGetBrandIdentity(
   client: NotraCore,

@@ -1,11 +1,13 @@
 # LookbackWindow
 
+How far back each run collects source activity.
+
 ## Example Usage
 
 ```typescript
 import { LookbackWindow } from "@usenotra/sdk/models";
 
-let value: LookbackWindow = "last_30_days";
+let value: LookbackWindow = "last_7_days";
 ```
 
 ## Values

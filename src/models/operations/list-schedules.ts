@@ -13,7 +13,7 @@ import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
 export type ListSchedulesRequest = {
   /**
-   * Filter by repository IDs using a comma-separated list
+   * Filter by GitHub integration IDs using a comma-separated list. Only schedules targeting at least one of them are returned.
    */
   repositoryIds?: string | undefined;
 };
@@ -25,19 +25,49 @@ export type ListSchedulesSourceType = ClosedEnum<
   typeof ListSchedulesSourceType
 >;
 
+/**
+ * How often the schedule runs.
+ */
 export const ListSchedulesFrequency = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
+  Custom: "custom",
 } as const;
+/**
+ * How often the schedule runs.
+ */
 export type ListSchedulesFrequency = OpenEnum<typeof ListSchedulesFrequency>;
 
 export type ListSchedulesCron = {
+  /**
+   * How often the schedule runs.
+   */
   frequency: ListSchedulesFrequency;
+  /**
+   * Hour of the day to run, in UTC (0-23).
+   */
   hour: number;
+  /**
+   * Minute of the hour to run (0-59).
+   */
   minute: number;
+  /**
+   * Day of the week for weekly schedules, 0 (Sunday) to 6 (Saturday). Required when frequency is weekly.
+   */
   dayOfWeek?: number | undefined;
+  /**
+   * Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+   */
   dayOfMonth?: number | undefined;
+  /**
+   * Run every N days (2-90). Required when frequency is custom.
+   */
+  intervalDays?: number | undefined;
+  /**
+   * UTC calendar date (YYYY-MM-DD) a custom interval counts from. Defaults to today.
+   */
+  anchorDate?: string | undefined;
 };
 
 export type ListSchedulesSourceConfig = {
@@ -45,6 +75,9 @@ export type ListSchedulesSourceConfig = {
 };
 
 export type ListSchedulesTargets = {
+  /**
+   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   */
   repositoryIds: Array<string>;
 };
 
@@ -57,18 +90,34 @@ export const ListSchedulesOutputType = {
 } as const;
 export type ListSchedulesOutputType = OpenEnum<typeof ListSchedulesOutputType>;
 
+/**
+ * Where auto-published posts are sent.
+ */
 export const ListSchedulesPublishDestination = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
+/**
+ * Where auto-published posts are sent.
+ */
 export type ListSchedulesPublishDestination = OpenEnum<
   typeof ListSchedulesPublishDestination
 >;
 
 export type ListSchedulesOutputConfig = {
+  /**
+   * Where auto-published posts are sent.
+   */
   publishDestination?: ListSchedulesPublishDestination | undefined;
+  /**
+   * Brand identity ID to write in. Defaults to the organization's default brand identity.
+   */
   brandVoiceId?: string | undefined;
+  /**
+   * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
+   */
+  instructions?: string | undefined;
 };
 
 export const ListSchedulesLookbackWindow = {
@@ -156,6 +205,8 @@ export const ListSchedulesCron$inboundSchema: z.ZodMiniType<
   minute: types.number(),
   dayOfWeek: types.optional(types.number()),
   dayOfMonth: types.optional(types.number()),
+  intervalDays: types.optional(types.number()),
+  anchorDate: types.optional(types.string()),
 });
 
 export function listSchedulesCronFromJSON(
@@ -225,6 +276,7 @@ export const ListSchedulesOutputConfig$inboundSchema: z.ZodMiniType<
     ListSchedulesPublishDestination$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
+  instructions: types.optional(types.string()),
 });
 
 export function listSchedulesOutputConfigFromJSON(

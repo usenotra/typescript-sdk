@@ -8,23 +8,30 @@ import { UpdateScheduleRequest } from "@usenotra/sdk/models/operations";
 let value: UpdateScheduleRequest = {
   scheduleId: "sched_123",
   body: {
-    name: "<value>",
+    name: "Weekly changelog",
     sourceType: "cron",
     sourceConfig: {
       cron: {
         frequency: "weekly",
-        hour: 796887,
-        minute: 32936,
+        hour: 9,
+        minute: 0,
+        dayOfWeek: 1,
+        dayOfMonth: 1,
+        intervalDays: 3,
+        anchorDate: "2026-09-03",
       },
     },
     targets: {
       repositoryIds: [
-        "<value 1>",
-        "<value 2>",
-        "<value 3>",
+        "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
       ],
     },
-    outputType: "image",
+    outputType: "changelog",
+    outputConfig: {
+      brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+      instructions:
+        "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+    },
     enabled: true,
   },
 };

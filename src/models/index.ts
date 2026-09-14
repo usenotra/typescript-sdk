@@ -79,6 +79,7 @@ export * from "./patch-skill-request.js";
 export * from "./patch-skill-response.js";
 export * from "./plan-geo-content-brief-request.js";
 export * from "./plan-geo-content-brief-response.js";
+export * from "./public-external-channel-id.js";
 export * from "./public-status-response.js";
 export * from "./put-geo-competitor-request.js";
 export * from "./run-geo-sequence-response.js";

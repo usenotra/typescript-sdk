@@ -7,11 +7,16 @@ import * as z from "zod/v4-mini";
 
 export type CreateGeoPromptRequest = {
   prompt: string;
+  /**
+   * Free-form labels for grouping custom prompts. Lowercased and deduplicated on save.
+   */
+  tags?: Array<string> | undefined;
 };
 
 /** @internal */
 export type CreateGeoPromptRequest$Outbound = {
   prompt: string;
+  tags?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -20,6 +25,7 @@ export const CreateGeoPromptRequest$outboundSchema: z.ZodMiniType<
   CreateGeoPromptRequest
 > = z.object({
   prompt: z.string(),
+  tags: z.optional(z.array(z.string())),
 });
 
 export function createGeoPromptRequestToJSON(

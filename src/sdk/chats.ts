@@ -16,6 +16,9 @@ import { unwrapAsync } from "../types/fp.js";
 export class Chats extends ClientSDK {
   /**
    * List chats
+   *
+   * @remarks
+   * Returns the organization's chat sessions without their messages. Use GET /v1/chats/{chatId} to load a conversation.
    */
   async listChats(
     options?: RequestOptions,
@@ -28,6 +31,9 @@ export class Chats extends ClientSDK {
 
   /**
    * Start a new chat and stream the reply
+   *
+   * @remarks
+   * Creates a chat session, sends the first message, and streams the assistant reply. Read the X-Chat-Id response header to continue the conversation with POST /v1/chats/{chatId}.
    */
   async createChat(
     request: models.SendChatMessageRequest,
@@ -42,6 +48,9 @@ export class Chats extends ClientSDK {
 
   /**
    * Get a chat by external channel id
+   *
+   * @remarks
+   * Looks up the chat session linked to a Discord or Slack channel. Link a chat by passing externalChannelId when you create it.
    */
   async getChatByExternalChannel(
     request: operations.GetChatByExternalChannelRequest,
@@ -56,6 +65,9 @@ export class Chats extends ClientSDK {
 
   /**
    * Get a single chat with messages
+   *
+   * @remarks
+   * Returns the chat session and its full message history in UI message format.
    */
   async getChat(
     request: operations.GetChatRequest,
@@ -70,6 +82,9 @@ export class Chats extends ClientSDK {
 
   /**
    * Post a message to an existing chat and stream the reply
+   *
+   * @remarks
+   * Appends a user message to the chat and streams the assistant reply. Earlier messages in the chat are included as context automatically.
    */
   async postChatMessage(
     request: operations.PostChatMessageRequest,

@@ -16,6 +16,10 @@ export type GetGeoTrafficLogRequest = {
    * Comma-separated. One or more of: training-crawler, search-index, assistant-browse.
    */
   categories?: string | undefined;
+  /**
+   * Hostname to filter on. Subdomains of this host are included. Omit for every host.
+   */
+  host?: string | undefined;
 };
 
 /** @internal */
@@ -24,6 +28,7 @@ export type GetGeoTrafficLogRequest$Outbound = {
   limit?: number | undefined;
   visitorTypes?: string | undefined;
   categories?: string | undefined;
+  host?: string | undefined;
 };
 
 /** @internal */
@@ -35,6 +40,7 @@ export const GetGeoTrafficLogRequest$outboundSchema: z.ZodMiniType<
   limit: z.optional(z.int()),
   visitorTypes: z.optional(z.string()),
   categories: z.optional(z.string()),
+  host: z.optional(z.string()),
 });
 
 export function getGeoTrafficLogRequestToJSON(

@@ -14,24 +14,36 @@ let value: GeoSettings = {
     "<value 1>",
     "<value 2>",
   ],
-  competitors: [],
+  conversionPaths: [],
+  domains: [],
+  competitors: [
+    "<value 1>",
+  ],
   languages: [],
   engines: [
     "<value 1>",
+    "<value 2>",
+    "<value 3>",
   ],
   enforceZdr: true,
   nonZdrApprovedEngines: [
     "<value 1>",
     "<value 2>",
-    "<value 3>",
   ],
-  enabled: true,
-  scanIntervalHours: 631122,
+  pausedAutoPromptIds: [
+    "<value 1>",
+    "<value 2>",
+  ],
+  removedAutoPromptIds: [
+    "<value 1>",
+  ],
+  enabled: false,
+  scanIntervalHours: 393314,
   scanStartedAt: "<value>",
   lastScanAt: "<value>",
-  isScanning: false,
-  createdAt: "1716557159218",
-  updatedAt: "1735649940395",
+  isScanning: true,
+  createdAt: "1720923784626",
+  updatedAt: "1735641875475",
 };
 ```
 
@@ -44,11 +56,15 @@ let value: GeoSettings = {
 | `projectId`             | *string*                | :heavy_check_mark:      | N/A                     |
 | `companyName`           | *string*                | :heavy_check_mark:      | N/A                     |
 | `aliases`               | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `conversionPaths`       | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `domains`               | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `competitors`           | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `languages`             | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `engines`               | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `enforceZdr`            | *boolean*               | :heavy_check_mark:      | N/A                     |
 | `nonZdrApprovedEngines` | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `pausedAutoPromptIds`   | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `removedAutoPromptIds`  | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `enabled`               | *boolean*               | :heavy_check_mark:      | N/A                     |
 | `scanIntervalHours`     | *number*                | :heavy_check_mark:      | N/A                     |
 | `scanStartedAt`         | *string*                | :heavy_check_mark:      | N/A                     |

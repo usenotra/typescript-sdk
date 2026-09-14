@@ -22,6 +22,7 @@ export type GeoPrompt = {
   prompt: string;
   enabled: boolean;
   source: GeoPromptSource;
+  tags: Array<string>;
   createdAt: string | null;
 };
 
@@ -38,6 +39,7 @@ export const GeoPrompt$inboundSchema: z.ZodMiniType<GeoPrompt, unknown> = z
     prompt: types.string(),
     enabled: types.boolean(),
     source: GeoPromptSource$inboundSchema,
+    tags: z.array(types.string()),
     createdAt: types.nullable(types.string()),
   });
 

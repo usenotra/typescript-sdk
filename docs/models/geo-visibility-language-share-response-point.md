@@ -10,7 +10,10 @@ let value: GeoVisibilityLanguageShareResponsePoint = {
   checks: 504918,
   mentions: 540888,
   mentionRate: 5202.96,
-  avgPosition: 8398.87,
+  citations: 161336,
+  visibility: 839887,
+  visibilityRate: 7850.77,
+  avgPosition: 2656.45,
 };
 ```
 
@@ -22,5 +25,8 @@ let value: GeoVisibilityLanguageShareResponsePoint = {
 | `checks`                                                                                                      | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
 | `mentions`                                                                                                    | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
 | `mentionRate`                                                                                                 | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `citations`                                                                                                   | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `visibility`                                                                                                  | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `visibilityRate`                                                                                              | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
 | `avgPosition`                                                                                                 | *number*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
 | `trend`                                                                                                       | [models.GeoVisibilityLanguageShareResponseTrend](../models/geo-visibility-language-share-response-trend.md)[] | :heavy_minus_sign:                                                                                            | N/A                                                                                                           |
