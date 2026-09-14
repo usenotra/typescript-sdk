@@ -9,11 +9,14 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
-export type Engine = {
+export type GeoVisibilityOverviewResponseEngine = {
   engine: string;
   checks: number;
   mentions: number;
   mentionRate: number;
+  citations: number;
+  visibility: number;
+  visibilityRate: number;
   avgPosition: number | null;
   lastCheckedAt: string;
 };
@@ -30,27 +33,34 @@ export type GeoVisibilityOverviewResponse = {
    * Whether the analytics backend is configured.
    */
   configured: boolean;
-  engines: Array<Engine>;
+  engines: Array<GeoVisibilityOverviewResponseEngine>;
   organization: GeoVisibilityOverviewResponseOrganization;
 };
 
 /** @internal */
-export const Engine$inboundSchema: z.ZodMiniType<Engine, unknown> = z.object({
+export const GeoVisibilityOverviewResponseEngine$inboundSchema: z.ZodMiniType<
+  GeoVisibilityOverviewResponseEngine,
+  unknown
+> = z.object({
   engine: types.string(),
   checks: types.number(),
   mentions: types.number(),
   mentionRate: types.number(),
+  citations: types.number(),
+  visibility: types.number(),
+  visibilityRate: types.number(),
   avgPosition: types.nullable(types.number()),
   lastCheckedAt: types.string(),
 });
 
-export function engineFromJSON(
+export function geoVisibilityOverviewResponseEngineFromJSON(
   jsonString: string,
-): SafeParseResult<Engine, SDKValidationError> {
+): SafeParseResult<GeoVisibilityOverviewResponseEngine, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Engine$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Engine' from JSON`,
+    (x) =>
+      GeoVisibilityOverviewResponseEngine$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoVisibilityOverviewResponseEngine' from JSON`,
   );
 }
 
@@ -85,7 +95,9 @@ export const GeoVisibilityOverviewResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   configured: types.boolean(),
-  engines: z.array(z.lazy(() => Engine$inboundSchema)),
+  engines: z.array(
+    z.lazy(() => GeoVisibilityOverviewResponseEngine$inboundSchema),
+  ),
   organization: z.lazy(() =>
     GeoVisibilityOverviewResponseOrganization$inboundSchema
   ),

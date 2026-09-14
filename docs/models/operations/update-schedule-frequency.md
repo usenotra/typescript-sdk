@@ -1,5 +1,7 @@
 # UpdateScheduleFrequency
 
+How often the schedule runs.
+
 ## Example Usage
 
 ```typescript
@@ -13,5 +15,5 @@ let value: UpdateScheduleFrequency = "weekly";
 ## Values
 
 ```typescript
-"daily" | "weekly" | "monthly" | Unrecognized<string>
+"daily" | "weekly" | "monthly" | "custom" | Unrecognized<string>
 ```

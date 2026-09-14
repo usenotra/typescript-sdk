@@ -13,7 +13,10 @@ let value: GeoVisibilityOverviewResponse = {
       checks: 618368,
       mentions: 305464,
       mentionRate: 2139.17,
-      avgPosition: 6562.63,
+      citations: 765470,
+      visibility: 656263,
+      visibilityRate: 4485.01,
+      avgPosition: 5178.35,
       lastCheckedAt: "<value>",
     },
   ],
@@ -31,5 +34,5 @@ let value: GeoVisibilityOverviewResponse = {
 | Field                                                                                                          | Type                                                                                                           | Required                                                                                                       | Description                                                                                                    |
 | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `configured`                                                                                                   | *boolean*                                                                                                      | :heavy_check_mark:                                                                                             | Whether the analytics backend is configured.                                                                   |
-| `engines`                                                                                                      | [models.Engine](../models/engine.md)[]                                                                         | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
+| `engines`                                                                                                      | [models.GeoVisibilityOverviewResponseEngine](../models/geo-visibility-overview-response-engine.md)[]           | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
 | `organization`                                                                                                 | [models.GeoVisibilityOverviewResponseOrganization](../models/geo-visibility-overview-response-organization.md) | :heavy_check_mark:                                                                                             | N/A                                                                                                            |

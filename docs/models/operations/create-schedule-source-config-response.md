@@ -7,9 +7,13 @@ import { CreateScheduleSourceConfigResponse } from "@usenotra/sdk/models/operati
 
 let value: CreateScheduleSourceConfigResponse = {
   cron: {
-    frequency: "monthly",
-    hour: 404812,
-    minute: 401333,
+    frequency: "weekly",
+    hour: 9,
+    minute: 0,
+    dayOfWeek: 1,
+    dayOfMonth: 1,
+    intervalDays: 3,
+    anchorDate: "2026-09-03",
   },
 };
 ```

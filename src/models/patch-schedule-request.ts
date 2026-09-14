@@ -6,26 +6,62 @@
 import * as z from "zod/v4-mini";
 import { ClosedEnum } from "../types/enums.js";
 
+/**
+ * Always cron for schedules.
+ */
 export const PatchScheduleRequestSourceType = {
   Cron: "cron",
 } as const;
+/**
+ * Always cron for schedules.
+ */
 export type PatchScheduleRequestSourceType = ClosedEnum<
   typeof PatchScheduleRequestSourceType
 >;
 
+/**
+ * How often the schedule runs.
+ */
 export const Frequency = {
   Daily: "daily",
   Weekly: "weekly",
   Monthly: "monthly",
+  Custom: "custom",
 } as const;
+/**
+ * How often the schedule runs.
+ */
 export type Frequency = ClosedEnum<typeof Frequency>;
 
 export type Cron = {
+  /**
+   * How often the schedule runs.
+   */
   frequency: Frequency;
+  /**
+   * Hour of the day to run, in UTC (0-23).
+   */
   hour: number;
+  /**
+   * Minute of the hour to run (0-59).
+   */
   minute: number;
+  /**
+   * Day of the week for weekly schedules, 0 (Sunday) to 6 (Saturday). Required when frequency is weekly.
+   */
   dayOfWeek?: number | undefined;
+  /**
+   * Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+   */
   dayOfMonth?: number | undefined;
+  /**
+   * Run every N days (2-90). Required when frequency is custom.
+   */
+  intervalDays?: number | undefined;
+  /**
+   * UTC calendar date (YYYY-MM-DD) a custom interval counts from. Defaults to today.
+   */
+  anchorDate?: string | undefined;
 };
 
 export type PatchScheduleRequestSourceConfig = {
@@ -33,9 +69,15 @@ export type PatchScheduleRequestSourceConfig = {
 };
 
 export type PatchScheduleRequestTargets = {
+  /**
+   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   */
   repositoryIds: Array<string>;
 };
 
+/**
+ * Type of content each run generates.
+ */
 export const PatchScheduleRequestOutputType = {
   Changelog: "changelog",
   BlogPost: "blog_post",
@@ -43,24 +85,46 @@ export const PatchScheduleRequestOutputType = {
   TwitterPost: "twitter_post",
   Image: "image",
 } as const;
+/**
+ * Type of content each run generates.
+ */
 export type PatchScheduleRequestOutputType = ClosedEnum<
   typeof PatchScheduleRequestOutputType
 >;
 
+/**
+ * Where auto-published posts are sent.
+ */
 export const PatchScheduleRequestPublishDestination = {
   Webflow: "webflow",
   Framer: "framer",
   Custom: "custom",
 } as const;
+/**
+ * Where auto-published posts are sent.
+ */
 export type PatchScheduleRequestPublishDestination = ClosedEnum<
   typeof PatchScheduleRequestPublishDestination
 >;
 
 export type PatchScheduleRequestOutputConfig = {
+  /**
+   * Where auto-published posts are sent.
+   */
   publishDestination?: PatchScheduleRequestPublishDestination | undefined;
+  /**
+   * Brand identity ID to write in. Defaults to the organization's default brand identity.
+   */
   brandVoiceId?: string | undefined;
+  /**
+   * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
+   */
+  instructions?: string | undefined;
 };
 
+/**
+ * How far back each run collects source activity.
+ */
 export const LookbackWindow = {
   CurrentDay: "current_day",
   Yesterday: "yesterday",
@@ -68,17 +132,38 @@ export const LookbackWindow = {
   Last14Days: "last_14_days",
   Last30Days: "last_30_days",
 } as const;
+/**
+ * How far back each run collects source activity.
+ */
 export type LookbackWindow = ClosedEnum<typeof LookbackWindow>;
 
 export type PatchScheduleRequest = {
+  /**
+   * Display name shown in the dashboard.
+   */
   name: string;
+  /**
+   * Always cron for schedules.
+   */
   sourceType: PatchScheduleRequestSourceType;
   sourceConfig: PatchScheduleRequestSourceConfig;
   targets: PatchScheduleRequestTargets;
+  /**
+   * Type of content each run generates.
+   */
   outputType: PatchScheduleRequestOutputType;
   outputConfig?: PatchScheduleRequestOutputConfig | undefined;
+  /**
+   * Whether the schedule runs. Disabled schedules are stored but never fire.
+   */
   enabled: boolean;
+  /**
+   * Publish generated posts automatically instead of saving them as drafts.
+   */
   autoPublish?: boolean | undefined;
+  /**
+   * How far back each run collects source activity.
+   */
   lookbackWindow?: LookbackWindow | undefined;
 };
 
@@ -99,6 +184,8 @@ export type Cron$Outbound = {
   minute: number;
   dayOfWeek?: number | undefined;
   dayOfMonth?: number | undefined;
+  intervalDays?: number | undefined;
+  anchorDate?: string | undefined;
 };
 
 /** @internal */
@@ -109,6 +196,8 @@ export const Cron$outboundSchema: z.ZodMiniType<Cron$Outbound, Cron> = z.object(
     minute: z.int(),
     dayOfWeek: z.optional(z.int()),
     dayOfMonth: z.optional(z.int()),
+    intervalDays: z.optional(z.int()),
+    anchorDate: z.optional(z.string()),
   },
 );
 
@@ -177,6 +266,7 @@ export const PatchScheduleRequestPublishDestination$outboundSchema:
 export type PatchScheduleRequestOutputConfig$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
+  instructions?: string | undefined;
 };
 
 /** @internal */
@@ -188,6 +278,7 @@ export const PatchScheduleRequestOutputConfig$outboundSchema: z.ZodMiniType<
     PatchScheduleRequestPublishDestination$outboundSchema,
   ),
   brandVoiceId: z.optional(z.string()),
+  instructions: z.optional(z.string()),
 });
 
 export function patchScheduleRequestOutputConfigToJSON(

@@ -25,6 +25,9 @@ import { unwrapAsync } from "../types/fp.js";
 export class Content extends ClientSDK {
   /**
    * List posts
+   *
+   * @remarks
+   * Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published.
    */
   async listPosts(
     request?: operations.ListPostsRequest | undefined,
@@ -39,6 +42,9 @@ export class Content extends ClientSDK {
 
   /**
    * Get a single post
+   *
+   * @remarks
+   * Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null.
    */
   async getPost(
     request: operations.GetPostRequest,
@@ -67,6 +73,9 @@ export class Content extends ClientSDK {
 
   /**
    * Update a single post
+   *
+   * @remarks
+   * Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
    */
   async updatePost(
     request: operations.UpdatePostRequest,
@@ -81,6 +90,9 @@ export class Content extends ClientSDK {
 
   /**
    * Queue async post generation
+   *
+   * @remarks
+   * Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Notra does not send webhooks when the job finishes.
    */
   async createPostGeneration(
     request: operations.CreatePostGenerationRequest,
@@ -95,6 +107,9 @@ export class Content extends ClientSDK {
 
   /**
    * Get async post generation status
+   *
+   * @remarks
+   * Returns the job and its event log. job.status moves from queued to running and ends as completed, failed, or skipped. job.postId is set once the post has been created; fetch it with GET /v1/posts/{postId}.
    */
   async getPostGeneration(
     request: operations.GetPostGenerationRequest,
@@ -109,6 +124,9 @@ export class Content extends ClientSDK {
 
   /**
    * List available brand identities
+   *
+   * @remarks
+   * Returns every brand identity in the organization, default identity first.
    */
   async listBrandIdentities(
     options?: RequestOptions,
@@ -121,6 +139,9 @@ export class Content extends ClientSDK {
 
   /**
    * Queue async brand identity generation
+   *
+   * @remarks
+   * Creates the brand identity immediately, then queues a website analysis that fills in company details, tone, and audience. The first brand identity in an organization becomes the default. Poll GET /v1/brand-identities/generate/{jobId} until job.status is completed or failed.
    */
   async createBrandIdentity(
     request: operations.CreateBrandIdentityRequest,
@@ -135,6 +156,9 @@ export class Content extends ClientSDK {
 
   /**
    * Get async brand identity generation status
+   *
+   * @remarks
+   * Returns the analysis job. job.status moves from queued to running and ends as completed or failed; job.step shows the current stage while running. Fetch the finished identity with GET /v1/brand-identities/{brandIdentityId}.
    */
   async getBrandIdentityGeneration(
     request: operations.GetBrandIdentityGenerationRequest,
@@ -149,6 +173,9 @@ export class Content extends ClientSDK {
 
   /**
    * Get a single brand identity
+   *
+   * @remarks
+   * Returns the brand identity. When no brand identity with this ID exists in your organization, the response is still 200 with brandIdentity set to null.
    */
   async getBrandIdentity(
     request: operations.GetBrandIdentityRequest,
@@ -197,6 +224,9 @@ export class Content extends ClientSDK {
 
   /**
    * List available integrations
+   *
+   * @remarks
+   * Returns the enabled GitHub and Linear integrations for the organization. The slack array is always empty.
    */
   async listIntegrations(
     options?: RequestOptions,
@@ -209,6 +239,9 @@ export class Content extends ClientSDK {
 
   /**
    * Create a GitHub integration
+   *
+   * @remarks
+   * Checks that the repository can be read (a personal access token is required for private repositories), connects it, and enables changelog generation for it; blog post and X post outputs start disabled. A webhook secret is generated on creation. Copy the payload URL and secret from the dashboard to receive push and release events.
    */
   async createGitHubIntegration(
     request: operations.CreateGitHubIntegrationRequest,
@@ -225,7 +258,7 @@ export class Content extends ClientSDK {
    * Delete a single integration
    *
    * @remarks
-   * Deletes a GitHub or Linear integration. Any automation triggers targeting a deleted GitHub integration are disabled.
+   * Deletes a GitHub or Linear integration. Schedules and event triggers that target the integration are disabled and listed in the response.
    */
   async deleteIntegration(
     request: operations.DeleteIntegrationRequest,

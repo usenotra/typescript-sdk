@@ -10,7 +10,12 @@ let value: GeoPrompt = {
   prompt: "<value>",
   enabled: true,
   source: "custom",
-  createdAt: "1727687344386",
+  tags: [
+    "<value 1>",
+    "<value 2>",
+    "<value 3>",
+  ],
+  createdAt: "1734032056850",
 };
 ```
 
@@ -22,4 +27,5 @@ let value: GeoPrompt = {
 | `prompt`                                                 | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
 | `enabled`                                                | *boolean*                                                | :heavy_check_mark:                                       | N/A                                                      |
 | `source`                                                 | [models.GeoPromptSource](../models/geo-prompt-source.md) | :heavy_check_mark:                                       | N/A                                                      |
+| `tags`                                                   | *string*[]                                               | :heavy_check_mark:                                       | N/A                                                      |
 | `createdAt`                                              | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |

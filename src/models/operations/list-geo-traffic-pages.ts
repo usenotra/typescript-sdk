@@ -22,6 +22,10 @@ export type ListGeoTrafficPagesRequest = {
   to?: string | undefined;
   limit?: number | undefined;
   visitorType?: VisitorType | undefined;
+  /**
+   * Hostname to filter on. Subdomains of this host are included. Omit for every host.
+   */
+  host?: string | undefined;
 };
 
 /** @internal */
@@ -36,6 +40,7 @@ export type ListGeoTrafficPagesRequest$Outbound = {
   to?: string | undefined;
   limit?: number | undefined;
   visitorType?: string | undefined;
+  host?: string | undefined;
 };
 
 /** @internal */
@@ -49,6 +54,7 @@ export const ListGeoTrafficPagesRequest$outboundSchema: z.ZodMiniType<
   to: z.optional(z.string()),
   limit: z.optional(z.int()),
   visitorType: z.optional(VisitorType$outboundSchema),
+  host: z.optional(z.string()),
 });
 
 export function listGeoTrafficPagesRequestToJSON(

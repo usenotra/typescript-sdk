@@ -1,11 +1,13 @@
 # ThinkingLevel
 
+How much reasoning effort to spend when thinking is enabled.
+
 ## Example Usage
 
 ```typescript
 import { ThinkingLevel } from "@usenotra/sdk/models";
 
-let value: ThinkingLevel = "low";
+let value: ThinkingLevel = "medium";
 ```
 
 ## Values

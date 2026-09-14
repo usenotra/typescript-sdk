@@ -27,6 +27,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List available brand identities
+ *
+ * @remarks
+ * Returns every brand identity in the organization, default identity first.
  */
 export function contentListBrandIdentities(
   client: NotraCore,

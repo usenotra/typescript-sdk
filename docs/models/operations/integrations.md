@@ -1,5 +1,7 @@
 # Integrations
 
+Source integrations to draw activity from. Omit this and github.repositories to use every connected GitHub integration.
+
 ## Example Usage
 
 ```typescript
@@ -18,7 +20,7 @@ let value: Integrations = {
 
 ## Fields
 
-| Field                                | Type                                 | Required                             | Description                          | Example                              |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `github`                             | *string*[]                           | :heavy_minus_sign:                   | N/A                                  | [<br/>"integration_1",<br/>"integration_2"<br/>] |
-| `linear`                             | *string*[]                           | :heavy_minus_sign:                   | N/A                                  | [<br/>"linear_integration_1"<br/>]   |
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `github`                                                                       | *string*[]                                                                     | :heavy_minus_sign:                                                             | GitHub integration IDs to use as sources, as returned by GET /v1/integrations. | [<br/>"integration_1",<br/>"integration_2"<br/>]                               |
+| `linear`                                                                       | *string*[]                                                                     | :heavy_minus_sign:                                                             | Linear integration IDs to use as sources, as returned by GET /v1/integrations. | [<br/>"linear_integration_1"<br/>]                                             |

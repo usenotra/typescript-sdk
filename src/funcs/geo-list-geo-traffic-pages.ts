@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * List the most visited pages
  *
  * @remarks
- * Which paths AI crawlers and referrals read most, with the previous window's count for comparison.
+ * Which paths AI crawlers and referrals read most, with the previous window's count for comparison. Pass `host` to rank pages for that hostname and its subdomains before applying `limit`.
  */
 export function geoListGEOTrafficPages(
   client: NotraCore,
@@ -106,6 +106,7 @@ async function $do(
   const query = encodeFormQuery({
     "days": payload.days,
     "from": payload.from,
+    "host": payload.host,
     "limit": payload.limit,
     "to": payload.to,
     "visitorType": payload.visitorType,

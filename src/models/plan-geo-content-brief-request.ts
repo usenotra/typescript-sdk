@@ -47,6 +47,10 @@ export type PlanGeoContentBriefRequest = {
    * Gap, prompt or search-console suggestion id. An open brief for the same source is reused instead of planning a new one.
    */
   sourceId?: string | undefined;
+  /**
+   * Existing page the article should refresh instead of creating a competing page.
+   */
+  existingPageUrl?: string | undefined;
 };
 
 /** @internal */
@@ -69,6 +73,7 @@ export type PlanGeoContentBriefRequest$Outbound = {
   sitemapId?: string | undefined;
   sourceKind?: string | undefined;
   sourceId?: string | undefined;
+  existingPageUrl?: string | undefined;
 };
 
 /** @internal */
@@ -86,6 +91,7 @@ export const PlanGeoContentBriefRequest$outboundSchema: z.ZodMiniType<
   sitemapId: z.optional(z.string()),
   sourceKind: z.optional(SourceKind$outboundSchema),
   sourceId: z.optional(z.string()),
+  existingPageUrl: z.optional(z.string()),
 });
 
 export function planGeoContentBriefRequestToJSON(

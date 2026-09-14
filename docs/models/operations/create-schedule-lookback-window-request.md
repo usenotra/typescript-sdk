@@ -1,11 +1,13 @@
 # CreateScheduleLookbackWindowRequest
 
+How far back each run collects source activity.
+
 ## Example Usage
 
 ```typescript
 import { CreateScheduleLookbackWindowRequest } from "@usenotra/sdk/models/operations";
 
-let value: CreateScheduleLookbackWindowRequest = "last_30_days";
+let value: CreateScheduleLookbackWindowRequest = "last_7_days";
 ```
 
 ## Values

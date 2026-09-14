@@ -30,6 +30,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Queue async brand identity generation
+ *
+ * @remarks
+ * Creates the brand identity immediately, then queues a website analysis that fills in company details, tone, and audience. The first brand identity in an organization becomes the default. Poll GET /v1/brand-identities/generate/{jobId} until job.status is completed or failed.
  */
 export function contentCreateBrandIdentity(
   client: NotraCore,

@@ -8,7 +8,11 @@ import { PostChatMessageRequest } from "@usenotra/sdk/models/operations";
 let value: PostChatMessageRequest = {
   chatId: "chat_abc123",
   body: {
-    message: "<value>",
+    message: "Summarize what shipped in the last week.",
+    model: "auto",
+    enableThinking: false,
+    thinkingLevel: "medium",
+    timezone: "Europe/Berlin",
   },
 };
 ```

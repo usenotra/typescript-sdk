@@ -27,6 +27,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List chats
+ *
+ * @remarks
+ * Returns the organization's chat sessions without their messages. Use GET /v1/chats/{chatId} to load a conversation.
  */
 export function chatsListChats(
   client: NotraCore,
