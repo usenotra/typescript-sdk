@@ -1,21 +1,23 @@
 # Authentication
 
-## Example Usage
+
+## Supported Types
+
+### `models.AuthenticationAPIKey`
 
 ```typescript
-import { Authentication } from "@usenotra/sdk/models";
-
-let value: Authentication = {
-  type: "bearer",
-  resourceMetadata: "https://measly-warming.biz/",
-  guide: "https://yellowish-newsprint.org",
+const value: models.AuthenticationAPIKey = {
+  type: "apiKey",
 };
 ```
 
-## Fields
+### `models.AuthenticationOauth`
 
-| Field                                     | Type                                      | Required                                  | Description                               |
-| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| `type`                                    | [models.TypeEnum](../models/type-enum.md) | :heavy_check_mark:                        | N/A                                       |
-| `resourceMetadata`                        | *string*                                  | :heavy_check_mark:                        | N/A                                       |
-| `guide`                                   | *string*                                  | :heavy_check_mark:                        | N/A                                       |
+```typescript
+const value: models.AuthenticationOauth = {
+  type: "oauth",
+  accountId: "<id>",
+  scopes: [],
+};
+```
+

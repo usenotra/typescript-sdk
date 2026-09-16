@@ -13,6 +13,17 @@ let value: GeoScanResponse = {
     startedAt: "<value>",
     finishedAt: "<value>",
     createdAt: "1735531513131",
+    summary: {
+      plannedChecks: 415437,
+      completedChecks: 495984,
+      mentionCount: 775479,
+      failedChecks: 241900,
+      engines: [],
+    },
+    errorCode: "<value>",
+    errorMessage: "<value>",
+    failedStage: "stale",
+    retryable: false,
   },
   organization: {
     id: "<id>",

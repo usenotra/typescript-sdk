@@ -15,7 +15,11 @@ import { geoDeleteProject } from "../funcs/geo-delete-project.js";
 import { geoGetGEOAgentReadiness } from "../funcs/geo-get-geo-agent-readiness.js";
 import { geoGetGEOContentBrief } from "../funcs/geo-get-geo-content-brief.js";
 import { geoGetGEOIngestSetup } from "../funcs/geo-get-geo-ingest-setup.js";
+import { geoGetGEOPromptHistory } from "../funcs/geo-get-geo-prompt-history.js";
+import { geoGetGEOPromptResultDetail } from "../funcs/geo-get-geo-prompt-result-detail.js";
 import { geoGetGEOScan } from "../funcs/geo-get-geo-scan.js";
+import { geoGetGEOSentimentAnalysis } from "../funcs/geo-get-geo-sentiment-analysis.js";
+import { geoGetGEOSentiment } from "../funcs/geo-get-geo-sentiment.js";
 import { geoGetGEOSettings } from "../funcs/geo-get-geo-settings.js";
 import { geoGetGEOTrafficJourney } from "../funcs/geo-get-geo-traffic-journey.js";
 import { geoGetGEOTrafficLog } from "../funcs/geo-get-geo-traffic-log.js";
@@ -30,12 +34,16 @@ import { geoGetProject } from "../funcs/geo-get-project.js";
 import { geoImportGEOCompetitors } from "../funcs/geo-import-geo-competitors.js";
 import { geoImportGEOPrompts } from "../funcs/geo-import-geo-prompts.js";
 import { geoIssueGEOIngestToken } from "../funcs/geo-issue-geo-ingest-token.js";
+import { geoListGEOChanges } from "../funcs/geo-list-geo-changes.js";
 import { geoListGEOCompetitors } from "../funcs/geo-list-geo-competitors.js";
 import { geoListGEOContentBriefs } from "../funcs/geo-list-geo-content-briefs.js";
 import { geoListGEOContentGaps } from "../funcs/geo-list-geo-content-gaps.js";
+import { geoListGEOPromptResultSummaries } from "../funcs/geo-list-geo-prompt-result-summaries.js";
 import { geoListGEOPrompts } from "../funcs/geo-list-geo-prompts.js";
 import { geoListGEOScans } from "../funcs/geo-list-geo-scans.js";
+import { geoListGEOSentimentEvidence } from "../funcs/geo-list-geo-sentiment-evidence.js";
 import { geoListGEOSequences } from "../funcs/geo-list-geo-sequences.js";
+import { geoListGEOShelfSources } from "../funcs/geo-list-geo-shelf-sources.js";
 import { geoListGEOTrafficJourneys } from "../funcs/geo-list-geo-traffic-journeys.js";
 import { geoListGEOTrafficPages } from "../funcs/geo-list-geo-traffic-pages.js";
 import { geoListProjects } from "../funcs/geo-list-projects.js";
@@ -390,6 +398,9 @@ export class Geo extends ClientSDK {
 
   /**
    * List GEO scans
+   *
+   * @remarks
+   * Lists scans with planned, completed, mentioned, and explicitly failed check totals by engine. Failed scans include safe failure metadata when available.
    */
   async listGeoScans(
     request: operations.ListGeoScansRequest,
@@ -421,6 +432,9 @@ export class Geo extends ClientSDK {
 
   /**
    * Get a single GEO scan
+   *
+   * @remarks
+   * Returns scan status, check progress and mentions by engine, plus safe failure metadata for failed scans. Legacy scans without a saved plan report null planned totals.
    */
   async getGeoScan(
     request: operations.GetGeoScanRequest,
@@ -485,6 +499,40 @@ export class Geo extends ClientSDK {
   }
 
   /**
+   * List compact prompt result summaries
+   *
+   * @remarks
+   * A filtered, paginated projection of the latest answer per prompt and engine. Full answer text and sources are omitted; use checkId with the detail endpoint.
+   */
+  async listGeoPromptResultSummaries(
+    request: operations.ListGeoPromptResultSummariesRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoVisibilityPromptResultSummariesResponse> {
+    return unwrapAsync(geoListGEOPromptResultSummaries(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get one full prompt result
+   *
+   * @remarks
+   * Loads the answer, grounding sources and token metadata for one checkId returned by the summaries or prompt-history endpoints.
+   */
+  async getGeoPromptResultDetail(
+    request: operations.GetGeoPromptResultDetailRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoVisibilityPromptResultDetailResponse> {
+    return unwrapAsync(geoGetGEOPromptResultDetail(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * Get share of voice across tracked brands
    *
    * @remarks
@@ -529,6 +577,102 @@ export class Geo extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GeoVisibilityCompetitorDetailResponse> {
     return unwrapAsync(geoGetGEOVisibilityCompetitorDetail(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Compare the two latest GEO scans
+   */
+  async listGeoChanges(
+    request: operations.ListGeoChangesRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoChangesResponse> {
+    return unwrapAsync(geoListGEOChanges(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get the stored check history for one prompt
+   *
+   * @remarks
+   * Returns compact check rows. Use each check id with the prompt-result detail endpoint for the full answer.
+   */
+  async getGeoPromptHistory(
+    request: operations.GetGeoPromptHistoryRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoPromptHistoryResponse> {
+    return unwrapAsync(geoGetGEOPromptHistory(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get aggregate GEO sentiment
+   *
+   * @remarks
+   * Returns current and previous-period sentiment metrics without starting billed analysis.
+   */
+  async getGeoSentiment(
+    request: operations.GetGeoSentimentRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoSentimentResponse> {
+    return unwrapAsync(geoGetGEOSentiment(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get the stored GEO sentiment analysis
+   *
+   * @remarks
+   * Reads the cached thematic analysis state and never starts a billed model run.
+   */
+  async getGeoSentimentAnalysis(
+    request: operations.GetGeoSentimentAnalysisRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoSentimentAnalysisResponse> {
+    return unwrapAsync(geoGetGEOSentimentAnalysis(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List answers used as sentiment evidence
+   */
+  async listGeoSentimentEvidence(
+    request: operations.ListGeoSentimentEvidenceRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoSentimentEvidenceResponse> {
+    return unwrapAsync(geoListGEOSentimentEvidence(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List stored GEO shelf sources
+   *
+   * @remarks
+   * Returns a bounded page of cited and manually tracked sources, newest updates first.
+   */
+  async listGeoShelfSources(
+    request: operations.ListGeoShelfSourcesRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoShelfListResponse> {
+    return unwrapAsync(geoListGEOShelfSources(
       this,
       request,
       options,

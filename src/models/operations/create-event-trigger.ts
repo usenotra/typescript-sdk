@@ -27,6 +27,7 @@ export type EventTypeRequest = ClosedEnum<typeof EventTypeRequest>;
 export type CreateEventTriggerSourceConfigRequest = {
   eventTypes: Array<EventTypeRequest>;
   includePreReleases?: boolean | undefined;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 export type CreateEventTriggerTargetsRequest = {
@@ -86,6 +87,7 @@ export type CreateEventTriggerEventTypeResponse = OpenEnum<
 export type CreateEventTriggerSourceConfigResponse = {
   eventTypes: Array<CreateEventTriggerEventTypeResponse>;
   includePreReleases: boolean;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 export type CreateEventTriggerTargetsResponse = {
@@ -161,6 +163,7 @@ export const EventTypeRequest$outboundSchema: z.ZodMiniEnum<
 export type CreateEventTriggerSourceConfigRequest$Outbound = {
   eventTypes: Array<string>;
   includePreReleases: boolean;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -171,6 +174,7 @@ export const CreateEventTriggerSourceConfigRequest$outboundSchema:
   > = z.object({
     eventTypes: z.array(EventTypeRequest$outboundSchema),
     includePreReleases: z._default(z.boolean(), true),
+    ignoreCommitPatterns: z.optional(z.array(z.string())),
   });
 
 export function createEventTriggerSourceConfigRequestToJSON(
@@ -298,6 +302,7 @@ export const CreateEventTriggerSourceConfigResponse$inboundSchema:
   z.ZodMiniType<CreateEventTriggerSourceConfigResponse, unknown> = z.object({
     eventTypes: z.array(CreateEventTriggerEventTypeResponse$inboundSchema),
     includePreReleases: z._default(types.boolean(), true),
+    ignoreCommitPatterns: types.optional(z.array(types.string())),
   });
 
 export function createEventTriggerSourceConfigResponseFromJSON(
