@@ -33,6 +33,7 @@ export type GetEventTriggerEventType = OpenEnum<
 export type GetEventTriggerSourceConfig = {
   eventTypes: Array<GetEventTriggerEventType>;
   includePreReleases: boolean;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 export type GetEventTriggerTargets = {
@@ -133,6 +134,7 @@ export const GetEventTriggerSourceConfig$inboundSchema: z.ZodMiniType<
 > = z.object({
   eventTypes: z.array(GetEventTriggerEventType$inboundSchema),
   includePreReleases: z._default(types.boolean(), true),
+  ignoreCommitPatterns: types.optional(z.array(types.string())),
 });
 
 export function getEventTriggerSourceConfigFromJSON(

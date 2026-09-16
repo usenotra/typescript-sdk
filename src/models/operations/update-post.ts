@@ -12,17 +12,19 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdk-validation-error.js";
 
-export const StatusRequest = {
+export const UpdatePostStatusRequest = {
   Draft: "draft",
   Published: "published",
 } as const;
-export type StatusRequest = ClosedEnum<typeof StatusRequest>;
+export type UpdatePostStatusRequest = ClosedEnum<
+  typeof UpdatePostStatusRequest
+>;
 
 export type UpdatePostRequestBody = {
   title?: string | undefined;
   slug?: string | null | undefined;
   markdown?: string | undefined;
-  status?: StatusRequest | undefined;
+  status?: UpdatePostStatusRequest | undefined;
 };
 
 export type UpdatePostRequest = {
@@ -95,8 +97,9 @@ export type UpdatePostResponse = {
 };
 
 /** @internal */
-export const StatusRequest$outboundSchema: z.ZodMiniEnum<typeof StatusRequest> =
-  z.enum(StatusRequest);
+export const UpdatePostStatusRequest$outboundSchema: z.ZodMiniEnum<
+  typeof UpdatePostStatusRequest
+> = z.enum(UpdatePostStatusRequest);
 
 /** @internal */
 export type UpdatePostRequestBody$Outbound = {
@@ -114,7 +117,7 @@ export const UpdatePostRequestBody$outboundSchema: z.ZodMiniType<
   title: z.optional(z.string()),
   slug: z.optional(z.nullable(z.string())),
   markdown: z.optional(z.string()),
-  status: z.optional(StatusRequest$outboundSchema),
+  status: z.optional(UpdatePostStatusRequest$outboundSchema),
 });
 
 export function updatePostRequestBodyToJSON(

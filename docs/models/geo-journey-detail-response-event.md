@@ -1,17 +1,17 @@
-# Event
+# GeoJourneyDetailResponseEvent
 
 ## Example Usage
 
 ```typescript
-import { Event } from "@usenotra/sdk/models";
+import { GeoJourneyDetailResponseEvent } from "@usenotra/sdk/models";
 
-let value: Event = {
+let value: GeoJourneyDetailResponseEvent = {
   capturedAt: "<value>",
-  path: "/etc",
-  host: "ornate-fisherman.net",
+  path: "/mnt",
+  host: "instructive-shadowbox.org",
   method: "<value>",
-  referer: "perfumed-giggle.name",
-  country: "France",
+  referer: "hopeful-lender.com",
+  country: "Jamaica",
   agent: "<value>",
   category: "<value>",
 };

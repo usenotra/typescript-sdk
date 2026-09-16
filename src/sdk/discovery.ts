@@ -4,8 +4,10 @@
  */
 
 import { discoveryGetPublicApiStatus } from "../funcs/discovery-get-public-api-status.js";
+import { discoveryGetWorkspaces } from "../funcs/discovery-get-workspaces.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
+import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Discovery extends ClientSDK {
@@ -17,6 +19,23 @@ export class Discovery extends ClientSDK {
   ): Promise<models.PublicStatusResponse> {
     return unwrapAsync(discoveryGetPublicApiStatus(
       this,
+      options,
+    ));
+  }
+
+  /**
+   * Get authenticated workspace context
+   *
+   * @remarks
+   * Returns the current workspace and authentication details. OAuth users also receive their accepted memberships and can opt into pending invitations; organization API keys only receive their current workspace. Discovery does not change the workspace bound to the bearer token.
+   */
+  async getWorkspaces(
+    request?: operations.GetWorkspacesRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.GetWorkspacesResponse> {
+    return unwrapAsync(discoveryGetWorkspaces(
+      this,
+      request,
       options,
     ));
   }

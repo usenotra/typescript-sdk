@@ -22,6 +22,7 @@ export type EventType = ClosedEnum<typeof EventType>;
 export type PatchEventTriggerRequestSourceConfig = {
   eventTypes: Array<EventType>;
   includePreReleases?: boolean | undefined;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 export type PatchEventTriggerRequestTargets = {
@@ -77,6 +78,7 @@ export const EventType$outboundSchema: z.ZodMiniEnum<typeof EventType> = z.enum(
 export type PatchEventTriggerRequestSourceConfig$Outbound = {
   eventTypes: Array<string>;
   includePreReleases: boolean;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -86,6 +88,7 @@ export const PatchEventTriggerRequestSourceConfig$outboundSchema: z.ZodMiniType<
 > = z.object({
   eventTypes: z.array(EventType$outboundSchema),
   includePreReleases: z._default(z.boolean(), true),
+  ignoreCommitPatterns: z.optional(z.array(z.string())),
 });
 
 export function patchEventTriggerRequestSourceConfigToJSON(

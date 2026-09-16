@@ -9,7 +9,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
-export type Event = {
+export type GeoJourneyDetailResponseEvent = {
   capturedAt: string;
   path: string;
   host: string;
@@ -32,12 +32,15 @@ export type GeoJourneyDetailResponse = {
    * False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error.
    */
   configured: boolean;
-  events: Array<Event>;
+  events: Array<GeoJourneyDetailResponseEvent>;
   organization: GeoJourneyDetailResponseOrganization;
 };
 
 /** @internal */
-export const Event$inboundSchema: z.ZodMiniType<Event, unknown> = z.object({
+export const GeoJourneyDetailResponseEvent$inboundSchema: z.ZodMiniType<
+  GeoJourneyDetailResponseEvent,
+  unknown
+> = z.object({
   capturedAt: types.string(),
   path: types.string(),
   host: types.string(),
@@ -48,13 +51,13 @@ export const Event$inboundSchema: z.ZodMiniType<Event, unknown> = z.object({
   category: types.string(),
 });
 
-export function eventFromJSON(
+export function geoJourneyDetailResponseEventFromJSON(
   jsonString: string,
-): SafeParseResult<Event, SDKValidationError> {
+): SafeParseResult<GeoJourneyDetailResponseEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Event$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Event' from JSON`,
+    (x) => GeoJourneyDetailResponseEvent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoJourneyDetailResponseEvent' from JSON`,
   );
 }
 
@@ -86,7 +89,7 @@ export const GeoJourneyDetailResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   configured: types.boolean(),
-  events: z.array(z.lazy(() => Event$inboundSchema)),
+  events: z.array(z.lazy(() => GeoJourneyDetailResponseEvent$inboundSchema)),
   organization: z.lazy(() =>
     GeoJourneyDetailResponseOrganization$inboundSchema
   ),

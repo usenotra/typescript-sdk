@@ -16,7 +16,7 @@ import { SDKValidationError } from "../errors/sdk-validation-error.js";
 /**
  * Type of content to generate.
  */
-export const ContentTypeRequest = {
+export const CreatePostGenerationContentTypeRequest = {
   Changelog: "changelog",
   BlogPost: "blog_post",
   LinkedinPost: "linkedin_post",
@@ -26,7 +26,9 @@ export const ContentTypeRequest = {
 /**
  * Type of content to generate.
  */
-export type ContentTypeRequest = ClosedEnum<typeof ContentTypeRequest>;
+export type CreatePostGenerationContentTypeRequest = ClosedEnum<
+  typeof CreatePostGenerationContentTypeRequest
+>;
 
 /**
  * How far back to collect source activity (commits, pull requests, releases, Linear issues).
@@ -112,7 +114,7 @@ export type CreatePostGenerationRequest = {
   /**
    * Type of content to generate.
    */
-  contentType: ContentTypeRequest;
+  contentType: CreatePostGenerationContentTypeRequest;
   /**
    * How far back to collect source activity (commits, pull requests, releases, Linear issues).
    */
@@ -249,9 +251,10 @@ export type CreatePostGenerationResponse = {
 };
 
 /** @internal */
-export const ContentTypeRequest$outboundSchema: z.ZodMiniEnum<
-  typeof ContentTypeRequest
-> = z.enum(ContentTypeRequest);
+export const CreatePostGenerationContentTypeRequest$outboundSchema:
+  z.ZodMiniEnum<typeof CreatePostGenerationContentTypeRequest> = z.enum(
+    CreatePostGenerationContentTypeRequest,
+  );
 
 /** @internal */
 export const LookbackWindowRequestBody$outboundSchema: z.ZodMiniEnum<
@@ -469,7 +472,7 @@ export const CreatePostGenerationRequest$outboundSchema: z.ZodMiniType<
   CreatePostGenerationRequest$Outbound,
   CreatePostGenerationRequest
 > = z.object({
-  contentType: ContentTypeRequest$outboundSchema,
+  contentType: CreatePostGenerationContentTypeRequest$outboundSchema,
   lookbackWindow: z._default(
     LookbackWindowRequestBody$outboundSchema,
     "last_7_days",

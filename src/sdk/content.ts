@@ -6,6 +6,7 @@
 import { contentCreateBrandIdentity } from "../funcs/content-create-brand-identity.js";
 import { contentCreateGitHubIntegration } from "../funcs/content-create-git-hub-integration.js";
 import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
+import { contentCreatePost } from "../funcs/content-create-post.js";
 import { contentDeleteBrandIdentity } from "../funcs/content-delete-brand-identity.js";
 import { contentDeleteIntegration } from "../funcs/content-delete-integration.js";
 import { contentDeletePost } from "../funcs/content-delete-post.js";
@@ -34,6 +35,23 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.ListPostsResponse> {
     return unwrapAsync(contentListPosts(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Create a post
+   *
+   * @remarks
+   * Creates a post directly without generation. Omit markdown to create an empty draft you fill in later through the dashboard or PATCH /v1/posts/{postId}. Slugs are only accepted for blog posts and changelogs.
+   */
+  async createPost(
+    request: operations.CreatePostRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreatePostResponse> {
+    return unwrapAsync(contentCreatePost(
       this,
       request,
       options,

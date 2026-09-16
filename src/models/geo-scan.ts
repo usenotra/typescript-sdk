@@ -18,6 +18,29 @@ export const GeoScanStatus = {
 } as const;
 export type GeoScanStatus = OpenEnum<typeof GeoScanStatus>;
 
+export type GeoScanEngine = {
+  engine: string;
+  plannedChecks: number | null;
+  completedChecks: number;
+  mentionCount: number;
+  failedChecks: number;
+};
+
+export type GeoScanSummary = {
+  plannedChecks: number | null;
+  completedChecks: number;
+  mentionCount: number;
+  failedChecks: number;
+  engines: Array<GeoScanEngine>;
+};
+
+export const FailedStage = {
+  Handoff: "handoff",
+  Execution: "execution",
+  Stale: "stale",
+} as const;
+export type FailedStage = OpenEnum<typeof FailedStage>;
+
 export type GeoScan = {
   id: string;
   projectId: string;
@@ -25,6 +48,11 @@ export type GeoScan = {
   startedAt: string;
   finishedAt: string | null;
   createdAt: string;
+  summary: GeoScanSummary;
+  errorCode: string | null;
+  errorMessage: string | null;
+  failedStage: FailedStage | null;
+  retryable: boolean | null;
 };
 
 /** @internal */
@@ -34,6 +62,54 @@ export const GeoScanStatus$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(GeoScanStatus);
 
 /** @internal */
+export const GeoScanEngine$inboundSchema: z.ZodMiniType<
+  GeoScanEngine,
+  unknown
+> = z.object({
+  engine: types.string(),
+  plannedChecks: types.nullable(types.number()),
+  completedChecks: types.number(),
+  mentionCount: types.number(),
+  failedChecks: types.number(),
+});
+
+export function geoScanEngineFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoScanEngine, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoScanEngine$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoScanEngine' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoScanSummary$inboundSchema: z.ZodMiniType<
+  GeoScanSummary,
+  unknown
+> = z.object({
+  plannedChecks: types.nullable(types.number()),
+  completedChecks: types.number(),
+  mentionCount: types.number(),
+  failedChecks: types.number(),
+  engines: z.array(z.lazy(() => GeoScanEngine$inboundSchema)),
+});
+
+export function geoScanSummaryFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoScanSummary, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoScanSummary$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoScanSummary' from JSON`,
+  );
+}
+
+/** @internal */
+export const FailedStage$inboundSchema: z.ZodMiniType<FailedStage, unknown> =
+  openEnums.inboundSchema(FailedStage);
+
+/** @internal */
 export const GeoScan$inboundSchema: z.ZodMiniType<GeoScan, unknown> = z.object({
   id: types.string(),
   projectId: types.string(),
@@ -41,6 +117,11 @@ export const GeoScan$inboundSchema: z.ZodMiniType<GeoScan, unknown> = z.object({
   startedAt: types.string(),
   finishedAt: types.nullable(types.string()),
   createdAt: types.string(),
+  summary: z.lazy(() => GeoScanSummary$inboundSchema),
+  errorCode: types.nullable(types.string()),
+  errorMessage: types.nullable(types.string()),
+  failedStage: types.nullable(FailedStage$inboundSchema),
+  retryable: types.nullable(types.boolean()),
 });
 
 export function geoScanFromJSON(

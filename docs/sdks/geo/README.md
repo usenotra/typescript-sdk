@@ -34,9 +34,17 @@ Manage generative engine optimization: projects, tracking settings, prompts, pro
 * [getGeoVisibilityOverview](#getgeovisibilityoverview) - Get mention rates per engine
 * [getGeoVisibilityTimeseries](#getgeovisibilitytimeseries) - Get daily mention counts per engine
 * [getGeoVisibilityPromptResults](#getgeovisibilitypromptresults) - Get the latest answer per prompt and engine
+* [listGeoPromptResultSummaries](#listgeopromptresultsummaries) - List compact prompt result summaries
+* [getGeoPromptResultDetail](#getgeopromptresultdetail) - Get one full prompt result
 * [getGeoVisibilityCompetitorShare](#getgeovisibilitycompetitorshare) - Get share of voice across tracked brands
 * [getGeoVisibilityLanguageShare](#getgeovisibilitylanguageshare) - Get mention rates per tracked language
 * [getGeoVisibilityCompetitorDetail](#getgeovisibilitycompetitordetail) - Get one competitor's mention history
+* [listGeoChanges](#listgeochanges) - Compare the two latest GEO scans
+* [getGeoPromptHistory](#getgeoprompthistory) - Get the stored check history for one prompt
+* [getGeoSentiment](#getgeosentiment) - Get aggregate GEO sentiment
+* [getGeoSentimentAnalysis](#getgeosentimentanalysis) - Get the stored GEO sentiment analysis
+* [listGeoSentimentEvidence](#listgeosentimentevidence) - List answers used as sentiment evidence
+* [listGeoShelfSources](#listgeoshelfsources) - List stored GEO shelf sources
 * [listGeoContentGaps](#listgeocontentgaps) - List content gaps
 * [listGeoContentBriefs](#listgeocontentbriefs) - List content briefs
 * [planGeoContentBrief](#plangeocontentbrief) - Plan a content brief
@@ -1792,7 +1800,7 @@ run();
 
 ## listGeoScans
 
-List GEO scans
+Lists scans with planned, completed, mentioned, and explicitly failed check totals by engine. Failed scans include safe failure metadata when available.
 
 ### Example Usage
 
@@ -1943,7 +1951,7 @@ run();
 
 ## getGeoScan
 
-Get a single GEO scan
+Returns scan status, check progress and mentions by engine, plus safe failure metadata for failed scans. Legacy scans without a saved plan report null planned totals.
 
 ### Example Usage
 
@@ -2255,6 +2263,162 @@ run();
 | errors.ErrorResponse         | 500, 503                     | application/json             |
 | errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
 
+## listGeoPromptResultSummaries
+
+A filtered, paginated projection of the latest answer per prompt and engine. Full answer text and sources are omitted; use checkId with the detail endpoint.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoPromptResultSummaries" method="get" path="/v1/projects/{projectId}/geo/visibility/prompt-results/summaries" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoPromptResultSummaries({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOPromptResultSummaries } from "@usenotra/sdk/funcs/geo-list-geo-prompt-result-summaries.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOPromptResultSummaries(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOPromptResultSummaries failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoPromptResultSummariesRequest](../../models/operations/list-geo-prompt-result-summaries-request.md)                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoVisibilityPromptResultSummariesResponse](../../models/geo-visibility-prompt-result-summaries-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoPromptResultDetail
+
+Loads the answer, grounding sources and token metadata for one checkId returned by the summaries or prompt-history endpoints.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoPromptResultDetail" method="get" path="/v1/projects/{projectId}/geo/visibility/prompt-results/{checkId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoPromptResultDetail({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    checkId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOPromptResultDetail } from "@usenotra/sdk/funcs/geo-get-geo-prompt-result-detail.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOPromptResultDetail(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    checkId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOPromptResultDetail failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoPromptResultDetailRequest](../../models/operations/get-geo-prompt-result-detail-request.md)                                                                  | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoVisibilityPromptResultDetailResponse](../../models/geo-visibility-prompt-result-detail-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
 ## getGeoVisibilityCompetitorShare
 
 Mention counts per brand with a per-brand trend, plus the daily timeseries behind it. Pass `days` for a rolling window, or `from`/`to` for an explicit one.
@@ -2485,6 +2649,470 @@ run();
 ### Response
 
 **Promise\<[models.GeoVisibilityCompetitorDetailResponse](../../models/geo-visibility-competitor-detail-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## listGeoChanges
+
+Compare the two latest GEO scans
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoChanges" method="get" path="/v1/projects/{projectId}/geo/changes" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoChanges({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOChanges } from "@usenotra/sdk/funcs/geo-list-geo-changes.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOChanges(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOChanges failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoChangesRequest](../../models/operations/list-geo-changes-request.md)                                                                                        | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoChangesResponse](../../models/geo-changes-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoPromptHistory
+
+Returns compact check rows. Use each check id with the prompt-result detail endpoint for the full answer.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoPromptHistory" method="get" path="/v1/projects/{projectId}/geo/prompts/{promptId}/history" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoPromptHistory({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    promptId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOPromptHistory } from "@usenotra/sdk/funcs/geo-get-geo-prompt-history.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOPromptHistory(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    promptId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOPromptHistory failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoPromptHistoryRequest](../../models/operations/get-geo-prompt-history-request.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoPromptHistoryResponse](../../models/geo-prompt-history-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoSentiment
+
+Returns current and previous-period sentiment metrics without starting billed analysis.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoSentiment" method="get" path="/v1/projects/{projectId}/geo/sentiment" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoSentiment({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOSentiment } from "@usenotra/sdk/funcs/geo-get-geo-sentiment.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOSentiment(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOSentiment failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoSentimentRequest](../../models/operations/get-geo-sentiment-request.md)                                                                                      | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoSentimentResponse](../../models/geo-sentiment-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoSentimentAnalysis
+
+Reads the cached thematic analysis state and never starts a billed model run.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoSentimentAnalysis" method="get" path="/v1/projects/{projectId}/geo/sentiment/analysis" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoSentimentAnalysis({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOSentimentAnalysis } from "@usenotra/sdk/funcs/geo-get-geo-sentiment-analysis.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOSentimentAnalysis(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOSentimentAnalysis failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoSentimentAnalysisRequest](../../models/operations/get-geo-sentiment-analysis-request.md)                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoSentimentAnalysisResponse](../../models/geo-sentiment-analysis-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## listGeoSentimentEvidence
+
+List answers used as sentiment evidence
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoSentimentEvidence" method="get" path="/v1/projects/{projectId}/geo/sentiment/evidence" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoSentimentEvidence({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOSentimentEvidence } from "@usenotra/sdk/funcs/geo-list-geo-sentiment-evidence.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOSentimentEvidence(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOSentimentEvidence failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoSentimentEvidenceRequest](../../models/operations/list-geo-sentiment-evidence-request.md)                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoSentimentEvidenceResponse](../../models/geo-sentiment-evidence-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## listGeoShelfSources
+
+Returns a bounded page of cited and manually tracked sources, newest updates first.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoShelfSources" method="get" path="/v1/projects/{projectId}/geo/shelf-sources" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoShelfSources({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOShelfSources } from "@usenotra/sdk/funcs/geo-list-geo-shelf-sources.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOShelfSources(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOShelfSources failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoShelfSourcesRequest](../../models/operations/list-geo-shelf-sources-request.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoShelfListResponse](../../models/geo-shelf-list-response.md)\>**
 
 ### Errors
 
