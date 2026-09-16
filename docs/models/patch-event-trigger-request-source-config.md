@@ -18,3 +18,4 @@ let value: PatchEventTriggerRequestSourceConfig = {
 | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
 | `eventTypes`                                  | [models.EventType](../models/event-type.md)[] | :heavy_check_mark:                            | N/A                                           |
 | `includePreReleases`                          | *boolean*                                     | :heavy_minus_sign:                            | N/A                                           |
+| `ignoreCommitPatterns`                        | *string*[]                                    | :heavy_minus_sign:                            | N/A                                           |

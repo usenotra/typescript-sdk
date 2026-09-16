@@ -7,6 +7,7 @@ Manage posts, brand identities, and GitHub or Linear integrations, and queue con
 ### Available Operations
 
 * [listPosts](#listposts) - List posts
+* [createPost](#createpost) - Create a post
 * [getPost](#getpost) - Get a single post
 * [deletePost](#deletepost) - Delete a single post
 * [updatePost](#updatepost) - Update a single post
@@ -92,6 +93,86 @@ run();
 | errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
 | errors.ErrorResponse     | 503                      | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## createPost
+
+Creates a post directly without generation. Omit markdown to create an empty draft you fill in later through the dashboard or PATCH /v1/posts/{postId}. Slugs are only accepted for blog posts and changelogs.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="createPost" method="post" path="/v1/posts" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.createPost({
+    title: "Ship notes for week 11",
+    contentType: "blog_post",
+    slug: "ship-notes-week-11",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentCreatePost } from "@usenotra/sdk/funcs/content-create-post.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentCreatePost(notra, {
+    title: "Ship notes for week 11",
+    contentType: "blog_post",
+    slug: "ship-notes-week-11",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentCreatePost failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.CreatePostRequest](../../models/operations/create-post-request.md)                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.CreatePostResponse](../../models/operations/create-post-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 503                           | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## getPost
 

@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List GEO scans
+ *
+ * @remarks
+ * Lists scans with planned, completed, mentioned, and explicitly failed check totals by engine. Failed scans include safe failure metadata when available.
  */
 export function geoListGEOScans(
   client: NotraCore,

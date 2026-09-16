@@ -148,6 +148,7 @@ run();
 ### [Content](docs/sdks/content/README.md)
 
 * [listPosts](docs/sdks/content/README.md#listposts) - List posts
+* [createPost](docs/sdks/content/README.md#createpost) - Create a post
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
 * [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
 * [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
@@ -166,6 +167,7 @@ run();
 ### [Discovery](docs/sdks/discovery/README.md)
 
 * [getPublicApiStatus](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
+* [getWorkspaces](docs/sdks/discovery/README.md#getworkspaces) - Get authenticated workspace context
 
 ### [EventTriggers](docs/sdks/eventtriggers/README.md)
 
@@ -213,9 +215,17 @@ run();
 * [getGeoVisibilityOverview](docs/sdks/geo/README.md#getgeovisibilityoverview) - Get mention rates per engine
 * [getGeoVisibilityTimeseries](docs/sdks/geo/README.md#getgeovisibilitytimeseries) - Get daily mention counts per engine
 * [getGeoVisibilityPromptResults](docs/sdks/geo/README.md#getgeovisibilitypromptresults) - Get the latest answer per prompt and engine
+* [listGeoPromptResultSummaries](docs/sdks/geo/README.md#listgeopromptresultsummaries) - List compact prompt result summaries
+* [getGeoPromptResultDetail](docs/sdks/geo/README.md#getgeopromptresultdetail) - Get one full prompt result
 * [getGeoVisibilityCompetitorShare](docs/sdks/geo/README.md#getgeovisibilitycompetitorshare) - Get share of voice across tracked brands
 * [getGeoVisibilityLanguageShare](docs/sdks/geo/README.md#getgeovisibilitylanguageshare) - Get mention rates per tracked language
 * [getGeoVisibilityCompetitorDetail](docs/sdks/geo/README.md#getgeovisibilitycompetitordetail) - Get one competitor's mention history
+* [listGeoChanges](docs/sdks/geo/README.md#listgeochanges) - Compare the two latest GEO scans
+* [getGeoPromptHistory](docs/sdks/geo/README.md#getgeoprompthistory) - Get the stored check history for one prompt
+* [getGeoSentiment](docs/sdks/geo/README.md#getgeosentiment) - Get aggregate GEO sentiment
+* [getGeoSentimentAnalysis](docs/sdks/geo/README.md#getgeosentimentanalysis) - Get the stored GEO sentiment analysis
+* [listGeoSentimentEvidence](docs/sdks/geo/README.md#listgeosentimentevidence) - List answers used as sentiment evidence
+* [listGeoShelfSources](docs/sdks/geo/README.md#listgeoshelfsources) - List stored GEO shelf sources
 * [listGeoContentGaps](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
 * [listGeoContentBriefs](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
 * [planGeoContentBrief](docs/sdks/geo/README.md#plangeocontentbrief) - Plan a content brief
@@ -276,6 +286,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`chatsPostChatMessage`](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
 - [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 - [`contentCreateGitHubIntegration`](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
+- [`contentCreatePost`](docs/sdks/content/README.md#createpost) - Create a post
 - [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 - [`contentDeleteBrandIdentity`](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
 - [`contentDeleteIntegration`](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
@@ -290,6 +301,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 - [`discoveryGetPublicApiStatus`](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
+- [`discoveryGetWorkspaces`](docs/sdks/discovery/README.md#getworkspaces) - Get authenticated workspace context
 - [`eventTriggersCreateEventTrigger`](docs/sdks/eventtriggers/README.md#createeventtrigger) - Create an event trigger
 - [`eventTriggersDeleteEventTrigger`](docs/sdks/eventtriggers/README.md#deleteeventtrigger) - Delete an event trigger
 - [`eventTriggersGetEventTrigger`](docs/sdks/eventtriggers/README.md#geteventtrigger) - Get an event trigger
@@ -312,7 +324,11 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoGetGEOAgentReadiness`](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
 - [`geoGetGEOContentBrief`](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
 - [`geoGetGEOIngestSetup`](docs/sdks/geo/README.md#getgeoingestsetup) - Get the install snippets
+- [`geoGetGEOPromptHistory`](docs/sdks/geo/README.md#getgeoprompthistory) - Get the stored check history for one prompt
+- [`geoGetGEOPromptResultDetail`](docs/sdks/geo/README.md#getgeopromptresultdetail) - Get one full prompt result
 - [`geoGetGEOScan`](docs/sdks/geo/README.md#getgeoscan) - Get a single GEO scan
+- [`geoGetGEOSentiment`](docs/sdks/geo/README.md#getgeosentiment) - Get aggregate GEO sentiment
+- [`geoGetGEOSentimentAnalysis`](docs/sdks/geo/README.md#getgeosentimentanalysis) - Get the stored GEO sentiment analysis
 - [`geoGetGEOSettings`](docs/sdks/geo/README.md#getgeosettings) - Get a project's GEO settings
 - [`geoGetGEOTrafficJourney`](docs/sdks/geo/README.md#getgeotrafficjourney) - Get one journey's events
 - [`geoGetGEOTrafficLog`](docs/sdks/geo/README.md#getgeotrafficlog) - Get recent AI traffic events
@@ -327,12 +343,16 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoImportGEOCompetitors`](docs/sdks/geo/README.md#importgeocompetitors) - Bulk import GEO competitors
 - [`geoImportGEOPrompts`](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
 - [`geoIssueGEOIngestToken`](docs/sdks/geo/README.md#issuegeoingesttoken) - Issue the tracking token
+- [`geoListGEOChanges`](docs/sdks/geo/README.md#listgeochanges) - Compare the two latest GEO scans
 - [`geoListGEOCompetitors`](docs/sdks/geo/README.md#listgeocompetitors) - List tracked GEO competitors
 - [`geoListGEOContentBriefs`](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
 - [`geoListGEOContentGaps`](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
+- [`geoListGEOPromptResultSummaries`](docs/sdks/geo/README.md#listgeopromptresultsummaries) - List compact prompt result summaries
 - [`geoListGEOPrompts`](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
 - [`geoListGEOScans`](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
+- [`geoListGEOSentimentEvidence`](docs/sdks/geo/README.md#listgeosentimentevidence) - List answers used as sentiment evidence
 - [`geoListGEOSequences`](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
+- [`geoListGEOShelfSources`](docs/sdks/geo/README.md#listgeoshelfsources) - List stored GEO shelf sources
 - [`geoListGEOTrafficJourneys`](docs/sdks/geo/README.md#listgeotrafficjourneys) - List AI traffic journeys
 - [`geoListGEOTrafficPages`](docs/sdks/geo/README.md#listgeotrafficpages) - List the most visited pages
 - [`geoListProjects`](docs/sdks/geo/README.md#listprojects) - List GEO projects
@@ -444,7 +464,7 @@ const notra = new Notra({
 
 async function run() {
   try {
-    const result = await notra.content.listPosts({});
+    const result = await notra.discovery.getWorkspaces();
 
     console.log(result);
   } catch (error) {
@@ -487,8 +507,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 20 of 90 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 90 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 21 of 100 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 100 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

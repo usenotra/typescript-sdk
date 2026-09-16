@@ -35,6 +35,7 @@ export type UpdateEventTriggerEventType = OpenEnum<
 export type UpdateEventTriggerSourceConfig = {
   eventTypes: Array<UpdateEventTriggerEventType>;
   includePreReleases: boolean;
+  ignoreCommitPatterns?: Array<string> | undefined;
 };
 
 export type UpdateEventTriggerTargets = {
@@ -137,6 +138,7 @@ export const UpdateEventTriggerSourceConfig$inboundSchema: z.ZodMiniType<
 > = z.object({
   eventTypes: z.array(UpdateEventTriggerEventType$inboundSchema),
   includePreReleases: z._default(types.boolean(), true),
+  ignoreCommitPatterns: types.optional(z.array(types.string())),
 });
 
 export function updateEventTriggerSourceConfigFromJSON(

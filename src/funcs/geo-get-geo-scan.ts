@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get a single GEO scan
+ *
+ * @remarks
+ * Returns scan status, check progress and mentions by engine, plus safe failure metadata for failed scans. Legacy scans without a saved plan report null planned totals.
  */
 export function geoGetGEOScan(
   client: NotraCore,
