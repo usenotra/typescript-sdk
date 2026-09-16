@@ -28,7 +28,7 @@ export const TypeEnum = {
 } as const;
 export type TypeEnum = ClosedEnum<typeof TypeEnum>;
 
-export type Authentication = {
+export type PublicStatusResponseAuthentication = {
   type: TypeEnum;
   resourceMetadata: string;
   guide: string;
@@ -39,7 +39,7 @@ export type PublicStatusResponse = {
   service: Service;
   version: string;
   public: true;
-  authentication: Authentication;
+  authentication: PublicStatusResponseAuthentication;
 };
 
 /** @internal */
@@ -58,8 +58,8 @@ export const TypeEnum$inboundSchema: z.ZodMiniEnum<typeof TypeEnum> = z.enum(
 );
 
 /** @internal */
-export const Authentication$inboundSchema: z.ZodMiniType<
-  Authentication,
+export const PublicStatusResponseAuthentication$inboundSchema: z.ZodMiniType<
+  PublicStatusResponseAuthentication,
   unknown
 > = z.pipe(
   z.object({
@@ -74,13 +74,14 @@ export const Authentication$inboundSchema: z.ZodMiniType<
   }),
 );
 
-export function authenticationFromJSON(
+export function publicStatusResponseAuthenticationFromJSON(
   jsonString: string,
-): SafeParseResult<Authentication, SDKValidationError> {
+): SafeParseResult<PublicStatusResponseAuthentication, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Authentication$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Authentication' from JSON`,
+    (x) =>
+      PublicStatusResponseAuthentication$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PublicStatusResponseAuthentication' from JSON`,
   );
 }
 
@@ -93,7 +94,9 @@ export const PublicStatusResponse$inboundSchema: z.ZodMiniType<
   service: Service$inboundSchema,
   version: types.string(),
   public: types.literal(true),
-  authentication: z.lazy(() => Authentication$inboundSchema),
+  authentication: z.lazy(() =>
+    PublicStatusResponseAuthentication$inboundSchema
+  ),
 });
 
 export function publicStatusResponseFromJSON(

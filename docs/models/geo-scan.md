@@ -12,6 +12,17 @@ let value: GeoScan = {
   startedAt: "<value>",
   finishedAt: "<value>",
   createdAt: "1724177187710",
+  summary: {
+    plannedChecks: 415437,
+    completedChecks: 495984,
+    mentionCount: 775479,
+    failedChecks: 241900,
+    engines: [],
+  },
+  errorCode: "<value>",
+  errorMessage: "<value>",
+  failedStage: "handoff",
+  retryable: false,
 };
 ```
 
@@ -25,3 +36,8 @@ let value: GeoScan = {
 | `startedAt`                                          | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
 | `finishedAt`                                         | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
 | `createdAt`                                          | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| `summary`                                            | [models.Summary](../models/summary.md)               | :heavy_check_mark:                                   | N/A                                                  |
+| `errorCode`                                          | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| `errorMessage`                                       | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| `failedStage`                                        | [models.FailedStage](../models/failed-stage.md)      | :heavy_check_mark:                                   | N/A                                                  |
+| `retryable`                                          | *boolean*                                            | :heavy_check_mark:                                   | N/A                                                  |

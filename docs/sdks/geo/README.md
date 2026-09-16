@@ -1792,7 +1792,7 @@ run();
 
 ## listGeoScans
 
-List GEO scans
+Lists scans with planned, completed, mentioned, and explicitly failed check totals by engine. Failed scans include safe failure metadata when available.
 
 ### Example Usage
 
@@ -1943,7 +1943,7 @@ run();
 
 ## getGeoScan
 
-Get a single GEO scan
+Returns scan status, check progress and mentions by engine, plus safe failure metadata for failed scans. Legacy scans without a saved plan report null planned totals.
 
 ### Example Usage
 

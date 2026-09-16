@@ -390,6 +390,9 @@ export class Geo extends ClientSDK {
 
   /**
    * List GEO scans
+   *
+   * @remarks
+   * Lists scans with planned, completed, mentioned, and explicitly failed check totals by engine. Failed scans include safe failure metadata when available.
    */
   async listGeoScans(
     request: operations.ListGeoScansRequest,
@@ -421,6 +424,9 @@ export class Geo extends ClientSDK {
 
   /**
    * Get a single GEO scan
+   *
+   * @remarks
+   * Returns scan status, check progress and mentions by engine, plus safe failure metadata for failed scans. Legacy scans without a saved plan report null planned totals.
    */
   async getGeoScan(
     request: operations.GetGeoScanRequest,

@@ -47,6 +47,7 @@ export * from "./get-post-generation.js";
 export * from "./get-post.js";
 export * from "./get-project.js";
 export * from "./get-skill.js";
+export * from "./get-workspaces.js";
 export * from "./import-geo-competitors.js";
 export * from "./import-geo-prompts.js";
 export * from "./issue-geo-ingest-token.js";

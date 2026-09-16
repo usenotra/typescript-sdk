@@ -56,6 +56,7 @@ export * from "./geo-visibility-prompt-results-response.js";
 export * from "./geo-visibility-timeseries-response.js";
 export * from "./get-chat-response.js";
 export * from "./get-chats-response.js";
+export * from "./get-workspaces-response.js";
 export * from "./import-geo-competitors-request.js";
 export * from "./import-geo-competitors-response.js";
 export * from "./import-geo-prompts-request.js";
