@@ -12,6 +12,7 @@ let value: GeoIngestSetupResponse = {
     next: "<value>",
     nuxt: "<value>",
     netlify: "<value>",
+    tanstack: "<value>",
   },
   organization: {
     id: "<id>",

@@ -9,6 +9,7 @@ let value: GeoIngestTokenResponseSnippets = {
   next: "<value>",
   nuxt: "<value>",
   netlify: "<value>",
+  tanstack: "<value>",
 };
 ```
 
@@ -19,3 +20,4 @@ let value: GeoIngestTokenResponseSnippets = {
 | `next`             | *string*           | :heavy_check_mark: | N/A                |
 | `nuxt`             | *string*           | :heavy_check_mark: | N/A                |
 | `netlify`          | *string*           | :heavy_check_mark: | N/A                |
+| `tanstack`         | *string*           | :heavy_check_mark: | N/A                |

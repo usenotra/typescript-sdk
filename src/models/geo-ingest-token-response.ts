@@ -13,6 +13,7 @@ export type GeoIngestTokenResponseSnippets = {
   next: string;
   nuxt: string;
   netlify: string;
+  tanstack: string;
 };
 
 export type GeoIngestTokenResponseOrganization = {
@@ -47,6 +48,7 @@ export const GeoIngestTokenResponseSnippets$inboundSchema: z.ZodMiniType<
   next: types.string(),
   nuxt: types.string(),
   netlify: types.string(),
+  tanstack: types.string(),
 });
 
 export function geoIngestTokenResponseSnippetsFromJSON(
