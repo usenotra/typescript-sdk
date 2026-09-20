@@ -22,6 +22,7 @@ export type GeoSettings = {
   engines: Array<string>;
   enforceZdr: boolean;
   nonZdrApprovedEngines: Array<string>;
+  trackWithoutSearch: boolean;
   pausedAutoPromptIds: Array<string>;
   removedAutoPromptIds: Array<string>;
   enabled: boolean;
@@ -48,6 +49,7 @@ export const GeoSettings$inboundSchema: z.ZodMiniType<GeoSettings, unknown> = z
     engines: z.array(types.string()),
     enforceZdr: types.boolean(),
     nonZdrApprovedEngines: z.array(types.string()),
+    trackWithoutSearch: types.boolean(),
     pausedAutoPromptIds: z.array(types.string()),
     removedAutoPromptIds: z.array(types.string()),
     enabled: types.boolean(),
