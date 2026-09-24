@@ -29,6 +29,7 @@ export type Journey = {
   distinctPaths: number;
   firstSeenAt: string;
   lastSeenAt: string;
+  entryPath: string;
   samplePaths: Array<string>;
 };
 
@@ -63,6 +64,7 @@ export const Journey$inboundSchema: z.ZodMiniType<Journey, unknown> = z.object({
   distinctPaths: types.number(),
   firstSeenAt: types.string(),
   lastSeenAt: types.string(),
+  entryPath: types.string(),
   samplePaths: z.array(types.string()),
 });
 

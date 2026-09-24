@@ -12,7 +12,6 @@ import { SDKValidationError } from "./errors/sdk-validation-error.js";
 export type CreateAgentSessionResponse = {
   ok: true;
   sessionId: string;
-  continuationToken: string;
 };
 
 /** @internal */
@@ -22,7 +21,6 @@ export const CreateAgentSessionResponse$inboundSchema: z.ZodMiniType<
 > = z.object({
   ok: types.literal(true),
   sessionId: types.string(),
-  continuationToken: types.string(),
 });
 
 export function createAgentSessionResponseFromJSON(
