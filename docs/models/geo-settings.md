@@ -30,20 +30,22 @@ let value: GeoSettings = {
     "<value 1>",
     "<value 2>",
   ],
+  trackWithoutSearch: false,
   pausedAutoPromptIds: [
     "<value 1>",
-    "<value 2>",
   ],
   removedAutoPromptIds: [
     "<value 1>",
+    "<value 2>",
+    "<value 3>",
   ],
-  enabled: false,
-  scanIntervalHours: 393314,
+  enabled: true,
+  scanIntervalHours: 540983,
   scanStartedAt: "<value>",
   lastScanAt: "<value>",
-  isScanning: true,
-  createdAt: "1720923784626",
-  updatedAt: "1735641875475",
+  isScanning: false,
+  createdAt: "1718270311419",
+  updatedAt: "1735669009447",
 };
 ```
 
@@ -63,6 +65,7 @@ let value: GeoSettings = {
 | `engines`               | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `enforceZdr`            | *boolean*               | :heavy_check_mark:      | N/A                     |
 | `nonZdrApprovedEngines` | *string*[]              | :heavy_check_mark:      | N/A                     |
+| `trackWithoutSearch`    | *boolean*               | :heavy_check_mark:      | N/A                     |
 | `pausedAutoPromptIds`   | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `removedAutoPromptIds`  | *string*[]              | :heavy_check_mark:      | N/A                     |
 | `enabled`               | *boolean*               | :heavy_check_mark:      | N/A                     |
