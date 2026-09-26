@@ -84,7 +84,7 @@ export class Chats extends ClientSDK {
    * Post a message to an existing chat and stream the reply
    *
    * @remarks
-   * Appends a user message to the chat and streams the assistant reply. Earlier messages in the chat are included as context automatically.
+   * Sends a message or resumes pending tool approvals and streams the assistant reply. Earlier messages are included automatically. To approve or deny tools, send approvals: [{ "id": "<approvalId>", "approved": true }] for every pending approval in the latest assistant message, without a message field; use "approved": false to deny. Approval IDs are emitted in tool-approval-request chunks and stored on tool parts in chat history.
    */
   async postChatMessage(
     request: operations.PostChatMessageRequest,
