@@ -38,6 +38,7 @@ export const GeoChangesResponseKind = {
   CompetitorDisplaced: "competitor_displaced",
   CitationAdded: "citation_added",
   CitationRemoved: "citation_removed",
+  CompetitorCited: "competitor_cited",
   NewEngine: "new_engine",
 } as const;
 export type GeoChangesResponseKind = OpenEnum<typeof GeoChangesResponseKind>;
