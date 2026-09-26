@@ -13,6 +13,7 @@ let value: Journey = {
   distinctPaths: 542101,
   firstSeenAt: "<value>",
   lastSeenAt: "<value>",
+  entryPath: "<value>",
   samplePaths: [
     "<value 1>",
     "<value 2>",
@@ -31,4 +32,5 @@ let value: Journey = {
 | `distinctPaths`                                                                                         | *number*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
 | `firstSeenAt`                                                                                           | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
 | `lastSeenAt`                                                                                            | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `entryPath`                                                                                             | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
 | `samplePaths`                                                                                           | *string*[]                                                                                              | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
