@@ -326,7 +326,7 @@ run();
 
 ## updatePost
 
-Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
+Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs. Title, slug, or markdown updates also sync an existing linked GitHub pull request; no new pull request is created. GitHub sync errors occur after saving the post: 429 includes Retry-After, 502 indicates a sync error, and 504 indicates an unknown sync outcome. Check the PR before retrying an unconfirmed sync.
 
 ### Example Usage
 
@@ -409,7 +409,7 @@ run();
 | ----------------------------- | ----------------------------- | ----------------------------- |
 | errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
 | errors.RateLimitErrorResponse | 429                           | application/json              |
-| errors.ErrorResponse          | 503                           | application/json              |
+| errors.ErrorResponse          | 502, 503, 504                 | application/json              |
 | errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## createPostGeneration
