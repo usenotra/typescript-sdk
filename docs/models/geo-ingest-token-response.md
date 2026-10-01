@@ -12,6 +12,9 @@ let value: GeoIngestTokenResponse = {
     next: "<value>",
     nuxt: "<value>",
     netlify: "<value>",
+    tanstack: "<value>",
+    astro: "<value>",
+    sveltekit: "<value>",
   },
   organization: {
     id: "<id>",

@@ -100,7 +100,7 @@ export const Type = {
 } as const;
 export type Type = OpenEnum<typeof Type>;
 
-export type Event = {
+export type GetPostGenerationEvent = {
   id: string;
   jobId: string;
   type: Type;
@@ -114,7 +114,7 @@ export type Event = {
  */
 export type GetPostGenerationResponse = {
   job: GetPostGenerationJob;
-  events: Array<Event>;
+  events: Array<GetPostGenerationEvent>;
 };
 
 /** @internal */
@@ -198,7 +198,10 @@ export const Type$inboundSchema: z.ZodMiniType<Type, unknown> = openEnums
   .inboundSchema(Type);
 
 /** @internal */
-export const Event$inboundSchema: z.ZodMiniType<Event, unknown> = z.object({
+export const GetPostGenerationEvent$inboundSchema: z.ZodMiniType<
+  GetPostGenerationEvent,
+  unknown
+> = z.object({
   id: types.string(),
   jobId: types.string(),
   type: Type$inboundSchema,
@@ -207,13 +210,13 @@ export const Event$inboundSchema: z.ZodMiniType<Event, unknown> = z.object({
   metadata: types.nullable(z.record(z.string(), z.any())),
 });
 
-export function eventFromJSON(
+export function getPostGenerationEventFromJSON(
   jsonString: string,
-): SafeParseResult<Event, SDKValidationError> {
+): SafeParseResult<GetPostGenerationEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Event$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Event' from JSON`,
+    (x) => GetPostGenerationEvent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetPostGenerationEvent' from JSON`,
   );
 }
 
@@ -223,7 +226,7 @@ export const GetPostGenerationResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   job: z.lazy(() => GetPostGenerationJob$inboundSchema),
-  events: z.array(z.lazy(() => Event$inboundSchema)),
+  events: z.array(z.lazy(() => GetPostGenerationEvent$inboundSchema)),
 });
 
 export function getPostGenerationResponseFromJSON(

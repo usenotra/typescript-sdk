@@ -152,7 +152,7 @@ export class Geo extends ClientSDK {
    * Replace a project's GEO settings
    *
    * @remarks
-   * Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload.
+   * Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
    */
   async updateGeoSettings(
     request: operations.UpdateGeoSettingsRequest,
@@ -893,7 +893,7 @@ export class Geo extends ClientSDK {
    * Issue the tracking token
    *
    * @remarks
-   * Returns the current tracking token together with the install snippets. Organization-level: pass `projectId` to bind the token to one project. Issuing does not invalidate previously issued tokens; use rotation for that.
+   * Returns the current tracking token together with the install snippets. Pass `projectId` for a project-specific token; without it, the legacy token only accepts the organization's oldest project's hosts. Issuing does not invalidate previously issued tokens; use rotation for that.
    */
   async issueGeoIngestToken(
     request?: operations.IssueGeoIngestTokenRequest | undefined,
