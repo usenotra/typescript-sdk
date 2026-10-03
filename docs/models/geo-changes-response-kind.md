@@ -13,5 +13,5 @@ let value: GeoChangesResponseKind = "position_dropped";
 ## Values
 
 ```typescript
-"gained_mention" | "lost_mention" | "position_improved" | "position_dropped" | "competitor_displaced" | "citation_added" | "citation_removed" | "new_engine" | Unrecognized<string>
+"gained_mention" | "lost_mention" | "position_improved" | "position_dropped" | "competitor_displaced" | "citation_added" | "citation_removed" | "competitor_cited" | "new_engine" | Unrecognized<string>
 ```
