@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * Replace a project's GEO settings
  *
  * @remarks
- * Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload.
+ * Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
  */
 export function geoUpdateGEOSettings(
   client: NotraCore,
