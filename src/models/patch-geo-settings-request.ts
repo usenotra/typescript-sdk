@@ -21,6 +21,10 @@ export type PatchGeoSettingsRequest = {
   enforceZdr: boolean;
   nonZdrApprovedEngines: Array<string>;
   /**
+   * Also scan search-capable models without web search. Omit to keep the stored value (default false).
+   */
+  trackWithoutSearch?: boolean | undefined;
+  /**
    * Ids of auto-generated prompts to skip in scans. Omit to keep the current list.
    */
   pausedAutoPromptIds?: Array<string> | undefined;
@@ -45,6 +49,7 @@ export type PatchGeoSettingsRequest$Outbound = {
   engines: Array<string>;
   enforceZdr: boolean;
   nonZdrApprovedEngines: Array<string>;
+  trackWithoutSearch?: boolean | undefined;
   pausedAutoPromptIds?: Array<string> | undefined;
   removedAutoPromptIds?: Array<string> | undefined;
   enabled: boolean;
@@ -64,6 +69,7 @@ export const PatchGeoSettingsRequest$outboundSchema: z.ZodMiniType<
   engines: z.array(z.string()),
   enforceZdr: z.boolean(),
   nonZdrApprovedEngines: z.array(z.string()),
+  trackWithoutSearch: z.optional(z.boolean()),
   pausedAutoPromptIds: z.optional(z.array(z.string())),
   removedAutoPromptIds: z.optional(z.array(z.string())),
   enabled: z.boolean(),
