@@ -107,7 +107,7 @@ export type ComparisonPoint = {
   day: string;
 };
 
-export type Comparison = {
+export type GeoSentimentResponseComparison = {
   current: GeoSentimentResponseCurrent;
   previous: GeoSentimentResponsePrevious;
   summary: ComparisonSummary;
@@ -127,7 +127,7 @@ export type GeoSentimentResponse = {
   summary: GeoSentimentResponseSummary;
   engines: Array<GeoSentimentResponseEngine>;
   points: Array<GeoSentimentResponsePoint>;
-  comparison?: Comparison | undefined;
+  comparison?: GeoSentimentResponseComparison | undefined;
   organization: GeoSentimentResponseOrganization;
 };
 
@@ -328,22 +328,24 @@ export function comparisonPointFromJSON(
 }
 
 /** @internal */
-export const Comparison$inboundSchema: z.ZodMiniType<Comparison, unknown> = z
-  .object({
-    current: z.lazy(() => GeoSentimentResponseCurrent$inboundSchema),
-    previous: z.lazy(() => GeoSentimentResponsePrevious$inboundSchema),
-    summary: z.lazy(() => ComparisonSummary$inboundSchema),
-    points: z.array(z.lazy(() => ComparisonPoint$inboundSchema)),
-    delta: types.nullable(types.number()),
-  });
+export const GeoSentimentResponseComparison$inboundSchema: z.ZodMiniType<
+  GeoSentimentResponseComparison,
+  unknown
+> = z.object({
+  current: z.lazy(() => GeoSentimentResponseCurrent$inboundSchema),
+  previous: z.lazy(() => GeoSentimentResponsePrevious$inboundSchema),
+  summary: z.lazy(() => ComparisonSummary$inboundSchema),
+  points: z.array(z.lazy(() => ComparisonPoint$inboundSchema)),
+  delta: types.nullable(types.number()),
+});
 
-export function comparisonFromJSON(
+export function geoSentimentResponseComparisonFromJSON(
   jsonString: string,
-): SafeParseResult<Comparison, SDKValidationError> {
+): SafeParseResult<GeoSentimentResponseComparison, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Comparison$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Comparison' from JSON`,
+    (x) => GeoSentimentResponseComparison$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoSentimentResponseComparison' from JSON`,
   );
 }
 
@@ -377,7 +379,9 @@ export const GeoSentimentResponse$inboundSchema: z.ZodMiniType<
   summary: z.lazy(() => GeoSentimentResponseSummary$inboundSchema),
   engines: z.array(z.lazy(() => GeoSentimentResponseEngine$inboundSchema)),
   points: z.array(z.lazy(() => GeoSentimentResponsePoint$inboundSchema)),
-  comparison: types.optional(z.lazy(() => Comparison$inboundSchema)),
+  comparison: types.optional(
+    z.lazy(() => GeoSentimentResponseComparison$inboundSchema),
+  ),
   organization: z.lazy(() => GeoSentimentResponseOrganization$inboundSchema),
 });
 

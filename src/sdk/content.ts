@@ -3,6 +3,7 @@
  * @generated-id: 152cac8c63c4
  */
 
+import { contentCancelPostSchedule } from "../funcs/content-cancel-post-schedule.js";
 import { contentCreateBrandIdentity } from "../funcs/content-create-brand-identity.js";
 import { contentCreateGitHubIntegration } from "../funcs/content-create-git-hub-integration.js";
 import { contentCreatePostGeneration } from "../funcs/content-create-post-generation.js";
@@ -13,13 +14,16 @@ import { contentDeletePost } from "../funcs/content-delete-post.js";
 import { contentGetBrandIdentityGeneration } from "../funcs/content-get-brand-identity-generation.js";
 import { contentGetBrandIdentity } from "../funcs/content-get-brand-identity.js";
 import { contentGetPostGeneration } from "../funcs/content-get-post-generation.js";
+import { contentGetPostSchedule } from "../funcs/content-get-post-schedule.js";
 import { contentGetPost } from "../funcs/content-get-post.js";
 import { contentListBrandIdentities } from "../funcs/content-list-brand-identities.js";
 import { contentListIntegrations } from "../funcs/content-list-integrations.js";
 import { contentListPosts } from "../funcs/content-list-posts.js";
+import { contentSchedulePost } from "../funcs/content-schedule-post.js";
 import { contentUpdateBrandIdentity } from "../funcs/content-update-brand-identity.js";
 import { contentUpdatePost } from "../funcs/content-update-post.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -93,7 +97,7 @@ export class Content extends ClientSDK {
    * Update a single post
    *
    * @remarks
-   * Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
+   * Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs. Title, slug, or markdown updates also sync an existing linked GitHub pull request; no new pull request is created. GitHub sync errors occur after saving the post: 429 includes Retry-After, 502 indicates a sync error, and 504 indicates an unknown sync outcome. Check the PR before retrying an unconfirmed sync.
    */
   async updatePost(
     request: operations.UpdatePostRequest,
@@ -110,7 +114,7 @@ export class Content extends ClientSDK {
    * Queue async post generation
    *
    * @remarks
-   * Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Notra does not send webhooks when the job finishes.
+   * Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Subscribe to post.generation.completed, post.generation.failed, or post.generation.skipped using /v1/webhooks for completion notifications.
    */
   async createPostGeneration(
     request: operations.CreatePostGenerationRequest,
@@ -134,6 +138,57 @@ export class Content extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetPostGenerationResponse> {
     return unwrapAsync(contentGetPostGeneration(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a post's publishing schedule
+   *
+   * @remarks
+   * Returns the post's current schedule with the state of every destination, or null when nothing is scheduled.
+   */
+  async getPostSchedule(
+    request: operations.GetPostScheduleRequest,
+    options?: RequestOptions,
+  ): Promise<models.PostScheduleResponse> {
+    return unwrapAsync(contentGetPostSchedule(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Schedule a post for publishing
+   *
+   * @remarks
+   * Publishes the post automatically at scheduledAt: it is marked as published in Notra and, optionally, opened and merged as a GitHub pull request or posted to a connected X or LinkedIn account. Replaces any schedule that has not started. The post is published as saved at that time, so later edits are included. Publishing runs within about a minute of scheduledAt; transient errors are retried automatically.
+   */
+  async schedulePost(
+    request: operations.SchedulePostRequest,
+    options?: RequestOptions,
+  ): Promise<operations.SchedulePostResponse> {
+    return unwrapAsync(contentSchedulePost(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Cancel a post's publishing schedule
+   *
+   * @remarks
+   * Cancels every destination that has not started and clears failed ones. A destination that is already publishing cannot be interrupted: it finishes if it succeeds and ends canceled instead of being retried. inProgress reports it.
+   */
+  async cancelPostSchedule(
+    request: operations.CancelPostScheduleRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CancelPostScheduleResponse> {
+    return unwrapAsync(contentCancelPostSchedule(
       this,
       request,
       options,

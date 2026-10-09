@@ -1,11 +1,11 @@
-# Tier
+# ResolvedTier
 
 ## Example Usage
 
 ```typescript
-import { Tier } from "@usenotra/sdk/models";
+import { ResolvedTier } from "@usenotra/sdk/models";
 
-let value: Tier = "essential";
+let value: ResolvedTier = "recommended";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
