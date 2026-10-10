@@ -5,6 +5,7 @@
 
 export * from "./agent-session-summary.js";
 export * from "./approve-geo-content-brief-response.js";
+export * from "./cancel-post-schedule-response.js";
 export * from "./chat-session-summary.js";
 export * from "./create-agent-session-request.js";
 export * from "./create-agent-session-response.js";
@@ -88,10 +89,15 @@ export * from "./patch-skill-request.js";
 export * from "./patch-skill-response.js";
 export * from "./plan-geo-content-brief-request.js";
 export * from "./plan-geo-content-brief-response.js";
+export * from "./post-schedule-response.js";
+export * from "./post-schedule.js";
 export * from "./public-external-channel-id.js";
 export * from "./public-status-response.js";
 export * from "./put-geo-competitor-request.js";
 export * from "./run-geo-sequence-response.js";
+export * from "./schedule-destination.js";
+export * from "./schedule-post-request.js";
+export * from "./scheduled-publication.js";
 export * from "./security.js";
 export * from "./send-agent-message-request.js";
 export * from "./send-chat-message-request.js";
