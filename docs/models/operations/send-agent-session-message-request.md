@@ -7,9 +7,7 @@ import { SendAgentSessionMessageRequest } from "@usenotra/sdk/models/operations"
 
 let value: SendAgentSessionMessageRequest = {
   sessionId: "<id>",
-  body: {
-    continuationToken: "<value>",
-  },
+  body: {},
 };
 ```
 

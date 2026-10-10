@@ -1,11 +1,11 @@
-# Comparison
+# GeoSentimentResponseComparison
 
 ## Example Usage
 
 ```typescript
-import { Comparison } from "@usenotra/sdk/models";
+import { GeoSentimentResponseComparison } from "@usenotra/sdk/models";
 
-let value: Comparison = {
+let value: GeoSentimentResponseComparison = {
   current: {
     from: "<value>",
     to: "<value>",
@@ -15,23 +15,41 @@ let value: Comparison = {
     to: "<value>",
   },
   summary: {
-    totalChecks: 440016,
-    mentions: 119186,
-    positive: 142289,
-    neutral: 220935,
-    negative: 666056,
+    totalChecks: 951935,
+    mentions: 439321,
+    positive: 491316,
+    neutral: 768980,
+    negative: 421119,
     lastCheckedAt: "<value>",
-    score: 9481.34,
-    classifiedMentions: 8443,
-    unknownMentions: 646155,
-    notMentioned: 222335,
-    positiveShare: 7794.28,
-    neutralShare: null,
-    negativeShare: 6292.15,
-    classificationCoverage: 4323.56,
+    score: 5655.21,
+    classifiedMentions: 378920,
+    unknownMentions: 442887,
+    notMentioned: 453955,
+    positiveShare: null,
+    neutralShare: 2058.83,
+    negativeShare: 793.1,
+    classificationCoverage: 1986.12,
   },
-  points: [],
-  delta: 4926.48,
+  points: [
+    {
+      totalChecks: 105889,
+      mentions: 161446,
+      positive: 224728,
+      neutral: 191373,
+      negative: 911429,
+      lastCheckedAt: "<value>",
+      score: 3102.25,
+      classifiedMentions: 294683,
+      unknownMentions: 208053,
+      notMentioned: 973998,
+      positiveShare: null,
+      neutralShare: 1768.45,
+      negativeShare: 8143.13,
+      classificationCoverage: 4560.96,
+      day: "<value>",
+    },
+  ],
+  delta: 1299.8,
 };
 ```
 

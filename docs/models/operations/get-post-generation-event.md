@@ -1,20 +1,19 @@
-# Event
+# GetPostGenerationEvent
 
 ## Example Usage
 
 ```typescript
-import { Event } from "@usenotra/sdk/models/operations";
+import { GetPostGenerationEvent } from "@usenotra/sdk/models/operations";
 
-let value: Event = {
+let value: GetPostGenerationEvent = {
   id: "<id>",
   jobId: "<id>",
-  type: "queued",
+  type: "failed",
   message: "<value>",
-  createdAt: "1722417529878",
+  createdAt: "1716947533750",
   metadata: {
     "key": "<value>",
     "key1": "<value>",
-    "key2": "<value>",
   },
 };
 ```

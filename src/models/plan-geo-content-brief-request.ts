@@ -23,6 +23,7 @@ export const SourceKind = {
   Gap: "gap",
   Prompt: "prompt",
   SearchConsole: "search_console",
+  AiSearch: "ai_search",
 } as const;
 export type SourceKind = ClosedEnum<typeof SourceKind>;
 
