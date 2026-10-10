@@ -11,18 +11,28 @@ import {
   PublicExternalChannelId$outboundSchema,
 } from "./public-external-channel-id.js";
 
+export type Approval = {
+  id: string;
+  approved: boolean;
+  reason?: string | undefined;
+};
+
 /**
  * Model to respond with. Defaults to auto, which lets Notra choose.
  */
 export const Model = {
   Auto: "auto",
+  AnthropicClaudeOpus55: "anthropic/claude-opus-5.5",
   AnthropicClaudeOpus5: "anthropic/claude-opus-5",
   AnthropicClaudeOpus48: "anthropic/claude-opus-4.8",
   AnthropicClaudeSonnet5: "anthropic/claude-sonnet-5",
   AnthropicClaudeSonnet46: "anthropic/claude-sonnet-4.6",
   AnthropicClaudeHaiku45: "anthropic/claude-haiku-4.5",
-  OpenaiGpt54: "openai/gpt-5.4",
+  OpenaiGpt6Sol: "openai/gpt-6-sol",
+  OpenaiGpt6Luna: "openai/gpt-6-luna",
+  OpenaiGpt56Sol: "openai/gpt-5.6-sol",
   OpenaiGpt55: "openai/gpt-5.5",
+  OpenaiGpt54: "openai/gpt-5.4",
 } as const;
 /**
  * Model to respond with. Defaults to auto, which lets Notra choose.
@@ -68,7 +78,11 @@ export type SendChatMessageRequest = {
   /**
    * The user message to send.
    */
-  message: string;
+  message?: string | undefined;
+  /**
+   * Respond to every pending tool approval in the latest assistant message. Send either message or approvals. Only supported on an existing chat.
+   */
+  approvals?: Array<Approval> | undefined;
   /**
    * Model to respond with. Defaults to auto, which lets Notra choose.
    */
@@ -96,6 +110,27 @@ export type SendChatMessageRequest = {
    */
   externalChannelId?: PublicExternalChannelId | undefined;
 };
+
+/** @internal */
+export type Approval$Outbound = {
+  id: string;
+  approved: boolean;
+  reason?: string | undefined;
+};
+
+/** @internal */
+export const Approval$outboundSchema: z.ZodMiniType<
+  Approval$Outbound,
+  Approval
+> = z.object({
+  id: z.string(),
+  approved: z.boolean(),
+  reason: z.optional(z.string()),
+});
+
+export function approvalToJSON(approval: Approval): string {
+  return JSON.stringify(Approval$outboundSchema.parse(approval));
+}
 
 /** @internal */
 export const Model$outboundSchema: z.ZodMiniEnum<typeof Model> = z.enum(Model);
@@ -201,7 +236,8 @@ export function contextToJSON(context: Context): string {
 
 /** @internal */
 export type SendChatMessageRequest$Outbound = {
-  message: string;
+  message?: string | undefined;
+  approvals?: Array<Approval$Outbound> | undefined;
   model?: string | undefined;
   enableThinking?: boolean | undefined;
   thinkingLevel?: string | undefined;
@@ -221,7 +257,8 @@ export const SendChatMessageRequest$outboundSchema: z.ZodMiniType<
   SendChatMessageRequest$Outbound,
   SendChatMessageRequest
 > = z.object({
-  message: z.string(),
+  message: z.optional(z.string()),
+  approvals: z.optional(z.array(z.lazy(() => Approval$outboundSchema))),
   model: z.optional(Model$outboundSchema),
   enableThinking: z.optional(z.boolean()),
   thinkingLevel: z.optional(ThinkingLevel$outboundSchema),

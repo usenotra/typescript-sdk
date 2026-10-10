@@ -154,6 +154,9 @@ run();
 * [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
 * [createPostGeneration](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 * [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
+* [getPostSchedule](docs/sdks/content/README.md#getpostschedule) - Get a post's publishing schedule
+* [schedulePost](docs/sdks/content/README.md#schedulepost) - Schedule a post for publishing
+* [cancelPostSchedule](docs/sdks/content/README.md#cancelpostschedule) - Cancel a post's publishing schedule
 * [listBrandIdentities](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
 * [createBrandIdentity](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 * [getBrandIdentityGeneration](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
@@ -257,6 +260,15 @@ run();
 * [deleteSkill](docs/sdks/skills/README.md#deleteskill) - Delete a skill
 * [patchSkill](docs/sdks/skills/README.md#patchskill) - Update a skill
 
+### [Webhooks](docs/sdks/webhooks/README.md)
+
+* [listWebhookEndpoints](docs/sdks/webhooks/README.md#listwebhookendpoints) - List outbound webhook subscriptions
+* [createWebhookEndpoint](docs/sdks/webhooks/README.md#createwebhookendpoint) - Subscribe an HTTPS endpoint to Notra events
+* [deleteWebhookEndpoint](docs/sdks/webhooks/README.md#deletewebhookendpoint) - Remove a webhook subscription and cancel unsent deliveries
+* [listWebhookDeliveries](docs/sdks/webhooks/README.md#listwebhookdeliveries) - List webhook deliveries
+* [getWebhookDelivery](docs/sdks/webhooks/README.md#getwebhookdelivery) - Get payload and attempt history for a delivery
+* [retryWebhookDelivery](docs/sdks/webhooks/README.md#retrywebhookdelivery) - Retry a failed delivery, retaining its history
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -284,6 +296,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`chatsGetChatByExternalChannel`](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
 - [`chatsListChats`](docs/sdks/chats/README.md#listchats) - List chats
 - [`chatsPostChatMessage`](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
+- [`contentCancelPostSchedule`](docs/sdks/content/README.md#cancelpostschedule) - Cancel a post's publishing schedule
 - [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 - [`contentCreateGitHubIntegration`](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 - [`contentCreatePost`](docs/sdks/content/README.md#createpost) - Create a post
@@ -295,9 +308,11 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentGetBrandIdentityGeneration`](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
 - [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
 - [`contentGetPostGeneration`](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
+- [`contentGetPostSchedule`](docs/sdks/content/README.md#getpostschedule) - Get a post's publishing schedule
 - [`contentListBrandIdentities`](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
 - [`contentListIntegrations`](docs/sdks/content/README.md#listintegrations) - List available integrations
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
+- [`contentSchedulePost`](docs/sdks/content/README.md#schedulepost) - Schedule a post for publishing
 - [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 - [`discoveryGetPublicApiStatus`](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
@@ -375,6 +390,12 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`skillsGetSkill`](docs/sdks/skills/README.md#getskill) - Get a single skill
 - [`skillsListSkills`](docs/sdks/skills/README.md#listskills) - List skills
 - [`skillsPatchSkill`](docs/sdks/skills/README.md#patchskill) - Update a skill
+- [`webhooksCreateWebhookEndpoint`](docs/sdks/webhooks/README.md#createwebhookendpoint) - Subscribe an HTTPS endpoint to Notra events
+- [`webhooksDeleteWebhookEndpoint`](docs/sdks/webhooks/README.md#deletewebhookendpoint) - Remove a webhook subscription and cancel unsent deliveries
+- [`webhooksGetWebhookDelivery`](docs/sdks/webhooks/README.md#getwebhookdelivery) - Get payload and attempt history for a delivery
+- [`webhooksListWebhookDeliveries`](docs/sdks/webhooks/README.md#listwebhookdeliveries) - List webhook deliveries
+- [`webhooksListWebhookEndpoints`](docs/sdks/webhooks/README.md#listwebhookendpoints) - List outbound webhook subscriptions
+- [`webhooksRetryWebhookDelivery`](docs/sdks/webhooks/README.md#retrywebhookdelivery) - Retry a failed delivery, retaining its history
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -507,8 +528,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 21 of 100 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 100 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 23 of 109 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 109 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

@@ -35,7 +35,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 1.3.6
+  version: 1.3.7
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -83,6 +83,7 @@ typescript:
   modelPropertyCasing: camel
   moduleFormat: dual
   multipartArrayFormat: standard
+  numericEnumMemberNames: legacy
   outputModelSuffix: output
   packageName: '@usenotra/sdk'
   preApplyUnionDiscriminators: true
