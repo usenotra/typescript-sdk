@@ -1,11 +1,11 @@
-# ResultEnum
+# GeoAgentReadinessReportResult
 
 ## Example Usage
 
 ```typescript
-import { ResultEnum } from "@usenotra/sdk/models";
+import { GeoAgentReadinessReportResult } from "@usenotra/sdk/models";
 
-let value: ResultEnum = "failed";
+let value: GeoAgentReadinessReportResult = "failed";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

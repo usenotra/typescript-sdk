@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Update a single post
  *
  * @remarks
- * Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
+ * Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs. Title, slug, or markdown updates also sync an existing linked GitHub pull request; no new pull request is created. GitHub sync errors occur after saving the post: 429 includes Retry-After, 502 indicates a sync error, and 504 indicates an unknown sync outcome. Check the PR before retrying an unconfirmed sync.
  */
 export function contentUpdatePost(
   client: NotraCore,
@@ -172,7 +172,7 @@ async function $do(
     M.json(200, operations.UpdatePostResponse$inboundSchema, { key: "Result" }),
     M.jsonErr([400, 401, 403, 404, 409], errors.ErrorResponse$inboundSchema),
     M.jsonErr(429, errors.RateLimitErrorResponse$inboundSchema, { hdrs: true }),
-    M.jsonErr(503, errors.ErrorResponse$inboundSchema),
+    M.jsonErr([502, 503, 504], errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

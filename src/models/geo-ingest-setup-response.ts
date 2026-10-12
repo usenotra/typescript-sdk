@@ -13,6 +13,17 @@ export type GeoIngestSetupResponseSnippets = {
   next: string;
   nuxt: string;
   netlify: string;
+  tanstack: string;
+  astro: string;
+  sveltekit: string;
+};
+
+/**
+ * Endpoints a Vercel log drain or Cloudflare Logpush job posts request logs to, authenticated with the tracking token.
+ */
+export type GeoIngestSetupResponseDrainUrls = {
+  vercel: string;
+  cloudflare: string;
 };
 
 export type GeoIngestSetupResponseOrganization = {
@@ -32,6 +43,10 @@ export type GeoIngestSetupResponse = {
    */
   snippet: string;
   snippets: GeoIngestSetupResponseSnippets;
+  /**
+   * Endpoints a Vercel log drain or Cloudflare Logpush job posts request logs to, authenticated with the tracking token.
+   */
+  drainUrls: GeoIngestSetupResponseDrainUrls;
   organization: GeoIngestSetupResponseOrganization;
 };
 
@@ -43,6 +58,9 @@ export const GeoIngestSetupResponseSnippets$inboundSchema: z.ZodMiniType<
   next: types.string(),
   nuxt: types.string(),
   netlify: types.string(),
+  tanstack: types.string(),
+  astro: types.string(),
+  sveltekit: types.string(),
 });
 
 export function geoIngestSetupResponseSnippetsFromJSON(
@@ -52,6 +70,25 @@ export function geoIngestSetupResponseSnippetsFromJSON(
     jsonString,
     (x) => GeoIngestSetupResponseSnippets$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'GeoIngestSetupResponseSnippets' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoIngestSetupResponseDrainUrls$inboundSchema: z.ZodMiniType<
+  GeoIngestSetupResponseDrainUrls,
+  unknown
+> = z.object({
+  vercel: types.string(),
+  cloudflare: types.string(),
+});
+
+export function geoIngestSetupResponseDrainUrlsFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoIngestSetupResponseDrainUrls, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoIngestSetupResponseDrainUrls$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoIngestSetupResponseDrainUrls' from JSON`,
   );
 }
 
@@ -85,6 +122,7 @@ export const GeoIngestSetupResponse$inboundSchema: z.ZodMiniType<
   ingestUrl: types.string(),
   snippet: types.string(),
   snippets: z.lazy(() => GeoIngestSetupResponseSnippets$inboundSchema),
+  drainUrls: z.lazy(() => GeoIngestSetupResponseDrainUrls$inboundSchema),
   organization: z.lazy(() => GeoIngestSetupResponseOrganization$inboundSchema),
 });
 
