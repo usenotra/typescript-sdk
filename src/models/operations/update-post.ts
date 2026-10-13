@@ -20,11 +20,57 @@ export type UpdatePostStatusRequest = ClosedEnum<
   typeof UpdatePostStatusRequest
 >;
 
+/**
+ * Cover image as { url, alt }. url must be an https URL (or a Notra upload path returned by the dashboard). Send null to remove the cover.
+ */
+export type CoverImageRequest = {
+  url: string;
+  alt?: string | undefined;
+};
+
+/**
+ * Site metadata for blog posts and changelogs. Send only the fields you want to change. Rejected with 400 for other content types.
+ */
+export type MetadataRequest = {
+  /**
+   * Cover image as { url, alt }. url must be an https URL (or a Notra upload path returned by the dashboard). Send null to remove the cover.
+   */
+  coverImage?: CoverImageRequest | null | undefined;
+  /**
+   * Replaces all tags. Up to 12 tags; duplicates are dropped case-insensitively, keeping the first spelling. Send [] to clear.
+   */
+  tags?: Array<string> | undefined;
+  /**
+   * Custom summary for post cards and meta descriptions. Send null or an empty string to derive it from the first paragraph again.
+   */
+  excerpt?: string | null | undefined;
+  /**
+   * Replaces the credited authors, in display order. Up to 5 IDs from GET /v1/posts/authors. Send [] to clear.
+   */
+  authorIds?: Array<string> | undefined;
+  /**
+   * Pin the post to the top of the blog index.
+   */
+  featured?: boolean | undefined;
+  /**
+   * Ask search engines not to index the post and leave it out of the sitemap.
+   */
+  noindex?: boolean | undefined;
+  /**
+   * Date shown on the post as YYYY-MM-DD. Send null to fall back to the publish date.
+   */
+  displayDate?: Date | null | undefined;
+};
+
 export type UpdatePostRequestBody = {
   title?: string | undefined;
   slug?: string | null | undefined;
   markdown?: string | undefined;
   status?: UpdatePostStatusRequest | undefined;
+  /**
+   * Site metadata for blog posts and changelogs. Send only the fields you want to change. Rejected with 400 for other content types.
+   */
+  metadata?: MetadataRequest | undefined;
 };
 
 export type UpdatePostRequest = {
@@ -48,6 +94,62 @@ export const UpdatePostContentType = {
   Image: "image",
 } as const;
 export type UpdatePostContentType = OpenEnum<typeof UpdatePostContentType>;
+
+/**
+ * Cover image shown on post cards and social previews.
+ */
+export type UpdatePostCoverImageResponse = {
+  /**
+   * Absolute https URL, or a path to an image uploaded in Notra (starting with /api/uploads/).
+   */
+  url: string;
+  /**
+   * Alt text. Empty string when none is set.
+   */
+  alt: string;
+};
+
+export type UpdatePostAuthor = {
+  id: string;
+  /**
+   * Stable author handle; hosted sites list the author's posts at /author/{slug}.
+   */
+  slug: string;
+  name: string;
+  title: string | null;
+  avatarUrl: string | null;
+};
+
+/**
+ * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+ */
+export type UpdatePostMetadataResponse = {
+  /**
+   * Cover image shown on post cards and social previews.
+   */
+  coverImage: UpdatePostCoverImageResponse | null;
+  tags: Array<string>;
+  /**
+   * Summary shown on post cards and in meta descriptions. Null means it is derived from the first paragraph.
+   */
+  excerpt: string | null;
+  /**
+   * Credited authors in display order. Authors deleted since they were assigned are omitted.
+   */
+  authors: Array<UpdatePostAuthor>;
+  /**
+   * Pinned to the top of the blog index on hosted sites.
+   */
+  featured: boolean;
+  /**
+   * Asks search engines not to index the post and leaves it out of the sitemap.
+   */
+  noindex: boolean;
+  /**
+   * Date shown on the post as YYYY-MM-DD. Null means the publish date is used.
+   */
+  displayDate: string | null;
+};
 
 export const UpdatePostPostStatus = {
   Draft: "draft",
@@ -78,6 +180,10 @@ export type UpdatePostPost = {
   recommendations: string | null;
   contentType: UpdatePostContentType;
   sourceMetadata?: any | undefined;
+  /**
+   * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+   */
+  metadata: UpdatePostMetadataResponse | null;
   status: UpdatePostPostStatus;
   createdAt: string;
   updatedAt: string;
@@ -102,11 +208,73 @@ export const UpdatePostStatusRequest$outboundSchema: z.ZodMiniEnum<
 > = z.enum(UpdatePostStatusRequest);
 
 /** @internal */
+export type CoverImageRequest$Outbound = {
+  url: string;
+  alt: string;
+};
+
+/** @internal */
+export const CoverImageRequest$outboundSchema: z.ZodMiniType<
+  CoverImageRequest$Outbound,
+  CoverImageRequest
+> = z.object({
+  url: z.string(),
+  alt: z._default(z.string(), ""),
+});
+
+export function coverImageRequestToJSON(
+  coverImageRequest: CoverImageRequest,
+): string {
+  return JSON.stringify(
+    CoverImageRequest$outboundSchema.parse(coverImageRequest),
+  );
+}
+
+/** @internal */
+export type MetadataRequest$Outbound = {
+  coverImage?: CoverImageRequest$Outbound | null | undefined;
+  tags?: Array<string> | undefined;
+  excerpt?: string | null | undefined;
+  authorIds?: Array<string> | undefined;
+  featured?: boolean | undefined;
+  noindex?: boolean | undefined;
+  displayDate?: string | null | undefined;
+};
+
+/** @internal */
+export const MetadataRequest$outboundSchema: z.ZodMiniType<
+  MetadataRequest$Outbound,
+  MetadataRequest
+> = z.object({
+  coverImage: z.optional(
+    z.nullable(z.lazy(() => CoverImageRequest$outboundSchema)),
+  ),
+  tags: z.optional(z.array(z.string())),
+  excerpt: z.optional(z.nullable(z.string())),
+  authorIds: z.optional(z.array(z.string())),
+  featured: z.optional(z.boolean()),
+  noindex: z.optional(z.boolean()),
+  displayDate: z.optional(
+    z.nullable(z.pipe(
+      z.date(),
+      z.transform(v => v.toISOString().slice(0, "YYYY-MM-DD".length)),
+    )),
+  ),
+});
+
+export function metadataRequestToJSON(
+  metadataRequest: MetadataRequest,
+): string {
+  return JSON.stringify(MetadataRequest$outboundSchema.parse(metadataRequest));
+}
+
+/** @internal */
 export type UpdatePostRequestBody$Outbound = {
   title?: string | undefined;
   slug?: string | null | undefined;
   markdown?: string | undefined;
   status?: string | undefined;
+  metadata?: MetadataRequest$Outbound | undefined;
 };
 
 /** @internal */
@@ -118,6 +286,7 @@ export const UpdatePostRequestBody$outboundSchema: z.ZodMiniType<
   slug: z.optional(z.nullable(z.string())),
   markdown: z.optional(z.string()),
   status: z.optional(UpdatePostStatusRequest$outboundSchema),
+  metadata: z.optional(z.lazy(() => MetadataRequest$outboundSchema)),
 });
 
 export function updatePostRequestBodyToJSON(
@@ -179,6 +348,73 @@ export const UpdatePostContentType$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(UpdatePostContentType);
 
 /** @internal */
+export const UpdatePostCoverImageResponse$inboundSchema: z.ZodMiniType<
+  UpdatePostCoverImageResponse,
+  unknown
+> = z.object({
+  url: types.string(),
+  alt: types.string(),
+});
+
+export function updatePostCoverImageResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdatePostCoverImageResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdatePostCoverImageResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdatePostCoverImageResponse' from JSON`,
+  );
+}
+
+/** @internal */
+export const UpdatePostAuthor$inboundSchema: z.ZodMiniType<
+  UpdatePostAuthor,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  title: types.nullable(types.string()),
+  avatarUrl: types.nullable(types.string()),
+});
+
+export function updatePostAuthorFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdatePostAuthor, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdatePostAuthor$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdatePostAuthor' from JSON`,
+  );
+}
+
+/** @internal */
+export const UpdatePostMetadataResponse$inboundSchema: z.ZodMiniType<
+  UpdatePostMetadataResponse,
+  unknown
+> = z.object({
+  coverImage: types.nullable(
+    z.lazy(() => UpdatePostCoverImageResponse$inboundSchema),
+  ),
+  tags: z.array(types.string()),
+  excerpt: types.nullable(types.string()),
+  authors: z.array(z.lazy(() => UpdatePostAuthor$inboundSchema)),
+  featured: types.boolean(),
+  noindex: types.boolean(),
+  displayDate: types.nullable(types.string()),
+});
+
+export function updatePostMetadataResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdatePostMetadataResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdatePostMetadataResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdatePostMetadataResponse' from JSON`,
+  );
+}
+
+/** @internal */
 export const UpdatePostPostStatus$inboundSchema: z.ZodMiniType<
   UpdatePostPostStatus,
   unknown
@@ -199,6 +435,9 @@ export const UpdatePostPost$inboundSchema: z.ZodMiniType<
   recommendations: types.nullable(types.string()),
   contentType: UpdatePostContentType$inboundSchema,
   sourceMetadata: types.optional(z.any()),
+  metadata: types.nullable(
+    z.lazy(() => UpdatePostMetadataResponse$inboundSchema),
+  ),
   status: UpdatePostPostStatus$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),

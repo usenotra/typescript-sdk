@@ -60,6 +60,62 @@ export type CreatePostPostContentType = OpenEnum<
   typeof CreatePostPostContentType
 >;
 
+/**
+ * Cover image shown on post cards and social previews.
+ */
+export type CreatePostCoverImage = {
+  /**
+   * Absolute https URL, or a path to an image uploaded in Notra (starting with /api/uploads/).
+   */
+  url: string;
+  /**
+   * Alt text. Empty string when none is set.
+   */
+  alt: string;
+};
+
+export type CreatePostAuthor = {
+  id: string;
+  /**
+   * Stable author handle; hosted sites list the author's posts at /author/{slug}.
+   */
+  slug: string;
+  name: string;
+  title: string | null;
+  avatarUrl: string | null;
+};
+
+/**
+ * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+ */
+export type CreatePostMetadata = {
+  /**
+   * Cover image shown on post cards and social previews.
+   */
+  coverImage: CreatePostCoverImage | null;
+  tags: Array<string>;
+  /**
+   * Summary shown on post cards and in meta descriptions. Null means it is derived from the first paragraph.
+   */
+  excerpt: string | null;
+  /**
+   * Credited authors in display order. Authors deleted since they were assigned are omitted.
+   */
+  authors: Array<CreatePostAuthor>;
+  /**
+   * Pinned to the top of the blog index on hosted sites.
+   */
+  featured: boolean;
+  /**
+   * Asks search engines not to index the post and leaves it out of the sitemap.
+   */
+  noindex: boolean;
+  /**
+   * Date shown on the post as YYYY-MM-DD. Null means the publish date is used.
+   */
+  displayDate: string | null;
+};
+
 export const CreatePostPostStatus = {
   Draft: "draft",
   Published: "published",
@@ -89,6 +145,10 @@ export type CreatePostPost = {
   recommendations: string | null;
   contentType: CreatePostPostContentType;
   sourceMetadata?: any | undefined;
+  /**
+   * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+   */
+  metadata: CreatePostMetadata | null;
   status: CreatePostPostStatus;
   createdAt: string;
   updatedAt: string;
@@ -174,6 +234,71 @@ export const CreatePostPostContentType$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(CreatePostPostContentType);
 
 /** @internal */
+export const CreatePostCoverImage$inboundSchema: z.ZodMiniType<
+  CreatePostCoverImage,
+  unknown
+> = z.object({
+  url: types.string(),
+  alt: types.string(),
+});
+
+export function createPostCoverImageFromJSON(
+  jsonString: string,
+): SafeParseResult<CreatePostCoverImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreatePostCoverImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreatePostCoverImage' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreatePostAuthor$inboundSchema: z.ZodMiniType<
+  CreatePostAuthor,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  title: types.nullable(types.string()),
+  avatarUrl: types.nullable(types.string()),
+});
+
+export function createPostAuthorFromJSON(
+  jsonString: string,
+): SafeParseResult<CreatePostAuthor, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreatePostAuthor$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreatePostAuthor' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreatePostMetadata$inboundSchema: z.ZodMiniType<
+  CreatePostMetadata,
+  unknown
+> = z.object({
+  coverImage: types.nullable(z.lazy(() => CreatePostCoverImage$inboundSchema)),
+  tags: z.array(types.string()),
+  excerpt: types.nullable(types.string()),
+  authors: z.array(z.lazy(() => CreatePostAuthor$inboundSchema)),
+  featured: types.boolean(),
+  noindex: types.boolean(),
+  displayDate: types.nullable(types.string()),
+});
+
+export function createPostMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<CreatePostMetadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreatePostMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreatePostMetadata' from JSON`,
+  );
+}
+
+/** @internal */
 export const CreatePostPostStatus$inboundSchema: z.ZodMiniType<
   CreatePostPostStatus,
   unknown
@@ -194,6 +319,7 @@ export const CreatePostPost$inboundSchema: z.ZodMiniType<
   recommendations: types.nullable(types.string()),
   contentType: CreatePostPostContentType$inboundSchema,
   sourceMetadata: types.optional(z.any()),
+  metadata: types.nullable(z.lazy(() => CreatePostMetadata$inboundSchema)),
   status: CreatePostPostStatus$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),

@@ -11,5 +11,5 @@ let value: SourceKind = "manual";
 ## Values
 
 ```typescript
-"manual" | "gap" | "prompt" | "search_console"
+"manual" | "gap" | "prompt" | "search_console" | "ai_search"
 ```

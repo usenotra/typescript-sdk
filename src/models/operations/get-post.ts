@@ -32,6 +32,62 @@ export const GetPostContentType = {
 } as const;
 export type GetPostContentType = OpenEnum<typeof GetPostContentType>;
 
+/**
+ * Cover image shown on post cards and social previews.
+ */
+export type GetPostCoverImage = {
+  /**
+   * Absolute https URL, or a path to an image uploaded in Notra (starting with /api/uploads/).
+   */
+  url: string;
+  /**
+   * Alt text. Empty string when none is set.
+   */
+  alt: string;
+};
+
+export type GetPostAuthor = {
+  id: string;
+  /**
+   * Stable author handle; hosted sites list the author's posts at /author/{slug}.
+   */
+  slug: string;
+  name: string;
+  title: string | null;
+  avatarUrl: string | null;
+};
+
+/**
+ * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+ */
+export type GetPostMetadata = {
+  /**
+   * Cover image shown on post cards and social previews.
+   */
+  coverImage: GetPostCoverImage | null;
+  tags: Array<string>;
+  /**
+   * Summary shown on post cards and in meta descriptions. Null means it is derived from the first paragraph.
+   */
+  excerpt: string | null;
+  /**
+   * Credited authors in display order. Authors deleted since they were assigned are omitted.
+   */
+  authors: Array<GetPostAuthor>;
+  /**
+   * Pinned to the top of the blog index on hosted sites.
+   */
+  featured: boolean;
+  /**
+   * Asks search engines not to index the post and leaves it out of the sitemap.
+   */
+  noindex: boolean;
+  /**
+   * Date shown on the post as YYYY-MM-DD. Null means the publish date is used.
+   */
+  displayDate: string | null;
+};
+
 export const GetPostStatus = {
   Draft: "draft",
   Published: "published",
@@ -61,6 +117,10 @@ export type GetPostPost = {
   recommendations: string | null;
   contentType: GetPostContentType;
   sourceMetadata?: any | undefined;
+  /**
+   * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+   */
+  metadata: GetPostMetadata | null;
   status: GetPostStatus;
   createdAt: string;
   updatedAt: string;
@@ -119,6 +179,71 @@ export const GetPostContentType$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(GetPostContentType);
 
 /** @internal */
+export const GetPostCoverImage$inboundSchema: z.ZodMiniType<
+  GetPostCoverImage,
+  unknown
+> = z.object({
+  url: types.string(),
+  alt: types.string(),
+});
+
+export function getPostCoverImageFromJSON(
+  jsonString: string,
+): SafeParseResult<GetPostCoverImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetPostCoverImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetPostCoverImage' from JSON`,
+  );
+}
+
+/** @internal */
+export const GetPostAuthor$inboundSchema: z.ZodMiniType<
+  GetPostAuthor,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  title: types.nullable(types.string()),
+  avatarUrl: types.nullable(types.string()),
+});
+
+export function getPostAuthorFromJSON(
+  jsonString: string,
+): SafeParseResult<GetPostAuthor, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetPostAuthor$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetPostAuthor' from JSON`,
+  );
+}
+
+/** @internal */
+export const GetPostMetadata$inboundSchema: z.ZodMiniType<
+  GetPostMetadata,
+  unknown
+> = z.object({
+  coverImage: types.nullable(z.lazy(() => GetPostCoverImage$inboundSchema)),
+  tags: z.array(types.string()),
+  excerpt: types.nullable(types.string()),
+  authors: z.array(z.lazy(() => GetPostAuthor$inboundSchema)),
+  featured: types.boolean(),
+  noindex: types.boolean(),
+  displayDate: types.nullable(types.string()),
+});
+
+export function getPostMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<GetPostMetadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetPostMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetPostMetadata' from JSON`,
+  );
+}
+
+/** @internal */
 export const GetPostStatus$inboundSchema: z.ZodMiniType<
   GetPostStatus,
   unknown
@@ -137,6 +262,7 @@ export const GetPostPost$inboundSchema: z.ZodMiniType<GetPostPost, unknown> = z
     recommendations: types.nullable(types.string()),
     contentType: GetPostContentType$inboundSchema,
     sourceMetadata: types.optional(z.any()),
+    metadata: types.nullable(z.lazy(() => GetPostMetadata$inboundSchema)),
     status: GetPostStatus$inboundSchema,
     createdAt: types.string(),
     updatedAt: types.string(),

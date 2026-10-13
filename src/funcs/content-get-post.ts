@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get a single post
  *
  * @remarks
- * Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null.
+ * Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null. Blog posts and changelogs include a metadata object with cover image, tags, excerpt, authors, featured, noindex and displayDate; it is null for other content types.
  */
 export function contentGetPost(
   client: NotraCore,

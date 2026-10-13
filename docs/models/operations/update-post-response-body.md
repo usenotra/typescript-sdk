@@ -24,9 +24,24 @@ let value: UpdatePostResponseBody = {
     rawHtml: "<value>",
     recommendations: "<value>",
     contentType: "changelog",
+    metadata: {
+      coverImage: {
+        url: "https://cdn.example.com/covers/ship-notes.png",
+        alt: "Screenshot of the new editor",
+      },
+      tags: [
+        "editor",
+        "performance",
+      ],
+      excerpt: "The editor now opens twice as fast on long posts.",
+      authors: [],
+      featured: false,
+      noindex: false,
+      displayDate: "2026-10-01",
+    },
     status: "published",
-    createdAt: "1729551914321",
-    updatedAt: "1735639595190",
+    createdAt: "1717437997837",
+    updatedAt: "1735637308333",
   },
 };
 ```
