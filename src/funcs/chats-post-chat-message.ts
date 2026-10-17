@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Post a message to an existing chat and stream the reply
  *
  * @remarks
- * Appends a user message to the chat and streams the assistant reply. Earlier messages in the chat are included as context automatically.
+ * Sends a message or resumes pending tool approvals and streams the assistant reply. Earlier messages are included automatically. To approve or deny tools, send approvals: [{ "id": "<approvalId>", "approved": true }] for every pending approval in the latest assistant message, without a message field; use "approved": false to deny. Approval IDs are emitted in tool-approval-request chunks and stored on tool parts in chat history.
  */
 export function chatsPostChatMessage(
   client: NotraCore,
@@ -173,7 +173,7 @@ async function $do(
       ctype: "text/event-stream",
       key: "Result",
     }),
-    M.jsonErr([400, 401, 403, 404], errors.ErrorResponse$inboundSchema),
+    M.jsonErr([400, 401, 403, 404, 409], errors.ErrorResponse$inboundSchema),
     M.jsonErr(429, errors.RateLimitErrorResponse$inboundSchema, { hdrs: true }),
     M.jsonErr([500, 503], errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),

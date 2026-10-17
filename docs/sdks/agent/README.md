@@ -102,9 +102,7 @@ const notra = new Notra({
 async function run() {
   const result = await notra.agent.sendAgentSessionMessage({
     sessionId: "<id>",
-    body: {
-      continuationToken: "<value>",
-    },
+    body: {},
   });
 
   console.log(result);
@@ -130,9 +128,7 @@ const notra = new NotraCore({
 async function run() {
   const res = await agentSendAgentSessionMessage(notra, {
     sessionId: "<id>",
-    body: {
-      continuationToken: "<value>",
-    },
+    body: {},
   });
   if (res.ok) {
     const { value: result } = res;
