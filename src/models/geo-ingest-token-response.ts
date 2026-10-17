@@ -13,6 +13,17 @@ export type GeoIngestTokenResponseSnippets = {
   next: string;
   nuxt: string;
   netlify: string;
+  tanstack: string;
+  astro: string;
+  sveltekit: string;
+};
+
+/**
+ * Endpoints a Vercel log drain or Cloudflare Logpush job posts request logs to, authenticated with the tracking token.
+ */
+export type GeoIngestTokenResponseDrainUrls = {
+  vercel: string;
+  cloudflare: string;
 };
 
 export type GeoIngestTokenResponseOrganization = {
@@ -32,6 +43,10 @@ export type GeoIngestTokenResponse = {
    */
   snippet: string;
   snippets: GeoIngestTokenResponseSnippets;
+  /**
+   * Endpoints a Vercel log drain or Cloudflare Logpush job posts request logs to, authenticated with the tracking token.
+   */
+  drainUrls: GeoIngestTokenResponseDrainUrls;
   organization: GeoIngestTokenResponseOrganization;
   /**
    * Tracking token. Shown once per request; rotating invalidates every previously issued token.
@@ -47,6 +62,9 @@ export const GeoIngestTokenResponseSnippets$inboundSchema: z.ZodMiniType<
   next: types.string(),
   nuxt: types.string(),
   netlify: types.string(),
+  tanstack: types.string(),
+  astro: types.string(),
+  sveltekit: types.string(),
 });
 
 export function geoIngestTokenResponseSnippetsFromJSON(
@@ -56,6 +74,25 @@ export function geoIngestTokenResponseSnippetsFromJSON(
     jsonString,
     (x) => GeoIngestTokenResponseSnippets$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'GeoIngestTokenResponseSnippets' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoIngestTokenResponseDrainUrls$inboundSchema: z.ZodMiniType<
+  GeoIngestTokenResponseDrainUrls,
+  unknown
+> = z.object({
+  vercel: types.string(),
+  cloudflare: types.string(),
+});
+
+export function geoIngestTokenResponseDrainUrlsFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoIngestTokenResponseDrainUrls, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoIngestTokenResponseDrainUrls$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoIngestTokenResponseDrainUrls' from JSON`,
   );
 }
 
@@ -89,6 +126,7 @@ export const GeoIngestTokenResponse$inboundSchema: z.ZodMiniType<
   ingestUrl: types.string(),
   snippet: types.string(),
   snippets: z.lazy(() => GeoIngestTokenResponseSnippets$inboundSchema),
+  drainUrls: z.lazy(() => GeoIngestTokenResponseDrainUrls$inboundSchema),
   organization: z.lazy(() => GeoIngestTokenResponseOrganization$inboundSchema),
   token: types.string(),
 });
