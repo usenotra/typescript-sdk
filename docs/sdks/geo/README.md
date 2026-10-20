@@ -283,7 +283,7 @@ run();
 
 ## deleteProject
 
-Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted.
+Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted. Projects with hosted Sites cannot be deleted; delete their Sites first.
 
 ### Example Usage
 
@@ -510,7 +510,7 @@ run();
 
 ## updateGeoSettings
 
-Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload.
+Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
 
 ### Example Usage
 
@@ -1331,7 +1331,7 @@ run();
 
 ## runGeoSequence
 
-Runs the sequence synchronously and answers with its result. The call is not queued: the request stays open for the whole run, which plays every turn against every available answer engine and can take several minutes. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
+Runs the sequence now. API-based answer engines run synchronously: the request stays open while every turn plays against each of them, which can take several minutes, and `checks`, `mentions` and `engines` report their result. Tracked consumer apps (ChatGPT, Perplexity, Gemini, AI Mode, Copilot) answer far more slowly, so they are queued as a background scan instead: `queuedScanId` names it and `queuedEngines` lists the apps it covers. Poll `GET /v1/projects/{projectId}/geo/scans/{scanId}` for that part. A run with only consumer apps answers right away with `checks: 0`. Runs also work while automatic scans are paused. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
 
 ### Example Usage
 
@@ -1722,7 +1722,7 @@ run();
 
 ## importGeoCompetitors
 
-Accepts either structured `rows` or raw `csv` text. Existing competitors are updated in place rather than duplicated.
+Accepts either structured `rows` or raw `csv` text. Existing competitors are updated in place rather than duplicated. One request takes a project's whole list (up to 2,000 competitors), so send it in a single call instead of splitting it.
 
 ### Example Usage
 
@@ -1875,7 +1875,7 @@ run();
 
 ## createGeoScan
 
-Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight.
+Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight, and 402 when the plan or AI credits cannot cover a scan.
 
 ### Example Usage
 
@@ -4125,7 +4125,7 @@ run();
 
 ## issueGeoIngestToken
 
-Returns the current tracking token together with the install snippets. Organization-level: pass `projectId` to bind the token to one project. Issuing does not invalidate previously issued tokens; use rotation for that.
+Returns the current tracking token together with the install snippets. Pass `projectId` for a project-specific token; without it, the legacy token only accepts the organization's oldest project's hosts. Issuing does not invalidate previously issued tokens; use rotation for that.
 
 ### Example Usage
 

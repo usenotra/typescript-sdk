@@ -8,11 +8,15 @@ Manage posts, brand identities, and GitHub or Linear integrations, and queue con
 
 * [listPosts](#listposts) - List posts
 * [createPost](#createpost) - Create a post
+* [listPostAuthors](#listpostauthors) - List post authors
 * [getPost](#getpost) - Get a single post
 * [deletePost](#deletepost) - Delete a single post
 * [updatePost](#updatepost) - Update a single post
 * [createPostGeneration](#createpostgeneration) - Queue async post generation
 * [getPostGeneration](#getpostgeneration) - Get async post generation status
+* [getPostSchedule](#getpostschedule) - Get a post's publishing schedule
+* [schedulePost](#schedulepost) - Schedule a post for publishing
+* [cancelPostSchedule](#cancelpostschedule) - Cancel a post's publishing schedule
 * [listBrandIdentities](#listbrandidentities) - List available brand identities
 * [createBrandIdentity](#createbrandidentity) - Queue async brand identity generation
 * [getBrandIdentityGeneration](#getbrandidentitygeneration) - Get async brand identity generation status
@@ -25,7 +29,7 @@ Manage posts, brand identities, and GitHub or Linear integrations, and queue con
 
 ## listPosts
 
-Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published.
+Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published. Blog posts and changelogs include a metadata object with cover image, tags, excerpt, authors, featured, noindex, hidden and displayDate; it is null for other content types.
 
 ### Example Usage
 
@@ -174,9 +178,79 @@ run();
 | errors.ErrorResponse          | 503                           | application/json              |
 | errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
+## listPostAuthors
+
+Returns the organization's authors, sorted by name. Authors are created in the dashboard; pass their IDs in metadata.authorIds when updating a blog post or changelog.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listPostAuthors" method="get" path="/v1/posts/authors" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.listPostAuthors();
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentListPostAuthors } from "@usenotra/sdk/funcs/content-list-post-authors.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentListPostAuthors(notra);
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentListPostAuthors failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.ListPostAuthorsResponse](../../models/operations/list-post-authors-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 401, 403, 404            | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
 ## getPost
 
-Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null.
+Returns the post. When no post with this ID exists in your organization, the response is still 200 with post set to null. Blog posts and changelogs include a metadata object with cover image, tags, excerpt, authors, featured, noindex, hidden and displayDate; it is null for other content types.
 
 ### Example Usage
 
@@ -326,7 +400,7 @@ run();
 
 ## updatePost
 
-Updates any combination of title, slug, markdown, and status. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs are only accepted for blog posts and changelogs.
+Updates any combination of title, slug, markdown, status, and metadata. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs and metadata are only accepted for blog posts and changelogs. Inside metadata, send only the fields you want to change; tags and authorIds replace the stored list, and authorIds must come from GET /v1/posts/authors. Title, slug, markdown, or metadata updates also sync an existing linked GitHub pull request; no new pull request is created. GitHub sync errors occur after saving the post: 429 includes Retry-After, 502 indicates a sync error, and 504 indicates an unknown sync outcome. Check the PR before retrying an unconfirmed sync.
 
 ### Example Usage
 
@@ -346,6 +420,24 @@ async function run() {
       slug: "ship-notes-week-11",
       markdown: "# Ship notes\n\nWe shipped a faster editor.",
       status: "published",
+      metadata: {
+        coverImage: {
+          url: "https://cdn.example.com/covers/ship-notes.png",
+          alt: "Screenshot of the new editor",
+        },
+        tags: [
+          "editor",
+          "performance",
+        ],
+        excerpt: "The editor now opens twice as fast on long posts.",
+        authorIds: [
+          "auth_8f2kq1",
+        ],
+        featured: true,
+        noindex: false,
+        hidden: true,
+        displayDate: new Date("2026-10-01"),
+      },
     },
   });
 
@@ -377,6 +469,24 @@ async function run() {
       slug: "ship-notes-week-11",
       markdown: "# Ship notes\n\nWe shipped a faster editor.",
       status: "published",
+      metadata: {
+        coverImage: {
+          url: "https://cdn.example.com/covers/ship-notes.png",
+          alt: "Screenshot of the new editor",
+        },
+        tags: [
+          "editor",
+          "performance",
+        ],
+        excerpt: "The editor now opens twice as fast on long posts.",
+        authorIds: [
+          "auth_8f2kq1",
+        ],
+        featured: true,
+        noindex: false,
+        hidden: true,
+        displayDate: new Date("2026-10-01"),
+      },
     },
   });
   if (res.ok) {
@@ -409,12 +519,12 @@ run();
 | ----------------------------- | ----------------------------- | ----------------------------- |
 | errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
 | errors.RateLimitErrorResponse | 429                           | application/json              |
-| errors.ErrorResponse          | 503                           | application/json              |
+| errors.ErrorResponse          | 502, 503, 504                 | application/json              |
 | errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## createPostGeneration
 
-Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Notra does not send webhooks when the job finishes.
+Queues a generation job for one content type and returns 202 with the job. Select sources with integrations.github, integrations.linear, or github.repositories; when no selector is given at all, every connected GitHub integration is used. Requests with every dataPoints flag false, or with no usable source, are rejected with 400 and code NO_ACTIVITY_TYPES_SELECTED or NO_AVAILABLE_SOURCES before a job is created. Poll GET /v1/posts/generate/{jobId} until job.status is completed, failed, or skipped. Subscribe to post.generation.completed, post.generation.failed, or post.generation.skipped using /v1/webhooks for completion notifications.
 
 ### Example Usage
 
@@ -616,6 +726,253 @@ run();
 | errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
 | errors.ErrorResponse     | 503                      | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## getPostSchedule
+
+Returns the post's current schedule with the state of every destination, or null when nothing is scheduled.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getPostSchedule" method="get" path="/v1/posts/{postId}/schedule" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.getPostSchedule({
+    postId: "post_123",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentGetPostSchedule } from "@usenotra/sdk/funcs/content-get-post-schedule.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentGetPostSchedule(notra, {
+    postId: "post_123",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentGetPostSchedule failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetPostScheduleRequest](../../models/operations/get-post-schedule-request.md)                                                                                      | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.PostScheduleResponse](../../models/post-schedule-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
+| errors.ErrorResponse     | 503                      | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## schedulePost
+
+Publishes the post automatically at scheduledAt: it is marked as published in Notra and, optionally, opened and merged as a GitHub pull request or posted to a connected X or LinkedIn account. Replaces any schedule that has not started. The post is published as saved at that time, so later edits are included. Publishing runs within about a minute of scheduledAt; transient errors are retried automatically.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="schedulePost" method="post" path="/v1/posts/{postId}/schedule" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.schedulePost({
+    postId: "post_123",
+    body: {
+      scheduledAt: new Date("2026-10-06T08:00:00Z"),
+      timeZone: "Europe/Berlin",
+      destinations: [
+        {
+          destination: "social",
+          accountId: "acc_123",
+        },
+      ],
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentSchedulePost } from "@usenotra/sdk/funcs/content-schedule-post.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentSchedulePost(notra, {
+    postId: "post_123",
+    body: {
+      scheduledAt: new Date("2026-10-06T08:00:00Z"),
+      timeZone: "Europe/Berlin",
+      destinations: [
+        {
+          destination: "social",
+          accountId: "acc_123",
+        },
+      ],
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentSchedulePost failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.SchedulePostRequest](../../models/operations/schedule-post-request.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.SchedulePostResponse](../../models/operations/schedule-post-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 503                           | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
+
+## cancelPostSchedule
+
+Cancels every destination that has not started and clears failed ones. A destination that is already publishing cannot be interrupted: it finishes if it succeeds and ends canceled instead of being retried. inProgress reports it.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="cancelPostSchedule" method="delete" path="/v1/posts/{postId}/schedule" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.content.cancelPostSchedule({
+    postId: "post_123",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { contentCancelPostSchedule } from "@usenotra/sdk/funcs/content-cancel-post-schedule.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await contentCancelPostSchedule(notra, {
+    postId: "post_123",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("contentCancelPostSchedule failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.CancelPostScheduleRequest](../../models/operations/cancel-post-schedule-request.md)                                                                                | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.CancelPostScheduleResponse](../../models/operations/cancel-post-schedule-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 403, 404            | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 503                           | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## listBrandIdentities
 
