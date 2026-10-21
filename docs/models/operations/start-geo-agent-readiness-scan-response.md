@@ -11,6 +11,10 @@ let value: StartGeoAgentReadinessScanResponse = {
       "<value 1>",
       "<value 2>",
     ],
+    "key1": [
+      "<value 1>",
+      "<value 2>",
+    ],
   },
   result: {
     reportId: "<id>",
@@ -19,7 +23,7 @@ let value: StartGeoAgentReadinessScanResponse = {
       id: "<id>",
       slug: "<value>",
       name: "<value>",
-      logo: null,
+      logo: "<value>",
     },
   },
 };

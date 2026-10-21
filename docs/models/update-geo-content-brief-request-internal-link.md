@@ -1,12 +1,12 @@
-# InternalLink
+# UpdateGeoContentBriefRequestInternalLink
 
 ## Example Usage
 
 ```typescript
-import { InternalLink } from "@usenotra/sdk/models";
+import { UpdateGeoContentBriefRequestInternalLink } from "@usenotra/sdk/models";
 
-let value: InternalLink = {
-  url: "https://frail-opera.info",
+let value: UpdateGeoContentBriefRequestInternalLink = {
+  url: "https://unrealistic-invite.info",
   anchor: "<value>",
   why: "<value>",
 };

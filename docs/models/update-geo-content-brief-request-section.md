@@ -1,17 +1,15 @@
-# Section
+# UpdateGeoContentBriefRequestSection
 
 ## Example Usage
 
 ```typescript
-import { Section } from "@usenotra/sdk/models";
+import { UpdateGeoContentBriefRequestSection } from "@usenotra/sdk/models";
 
-let value: Section = {
+let value: UpdateGeoContentBriefRequestSection = {
   heading: "<value>",
   goal: "<value>",
   claims: [
     "<value 1>",
-    "<value 2>",
-    "<value 3>",
   ],
 };
 ```
