@@ -6,7 +6,9 @@
 import { ImportGeoPromptsResponse } from "@usenotra/sdk/models/operations";
 
 let value: ImportGeoPromptsResponse = {
-  headers: {},
+  headers: {
+    "key": [],
+  },
   result: {
     imported: 146974,
     updated: 834884,
@@ -16,7 +18,7 @@ let value: ImportGeoPromptsResponse = {
       id: "<id>",
       slug: "<value>",
       name: "<value>",
-      logo: "<value>",
+      logo: null,
     },
   },
 };

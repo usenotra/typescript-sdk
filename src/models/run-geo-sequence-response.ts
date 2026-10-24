@@ -18,7 +18,7 @@ export type RunGeoSequenceResponseOrganization = {
 
 export type RunGeoSequenceResponse = {
   /**
-   * Recorded answers across every engine that responded.
+   * Answers recorded during this request by the API-based engines that responded. Consumer-app answers from the queued scan are not counted.
    */
   checks: number;
   /**
@@ -26,9 +26,17 @@ export type RunGeoSequenceResponse = {
    */
   mentions: number;
   /**
-   * Engines the conversation was played against.
+   * API-based engines that answered the conversation during this request. Empty when only consumer apps run or none of the API engines answered.
    */
   engines: Array<string>;
+  /**
+   * Scan that plays the conversation in the tracked consumer apps (ChatGPT, Perplexity, Gemini, AI Mode, Copilot) in the background, or `null` when none was queued. Poll `GET /v1/projects/{projectId}/geo/scans/{scanId}` until `status` leaves `running`; its answers then land in the project's GEO checks.
+   */
+  queuedScanId: string | null;
+  /**
+   * Consumer-app engines covered by `queuedScanId`. Empty when nothing was queued.
+   */
+  queuedEngines?: Array<string> | undefined;
   organization: RunGeoSequenceResponseOrganization;
 };
 
@@ -62,6 +70,8 @@ export const RunGeoSequenceResponse$inboundSchema: z.ZodMiniType<
   checks: types.number(),
   mentions: types.number(),
   engines: z.array(types.string()),
+  queuedScanId: z._default(z.nullable(types.string()), null),
+  queuedEngines: types.optional(z.array(types.string())),
   organization: z.lazy(() => RunGeoSequenceResponseOrganization$inboundSchema),
 });
 
