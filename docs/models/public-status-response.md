@@ -12,8 +12,8 @@ let value: PublicStatusResponse = {
   public: true,
   authentication: {
     type: "bearer",
-    resourceMetadata: "https://useless-toothpick.biz/",
-    guide: "https://unconscious-quart.name/",
+    resourceMetadata: "https://aged-ceramic.org",
+    guide: "https://quixotic-lieu.info/",
   },
 };
 ```
