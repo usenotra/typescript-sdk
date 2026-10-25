@@ -38,7 +38,9 @@ export type GeoTrafficOverviewResponseSource = {
   visits: number;
   previousVisits?: number | undefined;
   markdownVisits: number;
+  previousMarkdownVisits?: number | undefined;
   paths: number;
+  previousPaths?: number | undefined;
   lastSeenAt: string;
 };
 
@@ -116,7 +118,9 @@ export const GeoTrafficOverviewResponseSource$inboundSchema: z.ZodMiniType<
   visits: types.number(),
   previousVisits: types.optional(types.number()),
   markdownVisits: types.number(),
+  previousMarkdownVisits: types.optional(types.number()),
   paths: types.number(),
+  previousPaths: types.optional(types.number()),
   lastSeenAt: types.string(),
 });
 

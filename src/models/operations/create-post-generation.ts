@@ -74,7 +74,7 @@ export type CreatePostGenerationGithub = {
 };
 
 /**
- * Which kinds of activity to collect from the selected sources.
+ * Which kinds of activity to collect from the selected sources. At least one must be true.
  */
 export type DataPoints = {
   includePullRequests?: boolean | undefined;
@@ -144,7 +144,7 @@ export type CreatePostGenerationRequest = {
    */
   github?: CreatePostGenerationGithub | undefined;
   /**
-   * Which kinds of activity to collect from the selected sources.
+   * Which kinds of activity to collect from the selected sources. At least one must be true.
    */
   dataPoints?: DataPoints | undefined;
   /**
@@ -231,6 +231,10 @@ export type CreatePostGenerationJob = {
    * Failure reason when status is failed.
    */
   error: string | null;
+  /**
+   * Stable machine-readable failure code when status is failed, such as NO_ACTIVITY_TYPES_SELECTED or NO_AVAILABLE_SOURCES. Absent or null for other failures and for older jobs.
+   */
+  errorCode?: string | null | undefined;
   source: CreatePostGenerationSource;
   createdAt: string;
   updatedAt: string;
@@ -558,6 +562,7 @@ export const CreatePostGenerationJob$inboundSchema: z.ZodMiniType<
   workflowRunId: types.nullable(types.string()),
   postId: types.nullable(types.string()),
   error: types.nullable(types.string()),
+  errorCode: z.optional(z.nullable(types.string())),
   source: CreatePostGenerationSource$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),
