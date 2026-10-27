@@ -7,8 +7,16 @@ import { SubmitOrganizationFeedbackResponse } from "@usenotra/sdk/models/operati
 
 let value: SubmitOrganizationFeedbackResponse = {
   headers: {
-    "key": [],
+    "key": [
+      "<value 1>",
+      "<value 2>",
+    ],
     "key1": [],
+    "key2": [
+      "<value 1>",
+      "<value 2>",
+      "<value 3>",
+    ],
   },
   result: {
     feedback: {
@@ -21,16 +29,16 @@ let value: SubmitOrganizationFeedbackResponse = {
       title: "<value>",
       message: "<value>",
       agentClient: "<value>",
-      agentModel: "<value>",
+      agentModel: null,
       toolVersion: "<value>",
       userAgent: "<value>",
-      contextUrl: "https://motionless-steeple.biz",
+      contextUrl: "https://outlying-haircut.name",
       externalId: "<id>",
       idempotencyKey: "<value>",
       metadata: {},
       resolvedAt: "<value>",
-      createdAt: "1718281308790",
-      updatedAt: "1735667707913",
+      createdAt: "1712329635803",
+      updatedAt: "1735608848863",
     },
     deduplicated: true,
   },
