@@ -1,6 +1,6 @@
 # PublicExternalChannelId
 
-Link the chat to a Discord or Slack channel so it can be found later with GET /v1/chats/by-external.
+Link the chat to a Discord or Slack channel, or tag it with your own dashboard id, so it can be found later with GET /v1/chats/by-external.
 
 ## Example Usage
 
