@@ -1,6 +1,6 @@
 # GetChatByExternalChannelSource
 
-Messaging platform the channel belongs to.
+Source the chat was linked with: a messaging platform, or dashboard for your own id.
 
 ## Example Usage
 
@@ -13,5 +13,5 @@ let value: GetChatByExternalChannelSource = "discord";
 ## Values
 
 ```typescript
-"discord" | "slack"
+"discord" | "slack" | "dashboard"
 ```

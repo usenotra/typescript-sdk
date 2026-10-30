@@ -24,9 +24,33 @@ let value: GetPostResponse = {
     rawHtml: null,
     recommendations: "<value>",
     contentType: "twitter_post",
+    metadata: {
+      coverImage: {
+        url: "https://cdn.example.com/covers/ship-notes.png",
+        alt: "Screenshot of the new editor",
+      },
+      tags: [
+        "editor",
+        "performance",
+      ],
+      excerpt: "The editor now opens twice as fast on long posts.",
+      authors: [
+        {
+          id: "auth_8f2kq1",
+          slug: "jane-doe",
+          name: "Jane Doe",
+          title: "Head of Product",
+          avatarUrl: "https://cdn.example.com/avatars/jane.png",
+        },
+      ],
+      featured: false,
+      noindex: false,
+      hidden: false,
+      displayDate: "2026-10-01",
+    },
     status: "published",
-    createdAt: "1726654645385",
-    updatedAt: "1735636543842",
+    createdAt: "1716324242975",
+    updatedAt: "1735666818366",
   },
 };
 ```

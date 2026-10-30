@@ -16,6 +16,10 @@ export const ServerList = [
    * Production
    */
   "https://api.usenotra.com",
+  /**
+   * Sandbox with sample data. Get a free sandbox key at demo.usenotra.com, no signup needed
+   */
+  "https://demo-api.usenotra.com",
 ] as const;
 
 export type SDKOptions = {
@@ -62,7 +66,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "1.0.0",
-  sdkVersion: "1.3.6",
-  genVersion: "2.937.18",
-  userAgent: "speakeasy-sdk/typescript 1.3.6 2.937.18 1.0.0 @usenotra/sdk",
+  sdkVersion: "1.3.7",
+  genVersion: "2.954.8",
+  userAgent: "speakeasy-sdk/typescript 1.3.7 2.954.8 1.0.0 @usenotra/sdk",
 } as const;
