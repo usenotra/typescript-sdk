@@ -171,7 +171,7 @@ async function $do(
     M.json(202, operations.SubmitOrganizationFeedbackResponse$inboundSchema, {
       key: "Result",
     }),
-    M.jsonErr([400, 404], errors.ErrorResponse$inboundSchema),
+    M.jsonErr([400, 402, 404, 409], errors.ErrorResponse$inboundSchema),
     M.jsonErr(429, errors.RateLimitErrorResponse$inboundSchema, { hdrs: true }),
     M.fail("4XX"),
     M.fail("5XX"),

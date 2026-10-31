@@ -60,9 +60,15 @@ export type GetEventTriggerPublishDestination = OpenEnum<
   typeof GetEventTriggerPublishDestination
 >;
 
+export type GetEventTriggerNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type GetEventTriggerOutputConfig = {
   publishDestination?: GetEventTriggerPublishDestination | undefined;
   brandVoiceId?: string | undefined;
+  notify?: GetEventTriggerNotify | undefined;
 };
 
 export type GetEventTriggerEventTrigger = {
@@ -178,6 +184,25 @@ export const GetEventTriggerPublishDestination$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(GetEventTriggerPublishDestination);
 
 /** @internal */
+export const GetEventTriggerNotify$inboundSchema: z.ZodMiniType<
+  GetEventTriggerNotify,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function getEventTriggerNotifyFromJSON(
+  jsonString: string,
+): SafeParseResult<GetEventTriggerNotify, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetEventTriggerNotify$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetEventTriggerNotify' from JSON`,
+  );
+}
+
+/** @internal */
 export const GetEventTriggerOutputConfig$inboundSchema: z.ZodMiniType<
   GetEventTriggerOutputConfig,
   unknown
@@ -186,6 +211,7 @@ export const GetEventTriggerOutputConfig$inboundSchema: z.ZodMiniType<
     GetEventTriggerPublishDestination$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
+  notify: types.optional(z.lazy(() => GetEventTriggerNotify$inboundSchema)),
 });
 
 export function getEventTriggerOutputConfigFromJSON(
