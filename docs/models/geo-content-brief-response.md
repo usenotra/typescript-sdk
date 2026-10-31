@@ -12,22 +12,27 @@ let value: GeoContentBriefResponse = {
     brief: {
       targetPrompt: "<value>",
       intent: "<value>",
-      contentSubtype: "comparison",
+      contentSubtype: "faq",
       workingTitle: "<value>",
       audience: "<value>",
       jobToBeDone: "<value>",
-      sections: [],
+      sections: [
+        {
+          heading: "<value>",
+          goal: "<value>",
+          claims: [
+            "<value 1>",
+            "<value 2>",
+            "<value 3>",
+          ],
+        },
+      ],
       questionsToAnswer: [
         "<value 1>",
         "<value 2>",
+        "<value 3>",
       ],
-      internalLinks: [
-        {
-          url: "https://unusual-doubter.name",
-          anchor: "<value>",
-          why: "<value>",
-        },
-      ],
+      internalLinks: [],
       acceptanceChecklist: [
         "<value 1>",
         "<value 2>",

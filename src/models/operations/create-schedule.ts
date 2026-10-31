@@ -112,6 +112,14 @@ export type CreateSchedulePublishDestinationRequest = ClosedEnum<
   typeof CreateSchedulePublishDestinationRequest
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type CreateScheduleNotifyRequest = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type CreateScheduleOutputConfigRequest = {
   /**
    * Where auto-published posts are sent.
@@ -125,6 +133,10 @@ export type CreateScheduleOutputConfigRequest = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: CreateScheduleNotifyRequest | undefined;
 };
 
 /**
@@ -265,6 +277,14 @@ export type CreateSchedulePublishDestinationResponse = OpenEnum<
   typeof CreateSchedulePublishDestinationResponse
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type CreateScheduleNotifyResponse = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type CreateScheduleOutputConfigResponse = {
   /**
    * Where auto-published posts are sent.
@@ -278,6 +298,10 @@ export type CreateScheduleOutputConfigResponse = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: CreateScheduleNotifyResponse | undefined;
 };
 
 export const CreateScheduleLookbackWindowResponse = {
@@ -419,10 +443,36 @@ export const CreateSchedulePublishDestinationRequest$outboundSchema:
   );
 
 /** @internal */
+export type CreateScheduleNotifyRequest$Outbound = {
+  slack: boolean;
+  email: boolean;
+};
+
+/** @internal */
+export const CreateScheduleNotifyRequest$outboundSchema: z.ZodMiniType<
+  CreateScheduleNotifyRequest$Outbound,
+  CreateScheduleNotifyRequest
+> = z.object({
+  slack: z.boolean(),
+  email: z.boolean(),
+});
+
+export function createScheduleNotifyRequestToJSON(
+  createScheduleNotifyRequest: CreateScheduleNotifyRequest,
+): string {
+  return JSON.stringify(
+    CreateScheduleNotifyRequest$outboundSchema.parse(
+      createScheduleNotifyRequest,
+    ),
+  );
+}
+
+/** @internal */
 export type CreateScheduleOutputConfigRequest$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
   instructions?: string | undefined;
+  notify?: CreateScheduleNotifyRequest$Outbound | undefined;
 };
 
 /** @internal */
@@ -435,6 +485,7 @@ export const CreateScheduleOutputConfigRequest$outboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: z.optional(z.string()),
   instructions: z.optional(z.string()),
+  notify: z.optional(z.lazy(() => CreateScheduleNotifyRequest$outboundSchema)),
 });
 
 export function createScheduleOutputConfigRequestToJSON(
@@ -578,6 +629,25 @@ export const CreateSchedulePublishDestinationResponse$inboundSchema:
     .inboundSchema(CreateSchedulePublishDestinationResponse);
 
 /** @internal */
+export const CreateScheduleNotifyResponse$inboundSchema: z.ZodMiniType<
+  CreateScheduleNotifyResponse,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function createScheduleNotifyResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateScheduleNotifyResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateScheduleNotifyResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateScheduleNotifyResponse' from JSON`,
+  );
+}
+
+/** @internal */
 export const CreateScheduleOutputConfigResponse$inboundSchema: z.ZodMiniType<
   CreateScheduleOutputConfigResponse,
   unknown
@@ -587,6 +657,9 @@ export const CreateScheduleOutputConfigResponse$inboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: types.optional(types.string()),
   instructions: types.optional(types.string()),
+  notify: types.optional(
+    z.lazy(() => CreateScheduleNotifyResponse$inboundSchema),
+  ),
 });
 
 export function createScheduleOutputConfigResponseFromJSON(

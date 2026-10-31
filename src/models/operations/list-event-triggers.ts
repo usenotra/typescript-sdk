@@ -63,9 +63,15 @@ export type ListEventTriggersPublishDestination = OpenEnum<
   typeof ListEventTriggersPublishDestination
 >;
 
+export type ListEventTriggersNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type ListEventTriggersOutputConfig = {
   publishDestination?: ListEventTriggersPublishDestination | undefined;
   brandVoiceId?: string | undefined;
+  notify?: ListEventTriggersNotify | undefined;
 };
 
 export type ListEventTriggersEventTrigger = {
@@ -182,6 +188,25 @@ export const ListEventTriggersPublishDestination$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(ListEventTriggersPublishDestination);
 
 /** @internal */
+export const ListEventTriggersNotify$inboundSchema: z.ZodMiniType<
+  ListEventTriggersNotify,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function listEventTriggersNotifyFromJSON(
+  jsonString: string,
+): SafeParseResult<ListEventTriggersNotify, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListEventTriggersNotify$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListEventTriggersNotify' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListEventTriggersOutputConfig$inboundSchema: z.ZodMiniType<
   ListEventTriggersOutputConfig,
   unknown
@@ -190,6 +215,7 @@ export const ListEventTriggersOutputConfig$inboundSchema: z.ZodMiniType<
     ListEventTriggersPublishDestination$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
+  notify: types.optional(z.lazy(() => ListEventTriggersNotify$inboundSchema)),
 });
 
 export function listEventTriggersOutputConfigFromJSON(
