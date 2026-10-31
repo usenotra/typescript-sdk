@@ -10,7 +10,9 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 <!-- Start Summary [summary] -->
 ## Summary
 
-Notra API: OpenAPI schema for Notra content endpoints. Use GET /v1/status for public reachability. Error responses include recovery guidance.
+Notra API: OpenAPI schema for Notra content endpoints. Use GET /v1/status for public reachability. Error responses include recovery guidance. Breaking changes ship under a new major path; deprecated operations send Deprecation and Sunset headers at least 90 days before removal.
+
+For more information about the API: [Notra API versioning and deprecation policy](https://www.usenotra.com/docs/api/versioning)
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -149,17 +151,25 @@ run();
 
 * [listPosts](docs/sdks/content/README.md#listposts) - List posts
 * [createPost](docs/sdks/content/README.md#createpost) - Create a post
+* [listPostAuthors](docs/sdks/content/README.md#listpostauthors) - List post authors
 * [getPost](docs/sdks/content/README.md#getpost) - Get a single post
 * [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
 * [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
 * [createPostGeneration](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
 * [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
+* [getPostSchedule](docs/sdks/content/README.md#getpostschedule) - Get a post's publishing schedule
+* [schedulePost](docs/sdks/content/README.md#schedulepost) - Schedule a post for publishing
+* [cancelPostSchedule](docs/sdks/content/README.md#cancelpostschedule) - Cancel a post's publishing schedule
 * [listBrandIdentities](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
 * [createBrandIdentity](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 * [getBrandIdentityGeneration](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
 * [getBrandIdentity](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
 * [deleteBrandIdentity](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
 * [updateBrandIdentity](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
+* [listBrandColors](docs/sdks/content/README.md#listbrandcolors) - List brand colors
+* [createBrandColor](docs/sdks/content/README.md#createbrandcolor) - Add a brand color
+* [deleteBrandColor](docs/sdks/content/README.md#deletebrandcolor) - Delete a brand color
+* [updateBrandColor](docs/sdks/content/README.md#updatebrandcolor) - Update a brand color
 * [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
 * [createGitHubIntegration](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 * [deleteIntegration](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
@@ -194,11 +204,15 @@ run();
 * [updateProject](docs/sdks/geo/README.md#updateproject) - Rename a GEO project or relink its brand identity
 * [getGeoSettings](docs/sdks/geo/README.md#getgeosettings) - Get a project's GEO settings
 * [updateGeoSettings](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
+* [listGeoEngines](docs/sdks/geo/README.md#listgeoengines) - List the answer engines a project can track
 * [listGeoPrompts](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
 * [createGeoPrompt](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
 * [deleteGeoPrompt](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
 * [updateGeoPrompt](docs/sdks/geo/README.md#updategeoprompt) - Update a tracked GEO prompt
 * [importGeoPrompts](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
+* [listGeoPromptSuggestions](docs/sdks/geo/README.md#listgeopromptsuggestions) - List prompt suggestions
+* [acceptGeoPromptSuggestion](docs/sdks/geo/README.md#acceptgeopromptsuggestion) - Accept a prompt suggestion
+* [dismissGeoPromptSuggestion](docs/sdks/geo/README.md#dismissgeopromptsuggestion) - Dismiss a prompt suggestion
 * [listGeoSequences](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
 * [createGeoSequence](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
 * [deleteGeoSequence](docs/sdks/geo/README.md#deletegeosequence) - Delete a GEO prompt sequence
@@ -211,6 +225,7 @@ run();
 * [importGeoCompetitors](docs/sdks/geo/README.md#importgeocompetitors) - Bulk import GEO competitors
 * [listGeoScans](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
 * [createGeoScan](docs/sdks/geo/README.md#creategeoscan) - Trigger a GEO scan
+* [createGeoPromptScan](docs/sdks/geo/README.md#creategeopromptscan) - Rescan a single GEO prompt
 * [getGeoScan](docs/sdks/geo/README.md#getgeoscan) - Get a single GEO scan
 * [getGeoVisibilityOverview](docs/sdks/geo/README.md#getgeovisibilityoverview) - Get mention rates per engine
 * [getGeoVisibilityTimeseries](docs/sdks/geo/README.md#getgeovisibilitytimeseries) - Get daily mention counts per engine
@@ -227,9 +242,11 @@ run();
 * [listGeoSentimentEvidence](docs/sdks/geo/README.md#listgeosentimentevidence) - List answers used as sentiment evidence
 * [listGeoShelfSources](docs/sdks/geo/README.md#listgeoshelfsources) - List stored GEO shelf sources
 * [listGeoContentGaps](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
+* [updateGeoContentGap](docs/sdks/geo/README.md#updategeocontentgap) - Ignore or restore a content gap
 * [listGeoContentBriefs](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
 * [planGeoContentBrief](docs/sdks/geo/README.md#plangeocontentbrief) - Plan a content brief
 * [getGeoContentBrief](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
+* [updateGeoContentBrief](docs/sdks/geo/README.md#updategeocontentbrief) - Update a content brief
 * [approveGeoContentBrief](docs/sdks/geo/README.md#approvegeocontentbrief) - Approve a brief and start the writer
 * [getGeoAgentReadiness](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
 * [startGeoAgentReadinessScan](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
@@ -248,6 +265,8 @@ run();
 * [createSchedule](docs/sdks/schedules/README.md#createschedule) - Create a schedule
 * [deleteSchedule](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
 * [updateSchedule](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
+* [runSchedule](docs/sdks/schedules/README.md#runschedule) - Run a schedule now
+* [listScheduleRuns](docs/sdks/schedules/README.md#listscheduleruns) - List a schedule's runs
 
 ### [Skills](docs/sdks/skills/README.md)
 
@@ -256,6 +275,15 @@ run();
 * [getSkill](docs/sdks/skills/README.md#getskill) - Get a single skill
 * [deleteSkill](docs/sdks/skills/README.md#deleteskill) - Delete a skill
 * [patchSkill](docs/sdks/skills/README.md#patchskill) - Update a skill
+
+### [Webhooks](docs/sdks/webhooks/README.md)
+
+* [listWebhookEndpoints](docs/sdks/webhooks/README.md#listwebhookendpoints) - List outbound webhook subscriptions
+* [createWebhookEndpoint](docs/sdks/webhooks/README.md#createwebhookendpoint) - Subscribe an HTTPS endpoint to Notra events
+* [deleteWebhookEndpoint](docs/sdks/webhooks/README.md#deletewebhookendpoint) - Remove a webhook subscription and cancel unsent deliveries
+* [listWebhookDeliveries](docs/sdks/webhooks/README.md#listwebhookdeliveries) - List webhook deliveries
+* [getWebhookDelivery](docs/sdks/webhooks/README.md#getwebhookdelivery) - Get payload and attempt history for a delivery
+* [retryWebhookDelivery](docs/sdks/webhooks/README.md#retrywebhookdelivery) - Retry a failed delivery, retaining its history
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -284,10 +312,13 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`chatsGetChatByExternalChannel`](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
 - [`chatsListChats`](docs/sdks/chats/README.md#listchats) - List chats
 - [`chatsPostChatMessage`](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
+- [`contentCancelPostSchedule`](docs/sdks/content/README.md#cancelpostschedule) - Cancel a post's publishing schedule
+- [`contentCreateBrandColor`](docs/sdks/content/README.md#createbrandcolor) - Add a brand color
 - [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
 - [`contentCreateGitHubIntegration`](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
 - [`contentCreatePost`](docs/sdks/content/README.md#createpost) - Create a post
 - [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
+- [`contentDeleteBrandColor`](docs/sdks/content/README.md#deletebrandcolor) - Delete a brand color
 - [`contentDeleteBrandIdentity`](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
 - [`contentDeleteIntegration`](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
 - [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
@@ -295,9 +326,14 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`contentGetBrandIdentityGeneration`](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
 - [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
 - [`contentGetPostGeneration`](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
+- [`contentGetPostSchedule`](docs/sdks/content/README.md#getpostschedule) - Get a post's publishing schedule
+- [`contentListBrandColors`](docs/sdks/content/README.md#listbrandcolors) - List brand colors
 - [`contentListBrandIdentities`](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
 - [`contentListIntegrations`](docs/sdks/content/README.md#listintegrations) - List available integrations
+- [`contentListPostAuthors`](docs/sdks/content/README.md#listpostauthors) - List post authors
 - [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
+- [`contentSchedulePost`](docs/sdks/content/README.md#schedulepost) - Schedule a post for publishing
+- [`contentUpdateBrandColor`](docs/sdks/content/README.md#updatebrandcolor) - Update a brand color
 - [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
 - [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
 - [`discoveryGetPublicApiStatus`](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
@@ -312,8 +348,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`feedbackSubmitFeedback`](docs/sdks/feedback/README.md#submitfeedback) - Submit feedback with an API key
 - [`feedbackSubmitOrganizationFeedback`](docs/sdks/feedback/README.md#submitorganizationfeedback) - Submit feedback to an organization's feedback URL
 - [`feedbackUpdateFeedback`](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
+- [`geoAcceptGEOPromptSuggestion`](docs/sdks/geo/README.md#acceptgeopromptsuggestion) - Accept a prompt suggestion
 - [`geoApproveGEOContentBrief`](docs/sdks/geo/README.md#approvegeocontentbrief) - Approve a brief and start the writer
 - [`geoCreateGEOPrompt`](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
+- [`geoCreateGEOPromptScan`](docs/sdks/geo/README.md#creategeopromptscan) - Rescan a single GEO prompt
 - [`geoCreateGEOScan`](docs/sdks/geo/README.md#creategeoscan) - Trigger a GEO scan
 - [`geoCreateGEOSequence`](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
 - [`geoCreateProject`](docs/sdks/geo/README.md#createproject) - Create a GEO project
@@ -321,6 +359,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoDeleteGEOPrompt`](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
 - [`geoDeleteGEOSequence`](docs/sdks/geo/README.md#deletegeosequence) - Delete a GEO prompt sequence
 - [`geoDeleteProject`](docs/sdks/geo/README.md#deleteproject) - Delete a GEO project and all of its GEO data
+- [`geoDismissGEOPromptSuggestion`](docs/sdks/geo/README.md#dismissgeopromptsuggestion) - Dismiss a prompt suggestion
 - [`geoGetGEOAgentReadiness`](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
 - [`geoGetGEOContentBrief`](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
 - [`geoGetGEOIngestSetup`](docs/sdks/geo/README.md#getgeoingestsetup) - Get the install snippets
@@ -347,8 +386,10 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoListGEOCompetitors`](docs/sdks/geo/README.md#listgeocompetitors) - List tracked GEO competitors
 - [`geoListGEOContentBriefs`](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
 - [`geoListGEOContentGaps`](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
+- [`geoListGEOEngines`](docs/sdks/geo/README.md#listgeoengines) - List the answer engines a project can track
 - [`geoListGEOPromptResultSummaries`](docs/sdks/geo/README.md#listgeopromptresultsummaries) - List compact prompt result summaries
 - [`geoListGEOPrompts`](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
+- [`geoListGEOPromptSuggestions`](docs/sdks/geo/README.md#listgeopromptsuggestions) - List prompt suggestions
 - [`geoListGEOScans`](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
 - [`geoListGEOSentimentEvidence`](docs/sdks/geo/README.md#listgeosentimentevidence) - List answers used as sentiment evidence
 - [`geoListGEOSequences`](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
@@ -361,6 +402,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoRunGEOSequence`](docs/sdks/geo/README.md#rungeosequence) - Run a GEO prompt sequence now
 - [`geoStartGEOAgentReadinessScan`](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
 - [`geoSuggestGEOCompetitors`](docs/sdks/geo/README.md#suggestgeocompetitors) - Suggest GEO competitors for a domain
+- [`geoUpdateGEOContentBrief`](docs/sdks/geo/README.md#updategeocontentbrief) - Update a content brief
+- [`geoUpdateGEOContentGap`](docs/sdks/geo/README.md#updategeocontentgap) - Ignore or restore a content gap
 - [`geoUpdateGEOPrompt`](docs/sdks/geo/README.md#updategeoprompt) - Update a tracked GEO prompt
 - [`geoUpdateGEOSequence`](docs/sdks/geo/README.md#updategeosequence) - Update a GEO prompt sequence
 - [`geoUpdateGEOSettings`](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
@@ -368,13 +411,21 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`geoUpsertGEOCompetitor`](docs/sdks/geo/README.md#upsertgeocompetitor) - Create or update a tracked GEO competitor
 - [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
 - [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
+- [`schedulesListScheduleRuns`](docs/sdks/schedules/README.md#listscheduleruns) - List a schedule's runs
 - [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
+- [`schedulesRunSchedule`](docs/sdks/schedules/README.md#runschedule) - Run a schedule now
 - [`schedulesUpdateSchedule`](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
 - [`skillsCreateSkill`](docs/sdks/skills/README.md#createskill) - Create a skill
 - [`skillsDeleteSkill`](docs/sdks/skills/README.md#deleteskill) - Delete a skill
 - [`skillsGetSkill`](docs/sdks/skills/README.md#getskill) - Get a single skill
 - [`skillsListSkills`](docs/sdks/skills/README.md#listskills) - List skills
 - [`skillsPatchSkill`](docs/sdks/skills/README.md#patchskill) - Update a skill
+- [`webhooksCreateWebhookEndpoint`](docs/sdks/webhooks/README.md#createwebhookendpoint) - Subscribe an HTTPS endpoint to Notra events
+- [`webhooksDeleteWebhookEndpoint`](docs/sdks/webhooks/README.md#deletewebhookendpoint) - Remove a webhook subscription and cancel unsent deliveries
+- [`webhooksGetWebhookDelivery`](docs/sdks/webhooks/README.md#getwebhookdelivery) - Get payload and attempt history for a delivery
+- [`webhooksListWebhookDeliveries`](docs/sdks/webhooks/README.md#listwebhookdeliveries) - List webhook deliveries
+- [`webhooksListWebhookEndpoints`](docs/sdks/webhooks/README.md#listwebhookendpoints) - List outbound webhook subscriptions
+- [`webhooksRetryWebhookDelivery`](docs/sdks/webhooks/README.md#retrywebhookdelivery) - Retry a failed delivery, retaining its history
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -458,13 +509,11 @@ run();
 import { Notra } from "@usenotra/sdk";
 import * as errors from "@usenotra/sdk/models/errors";
 
-const notra = new Notra({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
+const notra = new Notra();
 
 async function run() {
   try {
-    const result = await notra.discovery.getWorkspaces();
+    const result = await notra.discovery.getPublicApiStatus();
 
     console.log(result);
   } catch (error) {
@@ -476,10 +525,11 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.ErrorResponse) {
+      if (error instanceof errors.RateLimitErrorResponse) {
         console.log(error.data$.error); // string
-        console.log(error.data$.code); // string
-        console.log(error.data$.recovery); // string
+        console.log(error.data$.limit); // number
+        console.log(error.data$.remaining); // number
+        console.log(error.data$.reset); // number
       }
     }
   }
@@ -507,8 +557,8 @@ run();
 
 
 **Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 21 of 100 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 100 methods.*
+* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 25 of 123 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 123 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -519,14 +569,42 @@ run();
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Override Server URL Per-Client
+### Select Server by Index
 
-The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
+You can override the default server globally by passing a server index to the `serverIdx: number` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
+
+| #   | Server                          | Description                                                                             |
+| --- | ------------------------------- | --------------------------------------------------------------------------------------- |
+| 0   | `https://api.usenotra.com`      | Production                                                                              |
+| 1   | `https://demo-api.usenotra.com` | Sandbox with sample data. Get a free sandbox key at demo.usenotra.com, no signup needed |
+
+#### Example
+
 ```typescript
 import { Notra } from "@usenotra/sdk";
 
 const notra = new Notra({
-  serverURL: "https://api.usenotra.com",
+  serverIdx: 0,
+});
+
+async function run() {
+  const result = await notra.discovery.getPublicApiStatus();
+
+  console.log(result);
+}
+
+run();
+
+```
+
+### Override Server URL Per-Client
+
+The default server can also be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  serverURL: "https://demo-api.usenotra.com",
 });
 
 async function run() {

@@ -107,6 +107,14 @@ export type PatchScheduleRequestPublishDestination = ClosedEnum<
   typeof PatchScheduleRequestPublishDestination
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type PatchScheduleRequestNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type PatchScheduleRequestOutputConfig = {
   /**
    * Where auto-published posts are sent.
@@ -120,6 +128,10 @@ export type PatchScheduleRequestOutputConfig = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: PatchScheduleRequestNotify | undefined;
 };
 
 /**
@@ -263,10 +275,34 @@ export const PatchScheduleRequestPublishDestination$outboundSchema:
   );
 
 /** @internal */
+export type PatchScheduleRequestNotify$Outbound = {
+  slack: boolean;
+  email: boolean;
+};
+
+/** @internal */
+export const PatchScheduleRequestNotify$outboundSchema: z.ZodMiniType<
+  PatchScheduleRequestNotify$Outbound,
+  PatchScheduleRequestNotify
+> = z.object({
+  slack: z.boolean(),
+  email: z.boolean(),
+});
+
+export function patchScheduleRequestNotifyToJSON(
+  patchScheduleRequestNotify: PatchScheduleRequestNotify,
+): string {
+  return JSON.stringify(
+    PatchScheduleRequestNotify$outboundSchema.parse(patchScheduleRequestNotify),
+  );
+}
+
+/** @internal */
 export type PatchScheduleRequestOutputConfig$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
   instructions?: string | undefined;
+  notify?: PatchScheduleRequestNotify$Outbound | undefined;
 };
 
 /** @internal */
@@ -279,6 +315,7 @@ export const PatchScheduleRequestOutputConfig$outboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: z.optional(z.string()),
   instructions: z.optional(z.string()),
+  notify: z.optional(z.lazy(() => PatchScheduleRequestNotify$outboundSchema)),
 });
 
 export function patchScheduleRequestOutputConfigToJSON(

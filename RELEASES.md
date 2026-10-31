@@ -299,3 +299,13 @@ Based on:
 - [typescript v1.3.6] .
 ### Releases
 - [NPM v1.3.6] https://www.npmjs.com/package/@usenotra/sdk/v/1.3.6 - .
+
+## 2026-10-31 00:07:40
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.805.0 (2.954.8) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.3.7] .
+### Releases
+- [NPM v1.3.7] https://www.npmjs.com/package/@usenotra/sdk/v/1.3.7 - .

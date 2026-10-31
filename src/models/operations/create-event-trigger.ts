@@ -54,9 +54,15 @@ export type CreateEventTriggerPublishDestinationRequest = ClosedEnum<
   typeof CreateEventTriggerPublishDestinationRequest
 >;
 
+export type CreateEventTriggerNotifyRequest = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type CreateEventTriggerOutputConfigRequest = {
   publishDestination?: CreateEventTriggerPublishDestinationRequest | undefined;
   brandVoiceId?: string | undefined;
+  notify?: CreateEventTriggerNotifyRequest | undefined;
 };
 
 export type CreateEventTriggerRequest = {
@@ -114,9 +120,15 @@ export type CreateEventTriggerPublishDestinationResponse = OpenEnum<
   typeof CreateEventTriggerPublishDestinationResponse
 >;
 
+export type CreateEventTriggerNotifyResponse = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type CreateEventTriggerOutputConfigResponse = {
   publishDestination?: CreateEventTriggerPublishDestinationResponse | undefined;
   brandVoiceId?: string | undefined;
+  notify?: CreateEventTriggerNotifyResponse | undefined;
 };
 
 export type CreateEventTriggerEventTrigger = {
@@ -222,9 +234,35 @@ export const CreateEventTriggerPublishDestinationRequest$outboundSchema:
   );
 
 /** @internal */
+export type CreateEventTriggerNotifyRequest$Outbound = {
+  slack: boolean;
+  email: boolean;
+};
+
+/** @internal */
+export const CreateEventTriggerNotifyRequest$outboundSchema: z.ZodMiniType<
+  CreateEventTriggerNotifyRequest$Outbound,
+  CreateEventTriggerNotifyRequest
+> = z.object({
+  slack: z.boolean(),
+  email: z.boolean(),
+});
+
+export function createEventTriggerNotifyRequestToJSON(
+  createEventTriggerNotifyRequest: CreateEventTriggerNotifyRequest,
+): string {
+  return JSON.stringify(
+    CreateEventTriggerNotifyRequest$outboundSchema.parse(
+      createEventTriggerNotifyRequest,
+    ),
+  );
+}
+
+/** @internal */
 export type CreateEventTriggerOutputConfigRequest$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
+  notify?: CreateEventTriggerNotifyRequest$Outbound | undefined;
 };
 
 /** @internal */
@@ -237,6 +275,9 @@ export const CreateEventTriggerOutputConfigRequest$outboundSchema:
       CreateEventTriggerPublishDestinationRequest$outboundSchema,
     ),
     brandVoiceId: z.optional(z.string()),
+    notify: z.optional(
+      z.lazy(() => CreateEventTriggerNotifyRequest$outboundSchema),
+    ),
   });
 
 export function createEventTriggerOutputConfigRequestToJSON(
@@ -346,12 +387,34 @@ export const CreateEventTriggerPublishDestinationResponse$inboundSchema:
     openEnums.inboundSchema(CreateEventTriggerPublishDestinationResponse);
 
 /** @internal */
+export const CreateEventTriggerNotifyResponse$inboundSchema: z.ZodMiniType<
+  CreateEventTriggerNotifyResponse,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function createEventTriggerNotifyResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateEventTriggerNotifyResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateEventTriggerNotifyResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateEventTriggerNotifyResponse' from JSON`,
+  );
+}
+
+/** @internal */
 export const CreateEventTriggerOutputConfigResponse$inboundSchema:
   z.ZodMiniType<CreateEventTriggerOutputConfigResponse, unknown> = z.object({
     publishDestination: types.optional(
       CreateEventTriggerPublishDestinationResponse$inboundSchema,
     ),
     brandVoiceId: types.optional(types.string()),
+    notify: types.optional(
+      z.lazy(() => CreateEventTriggerNotifyResponse$inboundSchema),
+    ),
   });
 
 export function createEventTriggerOutputConfigResponseFromJSON(

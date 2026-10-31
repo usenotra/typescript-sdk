@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * Get authenticated workspace context
  *
  * @remarks
- * Returns the current workspace and authentication details. OAuth users also receive their accepted memberships and can opt into pending invitations; organization API keys only receive their current workspace. Discovery does not change the workspace bound to the bearer token.
+ * Returns the current workspace and authentication details. OAuth users and account-wide API keys also receive their accepted memberships and can opt into pending invitations; single-organization API keys only receive their current workspace. Discovery does not change the workspace bound to the bearer token.
  */
 export function discoveryGetWorkspaces(
   client: NotraCore,
