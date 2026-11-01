@@ -67,6 +67,66 @@ export const ListPostsContentType = {
 } as const;
 export type ListPostsContentType = OpenEnum<typeof ListPostsContentType>;
 
+/**
+ * Cover image shown on post cards and social previews.
+ */
+export type ListPostsCoverImage = {
+  /**
+   * Absolute https URL, or a path to an image uploaded in Notra (starting with /api/uploads/).
+   */
+  url: string;
+  /**
+   * Alt text. Empty string when none is set.
+   */
+  alt: string;
+};
+
+export type ListPostsAuthor = {
+  id: string;
+  /**
+   * Stable author handle; hosted sites list the author's posts at /author/{slug}.
+   */
+  slug: string;
+  name: string;
+  title: string | null;
+  avatarUrl: string | null;
+};
+
+/**
+ * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+ */
+export type ListPostsMetadata = {
+  /**
+   * Cover image shown on post cards and social previews.
+   */
+  coverImage: ListPostsCoverImage | null;
+  tags: Array<string>;
+  /**
+   * Summary shown on post cards and in meta descriptions. Null means it is derived from the first paragraph.
+   */
+  excerpt: string | null;
+  /**
+   * Credited authors in display order. Authors deleted since they were assigned are omitted.
+   */
+  authors: Array<ListPostsAuthor>;
+  /**
+   * Pinned to the top of the blog index on hosted sites.
+   */
+  featured: boolean;
+  /**
+   * Asks search engines not to index the post and leaves it out of the sitemap.
+   */
+  noindex: boolean;
+  /**
+   * Reachable by direct link, but excluded from hosted site listings, feeds, search engine indexing, sitemaps and generated AI indexes. Not private.
+   */
+  hidden: boolean;
+  /**
+   * Date shown on the post as YYYY-MM-DD. Null means the publish date is used.
+   */
+  displayDate: string | null;
+};
+
 export const ListPostsStatus = {
   Draft: "draft",
   Published: "published",
@@ -96,6 +156,10 @@ export type ListPostsPost = {
   recommendations: string | null;
   contentType: ListPostsContentType;
   sourceMetadata?: any | undefined;
+  /**
+   * Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type.
+   */
+  metadata: ListPostsMetadata | null;
   status: ListPostsStatus;
   createdAt: string;
   updatedAt: string;
@@ -181,6 +245,72 @@ export const ListPostsContentType$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(ListPostsContentType);
 
 /** @internal */
+export const ListPostsCoverImage$inboundSchema: z.ZodMiniType<
+  ListPostsCoverImage,
+  unknown
+> = z.object({
+  url: types.string(),
+  alt: types.string(),
+});
+
+export function listPostsCoverImageFromJSON(
+  jsonString: string,
+): SafeParseResult<ListPostsCoverImage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListPostsCoverImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListPostsCoverImage' from JSON`,
+  );
+}
+
+/** @internal */
+export const ListPostsAuthor$inboundSchema: z.ZodMiniType<
+  ListPostsAuthor,
+  unknown
+> = z.object({
+  id: types.string(),
+  slug: types.string(),
+  name: types.string(),
+  title: types.nullable(types.string()),
+  avatarUrl: types.nullable(types.string()),
+});
+
+export function listPostsAuthorFromJSON(
+  jsonString: string,
+): SafeParseResult<ListPostsAuthor, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListPostsAuthor$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListPostsAuthor' from JSON`,
+  );
+}
+
+/** @internal */
+export const ListPostsMetadata$inboundSchema: z.ZodMiniType<
+  ListPostsMetadata,
+  unknown
+> = z.object({
+  coverImage: types.nullable(z.lazy(() => ListPostsCoverImage$inboundSchema)),
+  tags: z.array(types.string()),
+  excerpt: types.nullable(types.string()),
+  authors: z.array(z.lazy(() => ListPostsAuthor$inboundSchema)),
+  featured: types.boolean(),
+  noindex: types.boolean(),
+  hidden: types.boolean(),
+  displayDate: types.nullable(types.string()),
+});
+
+export function listPostsMetadataFromJSON(
+  jsonString: string,
+): SafeParseResult<ListPostsMetadata, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListPostsMetadata$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListPostsMetadata' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListPostsStatus$inboundSchema: z.ZodMiniType<
   ListPostsStatus,
   unknown
@@ -201,6 +331,7 @@ export const ListPostsPost$inboundSchema: z.ZodMiniType<
   recommendations: types.nullable(types.string()),
   contentType: ListPostsContentType$inboundSchema,
   sourceMetadata: types.optional(z.any()),
+  metadata: types.nullable(z.lazy(() => ListPostsMetadata$inboundSchema)),
   status: ListPostsStatus$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),

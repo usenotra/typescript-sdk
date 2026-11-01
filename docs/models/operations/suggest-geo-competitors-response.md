@@ -6,7 +6,15 @@
 import { SuggestGeoCompetitorsResponse } from "@usenotra/sdk/models/operations";
 
 let value: SuggestGeoCompetitorsResponse = {
-  headers: {},
+  headers: {
+    "key": [
+      "<value 1>",
+    ],
+    "key1": [
+      "<value 1>",
+      "<value 2>",
+    ],
+  },
   result: {
     domain: "impressionable-deed.net",
     field: "<value>",

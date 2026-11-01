@@ -40,21 +40,54 @@ let value: GeoAgentReadinessResponse = {
   },
   scan: null,
   history: [],
+  comparison: {
+    previousScore: 1475.12,
+    previousScannedAt: "<value>",
+    resolved: [
+      {
+        id: "<id>",
+        name: "<value>",
+        tier: "bonus",
+        previousResult: null,
+        result: "partial",
+      },
+    ],
+    added: [
+      {
+        id: "<id>",
+        name: "<value>",
+        tier: "bonus",
+        previousResult: "partial",
+        result: "failed",
+      },
+    ],
+    improved: [
+      {
+        id: "<id>",
+        name: "<value>",
+        tier: "recommended",
+        previousResult: "partial",
+        result: "partial",
+      },
+    ],
+    worsened: [],
+  },
   organization: {
     id: "<id>",
     slug: "<value>",
     name: "<value>",
-    logo: "<value>",
+    logo: null,
   },
 };
 ```
 
 ## Fields
 
-| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
-| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `targetUrl`                                                                                            | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
-| `report`                                                                                               | [models.GeoAgentReadinessReport](../models/geo-agent-readiness-report.md)                              | :heavy_check_mark:                                                                                     | Latest completed report, if any.                                                                       |
-| `scan`                                                                                                 | [models.GeoAgentReadinessReport](../models/geo-agent-readiness-report.md)                              | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
-| `history`                                                                                              | [models.History](../models/history.md)[]                                                               | :heavy_check_mark:                                                                                     | Completed scans, oldest first.                                                                         |
-| `organization`                                                                                         | [models.GeoAgentReadinessResponseOrganization](../models/geo-agent-readiness-response-organization.md) | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| Field                                                                                                                  | Type                                                                                                                   | Required                                                                                                               | Description                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `targetUrl`                                                                                                            | *string*                                                                                                               | :heavy_check_mark:                                                                                                     | N/A                                                                                                                    |
+| `report`                                                                                                               | [models.GeoAgentReadinessReport](../models/geo-agent-readiness-report.md)                                              | :heavy_check_mark:                                                                                                     | Latest completed report, if any.                                                                                       |
+| `scan`                                                                                                                 | [models.GeoAgentReadinessReport](../models/geo-agent-readiness-report.md)                                              | :heavy_check_mark:                                                                                                     | N/A                                                                                                                    |
+| `history`                                                                                                              | [models.History](../models/history.md)[]                                                                               | :heavy_check_mark:                                                                                                     | Completed scans, oldest first.                                                                                         |
+| `comparison`                                                                                                           | [models.GeoAgentReadinessResponseComparison](../models/geo-agent-readiness-response-comparison.md)                     | :heavy_check_mark:                                                                                                     | Checks that changed between the latest completed scan and the one before it. Null until there are two completed scans. |
+| `organization`                                                                                                         | [models.GeoAgentReadinessResponseOrganization](../models/geo-agent-readiness-response-organization.md)                 | :heavy_check_mark:                                                                                                     | N/A                                                                                                                    |

@@ -12,6 +12,24 @@ let value: UpdatePostRequest = {
     slug: "ship-notes-week-11",
     markdown: "# Ship notes\n\nWe shipped a faster editor.",
     status: "published",
+    metadata: {
+      coverImage: {
+        url: "https://cdn.example.com/covers/ship-notes.png",
+        alt: "Screenshot of the new editor",
+      },
+      tags: [
+        "editor",
+        "performance",
+      ],
+      excerpt: "The editor now opens twice as fast on long posts.",
+      authorIds: [
+        "auth_8f2kq1",
+      ],
+      featured: true,
+      noindex: false,
+      hidden: true,
+      displayDate: new Date("2026-10-01"),
+    },
   },
 };
 ```

@@ -81,6 +81,10 @@ export type GetPostGenerationJob = {
    * Failure reason when status is failed.
    */
   error: string | null;
+  /**
+   * Stable machine-readable failure code when status is failed, such as NO_ACTIVITY_TYPES_SELECTED or NO_AVAILABLE_SOURCES. Absent or null for other failures and for older jobs.
+   */
+  errorCode?: string | null | undefined;
   source: GetPostGenerationSource;
   createdAt: string;
   updatedAt: string;
@@ -100,7 +104,7 @@ export const Type = {
 } as const;
 export type Type = OpenEnum<typeof Type>;
 
-export type Event = {
+export type GetPostGenerationEvent = {
   id: string;
   jobId: string;
   type: Type;
@@ -114,7 +118,7 @@ export type Event = {
  */
 export type GetPostGenerationResponse = {
   job: GetPostGenerationJob;
-  events: Array<Event>;
+  events: Array<GetPostGenerationEvent>;
 };
 
 /** @internal */
@@ -177,6 +181,7 @@ export const GetPostGenerationJob$inboundSchema: z.ZodMiniType<
   workflowRunId: types.nullable(types.string()),
   postId: types.nullable(types.string()),
   error: types.nullable(types.string()),
+  errorCode: z.optional(z.nullable(types.string())),
   source: GetPostGenerationSource$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),
@@ -198,7 +203,10 @@ export const Type$inboundSchema: z.ZodMiniType<Type, unknown> = openEnums
   .inboundSchema(Type);
 
 /** @internal */
-export const Event$inboundSchema: z.ZodMiniType<Event, unknown> = z.object({
+export const GetPostGenerationEvent$inboundSchema: z.ZodMiniType<
+  GetPostGenerationEvent,
+  unknown
+> = z.object({
   id: types.string(),
   jobId: types.string(),
   type: Type$inboundSchema,
@@ -207,13 +215,13 @@ export const Event$inboundSchema: z.ZodMiniType<Event, unknown> = z.object({
   metadata: types.nullable(z.record(z.string(), z.any())),
 });
 
-export function eventFromJSON(
+export function getPostGenerationEventFromJSON(
   jsonString: string,
-): SafeParseResult<Event, SDKValidationError> {
+): SafeParseResult<GetPostGenerationEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Event$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Event' from JSON`,
+    (x) => GetPostGenerationEvent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetPostGenerationEvent' from JSON`,
   );
 }
 
@@ -223,7 +231,7 @@ export const GetPostGenerationResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   job: z.lazy(() => GetPostGenerationJob$inboundSchema),
-  events: z.array(z.lazy(() => Event$inboundSchema)),
+  events: z.array(z.lazy(() => GetPostGenerationEvent$inboundSchema)),
 });
 
 export function getPostGenerationResponseFromJSON(

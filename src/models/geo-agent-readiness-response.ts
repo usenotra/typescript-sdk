@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4-mini";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
@@ -19,6 +21,204 @@ export type History = {
   failedCount: number;
   partialCount: number;
   scannedAt: string;
+};
+
+export const ResolvedTier = {
+  Essential: "essential",
+  Recommended: "recommended",
+  Bonus: "bonus",
+} as const;
+export type ResolvedTier = OpenEnum<typeof ResolvedTier>;
+
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export const ResolvedPreviousResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export type ResolvedPreviousResult = OpenEnum<typeof ResolvedPreviousResult>;
+
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export const ResolvedResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export type ResolvedResult = OpenEnum<typeof ResolvedResult>;
+
+export type Resolved = {
+  id: string;
+  name: string;
+  tier: ResolvedTier;
+  /**
+   * Result on the previous scan; null when the check passed.
+   */
+  previousResult: ResolvedPreviousResult | null;
+  /**
+   * Result on the latest scan; null when the check passes now.
+   */
+  result: ResolvedResult | null;
+};
+
+export const AddedTier = {
+  Essential: "essential",
+  Recommended: "recommended",
+  Bonus: "bonus",
+} as const;
+export type AddedTier = OpenEnum<typeof AddedTier>;
+
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export const AddedPreviousResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export type AddedPreviousResult = OpenEnum<typeof AddedPreviousResult>;
+
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export const AddedResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export type AddedResult = OpenEnum<typeof AddedResult>;
+
+export type Added = {
+  id: string;
+  name: string;
+  tier: AddedTier;
+  /**
+   * Result on the previous scan; null when the check passed.
+   */
+  previousResult: AddedPreviousResult | null;
+  /**
+   * Result on the latest scan; null when the check passes now.
+   */
+  result: AddedResult | null;
+};
+
+export const ImprovedTier = {
+  Essential: "essential",
+  Recommended: "recommended",
+  Bonus: "bonus",
+} as const;
+export type ImprovedTier = OpenEnum<typeof ImprovedTier>;
+
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export const ImprovedPreviousResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export type ImprovedPreviousResult = OpenEnum<typeof ImprovedPreviousResult>;
+
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export const ImprovedResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export type ImprovedResult = OpenEnum<typeof ImprovedResult>;
+
+export type Improved = {
+  id: string;
+  name: string;
+  tier: ImprovedTier;
+  /**
+   * Result on the previous scan; null when the check passed.
+   */
+  previousResult: ImprovedPreviousResult | null;
+  /**
+   * Result on the latest scan; null when the check passes now.
+   */
+  result: ImprovedResult | null;
+};
+
+export const WorsenedTier = {
+  Essential: "essential",
+  Recommended: "recommended",
+  Bonus: "bonus",
+} as const;
+export type WorsenedTier = OpenEnum<typeof WorsenedTier>;
+
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export const WorsenedPreviousResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the previous scan; null when the check passed.
+ */
+export type WorsenedPreviousResult = OpenEnum<typeof WorsenedPreviousResult>;
+
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export const WorsenedResult = {
+  Failed: "failed",
+  Partial: "partial",
+} as const;
+/**
+ * Result on the latest scan; null when the check passes now.
+ */
+export type WorsenedResult = OpenEnum<typeof WorsenedResult>;
+
+export type Worsened = {
+  id: string;
+  name: string;
+  tier: WorsenedTier;
+  /**
+   * Result on the previous scan; null when the check passed.
+   */
+  previousResult: WorsenedPreviousResult | null;
+  /**
+   * Result on the latest scan; null when the check passes now.
+   */
+  result: WorsenedResult | null;
+};
+
+/**
+ * Checks that changed between the latest completed scan and the one before it. Null until there are two completed scans.
+ */
+export type GeoAgentReadinessResponseComparison = {
+  previousScore: number | null;
+  previousScannedAt: string;
+  resolved: Array<Resolved>;
+  added: Array<Added>;
+  /**
+   * Checks that went from failed to partial.
+   */
+  improved: Array<Improved>;
+  /**
+   * Checks that went from partial to failed.
+   */
+  worsened: Array<Worsened>;
 };
 
 export type GeoAgentReadinessResponseOrganization = {
@@ -39,6 +239,10 @@ export type GeoAgentReadinessResponse = {
    * Completed scans, oldest first.
    */
   history: Array<History>;
+  /**
+   * Checks that changed between the latest completed scan and the one before it. Null until there are two completed scans.
+   */
+  comparison: GeoAgentReadinessResponseComparison | null;
   organization: GeoAgentReadinessResponseOrganization;
 };
 
@@ -58,6 +262,171 @@ export function historyFromJSON(
     jsonString,
     (x) => History$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'History' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResolvedTier$inboundSchema: z.ZodMiniType<ResolvedTier, unknown> =
+  openEnums.inboundSchema(ResolvedTier);
+
+/** @internal */
+export const ResolvedPreviousResult$inboundSchema: z.ZodMiniType<
+  ResolvedPreviousResult,
+  unknown
+> = openEnums.inboundSchema(ResolvedPreviousResult);
+
+/** @internal */
+export const ResolvedResult$inboundSchema: z.ZodMiniType<
+  ResolvedResult,
+  unknown
+> = openEnums.inboundSchema(ResolvedResult);
+
+/** @internal */
+export const Resolved$inboundSchema: z.ZodMiniType<Resolved, unknown> = z
+  .object({
+    id: types.string(),
+    name: types.string(),
+    tier: ResolvedTier$inboundSchema,
+    previousResult: types.nullable(ResolvedPreviousResult$inboundSchema),
+    result: types.nullable(ResolvedResult$inboundSchema),
+  });
+
+export function resolvedFromJSON(
+  jsonString: string,
+): SafeParseResult<Resolved, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Resolved$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Resolved' from JSON`,
+  );
+}
+
+/** @internal */
+export const AddedTier$inboundSchema: z.ZodMiniType<AddedTier, unknown> =
+  openEnums.inboundSchema(AddedTier);
+
+/** @internal */
+export const AddedPreviousResult$inboundSchema: z.ZodMiniType<
+  AddedPreviousResult,
+  unknown
+> = openEnums.inboundSchema(AddedPreviousResult);
+
+/** @internal */
+export const AddedResult$inboundSchema: z.ZodMiniType<AddedResult, unknown> =
+  openEnums.inboundSchema(AddedResult);
+
+/** @internal */
+export const Added$inboundSchema: z.ZodMiniType<Added, unknown> = z.object({
+  id: types.string(),
+  name: types.string(),
+  tier: AddedTier$inboundSchema,
+  previousResult: types.nullable(AddedPreviousResult$inboundSchema),
+  result: types.nullable(AddedResult$inboundSchema),
+});
+
+export function addedFromJSON(
+  jsonString: string,
+): SafeParseResult<Added, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Added$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Added' from JSON`,
+  );
+}
+
+/** @internal */
+export const ImprovedTier$inboundSchema: z.ZodMiniType<ImprovedTier, unknown> =
+  openEnums.inboundSchema(ImprovedTier);
+
+/** @internal */
+export const ImprovedPreviousResult$inboundSchema: z.ZodMiniType<
+  ImprovedPreviousResult,
+  unknown
+> = openEnums.inboundSchema(ImprovedPreviousResult);
+
+/** @internal */
+export const ImprovedResult$inboundSchema: z.ZodMiniType<
+  ImprovedResult,
+  unknown
+> = openEnums.inboundSchema(ImprovedResult);
+
+/** @internal */
+export const Improved$inboundSchema: z.ZodMiniType<Improved, unknown> = z
+  .object({
+    id: types.string(),
+    name: types.string(),
+    tier: ImprovedTier$inboundSchema,
+    previousResult: types.nullable(ImprovedPreviousResult$inboundSchema),
+    result: types.nullable(ImprovedResult$inboundSchema),
+  });
+
+export function improvedFromJSON(
+  jsonString: string,
+): SafeParseResult<Improved, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Improved$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Improved' from JSON`,
+  );
+}
+
+/** @internal */
+export const WorsenedTier$inboundSchema: z.ZodMiniType<WorsenedTier, unknown> =
+  openEnums.inboundSchema(WorsenedTier);
+
+/** @internal */
+export const WorsenedPreviousResult$inboundSchema: z.ZodMiniType<
+  WorsenedPreviousResult,
+  unknown
+> = openEnums.inboundSchema(WorsenedPreviousResult);
+
+/** @internal */
+export const WorsenedResult$inboundSchema: z.ZodMiniType<
+  WorsenedResult,
+  unknown
+> = openEnums.inboundSchema(WorsenedResult);
+
+/** @internal */
+export const Worsened$inboundSchema: z.ZodMiniType<Worsened, unknown> = z
+  .object({
+    id: types.string(),
+    name: types.string(),
+    tier: WorsenedTier$inboundSchema,
+    previousResult: types.nullable(WorsenedPreviousResult$inboundSchema),
+    result: types.nullable(WorsenedResult$inboundSchema),
+  });
+
+export function worsenedFromJSON(
+  jsonString: string,
+): SafeParseResult<Worsened, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Worsened$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Worsened' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoAgentReadinessResponseComparison$inboundSchema: z.ZodMiniType<
+  GeoAgentReadinessResponseComparison,
+  unknown
+> = z.object({
+  previousScore: types.nullable(types.number()),
+  previousScannedAt: types.string(),
+  resolved: z.array(z.lazy(() => Resolved$inboundSchema)),
+  added: z.array(z.lazy(() => Added$inboundSchema)),
+  improved: z.array(z.lazy(() => Improved$inboundSchema)),
+  worsened: z.array(z.lazy(() => Worsened$inboundSchema)),
+});
+
+export function geoAgentReadinessResponseComparisonFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoAgentReadinessResponseComparison, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      GeoAgentReadinessResponseComparison$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoAgentReadinessResponseComparison' from JSON`,
   );
 }
 
@@ -92,6 +461,9 @@ export const GeoAgentReadinessResponse$inboundSchema: z.ZodMiniType<
   report: types.nullable(GeoAgentReadinessReport$inboundSchema),
   scan: types.nullable(GeoAgentReadinessReport$inboundSchema),
   history: z.array(z.lazy(() => History$inboundSchema)),
+  comparison: types.nullable(
+    z.lazy(() => GeoAgentReadinessResponseComparison$inboundSchema),
+  ),
   organization: z.lazy(() =>
     GeoAgentReadinessResponseOrganization$inboundSchema
   ),

@@ -5,7 +5,9 @@
 
 import { schedulesCreateSchedule } from "../funcs/schedules-create-schedule.js";
 import { schedulesDeleteSchedule } from "../funcs/schedules-delete-schedule.js";
+import { schedulesListScheduleRuns } from "../funcs/schedules-list-schedule-runs.js";
 import { schedulesListSchedules } from "../funcs/schedules-list-schedules.js";
+import { schedulesRunSchedule } from "../funcs/schedules-run-schedule.js";
 import { schedulesUpdateSchedule } from "../funcs/schedules-update-schedule.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -74,6 +76,40 @@ export class Schedules extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.UpdateScheduleResponse> {
     return unwrapAsync(schedulesUpdateSchedule(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Run a schedule now
+   *
+   * @remarks
+   * Starts one run of an enabled schedule right away, outside its cron timing, as the dashboard's Run now does. Returns 202 with the run's ID; follow it with `GET /v1/schedules/{scheduleId}/runs` until its status leaves `running`. Disabled schedules return 400.
+   */
+  async runSchedule(
+    request: operations.RunScheduleRequest,
+    options?: RequestOptions,
+  ): Promise<operations.RunScheduleResponse> {
+    return unwrapAsync(schedulesRunSchedule(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List a schedule's runs
+   *
+   * @remarks
+   * Returns the schedule's most recent runs, newest first, with their status and the draft post each run created.
+   */
+  async listScheduleRuns(
+    request: operations.ListScheduleRunsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.ListScheduleRunsResponse> {
+    return unwrapAsync(schedulesListScheduleRuns(
       this,
       request,
       options,
