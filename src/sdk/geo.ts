@@ -3,7 +3,9 @@
  * @generated-id: 0f16083c1f96
  */
 
+import { geoAcceptGEOPromptSuggestion } from "../funcs/geo-accept-geo-prompt-suggestion.js";
 import { geoApproveGEOContentBrief } from "../funcs/geo-approve-geo-content-brief.js";
+import { geoCreateGEOPromptScan } from "../funcs/geo-create-geo-prompt-scan.js";
 import { geoCreateGEOPrompt } from "../funcs/geo-create-geo-prompt.js";
 import { geoCreateGEOScan } from "../funcs/geo-create-geo-scan.js";
 import { geoCreateGEOSequence } from "../funcs/geo-create-geo-sequence.js";
@@ -12,6 +14,7 @@ import { geoDeleteGEOCompetitor } from "../funcs/geo-delete-geo-competitor.js";
 import { geoDeleteGEOPrompt } from "../funcs/geo-delete-geo-prompt.js";
 import { geoDeleteGEOSequence } from "../funcs/geo-delete-geo-sequence.js";
 import { geoDeleteProject } from "../funcs/geo-delete-project.js";
+import { geoDismissGEOPromptSuggestion } from "../funcs/geo-dismiss-geo-prompt-suggestion.js";
 import { geoGetGEOAgentReadiness } from "../funcs/geo-get-geo-agent-readiness.js";
 import { geoGetGEOContentBrief } from "../funcs/geo-get-geo-content-brief.js";
 import { geoGetGEOIngestSetup } from "../funcs/geo-get-geo-ingest-setup.js";
@@ -38,7 +41,9 @@ import { geoListGEOChanges } from "../funcs/geo-list-geo-changes.js";
 import { geoListGEOCompetitors } from "../funcs/geo-list-geo-competitors.js";
 import { geoListGEOContentBriefs } from "../funcs/geo-list-geo-content-briefs.js";
 import { geoListGEOContentGaps } from "../funcs/geo-list-geo-content-gaps.js";
+import { geoListGEOEngines } from "../funcs/geo-list-geo-engines.js";
 import { geoListGEOPromptResultSummaries } from "../funcs/geo-list-geo-prompt-result-summaries.js";
+import { geoListGEOPromptSuggestions } from "../funcs/geo-list-geo-prompt-suggestions.js";
 import { geoListGEOPrompts } from "../funcs/geo-list-geo-prompts.js";
 import { geoListGEOScans } from "../funcs/geo-list-geo-scans.js";
 import { geoListGEOSentimentEvidence } from "../funcs/geo-list-geo-sentiment-evidence.js";
@@ -52,6 +57,8 @@ import { geoRotateGEOIngestToken } from "../funcs/geo-rotate-geo-ingest-token.js
 import { geoRunGEOSequence } from "../funcs/geo-run-geo-sequence.js";
 import { geoStartGEOAgentReadinessScan } from "../funcs/geo-start-geo-agent-readiness-scan.js";
 import { geoSuggestGEOCompetitors } from "../funcs/geo-suggest-geo-competitors.js";
+import { geoUpdateGEOContentBrief } from "../funcs/geo-update-geo-content-brief.js";
+import { geoUpdateGEOContentGap } from "../funcs/geo-update-geo-content-gap.js";
 import { geoUpdateGEOPrompt } from "../funcs/geo-update-geo-prompt.js";
 import { geoUpdateGEOSequence } from "../funcs/geo-update-geo-sequence.js";
 import { geoUpdateGEOSettings } from "../funcs/geo-update-geo-settings.js";
@@ -107,7 +114,7 @@ export class Geo extends ClientSDK {
    * Delete a GEO project and all of its GEO data
    *
    * @remarks
-   * Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted.
+   * Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted. Projects with hosted Sites cannot be deleted; delete their Sites first.
    */
   async deleteProject(
     request: operations.DeleteProjectRequest,
@@ -152,13 +159,30 @@ export class Geo extends ClientSDK {
    * Replace a project's GEO settings
    *
    * @remarks
-   * Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload.
+   * Writes the full settings document and re-arms the recurring scan. Engines must be ids returned by `GET /projects/{projectId}/geo/engines` (model APIs plus consumer surfaces such as `google/ai-overview`, `google/gemini` and `openai/chatgpt`) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
    */
   async updateGeoSettings(
     request: operations.UpdateGeoSettingsRequest,
     options?: RequestOptions,
   ): Promise<models.GeoSettingsResponse> {
     return unwrapAsync(geoUpdateGEOSettings(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List the answer engines a project can track
+   *
+   * @remarks
+   * Returns every engine id this organization can select in `engines` when updating GEO settings. This includes model APIs and consumer surfaces scanned through hosted browsers, such as `google/ai-overview` (Google AI Overview), `google/gemini` (the Gemini app) and `openai/chatgpt` (the ChatGPT app). Legacy engines that a project already tracks stay accepted but are not listed.
+   */
+  async listGeoEngines(
+    request: operations.ListGeoEnginesRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoEngineListResponse> {
+    return unwrapAsync(geoListGEOEngines(
       this,
       request,
       options,
@@ -245,6 +269,57 @@ export class Geo extends ClientSDK {
   }
 
   /**
+   * List prompt suggestions
+   *
+   * @remarks
+   * Pending prompts Notra suggests tracking, derived from the project's Google Search Console queries. Empty until Search Console is connected and synced in the dashboard.
+   */
+  async listGeoPromptSuggestions(
+    request: operations.ListGeoPromptSuggestionsRequest,
+    options?: RequestOptions,
+  ): Promise<models.ListGeoPromptSuggestionsResponse> {
+    return unwrapAsync(geoListGEOPromptSuggestions(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Accept a prompt suggestion
+   *
+   * @remarks
+   * Tracks the suggested prompt and returns it. When the project already tracks the same prompt, that prompt is returned instead of a duplicate. Returns 404 once the suggestion is no longer pending.
+   */
+  async acceptGeoPromptSuggestion(
+    request: operations.AcceptGeoPromptSuggestionRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoPromptResponse> {
+    return unwrapAsync(geoAcceptGEOPromptSuggestion(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Dismiss a prompt suggestion
+   *
+   * @remarks
+   * Removes the suggestion from the pending list without tracking it. Returns 404 once the suggestion is no longer pending.
+   */
+  async dismissGeoPromptSuggestion(
+    request: operations.DismissGeoPromptSuggestionRequest,
+    options?: RequestOptions,
+  ): Promise<models.DismissGeoPromptSuggestionResponse> {
+    return unwrapAsync(geoDismissGEOPromptSuggestion(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * List GEO prompt sequences
    */
   async listGeoSequences(
@@ -304,7 +379,7 @@ export class Geo extends ClientSDK {
    * Run a GEO prompt sequence now
    *
    * @remarks
-   * Runs the sequence synchronously and answers with its result. The call is not queued: the request stays open for the whole run, which plays every turn against every available answer engine and can take several minutes. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
+   * Runs the sequence now. API-based answer engines run synchronously: the request stays open while every turn plays against each of them, which can take several minutes, and `checks`, `mentions` and `engines` report their result. Tracked consumer apps (ChatGPT, Perplexity, Gemini, AI Mode, Copilot) answer far more slowly, so they are queued as a background scan instead: `queuedScanId` names it and `queuedEngines` lists the apps it covers. Poll `GET /v1/projects/{projectId}/geo/scans/{scanId}` for that part. A run with only consumer apps answers right away with `checks: 0`. Runs also work while automatic scans are paused. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
    */
   async runGeoSequence(
     request: operations.RunGeoSequenceRequest,
@@ -383,7 +458,7 @@ export class Geo extends ClientSDK {
    * Bulk import GEO competitors
    *
    * @remarks
-   * Accepts either structured `rows` or raw `csv` text. Existing competitors are updated in place rather than duplicated.
+   * Accepts either structured `rows` or raw `csv` text. Existing competitors are updated in place rather than duplicated. One request takes a project's whole list (up to 2,000 competitors), so send it in a single call instead of splitting it.
    */
   async importGeoCompetitors(
     request: operations.ImportGeoCompetitorsRequest,
@@ -417,13 +492,30 @@ export class Geo extends ClientSDK {
    * Trigger a GEO scan
    *
    * @remarks
-   * Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight.
+   * Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight, and 402 when the plan or AI credits cannot cover a scan.
    */
   async createGeoScan(
     request: operations.CreateGeoScanRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateGeoScanResponse> {
     return unwrapAsync(geoCreateGEOScan(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Rescan a single GEO prompt
+   *
+   * @remarks
+   * Queues a scan of one enabled tracked prompt across the project's engines, for example to check a prompt again after publishing content for it. Only that prompt's checks run, so it costs less than a full scan. Otherwise it behaves like `POST /v1/projects/{projectId}/geo/scans`: poll `statusUrl` until `status` leaves `running`, 409 while another scan is in flight, 402 when the plan or AI credits cannot cover it, and it shares that route's rate limit. Returns 404 for a prompt that is unknown or disabled.
+   */
+  async createGeoPromptScan(
+    request: operations.CreateGeoPromptScanRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateGeoPromptScanResponse> {
+    return unwrapAsync(geoCreateGEOPromptScan(
       this,
       request,
       options,
@@ -697,6 +789,23 @@ export class Geo extends ClientSDK {
   }
 
   /**
+   * Ignore or restore a content gap
+   *
+   * @remarks
+   * Hides a prompt gap from `GET /v1/projects/{projectId}/geo/gaps` and from brief planning, or brings it back. `promptId` is the `id` of a row in `promptGaps`. Ignored gaps are not listed, so keep the id to restore one later. The id is not checked against the gap list.
+   */
+  async updateGeoContentGap(
+    request: operations.UpdateGeoContentGapRequest,
+    options?: RequestOptions,
+  ): Promise<models.UpdateGeoContentGapResponse> {
+    return unwrapAsync(geoUpdateGEOContentGap(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * List content briefs
    */
   async listGeoContentBriefs(
@@ -735,6 +844,23 @@ export class Geo extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GeoContentBriefResponse> {
     return unwrapAsync(geoGetGEOContentBrief(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update a content brief
+   *
+   * @remarks
+   * Edits the brief's outline and planning fields. Omitted fields keep their current value; list fields replace the whole list. Only briefs in `draft` or `failed` can be edited, and the draft post's plan is updated with them. Anything else returns 409. Editing drops research notes such as the baseline and recommended angle, as the dashboard editor does.
+   */
+  async updateGeoContentBrief(
+    request: operations.UpdateGeoContentBriefRequest,
+    options?: RequestOptions,
+  ): Promise<models.GeoContentBriefResponse> {
+    return unwrapAsync(geoUpdateGEOContentBrief(
       this,
       request,
       options,
@@ -893,7 +1019,7 @@ export class Geo extends ClientSDK {
    * Issue the tracking token
    *
    * @remarks
-   * Returns the current tracking token together with the install snippets. Organization-level: pass `projectId` to bind the token to one project. Issuing does not invalidate previously issued tokens; use rotation for that.
+   * Returns the current tracking token together with the install snippets. Pass `projectId` for a project-specific token; without it, the legacy token only accepts the organization's oldest project's hosts. Issuing does not invalidate previously issued tokens; use rotation for that.
    */
   async issueGeoIngestToken(
     request?: operations.IssueGeoIngestTokenRequest | undefined,

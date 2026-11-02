@@ -6,13 +6,7 @@
 import { RunGeoSequenceResponse } from "@usenotra/sdk/models/operations";
 
 let value: RunGeoSequenceResponse = {
-  headers: {
-    "key": [],
-    "key1": [
-      "<value 1>",
-      "<value 2>",
-    ],
-  },
+  headers: {},
   result: {
     checks: 533609,
     mentions: 476235,

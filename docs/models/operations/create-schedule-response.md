@@ -34,6 +34,10 @@ let value: CreateScheduleResponse = {
       brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
       instructions:
         "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+      notify: {
+        slack: true,
+        email: false,
+      },
     },
     enabled: true,
     autoPublish: false,

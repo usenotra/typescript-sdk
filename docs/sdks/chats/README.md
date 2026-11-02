@@ -161,14 +161,14 @@ run();
 
 | Error Type                    | Status Code                   | Content Type                  |
 | ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.ErrorResponse          | 400, 401, 403, 404            | application/json              |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
 | errors.RateLimitErrorResponse | 429                           | application/json              |
 | errors.ErrorResponse          | 500, 503                      | application/json              |
 | errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
 ## getChatByExternalChannel
 
-Looks up the chat session linked to a Discord or Slack channel. Link a chat by passing externalChannelId when you create it.
+Looks up the chat session linked to a Discord or Slack channel, or tagged with a dashboard id. Link a chat by passing externalChannelId when you create it.
 
 ### Example Usage
 
@@ -320,7 +320,7 @@ run();
 
 ## postChatMessage
 
-Appends a user message to the chat and streams the assistant reply. Earlier messages in the chat are included as context automatically.
+Sends a message or resumes pending tool approvals and streams the assistant reply. Earlier messages are included automatically. To approve or deny tools, send approvals: [{ "id": "<approvalId>", "approved": true }] for every pending approval in the latest assistant message, without a message field; use "approved": false to deny. Approval IDs are emitted in tool-approval-request chunks and stored on tool parts in chat history.
 
 ### Example Usage
 
@@ -403,7 +403,7 @@ run();
 
 | Error Type                    | Status Code                   | Content Type                  |
 | ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.ErrorResponse          | 400, 401, 403, 404            | application/json              |
+| errors.ErrorResponse          | 400, 401, 403, 404, 409       | application/json              |
 | errors.RateLimitErrorResponse | 429                           | application/json              |
 | errors.ErrorResponse          | 500, 503                      | application/json              |
 | errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
