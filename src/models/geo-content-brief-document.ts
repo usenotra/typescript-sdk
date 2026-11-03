@@ -23,13 +23,13 @@ export type GeoContentBriefDocumentContentSubtype = OpenEnum<
   typeof GeoContentBriefDocumentContentSubtype
 >;
 
-export type Section = {
+export type GeoContentBriefDocumentSection = {
   heading: string;
   goal: string;
   claims: Array<string>;
 };
 
-export type InternalLink = {
+export type GeoContentBriefDocumentInternalLink = {
   url: string;
   anchor: string;
   why: string;
@@ -68,9 +68,9 @@ export type GeoContentBriefDocument = {
   workingTitle: string;
   audience: string;
   jobToBeDone: string;
-  sections: Array<Section>;
+  sections: Array<GeoContentBriefDocumentSection>;
   questionsToAnswer: Array<string>;
-  internalLinks: Array<InternalLink>;
+  internalLinks: Array<GeoContentBriefDocumentInternalLink>;
   acceptanceChecklist: Array<string>;
   recommendedAngle?: string | undefined;
   competitorsToCounter?: Array<string> | undefined;
@@ -86,37 +86,43 @@ export const GeoContentBriefDocumentContentSubtype$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(GeoContentBriefDocumentContentSubtype);
 
 /** @internal */
-export const Section$inboundSchema: z.ZodMiniType<Section, unknown> = z.object({
+export const GeoContentBriefDocumentSection$inboundSchema: z.ZodMiniType<
+  GeoContentBriefDocumentSection,
+  unknown
+> = z.object({
   heading: types.string(),
   goal: types.string(),
   claims: z.array(types.string()),
 });
 
-export function sectionFromJSON(
+export function geoContentBriefDocumentSectionFromJSON(
   jsonString: string,
-): SafeParseResult<Section, SDKValidationError> {
+): SafeParseResult<GeoContentBriefDocumentSection, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Section$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Section' from JSON`,
+    (x) => GeoContentBriefDocumentSection$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoContentBriefDocumentSection' from JSON`,
   );
 }
 
 /** @internal */
-export const InternalLink$inboundSchema: z.ZodMiniType<InternalLink, unknown> =
-  z.object({
-    url: types.string(),
-    anchor: types.string(),
-    why: types.string(),
-  });
+export const GeoContentBriefDocumentInternalLink$inboundSchema: z.ZodMiniType<
+  GeoContentBriefDocumentInternalLink,
+  unknown
+> = z.object({
+  url: types.string(),
+  anchor: types.string(),
+  why: types.string(),
+});
 
-export function internalLinkFromJSON(
+export function geoContentBriefDocumentInternalLinkFromJSON(
   jsonString: string,
-): SafeParseResult<InternalLink, SDKValidationError> {
+): SafeParseResult<GeoContentBriefDocumentInternalLink, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => InternalLink$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'InternalLink' from JSON`,
+    (x) =>
+      GeoContentBriefDocumentInternalLink$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoContentBriefDocumentInternalLink' from JSON`,
   );
 }
 
@@ -211,9 +217,11 @@ export const GeoContentBriefDocument$inboundSchema: z.ZodMiniType<
   workingTitle: types.string(),
   audience: types.string(),
   jobToBeDone: types.string(),
-  sections: z.array(z.lazy(() => Section$inboundSchema)),
+  sections: z.array(z.lazy(() => GeoContentBriefDocumentSection$inboundSchema)),
   questionsToAnswer: z.array(types.string()),
-  internalLinks: z.array(z.lazy(() => InternalLink$inboundSchema)),
+  internalLinks: z.array(
+    z.lazy(() => GeoContentBriefDocumentInternalLink$inboundSchema),
+  ),
   acceptanceChecklist: z.array(types.string()),
   recommendedAngle: types.optional(types.string()),
   competitorsToCounter: types.optional(z.array(types.string())),

@@ -8,9 +8,7 @@ import { PatchEventTriggerRequest } from "@usenotra/sdk/models";
 let value: PatchEventTriggerRequest = {
   sourceType: "github_webhook",
   sourceConfig: {
-    eventTypes: [
-      "push",
-    ],
+    eventTypes: [],
   },
   targets: {
     repositoryIds: [
@@ -18,7 +16,7 @@ let value: PatchEventTriggerRequest = {
       "<value 2>",
     ],
   },
-  outputType: "twitter_post",
+  outputType: "image",
   enabled: false,
 };
 ```

@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * Delete a GEO project and all of its GEO data
  *
  * @remarks
- * Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted.
+ * Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted. Projects with hosted Sites cannot be deleted; delete their Sites first.
  */
 export function geoDeleteProject(
   client: NotraCore,
