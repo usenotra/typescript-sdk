@@ -27,7 +27,7 @@ let value: ImportGeoCompetitorsResponse = {
     id: "<id>",
     slug: "<value>",
     name: "<value>",
-    logo: null,
+    logo: "<value>",
   },
 };
 ```
