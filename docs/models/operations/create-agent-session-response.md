@@ -10,7 +10,6 @@ let value: CreateAgentSessionResponse = {
   result: {
     ok: true,
     sessionId: "<id>",
-    continuationToken: "<value>",
   },
 };
 ```
