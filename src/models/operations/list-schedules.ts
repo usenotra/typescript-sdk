@@ -76,9 +76,13 @@ export type ListSchedulesSourceConfig = {
 
 export type ListSchedulesTargets = {
   /**
-   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   * GitHub integration IDs to generate from, as returned in the github array of GET /v1/integrations.
    */
   repositoryIds: Array<string>;
+  /**
+   * Linear integration IDs to generate from, as returned in the linear array of GET /v1/integrations.
+   */
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 export const ListSchedulesOutputType = {
@@ -105,6 +109,14 @@ export type ListSchedulesPublishDestination = OpenEnum<
   typeof ListSchedulesPublishDestination
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type ListSchedulesNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type ListSchedulesOutputConfig = {
   /**
    * Where auto-published posts are sent.
@@ -118,6 +130,10 @@ export type ListSchedulesOutputConfig = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: ListSchedulesNotify | undefined;
 };
 
 export const ListSchedulesLookbackWindow = {
@@ -243,6 +259,7 @@ export const ListSchedulesTargets$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   repositoryIds: z.array(types.string()),
+  linearIntegrationIds: types.optional(z.array(types.string())),
 });
 
 export function listSchedulesTargetsFromJSON(
@@ -268,6 +285,25 @@ export const ListSchedulesPublishDestination$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(ListSchedulesPublishDestination);
 
 /** @internal */
+export const ListSchedulesNotify$inboundSchema: z.ZodMiniType<
+  ListSchedulesNotify,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function listSchedulesNotifyFromJSON(
+  jsonString: string,
+): SafeParseResult<ListSchedulesNotify, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListSchedulesNotify$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListSchedulesNotify' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListSchedulesOutputConfig$inboundSchema: z.ZodMiniType<
   ListSchedulesOutputConfig,
   unknown
@@ -277,6 +313,7 @@ export const ListSchedulesOutputConfig$inboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: types.optional(types.string()),
   instructions: types.optional(types.string()),
+  notify: types.optional(z.lazy(() => ListSchedulesNotify$inboundSchema)),
 });
 
 export function listSchedulesOutputConfigFromJSON(

@@ -22,10 +22,6 @@ export type SendAgentMessageRequest = {
    * Answers to pending input.requested events (tool approvals, questions) from the event stream.
    */
   inputResponses?: Array<InputResponse> | undefined;
-  /**
-   * The continuation token returned by the previous request for this session.
-   */
-  continuationToken: string;
 };
 
 /** @internal */
@@ -51,7 +47,6 @@ export function inputResponseToJSON(inputResponse: InputResponse): string {
 export type SendAgentMessageRequest$Outbound = {
   message?: string | undefined;
   inputResponses?: Array<InputResponse$Outbound> | undefined;
-  continuationToken: string;
 };
 
 /** @internal */
@@ -63,7 +58,6 @@ export const SendAgentMessageRequest$outboundSchema: z.ZodMiniType<
   inputResponses: z.optional(
     z.array(z.lazy(() => InputResponse$outboundSchema)),
   ),
-  continuationToken: z.string(),
 });
 
 export function sendAgentMessageRequestToJSON(

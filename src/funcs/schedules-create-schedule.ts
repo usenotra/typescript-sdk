@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Create a schedule
  *
  * @remarks
- * Creates a recurring schedule that generates one content type from the selected GitHub integrations. Times are in UTC. A schedule with the same source, targets, output, and lookback settings as an existing one is rejected with 409.
+ * Creates a recurring schedule that generates one content type from the selected GitHub and Linear integrations. Set at least one in targets.repositoryIds or targets.linearIntegrationIds. Times are in UTC. A schedule with the same source, targets, output, and lookback settings as an existing one is rejected with 409.
  */
 export function schedulesCreateSchedule(
   client: NotraCore,

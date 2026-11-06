@@ -64,15 +64,25 @@ export type Cron = {
   anchorDate?: string | undefined;
 };
 
+/**
+ * Replaces the cron settings as a whole. Send every cron field the frequency needs.
+ */
 export type PatchScheduleRequestSourceConfig = {
   cron: Cron;
 };
 
+/**
+ * Data source changes. The schedule must keep at least one GitHub or Linear integration.
+ */
 export type PatchScheduleRequestTargets = {
   /**
-   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   * GitHub integration IDs to generate from, as returned in the github array of GET /v1/integrations. Replaces the current GitHub targets; omit to keep them.
    */
-  repositoryIds: Array<string>;
+  repositoryIds?: Array<string> | undefined;
+  /**
+   * Linear integration IDs to generate from, as returned in the linear array of GET /v1/integrations. Replaces the current Linear targets; omit to keep them, send [] to remove them.
+   */
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 /**
@@ -107,19 +117,37 @@ export type PatchScheduleRequestPublishDestination = ClosedEnum<
   typeof PatchScheduleRequestPublishDestination
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type PatchScheduleRequestNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
+/**
+ * Output setting changes, merged field by field into the current settings. Set a field to null to clear it, or send null to clear all of them.
+ */
 export type PatchScheduleRequestOutputConfig = {
   /**
    * Where auto-published posts are sent.
    */
-  publishDestination?: PatchScheduleRequestPublishDestination | undefined;
+  publishDestination?:
+    | PatchScheduleRequestPublishDestination
+    | null
+    | undefined;
   /**
    * Brand identity ID to write in. Defaults to the organization's default brand identity.
    */
-  brandVoiceId?: string | undefined;
+  brandVoiceId?: string | null | undefined;
   /**
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
-  instructions?: string | undefined;
+  instructions?: string | null | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: PatchScheduleRequestNotify | null | undefined;
 };
 
 /**
@@ -141,22 +169,31 @@ export type PatchScheduleRequest = {
   /**
    * Display name shown in the dashboard.
    */
-  name: string;
+  name?: string | undefined;
   /**
    * Always cron for schedules.
    */
-  sourceType: PatchScheduleRequestSourceType;
-  sourceConfig: PatchScheduleRequestSourceConfig;
-  targets: PatchScheduleRequestTargets;
+  sourceType?: PatchScheduleRequestSourceType | undefined;
+  /**
+   * Replaces the cron settings as a whole. Send every cron field the frequency needs.
+   */
+  sourceConfig?: PatchScheduleRequestSourceConfig | undefined;
+  /**
+   * Data source changes. The schedule must keep at least one GitHub or Linear integration.
+   */
+  targets?: PatchScheduleRequestTargets | undefined;
   /**
    * Type of content each run generates.
    */
-  outputType: PatchScheduleRequestOutputType;
-  outputConfig?: PatchScheduleRequestOutputConfig | undefined;
+  outputType?: PatchScheduleRequestOutputType | undefined;
+  /**
+   * Output setting changes, merged field by field into the current settings. Set a field to null to clear it, or send null to clear all of them.
+   */
+  outputConfig?: PatchScheduleRequestOutputConfig | null | undefined;
   /**
    * Whether the schedule runs. Disabled schedules are stored but never fire.
    */
-  enabled: boolean;
+  enabled?: boolean | undefined;
   /**
    * Publish generated posts automatically instead of saving them as drafts.
    */
@@ -230,7 +267,8 @@ export function patchScheduleRequestSourceConfigToJSON(
 
 /** @internal */
 export type PatchScheduleRequestTargets$Outbound = {
-  repositoryIds: Array<string>;
+  repositoryIds?: Array<string> | undefined;
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -238,7 +276,8 @@ export const PatchScheduleRequestTargets$outboundSchema: z.ZodMiniType<
   PatchScheduleRequestTargets$Outbound,
   PatchScheduleRequestTargets
 > = z.object({
-  repositoryIds: z.array(z.string()),
+  repositoryIds: z.optional(z.array(z.string())),
+  linearIntegrationIds: z.optional(z.array(z.string())),
 });
 
 export function patchScheduleRequestTargetsToJSON(
@@ -263,10 +302,34 @@ export const PatchScheduleRequestPublishDestination$outboundSchema:
   );
 
 /** @internal */
+export type PatchScheduleRequestNotify$Outbound = {
+  slack: boolean;
+  email: boolean;
+};
+
+/** @internal */
+export const PatchScheduleRequestNotify$outboundSchema: z.ZodMiniType<
+  PatchScheduleRequestNotify$Outbound,
+  PatchScheduleRequestNotify
+> = z.object({
+  slack: z.boolean(),
+  email: z.boolean(),
+});
+
+export function patchScheduleRequestNotifyToJSON(
+  patchScheduleRequestNotify: PatchScheduleRequestNotify,
+): string {
+  return JSON.stringify(
+    PatchScheduleRequestNotify$outboundSchema.parse(patchScheduleRequestNotify),
+  );
+}
+
+/** @internal */
 export type PatchScheduleRequestOutputConfig$Outbound = {
-  publishDestination?: string | undefined;
-  brandVoiceId?: string | undefined;
-  instructions?: string | undefined;
+  publishDestination?: string | null | undefined;
+  brandVoiceId?: string | null | undefined;
+  instructions?: string | null | undefined;
+  notify?: PatchScheduleRequestNotify$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -275,10 +338,13 @@ export const PatchScheduleRequestOutputConfig$outboundSchema: z.ZodMiniType<
   PatchScheduleRequestOutputConfig
 > = z.object({
   publishDestination: z.optional(
-    PatchScheduleRequestPublishDestination$outboundSchema,
+    z.nullable(PatchScheduleRequestPublishDestination$outboundSchema),
   ),
-  brandVoiceId: z.optional(z.string()),
-  instructions: z.optional(z.string()),
+  brandVoiceId: z.optional(z.nullable(z.string())),
+  instructions: z.optional(z.nullable(z.string())),
+  notify: z.optional(
+    z.nullable(z.lazy(() => PatchScheduleRequestNotify$outboundSchema)),
+  ),
 });
 
 export function patchScheduleRequestOutputConfigToJSON(
@@ -298,15 +364,15 @@ export const LookbackWindow$outboundSchema: z.ZodMiniEnum<
 
 /** @internal */
 export type PatchScheduleRequest$Outbound = {
-  name: string;
-  sourceType: string;
-  sourceConfig: PatchScheduleRequestSourceConfig$Outbound;
-  targets: PatchScheduleRequestTargets$Outbound;
-  outputType: string;
-  outputConfig?: PatchScheduleRequestOutputConfig$Outbound | undefined;
-  enabled: boolean;
-  autoPublish: boolean;
-  lookbackWindow: string;
+  name?: string | undefined;
+  sourceType?: string | undefined;
+  sourceConfig?: PatchScheduleRequestSourceConfig$Outbound | undefined;
+  targets?: PatchScheduleRequestTargets$Outbound | undefined;
+  outputType?: string | undefined;
+  outputConfig?: PatchScheduleRequestOutputConfig$Outbound | null | undefined;
+  enabled?: boolean | undefined;
+  autoPublish?: boolean | undefined;
+  lookbackWindow?: string | undefined;
 };
 
 /** @internal */
@@ -314,17 +380,19 @@ export const PatchScheduleRequest$outboundSchema: z.ZodMiniType<
   PatchScheduleRequest$Outbound,
   PatchScheduleRequest
 > = z.object({
-  name: z.string(),
-  sourceType: PatchScheduleRequestSourceType$outboundSchema,
-  sourceConfig: z.lazy(() => PatchScheduleRequestSourceConfig$outboundSchema),
-  targets: z.lazy(() => PatchScheduleRequestTargets$outboundSchema),
-  outputType: PatchScheduleRequestOutputType$outboundSchema,
-  outputConfig: z.optional(
-    z.lazy(() => PatchScheduleRequestOutputConfig$outboundSchema),
+  name: z.optional(z.string()),
+  sourceType: z.optional(PatchScheduleRequestSourceType$outboundSchema),
+  sourceConfig: z.optional(
+    z.lazy(() => PatchScheduleRequestSourceConfig$outboundSchema),
   ),
-  enabled: z.boolean(),
-  autoPublish: z._default(z.boolean(), false),
-  lookbackWindow: z._default(LookbackWindow$outboundSchema, "last_7_days"),
+  targets: z.optional(z.lazy(() => PatchScheduleRequestTargets$outboundSchema)),
+  outputType: z.optional(PatchScheduleRequestOutputType$outboundSchema),
+  outputConfig: z.optional(
+    z.nullable(z.lazy(() => PatchScheduleRequestOutputConfig$outboundSchema)),
+  ),
+  enabled: z.optional(z.boolean()),
+  autoPublish: z.optional(z.boolean()),
+  lookbackWindow: z.optional(LookbackWindow$outboundSchema),
 });
 
 export function patchScheduleRequestToJSON(
