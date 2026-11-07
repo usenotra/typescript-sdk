@@ -23,20 +23,25 @@ let value: UpdateScheduleSchedule = {
   },
   targets: {
     repositoryIds: [
-      "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+      "<value 1>",
+      "<value 2>",
     ],
   },
-  outputType: "linkedin_post",
+  outputType: "image",
   outputConfig: {
     brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
     instructions:
       "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+    notify: {
+      slack: true,
+      email: false,
+    },
   },
   enabled: true,
-  autoPublish: true,
-  createdAt: "1732700236463",
-  updatedAt: "1735685542224",
-  lookbackWindow: "current_day",
+  autoPublish: false,
+  createdAt: "1734208858664",
+  updatedAt: "1735619590820",
+  lookbackWindow: "yesterday",
 };
 ```
 

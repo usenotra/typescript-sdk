@@ -11,7 +11,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 
-export type Totals = {
+export type GeoTrafficOverviewResponseTotals = {
   crawler: number;
   cited: number;
   aiReferral: number;
@@ -21,38 +21,44 @@ export type Totals = {
   conversions: number | null;
 };
 
-export const SourceVisitorType = {
+export const GeoTrafficOverviewResponseSourceVisitorType = {
   Crawler: "crawler",
   AiReferral: "ai_referral",
   Human: "human",
   Unknown: "unknown",
 } as const;
-export type SourceVisitorType = OpenEnum<typeof SourceVisitorType>;
+export type GeoTrafficOverviewResponseSourceVisitorType = OpenEnum<
+  typeof GeoTrafficOverviewResponseSourceVisitorType
+>;
 
 export type GeoTrafficOverviewResponseSource = {
   source: string;
-  visitorType: SourceVisitorType;
+  visitorType: GeoTrafficOverviewResponseSourceVisitorType;
   agent: string;
   category: string;
   confidence: string;
   visits: number;
   previousVisits?: number | undefined;
   markdownVisits: number;
+  previousMarkdownVisits?: number | undefined;
   paths: number;
+  previousPaths?: number | undefined;
   lastSeenAt: string;
 };
 
-export const PointVisitorType = {
+export const GeoTrafficOverviewResponsePointVisitorType = {
   Crawler: "crawler",
   AiReferral: "ai_referral",
   Human: "human",
   Unknown: "unknown",
 } as const;
-export type PointVisitorType = OpenEnum<typeof PointVisitorType>;
+export type GeoTrafficOverviewResponsePointVisitorType = OpenEnum<
+  typeof GeoTrafficOverviewResponsePointVisitorType
+>;
 
 export type GeoTrafficOverviewResponsePoint = {
   day: string;
-  visitorType: PointVisitorType;
+  visitorType: GeoTrafficOverviewResponsePointVisitorType;
   source: string;
   visits: number;
 };
@@ -69,7 +75,7 @@ export type GeoTrafficOverviewResponse = {
    * False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error.
    */
   configured: boolean;
-  totals: Totals;
+  totals: GeoTrafficOverviewResponseTotals;
   /**
    * Conversions in the previous window of the same length. Null when no conversion paths are set or no comparison data exists.
    */
@@ -80,28 +86,30 @@ export type GeoTrafficOverviewResponse = {
 };
 
 /** @internal */
-export const Totals$inboundSchema: z.ZodMiniType<Totals, unknown> = z.object({
+export const GeoTrafficOverviewResponseTotals$inboundSchema: z.ZodMiniType<
+  GeoTrafficOverviewResponseTotals,
+  unknown
+> = z.object({
   crawler: types.number(),
   cited: types.number(),
   aiReferral: types.number(),
   conversions: types.nullable(types.number()),
 });
 
-export function totalsFromJSON(
+export function geoTrafficOverviewResponseTotalsFromJSON(
   jsonString: string,
-): SafeParseResult<Totals, SDKValidationError> {
+): SafeParseResult<GeoTrafficOverviewResponseTotals, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Totals$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Totals' from JSON`,
+    (x) => GeoTrafficOverviewResponseTotals$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoTrafficOverviewResponseTotals' from JSON`,
   );
 }
 
 /** @internal */
-export const SourceVisitorType$inboundSchema: z.ZodMiniType<
-  SourceVisitorType,
-  unknown
-> = openEnums.inboundSchema(SourceVisitorType);
+export const GeoTrafficOverviewResponseSourceVisitorType$inboundSchema:
+  z.ZodMiniType<GeoTrafficOverviewResponseSourceVisitorType, unknown> =
+    openEnums.inboundSchema(GeoTrafficOverviewResponseSourceVisitorType);
 
 /** @internal */
 export const GeoTrafficOverviewResponseSource$inboundSchema: z.ZodMiniType<
@@ -109,14 +117,16 @@ export const GeoTrafficOverviewResponseSource$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   source: types.string(),
-  visitorType: SourceVisitorType$inboundSchema,
+  visitorType: GeoTrafficOverviewResponseSourceVisitorType$inboundSchema,
   agent: types.string(),
   category: types.string(),
   confidence: types.string(),
   visits: types.number(),
   previousVisits: types.optional(types.number()),
   markdownVisits: types.number(),
+  previousMarkdownVisits: types.optional(types.number()),
   paths: types.number(),
+  previousPaths: types.optional(types.number()),
   lastSeenAt: types.string(),
 });
 
@@ -131,10 +141,9 @@ export function geoTrafficOverviewResponseSourceFromJSON(
 }
 
 /** @internal */
-export const PointVisitorType$inboundSchema: z.ZodMiniType<
-  PointVisitorType,
-  unknown
-> = openEnums.inboundSchema(PointVisitorType);
+export const GeoTrafficOverviewResponsePointVisitorType$inboundSchema:
+  z.ZodMiniType<GeoTrafficOverviewResponsePointVisitorType, unknown> = openEnums
+    .inboundSchema(GeoTrafficOverviewResponsePointVisitorType);
 
 /** @internal */
 export const GeoTrafficOverviewResponsePoint$inboundSchema: z.ZodMiniType<
@@ -142,7 +151,7 @@ export const GeoTrafficOverviewResponsePoint$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   day: types.string(),
-  visitorType: PointVisitorType$inboundSchema,
+  visitorType: GeoTrafficOverviewResponsePointVisitorType$inboundSchema,
   source: types.string(),
   visits: types.number(),
 });
@@ -183,7 +192,7 @@ export const GeoTrafficOverviewResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   configured: types.boolean(),
-  totals: z.lazy(() => Totals$inboundSchema),
+  totals: z.lazy(() => GeoTrafficOverviewResponseTotals$inboundSchema),
   previousConversions: types.nullable(types.number()),
   sources: z.array(
     z.lazy(() => GeoTrafficOverviewResponseSource$inboundSchema),

@@ -1,6 +1,6 @@
 # Action
 
-What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+What to do with this query cluster: create a new page, update the page Google already ranks or the strongest existing page, merge overlapping pages, or ignore thin demand.
 
 ## Example Usage
 

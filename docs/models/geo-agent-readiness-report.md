@@ -33,10 +33,9 @@ let value: GeoAgentReadinessReport = {
   },
   issues: [],
   eligibleChecks: 739271,
-  reportUrl: "https://good-castanet.com/",
   errorMessage: "<value>",
   scannedAt: "<value>",
-  createdAt: "1714144347688",
+  createdAt: "1714463067250",
 };
 ```
 
@@ -52,7 +51,6 @@ let value: GeoAgentReadinessReport = {
 | `scoreBreakdown`                                                                       | [models.ScoreBreakdown](../models/score-breakdown.md)                                  | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `issues`                                                                               | [models.GeoAgentReadinessReportIssue](../models/geo-agent-readiness-report-issue.md)[] | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `eligibleChecks`                                                                       | *number*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
-| `reportUrl`                                                                            | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `errorMessage`                                                                         | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `scannedAt`                                                                            | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
 | `createdAt`                                                                            | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |

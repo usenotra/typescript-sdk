@@ -73,11 +73,18 @@ export type CreateScheduleSourceConfigRequest = {
   cron: CronRequest;
 };
 
+/**
+ * Data sources each run reads from. Set at least one GitHub or Linear integration.
+ */
 export type CreateScheduleTargetsRequest = {
   /**
-   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   * GitHub integration IDs to generate from, as returned in the github array of GET /v1/integrations. Defaults to none when linearIntegrationIds is set.
    */
-  repositoryIds: Array<string>;
+  repositoryIds?: Array<string> | undefined;
+  /**
+   * Linear integration IDs to generate from, as returned in the linear array of GET /v1/integrations. When omitted, runs read every enabled Linear integration; send [] to read none.
+   */
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 /**
@@ -112,6 +119,14 @@ export type CreateSchedulePublishDestinationRequest = ClosedEnum<
   typeof CreateSchedulePublishDestinationRequest
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type CreateScheduleNotifyRequest = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type CreateScheduleOutputConfigRequest = {
   /**
    * Where auto-published posts are sent.
@@ -125,6 +140,10 @@ export type CreateScheduleOutputConfigRequest = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: CreateScheduleNotifyRequest | undefined;
 };
 
 /**
@@ -154,6 +173,9 @@ export type CreateScheduleRequest = {
    */
   sourceType: CreateScheduleSourceTypeRequest;
   sourceConfig: CreateScheduleSourceConfigRequest;
+  /**
+   * Data sources each run reads from. Set at least one GitHub or Linear integration.
+   */
   targets: CreateScheduleTargetsRequest;
   /**
    * Type of content each run generates.
@@ -234,9 +256,13 @@ export type CreateScheduleSourceConfigResponse = {
 
 export type CreateScheduleTargetsResponse = {
   /**
-   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   * GitHub integration IDs to generate from, as returned in the github array of GET /v1/integrations.
    */
   repositoryIds: Array<string>;
+  /**
+   * Linear integration IDs to generate from, as returned in the linear array of GET /v1/integrations. When omitted, runs read every enabled Linear integration; send [] to read none.
+   */
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 export const CreateScheduleOutputTypeResponse = {
@@ -265,6 +291,14 @@ export type CreateSchedulePublishDestinationResponse = OpenEnum<
   typeof CreateSchedulePublishDestinationResponse
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type CreateScheduleNotifyResponse = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type CreateScheduleOutputConfigResponse = {
   /**
    * Where auto-published posts are sent.
@@ -278,6 +312,10 @@ export type CreateScheduleOutputConfigResponse = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: CreateScheduleNotifyResponse | undefined;
 };
 
 export const CreateScheduleLookbackWindowResponse = {
@@ -386,7 +424,8 @@ export function createScheduleSourceConfigRequestToJSON(
 
 /** @internal */
 export type CreateScheduleTargetsRequest$Outbound = {
-  repositoryIds: Array<string>;
+  repositoryIds?: Array<string> | undefined;
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -394,7 +433,8 @@ export const CreateScheduleTargetsRequest$outboundSchema: z.ZodMiniType<
   CreateScheduleTargetsRequest$Outbound,
   CreateScheduleTargetsRequest
 > = z.object({
-  repositoryIds: z.array(z.string()),
+  repositoryIds: z.optional(z.array(z.string())),
+  linearIntegrationIds: z.optional(z.array(z.string())),
 });
 
 export function createScheduleTargetsRequestToJSON(
@@ -419,10 +459,36 @@ export const CreateSchedulePublishDestinationRequest$outboundSchema:
   );
 
 /** @internal */
+export type CreateScheduleNotifyRequest$Outbound = {
+  slack: boolean;
+  email: boolean;
+};
+
+/** @internal */
+export const CreateScheduleNotifyRequest$outboundSchema: z.ZodMiniType<
+  CreateScheduleNotifyRequest$Outbound,
+  CreateScheduleNotifyRequest
+> = z.object({
+  slack: z.boolean(),
+  email: z.boolean(),
+});
+
+export function createScheduleNotifyRequestToJSON(
+  createScheduleNotifyRequest: CreateScheduleNotifyRequest,
+): string {
+  return JSON.stringify(
+    CreateScheduleNotifyRequest$outboundSchema.parse(
+      createScheduleNotifyRequest,
+    ),
+  );
+}
+
+/** @internal */
 export type CreateScheduleOutputConfigRequest$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
   instructions?: string | undefined;
+  notify?: CreateScheduleNotifyRequest$Outbound | undefined;
 };
 
 /** @internal */
@@ -435,6 +501,7 @@ export const CreateScheduleOutputConfigRequest$outboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: z.optional(z.string()),
   instructions: z.optional(z.string()),
+  notify: z.optional(z.lazy(() => CreateScheduleNotifyRequest$outboundSchema)),
 });
 
 export function createScheduleOutputConfigRequestToJSON(
@@ -554,6 +621,7 @@ export const CreateScheduleTargetsResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   repositoryIds: z.array(types.string()),
+  linearIntegrationIds: types.optional(z.array(types.string())),
 });
 
 export function createScheduleTargetsResponseFromJSON(
@@ -578,6 +646,25 @@ export const CreateSchedulePublishDestinationResponse$inboundSchema:
     .inboundSchema(CreateSchedulePublishDestinationResponse);
 
 /** @internal */
+export const CreateScheduleNotifyResponse$inboundSchema: z.ZodMiniType<
+  CreateScheduleNotifyResponse,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function createScheduleNotifyResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateScheduleNotifyResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateScheduleNotifyResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateScheduleNotifyResponse' from JSON`,
+  );
+}
+
+/** @internal */
 export const CreateScheduleOutputConfigResponse$inboundSchema: z.ZodMiniType<
   CreateScheduleOutputConfigResponse,
   unknown
@@ -587,6 +674,9 @@ export const CreateScheduleOutputConfigResponse$inboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: types.optional(types.string()),
   instructions: types.optional(types.string()),
+  notify: types.optional(
+    z.lazy(() => CreateScheduleNotifyResponse$inboundSchema),
+  ),
 });
 
 export function createScheduleOutputConfigResponseFromJSON(

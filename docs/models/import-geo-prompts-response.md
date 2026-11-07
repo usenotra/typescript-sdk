@@ -14,7 +14,7 @@ let value: ImportGeoPromptsResponse = {
     id: "<id>",
     slug: "<value>",
     name: "<value>",
-    logo: "<value>",
+    logo: null,
   },
 };
 ```

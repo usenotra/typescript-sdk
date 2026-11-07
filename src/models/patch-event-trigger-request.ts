@@ -49,9 +49,15 @@ export type PatchEventTriggerRequestPublishDestination = ClosedEnum<
   typeof PatchEventTriggerRequestPublishDestination
 >;
 
+export type PatchEventTriggerRequestNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type PatchEventTriggerRequestOutputConfig = {
   publishDestination?: PatchEventTriggerRequestPublishDestination | undefined;
   brandVoiceId?: string | undefined;
+  notify?: PatchEventTriggerRequestNotify | undefined;
 };
 
 export type PatchEventTriggerRequest = {
@@ -136,9 +142,35 @@ export const PatchEventTriggerRequestPublishDestination$outboundSchema:
   );
 
 /** @internal */
+export type PatchEventTriggerRequestNotify$Outbound = {
+  slack: boolean;
+  email: boolean;
+};
+
+/** @internal */
+export const PatchEventTriggerRequestNotify$outboundSchema: z.ZodMiniType<
+  PatchEventTriggerRequestNotify$Outbound,
+  PatchEventTriggerRequestNotify
+> = z.object({
+  slack: z.boolean(),
+  email: z.boolean(),
+});
+
+export function patchEventTriggerRequestNotifyToJSON(
+  patchEventTriggerRequestNotify: PatchEventTriggerRequestNotify,
+): string {
+  return JSON.stringify(
+    PatchEventTriggerRequestNotify$outboundSchema.parse(
+      patchEventTriggerRequestNotify,
+    ),
+  );
+}
+
+/** @internal */
 export type PatchEventTriggerRequestOutputConfig$Outbound = {
   publishDestination?: string | undefined;
   brandVoiceId?: string | undefined;
+  notify?: PatchEventTriggerRequestNotify$Outbound | undefined;
 };
 
 /** @internal */
@@ -150,6 +182,9 @@ export const PatchEventTriggerRequestOutputConfig$outboundSchema: z.ZodMiniType<
     PatchEventTriggerRequestPublishDestination$outboundSchema,
   ),
   brandVoiceId: z.optional(z.string()),
+  notify: z.optional(
+    z.lazy(() => PatchEventTriggerRequestNotify$outboundSchema),
+  ),
 });
 
 export function patchEventTriggerRequestOutputConfigToJSON(
