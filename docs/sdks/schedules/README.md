@@ -10,6 +10,8 @@ Manage scheduled content generation. Organization is inferred from the API key (
 * [createSchedule](#createschedule) - Create a schedule
 * [deleteSchedule](#deleteschedule) - Delete a schedule
 * [updateSchedule](#updateschedule) - Update a schedule
+* [runSchedule](#runschedule) - Run a schedule now
+* [listScheduleRuns](#listscheduleruns) - List a schedule's runs
 
 ## listSchedules
 
@@ -88,7 +90,7 @@ run();
 
 ## createSchedule
 
-Creates a recurring schedule that generates one content type from the selected GitHub integrations. Times are in UTC. A schedule with the same source, targets, output, and lookback settings as an existing one is rejected with 409.
+Creates a recurring schedule that generates one content type from the selected GitHub and Linear integrations. Set at least one in targets.repositoryIds or targets.linearIntegrationIds. Times are in UTC. A schedule with the same source, targets, output, and lookback settings as an existing one is rejected with 409.
 
 ### Example Usage
 
@@ -117,11 +119,18 @@ async function run() {
     },
     targets: {
       repositoryIds: [],
+      linearIntegrationIds: [
+        "7f9a2b3c-1d4e-4f5a-9b6c-8d7e6f5a4b3c",
+      ],
     },
     outputType: "changelog",
     outputConfig: {
       brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
       instructions: "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+      notify: {
+        slack: true,
+        email: false,
+      },
     },
     enabled: false,
   });
@@ -163,11 +172,18 @@ async function run() {
     },
     targets: {
       repositoryIds: [],
+      linearIntegrationIds: [
+        "7f9a2b3c-1d4e-4f5a-9b6c-8d7e6f5a4b3c",
+      ],
     },
     outputType: "changelog",
     outputConfig: {
       brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
       instructions: "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+      notify: {
+        slack: true,
+        email: false,
+      },
     },
     enabled: false,
   });
@@ -280,7 +296,7 @@ run();
 
 ## updateSchedule
 
-Replaces the schedule. Send the full schedule body; fields that are omitted are not preserved from the existing schedule.
+Updates only the fields you send; everything else keeps its current value. targets and outputConfig merge field by field, sourceConfig.cron is replaced as a whole, and null clears an outputConfig field. The updated schedule is validated like a new one, so it must keep at least one GitHub or Linear integration.
 
 ### Example Usage
 
@@ -297,7 +313,6 @@ async function run() {
     scheduleId: "sched_123",
     body: {
       name: "<value>",
-      sourceType: "cron",
       sourceConfig: {
         cron: {
           frequency: "monthly",
@@ -309,13 +324,14 @@ async function run() {
           anchorDate: "2026-09-03",
         },
       },
-      targets: {
-        repositoryIds: [],
-      },
       outputType: "changelog",
       outputConfig: {
         brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
         instructions: "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+        notify: {
+          slack: true,
+          email: false,
+        },
       },
       enabled: false,
     },
@@ -346,7 +362,6 @@ async function run() {
     scheduleId: "sched_123",
     body: {
       name: "<value>",
-      sourceType: "cron",
       sourceConfig: {
         cron: {
           frequency: "monthly",
@@ -358,13 +373,14 @@ async function run() {
           anchorDate: "2026-09-03",
         },
       },
-      targets: {
-        repositoryIds: [],
-      },
       outputType: "changelog",
       outputConfig: {
         brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
         instructions: "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+        notify: {
+          slack: true,
+          email: false,
+        },
       },
       enabled: false,
     },
@@ -398,5 +414,155 @@ run();
 | Error Type               | Status Code              | Content Type             |
 | ------------------------ | ------------------------ | ------------------------ |
 | errors.ErrorResponse     | 400, 401, 403, 404, 409  | application/json         |
+| errors.ErrorResponse     | 500, 503                 | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## runSchedule
+
+Starts one run of an enabled schedule right away, outside its cron timing, as the dashboard's Run now does. Returns 202 with the run's ID; follow it with `GET /v1/schedules/{scheduleId}/runs` until its status leaves `running`. Disabled schedules return 400.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="runSchedule" method="post" path="/v1/schedules/{scheduleId}/run" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.schedules.runSchedule({
+    scheduleId: "sched_123",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { schedulesRunSchedule } from "@usenotra/sdk/funcs/schedules-run-schedule.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await schedulesRunSchedule(notra, {
+    scheduleId: "sched_123",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("schedulesRunSchedule failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.RunScheduleRequest](../../models/operations/run-schedule-request.md)                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.RunScheduleResponse](../../models/operations/run-schedule-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
+| errors.ErrorResponse     | 500, 502, 503            | application/json         |
+| errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |
+
+## listScheduleRuns
+
+Returns the schedule's most recent runs, newest first, with their status and the draft post each run created.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listScheduleRuns" method="get" path="/v1/schedules/{scheduleId}/runs" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.schedules.listScheduleRuns({
+    scheduleId: "sched_123",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { schedulesListScheduleRuns } from "@usenotra/sdk/funcs/schedules-list-schedule-runs.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await schedulesListScheduleRuns(notra, {
+    scheduleId: "sched_123",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("schedulesListScheduleRuns failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListScheduleRunsRequest](../../models/operations/list-schedule-runs-request.md)                                                                                    | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.ListScheduleRunsResponse](../../models/operations/list-schedule-runs-response.md)\>**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| errors.ErrorResponse     | 400, 401, 403, 404       | application/json         |
 | errors.ErrorResponse     | 500, 503                 | application/json         |
 | errors.NotraDefaultError | 4XX, 5XX                 | \*/\*                    |

@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * Get mention rates per tracked language
  *
  * @remarks
- * Checks, mentions and average position broken down by language. Pass `days` for a rolling window, or `from`/`to` for an explicit one.
+ * Checks, mentions and average position broken down by language. Only tracked prompts count, without sequences or personas. In a scan that ran several languages, a prompt counts only where the same engine also answered it in another language of that scan. Pass `days` for a rolling window, or `from`/`to` for an explicit one.
  */
 export function geoGetGEOVisibilityLanguageShare(
   client: NotraCore,

@@ -23,20 +23,26 @@ let value: ListSchedulesSchedule = {
   },
   targets: {
     repositoryIds: [
-      "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+      "<value 1>",
+      "<value 2>",
+      "<value 3>",
     ],
   },
-  outputType: "image",
+  outputType: "linkedin_post",
   outputConfig: {
     brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
     instructions:
       "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+    notify: {
+      slack: true,
+      email: false,
+    },
   },
-  enabled: false,
+  enabled: true,
   autoPublish: true,
-  createdAt: "1706955276503",
-  updatedAt: "1735669024757",
-  lookbackWindow: "yesterday",
+  createdAt: "1728179913709",
+  updatedAt: "1735627583280",
+  lookbackWindow: "last_14_days",
 };
 ```
 

@@ -75,9 +75,13 @@ export type UpdateScheduleSourceConfig = {
 
 export type UpdateScheduleTargets = {
   /**
-   * GitHub integration IDs to generate from, as returned by GET /v1/integrations.
+   * GitHub integration IDs to generate from, as returned in the github array of GET /v1/integrations.
    */
   repositoryIds: Array<string>;
+  /**
+   * Linear integration IDs to generate from, as returned in the linear array of GET /v1/integrations. When omitted, runs read every enabled Linear integration; send [] to read none.
+   */
+  linearIntegrationIds?: Array<string> | undefined;
 };
 
 export const UpdateScheduleOutputType = {
@@ -106,6 +110,14 @@ export type UpdateSchedulePublishDestination = OpenEnum<
   typeof UpdateSchedulePublishDestination
 >;
 
+/**
+ * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+ */
+export type UpdateScheduleNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type UpdateScheduleOutputConfig = {
   /**
    * Where auto-published posts are sent.
@@ -119,6 +131,10 @@ export type UpdateScheduleOutputConfig = {
    * Free-text brief for this schedule, passed to the writer on every run on top of the brand's custom instructions. Use it to steer the angle of the content, for example tutorial-style blog posts.
    */
   instructions?: string | undefined;
+  /**
+   * Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners.
+   */
+  notify?: UpdateScheduleNotify | undefined;
 };
 
 export const UpdateScheduleLookbackWindow = {
@@ -245,6 +261,7 @@ export const UpdateScheduleTargets$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   repositoryIds: z.array(types.string()),
+  linearIntegrationIds: types.optional(z.array(types.string())),
 });
 
 export function updateScheduleTargetsFromJSON(
@@ -270,6 +287,25 @@ export const UpdateSchedulePublishDestination$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(UpdateSchedulePublishDestination);
 
 /** @internal */
+export const UpdateScheduleNotify$inboundSchema: z.ZodMiniType<
+  UpdateScheduleNotify,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function updateScheduleNotifyFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdateScheduleNotify, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdateScheduleNotify$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdateScheduleNotify' from JSON`,
+  );
+}
+
+/** @internal */
 export const UpdateScheduleOutputConfig$inboundSchema: z.ZodMiniType<
   UpdateScheduleOutputConfig,
   unknown
@@ -279,6 +315,7 @@ export const UpdateScheduleOutputConfig$inboundSchema: z.ZodMiniType<
   ),
   brandVoiceId: types.optional(types.string()),
   instructions: types.optional(types.string()),
+  notify: types.optional(z.lazy(() => UpdateScheduleNotify$inboundSchema)),
 });
 
 export function updateScheduleOutputConfigFromJSON(

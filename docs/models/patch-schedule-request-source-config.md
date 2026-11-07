@@ -1,5 +1,7 @@
 # PatchScheduleRequestSourceConfig
 
+Replaces the cron settings as a whole. Send every cron field the frequency needs.
+
 ## Example Usage
 
 ```typescript

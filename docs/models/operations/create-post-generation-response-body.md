@@ -27,6 +27,7 @@ let value: CreatePostGenerationResponseBody = {
     workflowRunId: "<id>",
     postId: "<id>",
     error: "<value>",
+    errorCode: "NO_AVAILABLE_SOURCES",
     source: "dashboard",
     createdAt: "1724262570437",
     updatedAt: "1735619864029",
