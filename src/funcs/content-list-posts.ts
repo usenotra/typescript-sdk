@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * List posts
  *
  * @remarks
- * Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published.
+ * Returns posts for the organization the API key belongs to, newest first by default. Only published posts are included unless you pass status=draft,published. Blog posts and changelogs include a metadata object with cover image, tags, excerpt, authors, featured, noindex, hidden and displayDate; it is null for other content types.
  */
 export function contentListPosts(
   client: NotraCore,

@@ -62,9 +62,15 @@ export type UpdateEventTriggerPublishDestination = OpenEnum<
   typeof UpdateEventTriggerPublishDestination
 >;
 
+export type UpdateEventTriggerNotify = {
+  slack: boolean;
+  email: boolean;
+};
+
 export type UpdateEventTriggerOutputConfig = {
   publishDestination?: UpdateEventTriggerPublishDestination | undefined;
   brandVoiceId?: string | undefined;
+  notify?: UpdateEventTriggerNotify | undefined;
 };
 
 export type UpdateEventTriggerEventTrigger = {
@@ -182,6 +188,25 @@ export const UpdateEventTriggerPublishDestination$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(UpdateEventTriggerPublishDestination);
 
 /** @internal */
+export const UpdateEventTriggerNotify$inboundSchema: z.ZodMiniType<
+  UpdateEventTriggerNotify,
+  unknown
+> = z.object({
+  slack: types.boolean(),
+  email: types.boolean(),
+});
+
+export function updateEventTriggerNotifyFromJSON(
+  jsonString: string,
+): SafeParseResult<UpdateEventTriggerNotify, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => UpdateEventTriggerNotify$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'UpdateEventTriggerNotify' from JSON`,
+  );
+}
+
+/** @internal */
 export const UpdateEventTriggerOutputConfig$inboundSchema: z.ZodMiniType<
   UpdateEventTriggerOutputConfig,
   unknown
@@ -190,6 +215,7 @@ export const UpdateEventTriggerOutputConfig$inboundSchema: z.ZodMiniType<
     UpdateEventTriggerPublishDestination$inboundSchema,
   ),
   brandVoiceId: types.optional(types.string()),
+  notify: types.optional(z.lazy(() => UpdateEventTriggerNotify$inboundSchema)),
 });
 
 export function updateEventTriggerOutputConfigFromJSON(

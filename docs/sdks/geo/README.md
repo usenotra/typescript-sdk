@@ -13,16 +13,29 @@ Manage generative engine optimization: projects, tracking settings, prompts, pro
 * [updateProject](#updateproject) - Rename a GEO project or relink its brand identity
 * [getGeoSettings](#getgeosettings) - Get a project's GEO settings
 * [updateGeoSettings](#updategeosettings) - Replace a project's GEO settings
+* [listGeoEngines](#listgeoengines) - List the answer engines a project can track
 * [listGeoPrompts](#listgeoprompts) - List tracked GEO prompts
 * [createGeoPrompt](#creategeoprompt) - Track a new GEO prompt
 * [deleteGeoPrompt](#deletegeoprompt) - Stop tracking a GEO prompt
 * [updateGeoPrompt](#updategeoprompt) - Update a tracked GEO prompt
 * [importGeoPrompts](#importgeoprompts) - Bulk import GEO prompts
+* [listGeoPromptSuggestions](#listgeopromptsuggestions) - List prompt suggestions
+* [acceptGeoPromptSuggestion](#acceptgeopromptsuggestion) - Accept a prompt suggestion
+* [dismissGeoPromptSuggestion](#dismissgeopromptsuggestion) - Dismiss a prompt suggestion
 * [listGeoSequences](#listgeosequences) - List GEO prompt sequences
 * [createGeoSequence](#creategeosequence) - Create a GEO prompt sequence
 * [deleteGeoSequence](#deletegeosequence) - Delete a GEO prompt sequence
 * [updateGeoSequence](#updategeosequence) - Update a GEO prompt sequence
 * [runGeoSequence](#rungeosequence) - Run a GEO prompt sequence now
+* [listGeoPersonas](#listgeopersonas) - List GEO personas
+* [archiveGeoPersona](#archivegeopersona) - Archive a GEO persona
+* [updateGeoPersona](#updategeopersona) - Update a GEO persona
+* [restoreGeoPersona](#restoregeopersona) - Restore an archived GEO persona
+* [getGeoPersonaResults](#getgeopersonaresults) - Get a GEO persona's conversation results
+* [getGeoPersonaActivity](#getgeopersonaactivity) - Get GEO persona activity
+* [runGeoPersona](#rungeopersona) - Run a GEO persona now
+* [generateGeoPersonas](#generategeopersonas) - Generate GEO personas
+* [getGeoPersonaGeneration](#getgeopersonageneration) - Get the GEO persona generation status
 * [listGeoCompetitors](#listgeocompetitors) - List tracked GEO competitors
 * [upsertGeoCompetitor](#upsertgeocompetitor) - Create or update a tracked GEO competitor
 * [suggestGeoCompetitors](#suggestgeocompetitors) - Suggest GEO competitors for a domain
@@ -30,6 +43,7 @@ Manage generative engine optimization: projects, tracking settings, prompts, pro
 * [importGeoCompetitors](#importgeocompetitors) - Bulk import GEO competitors
 * [listGeoScans](#listgeoscans) - List GEO scans
 * [createGeoScan](#creategeoscan) - Trigger a GEO scan
+* [createGeoPromptScan](#creategeopromptscan) - Rescan a single GEO prompt
 * [getGeoScan](#getgeoscan) - Get a single GEO scan
 * [getGeoVisibilityOverview](#getgeovisibilityoverview) - Get mention rates per engine
 * [getGeoVisibilityTimeseries](#getgeovisibilitytimeseries) - Get daily mention counts per engine
@@ -46,9 +60,11 @@ Manage generative engine optimization: projects, tracking settings, prompts, pro
 * [listGeoSentimentEvidence](#listgeosentimentevidence) - List answers used as sentiment evidence
 * [listGeoShelfSources](#listgeoshelfsources) - List stored GEO shelf sources
 * [listGeoContentGaps](#listgeocontentgaps) - List content gaps
+* [updateGeoContentGap](#updategeocontentgap) - Ignore or restore a content gap
 * [listGeoContentBriefs](#listgeocontentbriefs) - List content briefs
 * [planGeoContentBrief](#plangeocontentbrief) - Plan a content brief
 * [getGeoContentBrief](#getgeocontentbrief) - Get a single content brief
+* [updateGeoContentBrief](#updategeocontentbrief) - Update a content brief
 * [approveGeoContentBrief](#approvegeocontentbrief) - Approve a brief and start the writer
 * [getGeoAgentReadiness](#getgeoagentreadiness) - Get the latest agent readiness report
 * [startGeoAgentReadinessScan](#startgeoagentreadinessscan) - Start an agent readiness scan
@@ -57,6 +73,8 @@ Manage generative engine optimization: projects, tracking settings, prompts, pro
 * [listGeoTrafficJourneys](#listgeotrafficjourneys) - List AI traffic journeys
 * [getGeoTrafficJourney](#getgeotrafficjourney) - Get one journey's events
 * [listGeoTrafficPages](#listgeotrafficpages) - List the most visited pages
+* [getGeoMcpAnalytics](#getgeomcpanalytics) - Get MCP server analytics
+* [getGeoMcpToolDetail](#getgeomcptooldetail) - Get one MCP tool's analytics
 * [getGeoIngestSetup](#getgeoingestsetup) - Get the install snippets
 * [issueGeoIngestToken](#issuegeoingesttoken) - Issue the tracking token
 * [rotateGeoIngestToken](#rotategeoingesttoken) - Rotate the tracking token
@@ -283,7 +301,7 @@ run();
 
 ## deleteProject
 
-Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted.
+Cascades to the project's GEO settings, prompts, sequences, competitors, scans, checks and reports, and cancels any pending scheduled scan. Agent feedback is kept but detached. The organization's last project cannot be deleted. Projects with hosted Sites cannot be deleted; delete their Sites first.
 
 ### Example Usage
 
@@ -510,7 +528,7 @@ run();
 
 ## updateGeoSettings
 
-Writes the full settings document and re-arms the recurring scan. Engines must be ids from the model catalog this organization can see (the ones `GET /geo/settings` returns) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload.
+Writes the full settings document and re-arms the recurring scan. Engines must be ids returned by `GET /projects/{projectId}/geo/engines` (model APIs plus consumer surfaces such as `google/ai-overview`, `google/gemini` and `openai/chatgpt`) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
 
 ### Example Usage
 
@@ -616,6 +634,81 @@ run();
 ### Response
 
 **Promise\<[models.GeoSettingsResponse](../../models/geo-settings-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## listGeoEngines
+
+Returns every engine id this organization can select in `engines` when updating GEO settings. This includes model APIs and consumer surfaces scanned through hosted browsers, such as `google/ai-overview` (Google AI Overview), `google/gemini` (the Gemini app) and `openai/chatgpt` (the ChatGPT app). Legacy engines that a project already tracks stay accepted but are not listed.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoEngines" method="get" path="/v1/projects/{projectId}/geo/engines" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoEngines({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOEngines } from "@usenotra/sdk/funcs/geo-list-geo-engines.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOEngines(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOEngines failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoEnginesRequest](../../models/operations/list-geo-engines-request.md)                                                                                        | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoEngineListResponse](../../models/geo-engine-list-response.md)\>**
 
 ### Errors
 
@@ -1015,6 +1108,235 @@ run();
 | errors.ErrorResponse          | 500, 503                      | application/json              |
 | errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
 
+## listGeoPromptSuggestions
+
+Pending prompts Notra suggests tracking, derived from the project's Google Search Console queries. Empty until Search Console is connected and synced in the dashboard.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoPromptSuggestions" method="get" path="/v1/projects/{projectId}/geo/prompts/suggestions" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoPromptSuggestions({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOPromptSuggestions } from "@usenotra/sdk/funcs/geo-list-geo-prompt-suggestions.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOPromptSuggestions(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOPromptSuggestions failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoPromptSuggestionsRequest](../../models/operations/list-geo-prompt-suggestions-request.md)                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.ListGeoPromptSuggestionsResponse](../../models/list-geo-prompt-suggestions-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## acceptGeoPromptSuggestion
+
+Tracks the suggested prompt and returns it. When the project already tracks the same prompt, that prompt is returned instead of a duplicate. Returns 404 once the suggestion is no longer pending.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="acceptGeoPromptSuggestion" method="post" path="/v1/projects/{projectId}/geo/prompts/suggestions/{suggestionId}/accept" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.acceptGeoPromptSuggestion({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    suggestionId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoAcceptGEOPromptSuggestion } from "@usenotra/sdk/funcs/geo-accept-geo-prompt-suggestion.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoAcceptGEOPromptSuggestion(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    suggestionId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoAcceptGEOPromptSuggestion failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.AcceptGeoPromptSuggestionRequest](../../models/operations/accept-geo-prompt-suggestion-request.md)                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoPromptResponse](../../models/geo-prompt-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## dismissGeoPromptSuggestion
+
+Removes the suggestion from the pending list without tracking it. Returns 404 once the suggestion is no longer pending.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="dismissGeoPromptSuggestion" method="post" path="/v1/projects/{projectId}/geo/prompts/suggestions/{suggestionId}/dismiss" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.dismissGeoPromptSuggestion({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    suggestionId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoDismissGEOPromptSuggestion } from "@usenotra/sdk/funcs/geo-dismiss-geo-prompt-suggestion.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoDismissGEOPromptSuggestion(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    suggestionId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoDismissGEOPromptSuggestion failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.DismissGeoPromptSuggestionRequest](../../models/operations/dismiss-geo-prompt-suggestion-request.md)                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.DismissGeoPromptSuggestionResponse](../../models/dismiss-geo-prompt-suggestion-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
 ## listGeoSequences
 
 List GEO prompt sequences
@@ -1331,7 +1653,7 @@ run();
 
 ## runGeoSequence
 
-Runs the sequence synchronously and answers with its result. The call is not queued: the request stays open for the whole run, which plays every turn against every available answer engine and can take several minutes. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
+Runs the sequence now. API-based answer engines run synchronously: the request stays open while every turn plays against each of them, which can take several minutes, and `checks`, `mentions` and `engines` report their result. Tracked consumer apps (ChatGPT, Perplexity, Gemini, AI Mode, Copilot) answer far more slowly, so they are queued as a background scan instead: `queuedScanId` names it and `queuedEngines` lists the apps it covers. Poll `GET /v1/projects/{projectId}/geo/scans/{scanId}` for that part. A run with only consumer apps answers right away with `checks: 0`. Runs also work while automatic scans are paused. Use a client timeout of at least five minutes; after four minutes the API stops waiting and answers 409 while the run finishes on its own. Do not retry; read the result from the project's GEO checks. The work happens inside the Notra dashboard, which owns the model credentials and billing gates; the public API never calls an answer engine itself. Results also land in the project's GEO checks.
 
 ### Example Usage
 
@@ -1397,6 +1719,700 @@ run();
 ### Response
 
 **Promise\<[operations.RunGeoSequenceResponse](../../models/operations/run-geo-sequence-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 402, 403, 404, 409  | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 500, 503                      | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
+
+## listGeoPersonas
+
+Buyer personas that hold multi-turn conversations with the answer engines, each with its profile, memories and conversation prompts. Archived personas are included with `archivedAt` set.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listGeoPersonas" method="get" path="/v1/projects/{projectId}/geo/personas" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.listGeoPersonas({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoListGEOPersonas } from "@usenotra/sdk/funcs/geo-list-geo-personas.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoListGEOPersonas(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoListGEOPersonas failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListGeoPersonasRequest](../../models/operations/list-geo-personas-request.md)                                                                                      | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.ListGeoPersonasResponse](../../models/list-geo-personas-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## archiveGeoPersona
+
+Archives and disables the persona. Its past results stay readable, and it can be restored.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="archiveGeoPersona" method="delete" path="/v1/projects/{projectId}/geo/personas/{personaId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.archiveGeoPersona({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoArchiveGEOPersona } from "@usenotra/sdk/funcs/geo-archive-geo-persona.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoArchiveGEOPersona(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoArchiveGEOPersona failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ArchiveGeoPersonaRequest](../../models/operations/archive-geo-persona-request.md)                                                                                  | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.ArchiveGeoPersonaResponse](../../models/archive-geo-persona-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## updateGeoPersona
+
+Turns a persona on or off for scheduled scans, or edits its details. Editing details clears its conversation prompts, so call `POST …/personas/generate` with `personaId` and `promptsOnly: true` before running it again. Archived personas must be restored first.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="updateGeoPersona" method="patch" path="/v1/projects/{projectId}/geo/personas/{personaId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.updateGeoPersona({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+    body: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoUpdateGEOPersona } from "@usenotra/sdk/funcs/geo-update-geo-persona.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoUpdateGEOPersona(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+    body: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoUpdateGEOPersona failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.UpdateGeoPersonaRequest](../../models/operations/update-geo-persona-request.md)                                                                                    | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoPersonaResponse](../../models/geo-persona-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## restoreGeoPersona
+
+Restores the persona as disabled. Fails with 400 when the project already has the maximum number of active personas.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="restoreGeoPersona" method="post" path="/v1/projects/{projectId}/geo/personas/{personaId}/restore" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.restoreGeoPersona({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoRestoreGEOPersona } from "@usenotra/sdk/funcs/geo-restore-geo-persona.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoRestoreGEOPersona(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoRestoreGEOPersona failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.RestoreGeoPersonaRequest](../../models/operations/restore-geo-persona-request.md)                                                                                  | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoPersonaResponse](../../models/geo-persona-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoPersonaResults
+
+Every turn of one scan's persona conversations, per engine: the prompt, the answer, whether the brand was mentioned, its position, and the sources the engine cited. `scans` lists the scans that played this persona, newest first.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoPersonaResults" method="get" path="/v1/projects/{projectId}/geo/personas/{personaId}/results" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoPersonaResults({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOPersonaResults } from "@usenotra/sdk/funcs/geo-get-geo-persona-results.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOPersonaResults(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOPersonaResults failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoPersonaResultsRequest](../../models/operations/get-geo-persona-results-request.md)                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoPersonaResultsResponse](../../models/geo-persona-results-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoPersonaActivity
+
+Daily checks and mentions per persona and persona version. Defaults to the last 30 days.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoPersonaActivity" method="get" path="/v1/projects/{projectId}/geo/personas/activity" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoPersonaActivity({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOPersonaActivity } from "@usenotra/sdk/funcs/geo-get-geo-persona-activity.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOPersonaActivity(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOPersonaActivity failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoPersonaActivityRequest](../../models/operations/get-geo-persona-activity-request.md)                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoPersonaActivityResponse](../../models/geo-persona-activity-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## runGeoPersona
+
+Plays the persona's conversation now and uses AI credits at twice the rate of a single prompt check. API-based answer engines run synchronously, so the request can stay open for several minutes; `checks`, `mentions` and `engines` report their result. Tracked consumer apps are queued as a background scan named by `queuedScanId`; poll `GET /v1/projects/{projectId}/geo/scans/{scanId}` for that part. Use a client timeout of at least five minutes. After four minutes the API answers 409 while the run finishes on its own; do not retry, read `GET …/personas/{personaId}/results` instead.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="runGeoPersona" method="post" path="/v1/projects/{projectId}/geo/personas/{personaId}/run" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.runGeoPersona({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoRunGEOPersona } from "@usenotra/sdk/funcs/geo-run-geo-persona.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoRunGEOPersona(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    personaId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoRunGEOPersona failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.RunGeoPersonaRequest](../../models/operations/run-geo-persona-request.md)                                                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.RunGeoPersonaResponse](../../models/operations/run-geo-persona-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 402, 403, 404, 409  | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 500, 503                      | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
+
+## generateGeoPersonas
+
+Starts AI persona generation in the background and uses AI credits. With no body it creates a full set from the project's brand, prompts and competitors; `brief` adds one persona; `personaId` regenerates one in place (with `promptsOnly`, only its conversation prompts). Only one job runs per project: while one is running, this returns that job instead of starting another. Poll `GET /v1/projects/{projectId}/geo/personas/generation` until `status` is `completed` or `failed`, then list the personas.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="generateGeoPersonas" method="post" path="/v1/projects/{projectId}/geo/personas/generate" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.generateGeoPersonas({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGenerateGEOPersonas } from "@usenotra/sdk/funcs/geo-generate-geo-personas.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGenerateGEOPersonas(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGenerateGEOPersonas failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GenerateGeoPersonasRequest](../../models/operations/generate-geo-personas-request.md)                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GenerateGeoPersonasResponse](../../models/operations/generate-geo-personas-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 402, 403, 404, 409  | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 500, 503                      | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
+
+## getGeoPersonaGeneration
+
+The project's latest persona generation job. A job that never started within a few minutes is reported as `failed`.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoPersonaGeneration" method="get" path="/v1/projects/{projectId}/geo/personas/generation" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoPersonaGeneration({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOPersonaGeneration } from "@usenotra/sdk/funcs/geo-get-geo-persona-generation.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOPersonaGeneration(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOPersonaGeneration failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoPersonaGenerationRequest](../../models/operations/get-geo-persona-generation-request.md)                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.GetGeoPersonaGenerationResponse](../../models/operations/get-geo-persona-generation-response.md)\>**
 
 ### Errors
 
@@ -1722,7 +2738,7 @@ run();
 
 ## importGeoCompetitors
 
-Accepts either structured `rows` or raw `csv` text. Existing competitors are updated in place rather than duplicated.
+Accepts either structured `rows` or raw `csv` text. Existing competitors are updated in place rather than duplicated. One request takes a project's whole list (up to 2,000 competitors), so send it in a single call instead of splitting it.
 
 ### Example Usage
 
@@ -1875,7 +2891,7 @@ run();
 
 ## createGeoScan
 
-Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight.
+Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight, and 402 when the plan or AI credits cannot cover a scan.
 
 ### Example Usage
 
@@ -1939,6 +2955,84 @@ run();
 ### Response
 
 **Promise\<[operations.CreateGeoScanResponse](../../models/operations/create-geo-scan-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ErrorResponse          | 400, 401, 402, 403, 404, 409  | application/json              |
+| errors.RateLimitErrorResponse | 429                           | application/json              |
+| errors.ErrorResponse          | 500, 503                      | application/json              |
+| errors.NotraDefaultError      | 4XX, 5XX                      | \*/\*                         |
+
+## createGeoPromptScan
+
+Queues a scan of one enabled tracked prompt across the project's engines, for example to check a prompt again after publishing content for it. Only that prompt's checks run, so it costs less than a full scan. Otherwise it behaves like `POST /v1/projects/{projectId}/geo/scans`: poll `statusUrl` until `status` leaves `running`, 409 while another scan is in flight, 402 when the plan or AI credits cannot cover it, and it shares that route's rate limit. Returns 404 for a prompt that is unknown or disabled.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="createGeoPromptScan" method="post" path="/v1/projects/{projectId}/geo/scans/prompts/{promptId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.createGeoPromptScan({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    promptId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoCreateGEOPromptScan } from "@usenotra/sdk/funcs/geo-create-geo-prompt-scan.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoCreateGEOPromptScan(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    promptId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoCreateGEOPromptScan failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.CreateGeoPromptScanRequest](../../models/operations/create-geo-prompt-scan-request.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.CreateGeoPromptScanResponse](../../models/operations/create-geo-prompt-scan-response.md)\>**
 
 ### Errors
 
@@ -2500,7 +3594,7 @@ run();
 
 ## getGeoVisibilityLanguageShare
 
-Checks, mentions and average position broken down by language. Pass `days` for a rolling window, or `from`/`to` for an explicit one.
+Checks, mentions and average position broken down by language. Only tracked prompts count, without sequences or personas. In a scan that ran several languages, a prompt counts only where the same engine also answered it in another language of that scan. Pass `days` for a rolling window, or `from`/`to` for an explicit one.
 
 ### Example Usage
 
@@ -3197,6 +4291,89 @@ run();
 | errors.ErrorResponse         | 500, 503                     | application/json             |
 | errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
 
+## updateGeoContentGap
+
+Hides a prompt gap from `GET /v1/projects/{projectId}/geo/gaps` and from brief planning, or brings it back. `promptId` is the `id` of a row in `promptGaps`. Ignored gaps are not listed, so keep the id to restore one later. The id is not checked against the gap list.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="updateGeoContentGap" method="patch" path="/v1/projects/{projectId}/geo/gaps/{promptId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.updateGeoContentGap({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    promptId: "<id>",
+    body: {
+      ignored: true,
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoUpdateGEOContentGap } from "@usenotra/sdk/funcs/geo-update-geo-content-gap.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoUpdateGEOContentGap(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    promptId: "<id>",
+    body: {
+      ignored: true,
+    },
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoUpdateGEOContentGap failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.UpdateGeoContentGapRequest](../../models/operations/update-geo-content-gap-request.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.UpdateGeoContentGapResponse](../../models/update-geo-content-gap-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
 ## listGeoContentBriefs
 
 List content briefs
@@ -3415,6 +4592,85 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.GetGeoContentBriefRequest](../../models/operations/get-geo-content-brief-request.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoContentBriefResponse](../../models/geo-content-brief-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## updateGeoContentBrief
+
+Edits the brief's outline and planning fields. Omitted fields keep their current value; list fields replace the whole list. Only briefs in `draft` or `failed` can be edited, and the draft post's plan is updated with them. Anything else returns 409. Editing drops research notes such as the baseline and recommended angle, as the dashboard editor does.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="updateGeoContentBrief" method="patch" path="/v1/projects/{projectId}/geo/briefs/{briefId}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.updateGeoContentBrief({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    briefId: "<id>",
+    body: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoUpdateGEOContentBrief } from "@usenotra/sdk/funcs/geo-update-geo-content-brief.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoUpdateGEOContentBrief(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    briefId: "<id>",
+    body: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoUpdateGEOContentBrief failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.UpdateGeoContentBriefRequest](../../models/operations/update-geo-content-brief-request.md)                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -4053,6 +5309,166 @@ run();
 | errors.ErrorResponse         | 500, 503                     | application/json             |
 | errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
 
+## getGeoMcpAnalytics
+
+Usage of your own MCP server, as reported by the `@usenotra/geo` SDK: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoMcpAnalytics" method="get" path="/v1/projects/{projectId}/geo/traffic/mcp" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoMcpAnalytics({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOMcpAnalytics } from "@usenotra/sdk/funcs/geo-get-geo-mcp-analytics.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOMcpAnalytics(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOMcpAnalytics failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoMcpAnalyticsRequest](../../models/operations/get-geo-mcp-analytics-request.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoMcpAnalyticsResponse](../../models/geo-mcp-analytics-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
+## getGeoMcpToolDetail
+
+Which tools agents call right before and after this one, its failures grouped by message, and the intents it was called for.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="getGeoMcpToolDetail" method="get" path="/v1/projects/{projectId}/geo/traffic/mcp/tools/{toolName}" -->
+```typescript
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await notra.geo.getGeoMcpToolDetail({
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    toolName: "<value>",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { NotraCore } from "@usenotra/sdk/core.js";
+import { geoGetGEOMcpToolDetail } from "@usenotra/sdk/funcs/geo-get-geo-mcp-tool-detail.js";
+
+// Use `NotraCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const notra = new NotraCore({
+  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const res = await geoGetGEOMcpToolDetail(notra, {
+    projectId: "b1f2c3d4-0000-4000-8000-000000000000",
+    toolName: "<value>",
+    from: "2026-01-31",
+    to: "2026-01-31",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("geoGetGEOMcpToolDetail failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetGeoMcpToolDetailRequest](../../models/operations/get-geo-mcp-tool-detail-request.md)                                                                            | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GeoMcpToolDetailResponse](../../models/geo-mcp-tool-detail-response.md)\>**
+
+### Errors
+
+| Error Type                   | Status Code                  | Content Type                 |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| errors.ErrorResponse         | 400, 401, 402, 403, 404, 409 | application/json             |
+| errors.ErrorResponse         | 500, 503                     | application/json             |
+| errors.NotraDefaultError     | 4XX, 5XX                     | \*/\*                        |
+
 ## getGeoIngestSetup
 
 The endpoint and framework snippets needed to send AI traffic to Notra. The snippets read the token from an environment variable; the token itself is issued by `POST /geo/ingest/token`, which requires a write scope.
@@ -4125,7 +5541,7 @@ run();
 
 ## issueGeoIngestToken
 
-Returns the current tracking token together with the install snippets. Organization-level: pass `projectId` to bind the token to one project. Issuing does not invalidate previously issued tokens; use rotation for that.
+Returns the current tracking token together with the install snippets. Pass `projectId` for a project-specific token; without it, the legacy token only accepts the organization's oldest project's hosts. Issuing does not invalidate previously issued tokens; use rotation for that.
 
 ### Example Usage
 
