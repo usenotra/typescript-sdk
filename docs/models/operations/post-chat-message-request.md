@@ -9,7 +9,6 @@ let value: PostChatMessageRequest = {
   chatId: "chat_abc123",
   body: {
     message: "Summarize what shipped in the last week.",
-    model: "auto",
     enableThinking: false,
     thinkingLevel: "medium",
     timezone: "Europe/Berlin",

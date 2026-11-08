@@ -11,23 +11,39 @@ import {
   PublicExternalChannelId$outboundSchema,
 } from "./public-external-channel-id.js";
 
+export type Approval = {
+  id: string;
+  approved: boolean;
+  reason?: string | undefined;
+};
+
 /**
- * Model to respond with. Defaults to auto, which lets Notra choose.
+ * Deprecated and ignored. Chats always respond with GLM 5.3 Flash.
+ *
+ * @deprecated enum: This will be removed in a future release, please migrate away from it as soon as possible.
  */
-export const Model = {
+export const ModelEnum = {
   Auto: "auto",
+  ZaiGlm53: "zai/glm-5.3",
+  ZaiGlm53Flash: "zai/glm-5.3-flash",
+  AnthropicClaudeOpus55: "anthropic/claude-opus-5.5",
   AnthropicClaudeOpus5: "anthropic/claude-opus-5",
   AnthropicClaudeOpus48: "anthropic/claude-opus-4.8",
   AnthropicClaudeSonnet5: "anthropic/claude-sonnet-5",
   AnthropicClaudeSonnet46: "anthropic/claude-sonnet-4.6",
   AnthropicClaudeHaiku45: "anthropic/claude-haiku-4.5",
-  OpenaiGpt54: "openai/gpt-5.4",
+  OpenaiGpt6Sol: "openai/gpt-6-sol",
+  OpenaiGpt6Luna: "openai/gpt-6-luna",
+  OpenaiGpt56Sol: "openai/gpt-5.6-sol",
   OpenaiGpt55: "openai/gpt-5.5",
+  OpenaiGpt54: "openai/gpt-5.4",
 } as const;
 /**
- * Model to respond with. Defaults to auto, which lets Notra choose.
+ * Deprecated and ignored. Chats always respond with GLM 5.3 Flash.
+ *
+ * @deprecated enum: This will be removed in a future release, please migrate away from it as soon as possible.
  */
-export type Model = ClosedEnum<typeof Model>;
+export type ModelEnum = ClosedEnum<typeof ModelEnum>;
 
 /**
  * How much reasoning effort to spend when thinking is enabled.
@@ -68,11 +84,17 @@ export type SendChatMessageRequest = {
   /**
    * The user message to send.
    */
-  message: string;
+  message?: string | undefined;
   /**
-   * Model to respond with. Defaults to auto, which lets Notra choose.
+   * Respond to every pending tool approval in the latest assistant message. Send either message or approvals. Only supported on an existing chat.
    */
-  model?: Model | undefined;
+  approvals?: Array<Approval> | undefined;
+  /**
+   * Deprecated and ignored. Chats always respond with GLM 5.3 Flash.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  model?: ModelEnum | undefined;
   /**
    * Allow the model to reason before answering.
    */
@@ -92,13 +114,36 @@ export type SendChatMessageRequest = {
     | Array<ContextGithubRepo | ContextLinearTeam | ContextMcpServer>
     | undefined;
   /**
-   * Link the chat to a Discord or Slack channel so it can be found later with GET /v1/chats/by-external.
+   * Link the chat to a Discord or Slack channel, or tag it with your own dashboard id, so it can be found later with GET /v1/chats/by-external.
    */
   externalChannelId?: PublicExternalChannelId | undefined;
 };
 
 /** @internal */
-export const Model$outboundSchema: z.ZodMiniEnum<typeof Model> = z.enum(Model);
+export type Approval$Outbound = {
+  id: string;
+  approved: boolean;
+  reason?: string | undefined;
+};
+
+/** @internal */
+export const Approval$outboundSchema: z.ZodMiniType<
+  Approval$Outbound,
+  Approval
+> = z.object({
+  id: z.string(),
+  approved: z.boolean(),
+  reason: z.optional(z.string()),
+});
+
+export function approvalToJSON(approval: Approval): string {
+  return JSON.stringify(Approval$outboundSchema.parse(approval));
+}
+
+/** @internal */
+export const ModelEnum$outboundSchema: z.ZodMiniEnum<typeof ModelEnum> = z.enum(
+  ModelEnum,
+);
 
 /** @internal */
 export const ThinkingLevel$outboundSchema: z.ZodMiniEnum<typeof ThinkingLevel> =
@@ -201,7 +246,8 @@ export function contextToJSON(context: Context): string {
 
 /** @internal */
 export type SendChatMessageRequest$Outbound = {
-  message: string;
+  message?: string | undefined;
+  approvals?: Array<Approval$Outbound> | undefined;
   model?: string | undefined;
   enableThinking?: boolean | undefined;
   thinkingLevel?: string | undefined;
@@ -221,8 +267,9 @@ export const SendChatMessageRequest$outboundSchema: z.ZodMiniType<
   SendChatMessageRequest$Outbound,
   SendChatMessageRequest
 > = z.object({
-  message: z.string(),
-  model: z.optional(Model$outboundSchema),
+  message: z.optional(z.string()),
+  approvals: z.optional(z.array(z.lazy(() => Approval$outboundSchema))),
+  model: z.optional(ModelEnum$outboundSchema),
   enableThinking: z.optional(z.boolean()),
   thinkingLevel: z.optional(ThinkingLevel$outboundSchema),
   timezone: z.optional(z.string()),

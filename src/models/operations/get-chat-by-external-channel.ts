@@ -7,14 +7,15 @@ import * as z from "zod/v4-mini";
 import { ClosedEnum } from "../../types/enums.js";
 
 /**
- * Messaging platform the channel belongs to.
+ * Source the chat was linked with: a messaging platform, or dashboard for your own id.
  */
 export const GetChatByExternalChannelSource = {
   Discord: "discord",
   Slack: "slack",
+  Dashboard: "dashboard",
 } as const;
 /**
- * Messaging platform the channel belongs to.
+ * Source the chat was linked with: a messaging platform, or dashboard for your own id.
  */
 export type GetChatByExternalChannelSource = ClosedEnum<
   typeof GetChatByExternalChannelSource
@@ -22,11 +23,11 @@ export type GetChatByExternalChannelSource = ClosedEnum<
 
 export type GetChatByExternalChannelRequest = {
   /**
-   * Messaging platform the channel belongs to.
+   * Source the chat was linked with: a messaging platform, or dashboard for your own id.
    */
   source: GetChatByExternalChannelSource;
   /**
-   * Channel ID on that platform.
+   * Channel ID on that platform, or the id you tagged the chat with.
    */
   id: string;
 };
