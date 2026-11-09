@@ -1,86 +1,127 @@
 # @usenotra/sdk
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *@usenotra/sdk* API.
+The official Notra SDK for TypeScript and JavaScript:
 
-[![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=@usenotra/sdk&utm_campaign=typescript)
-[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
+- **API client.** Every Notra API endpoint as a typed method, with retries, timeouts and streaming. No runtime dependencies.
+- **AI traffic.** Middleware for Next.js, Nuxt, Astro, SvelteKit, TanStack Start, React Router and Netlify that shows you AI crawlers, AI assistant fetches and AI referrals.
+- **Web analytics.** `<NotraAnalytics />` and a script tag helper for notra.js, pinned with its Subresource Integrity hash.
+- **MCP analytics and agent feedback** for your own MCP server.
 
-<br /><br />
-
-<!-- Start Summary [summary] -->
-## Summary
-
-Notra API: OpenAPI schema for Notra content endpoints. Use GET /v1/status for public reachability. Error responses include recovery guidance.
-<!-- End Summary [summary] -->
-
-<!-- Start Table of Contents [toc] -->
-## Table of Contents
-<!-- $toc-max-depth=2 -->
-* [@usenotra/sdk](#usenotrasdk)
-  * [SDK Installation](#sdk-installation)
-  * [Requirements](#requirements)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Authentication](#authentication)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Standalone functions](#standalone-functions)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-  * [Custom HTTP Client](#custom-http-client)
-  * [Debugging](#debugging)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
-
-<!-- End Table of Contents [toc] -->
-
-<!-- Start SDK Installation [installation] -->
-## SDK Installation
-
-The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
-
-### NPM
+Each part has its own import path, so you only ship what you use.
 
 ```bash
-npm add @usenotra/sdk
+npm install @usenotra/sdk
 ```
 
-### PNPM
+## API client
 
-```bash
-pnpm add @usenotra/sdk
+```ts
+import { Notra } from "@usenotra/sdk";
+
+const notra = new Notra(); // reads NOTRA_API_KEY
+
+const { projects } = await notra.geo.listProjects();
+const post = await notra.content.getPost({ postId: "post_123" });
+const created = await notra.content.createPost({
+  body: { title: "What shipped this week", contentType: "changelog" },
+});
 ```
 
-### Bun
+Every method is named after its `operationId` in the [API reference](https://www.usenotra.com/docs/api/getting-started) and grouped like it: `notra.content`, `notra.geo`, `notra.chats`, `notra.sites` and so on. A method takes one object: path and query parameters by name, the JSON body as `body`. All 157 methods are listed in [docs/API.md](docs/API.md).
 
-```bash
-bun add @usenotra/sdk
+Request and response types are exported for every method and schema:
+
+```ts
+import type { GetPostResult, ListPostsParams, GeoProject } from "@usenotra/sdk";
 ```
 
-### Yarn
+### Authentication
 
-```bash
-yarn add @usenotra/sdk
+```ts
+const notra = new Notra({
+  apiKey: process.env.NOTRA_API_KEY, // the default
+  organization: "acme", // workspace id or slug, see below
+});
 ```
 
-> [!NOTE]
-> This package is published with CommonJS and ES Modules (ESM) support.
-<!-- End SDK Installation [installation] -->
+- `apiKey` defaults to `NOTRA_API_KEY`. It can also be a function that returns a current token, called before every attempt, for example an OAuth access token that rotates.
+- `organization` sets `X-Notra-Organization-Id`. Account API keys need it when you belong to more than one workspace; it defaults to `NOTRA_ORGANIZATION_ID`.
+- `environment: "sandbox"` talks to the sandbox with sample data at `demo-api.usenotra.com`. Get a free sandbox key at [demo.usenotra.com](https://demo.usenotra.com).
+- `baseUrl` overrides the host, for example for a proxy.
 
-## Tracking: AI traffic and web analytics
+Keep API keys on the server. Never ship them to a browser.
 
-The same package also tracks your website. Every part has its own import path, so middleware on the edge never loads the API client and the browser script helpers stay about 1.5 KB.
+### Errors
 
-| Import | What it does |
+Every error extends `NotraError`:
+
+```ts
+import { NotraAPIError, NotraConnectionError, NotraRateLimitError } from "@usenotra/sdk";
+
+try {
+  await notra.content.getPost({ postId: "missing" });
+} catch (error) {
+  if (error instanceof NotraRateLimitError) {
+    console.log(`Rate limited, window resets in ${error.reset}`);
+  } else if (error instanceof NotraAPIError) {
+    console.log(error.status, error.code, error.message, error.recovery, error.requestId);
+  } else if (error instanceof NotraConnectionError) {
+    console.log("Network problem or timeout", error.cause);
+  }
+}
+```
+
+| Error | When |
 | --- | --- |
-| `@usenotra/sdk` | The Notra API client (below) |
-| `@usenotra/sdk/next`, `/nuxt`, `/astro`, `/sveltekit`, `/tanstack`, `/react-router`, `/netlify` | AI traffic middleware: AI crawlers, AI assistant fetches and AI referrals |
-| `@usenotra/sdk/react` | `<NotraAnalytics />`: visitors, page views and Core Web Vitals with notra.js |
-| `@usenotra/sdk/script` | The same notra.js tag as an HTML string, for any template |
-| `@usenotra/sdk/mcp` | MCP server analytics |
-| `@usenotra/sdk/feedback` | A `submit_feedback` tool for your MCP server |
-| `@usenotra/sdk/markdown`, `/html` | Journey attribution links in responses for AI agents |
-| `@usenotra/sdk/geo`, `/classify`, `/signatures` | The core tracker and the AI agent signature table |
+| `NotraAPIError` | The API answered with a non-2xx status. Has `status`, `code`, `message`, `recovery`, `body`, `headers` and `requestId`. |
+| `NotraRateLimitError` | A `NotraAPIError` for 429, after the retries, with `limit`, `remaining` and `reset`. |
+| `NotraConnectionError` | No answer: network failure, DNS, TLS or an aborted signal. |
+| `NotraTimeoutError` | A `NotraConnectionError`: the request took longer than `timeoutMs`. |
+
+### Retries and timeouts
+
+Requests are retried twice by default, with exponential backoff that honours `Retry-After` and the rate limit window:
+
+- 429 and 503 are retried for every method, because the API didn't process the request.
+- Network failures and 408, 500, 502 and 504 are retried only for `GET`, `PUT` and `DELETE`, so a `POST` is never sent twice.
+
+```ts
+const notra = new Notra({ maxRetries: 4, timeoutMs: 30_000 });
+
+// Per request
+await notra.geo.listProjects({ maxRetries: 0, signal: AbortSignal.timeout(5000) });
+await notra.content.getPost({ postId: "post_123" }, { headers: { "X-Trace": "abc" } });
+```
+
+### Streaming
+
+Chat and agent endpoints return a `NotraStream`. Iterate it, or pass its bytes straight on:
+
+```ts
+const stream = await notra.chats.createChat({ body: { message: "Summarize what shipped last week" } });
+console.log("Chat", stream.response.headers.get("x-chat-id"));
+
+for await (const chunk of stream) {
+  if (chunk.type === "text-delta") {
+    process.stdout.write(chunk.delta ?? "");
+  }
+}
+
+// Or, in a route handler, forward the AI SDK UI message stream as is:
+return new Response(stream.toReadableStream(), { headers: { "Content-Type": "text/event-stream" } });
+```
+
+### Endpoints newer than this SDK
+
+`notra.request()` calls any endpoint with the same auth, retries and errors:
+
+```ts
+const result = await notra.request("GET", "/v1/new-endpoint", { query: { limit: 10 } });
+```
+
+## AI traffic
+
+Add the middleware for your framework to see AI crawlers, AI assistant fetches and AI referrals in Notra. It never blocks or slows a response, and it runs on edge runtimes.
 
 ```ts
 // proxy.ts (Next.js 16; middleware.ts before that)
@@ -94,6 +135,23 @@ export function proxy(request: Request, event: { waitUntil(p: Promise<unknown>):
   return NextResponse.next();
 }
 ```
+
+| Import | Framework |
+| --- | --- |
+| `@usenotra/sdk/next` | Next.js `proxy.ts` or `middleware.ts` |
+| `@usenotra/sdk/nuxt` | Nuxt and Nitro |
+| `@usenotra/sdk/astro` | Astro |
+| `@usenotra/sdk/sveltekit` | SvelteKit |
+| `@usenotra/sdk/tanstack` | TanStack Start |
+| `@usenotra/sdk/react-router` | React Router |
+| `@usenotra/sdk/netlify` | Netlify Edge Functions |
+| `@usenotra/sdk/geo` | The core tracker, for anything else |
+
+`@usenotra/sdk/markdown` and `/html` add journey attribution to the links you serve AI agents, and `/classify` and `/signatures` hold the AI agent signature table.
+
+## Web analytics
+
+`notra.js` counts the people who visit your site, without cookies. These helpers write its script tag with your public web key (`nwk.…`, from **Settings → Tracking** in Notra):
 
 ```tsx
 // app/layout.tsx
@@ -111,567 +169,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-`NotraAnalytics` and `notraScriptTag` load the notra.js build pinned in this SDK release with its Subresource Integrity hash, so the browser refuses to run the script if a single byte changes. You never set the hash yourself; updating `@usenotra/sdk` moves you to the newest build. React is an optional peer dependency, needed only for `@usenotra/sdk/react`.
+```ts
+// Astro, plain HTML or any other template
+import { notraScriptTag } from "@usenotra/sdk/script";
 
-Every framework, option and payload is in the [tracking guide](docs/tracking/README.md).
-
-<!-- Start Requirements [requirements] -->
-## Requirements
-
-For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
-<!-- End Requirements [requirements] -->
-
-<!-- Start SDK Example Usage [usage] -->
-## SDK Example Usage
-
-### Example
-
-```typescript
-import { Notra } from "@usenotra/sdk";
-
-const notra = new Notra();
-
-async function run() {
-  const result = await notra.discovery.getPublicApiStatus();
-
-  console.log(result);
-}
-
-run();
-
-```
-<!-- End SDK Example Usage [usage] -->
-
-<!-- Start Authentication [security] -->
-## Authentication
-
-### Per-Client Security Schemes
-
-This SDK supports the following security scheme globally:
-
-| Name         | Type | Scheme      | Environment Variable |
-| ------------ | ---- | ----------- | -------------------- |
-| `bearerAuth` | http | HTTP Bearer | `NOTRA_BEARER_AUTH`  |
-
-To authenticate with the API the `bearerAuth` parameter must be set when initializing the SDK client instance. For example:
-```typescript
-import { Notra } from "@usenotra/sdk";
-
-const notra = new Notra({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
-
-async function run() {
-  const result = await notra.discovery.getPublicApiStatus();
-
-  console.log(result);
-}
-
-run();
-
-```
-<!-- End Authentication [security] -->
-
-<!-- Start Available Resources and Operations [operations] -->
-## Available Resources and Operations
-
-<details open>
-<summary>Available methods</summary>
-
-### [Agent](docs/sdks/agent/README.md)
-
-* [createAgentSession](docs/sdks/agent/README.md#createagentsession) - Start a durable agent session
-* [sendAgentSessionMessage](docs/sdks/agent/README.md#sendagentsessionmessage) - Send a follow-up message or answer a pending input request
-* [streamAgentSessionEvents](docs/sdks/agent/README.md#streamagentsessionevents) - Stream an agent session's events
-* [listAgentChats](docs/sdks/agent/README.md#listagentchats) - List agent sessions
-
-### [Chats](docs/sdks/chats/README.md)
-
-* [listChats](docs/sdks/chats/README.md#listchats) - List chats
-* [createChat](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
-* [getChatByExternalChannel](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
-* [getChat](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
-* [postChatMessage](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
-
-### [Content](docs/sdks/content/README.md)
-
-* [listPosts](docs/sdks/content/README.md#listposts) - List posts
-* [createPost](docs/sdks/content/README.md#createpost) - Create a post
-* [getPost](docs/sdks/content/README.md#getpost) - Get a single post
-* [deletePost](docs/sdks/content/README.md#deletepost) - Delete a single post
-* [updatePost](docs/sdks/content/README.md#updatepost) - Update a single post
-* [createPostGeneration](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
-* [getPostGeneration](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
-* [listBrandIdentities](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
-* [createBrandIdentity](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
-* [getBrandIdentityGeneration](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
-* [getBrandIdentity](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
-* [deleteBrandIdentity](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
-* [updateBrandIdentity](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
-* [listIntegrations](docs/sdks/content/README.md#listintegrations) - List available integrations
-* [createGitHubIntegration](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
-* [deleteIntegration](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
-
-### [Discovery](docs/sdks/discovery/README.md)
-
-* [getPublicApiStatus](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
-* [getWorkspaces](docs/sdks/discovery/README.md#getworkspaces) - Get authenticated workspace context
-
-### [EventTriggers](docs/sdks/eventtriggers/README.md)
-
-* [listEventTriggers](docs/sdks/eventtriggers/README.md#listeventtriggers) - List event triggers
-* [createEventTrigger](docs/sdks/eventtriggers/README.md#createeventtrigger) - Create an event trigger
-* [getEventTrigger](docs/sdks/eventtriggers/README.md#geteventtrigger) - Get an event trigger
-* [deleteEventTrigger](docs/sdks/eventtriggers/README.md#deleteeventtrigger) - Delete an event trigger
-* [updateEventTrigger](docs/sdks/eventtriggers/README.md#updateeventtrigger) - Update an event trigger
-
-### [Feedback](docs/sdks/feedback/README.md)
-
-* [submitOrganizationFeedback](docs/sdks/feedback/README.md#submitorganizationfeedback) - Submit feedback to an organization's feedback URL
-* [listFeedback](docs/sdks/feedback/README.md#listfeedback) - List feedback
-* [submitFeedback](docs/sdks/feedback/README.md#submitfeedback) - Submit feedback with an API key
-* [getFeedback](docs/sdks/feedback/README.md#getfeedback) - Get a single feedback entry
-* [updateFeedback](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
-
-### [Geo](docs/sdks/geo/README.md)
-
-* [listProjects](docs/sdks/geo/README.md#listprojects) - List GEO projects
-* [createProject](docs/sdks/geo/README.md#createproject) - Create a GEO project
-* [getProject](docs/sdks/geo/README.md#getproject) - Get a single GEO project
-* [deleteProject](docs/sdks/geo/README.md#deleteproject) - Delete a GEO project and all of its GEO data
-* [updateProject](docs/sdks/geo/README.md#updateproject) - Rename a GEO project or relink its brand identity
-* [getGeoSettings](docs/sdks/geo/README.md#getgeosettings) - Get a project's GEO settings
-* [updateGeoSettings](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
-* [listGeoPrompts](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
-* [createGeoPrompt](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
-* [deleteGeoPrompt](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
-* [updateGeoPrompt](docs/sdks/geo/README.md#updategeoprompt) - Update a tracked GEO prompt
-* [importGeoPrompts](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
-* [listGeoSequences](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
-* [createGeoSequence](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
-* [deleteGeoSequence](docs/sdks/geo/README.md#deletegeosequence) - Delete a GEO prompt sequence
-* [updateGeoSequence](docs/sdks/geo/README.md#updategeosequence) - Update a GEO prompt sequence
-* [runGeoSequence](docs/sdks/geo/README.md#rungeosequence) - Run a GEO prompt sequence now
-* [listGeoCompetitors](docs/sdks/geo/README.md#listgeocompetitors) - List tracked GEO competitors
-* [upsertGeoCompetitor](docs/sdks/geo/README.md#upsertgeocompetitor) - Create or update a tracked GEO competitor
-* [suggestGeoCompetitors](docs/sdks/geo/README.md#suggestgeocompetitors) - Suggest GEO competitors for a domain
-* [deleteGeoCompetitor](docs/sdks/geo/README.md#deletegeocompetitor) - Stop tracking a GEO competitor
-* [importGeoCompetitors](docs/sdks/geo/README.md#importgeocompetitors) - Bulk import GEO competitors
-* [listGeoScans](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
-* [createGeoScan](docs/sdks/geo/README.md#creategeoscan) - Trigger a GEO scan
-* [getGeoScan](docs/sdks/geo/README.md#getgeoscan) - Get a single GEO scan
-* [getGeoVisibilityOverview](docs/sdks/geo/README.md#getgeovisibilityoverview) - Get mention rates per engine
-* [getGeoVisibilityTimeseries](docs/sdks/geo/README.md#getgeovisibilitytimeseries) - Get daily mention counts per engine
-* [getGeoVisibilityPromptResults](docs/sdks/geo/README.md#getgeovisibilitypromptresults) - Get the latest answer per prompt and engine
-* [listGeoPromptResultSummaries](docs/sdks/geo/README.md#listgeopromptresultsummaries) - List compact prompt result summaries
-* [getGeoPromptResultDetail](docs/sdks/geo/README.md#getgeopromptresultdetail) - Get one full prompt result
-* [getGeoVisibilityCompetitorShare](docs/sdks/geo/README.md#getgeovisibilitycompetitorshare) - Get share of voice across tracked brands
-* [getGeoVisibilityLanguageShare](docs/sdks/geo/README.md#getgeovisibilitylanguageshare) - Get mention rates per tracked language
-* [getGeoVisibilityCompetitorDetail](docs/sdks/geo/README.md#getgeovisibilitycompetitordetail) - Get one competitor's mention history
-* [listGeoChanges](docs/sdks/geo/README.md#listgeochanges) - Compare the two latest GEO scans
-* [getGeoPromptHistory](docs/sdks/geo/README.md#getgeoprompthistory) - Get the stored check history for one prompt
-* [getGeoSentiment](docs/sdks/geo/README.md#getgeosentiment) - Get aggregate GEO sentiment
-* [getGeoSentimentAnalysis](docs/sdks/geo/README.md#getgeosentimentanalysis) - Get the stored GEO sentiment analysis
-* [listGeoSentimentEvidence](docs/sdks/geo/README.md#listgeosentimentevidence) - List answers used as sentiment evidence
-* [listGeoShelfSources](docs/sdks/geo/README.md#listgeoshelfsources) - List stored GEO shelf sources
-* [listGeoContentGaps](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
-* [listGeoContentBriefs](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
-* [planGeoContentBrief](docs/sdks/geo/README.md#plangeocontentbrief) - Plan a content brief
-* [getGeoContentBrief](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
-* [approveGeoContentBrief](docs/sdks/geo/README.md#approvegeocontentbrief) - Approve a brief and start the writer
-* [getGeoAgentReadiness](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
-* [startGeoAgentReadinessScan](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
-* [getGeoTrafficOverview](docs/sdks/geo/README.md#getgeotrafficoverview) - Get AI traffic totals and sources
-* [getGeoTrafficLog](docs/sdks/geo/README.md#getgeotrafficlog) - Get recent AI traffic events
-* [listGeoTrafficJourneys](docs/sdks/geo/README.md#listgeotrafficjourneys) - List AI traffic journeys
-* [getGeoTrafficJourney](docs/sdks/geo/README.md#getgeotrafficjourney) - Get one journey's events
-* [listGeoTrafficPages](docs/sdks/geo/README.md#listgeotrafficpages) - List the most visited pages
-* [getGeoIngestSetup](docs/sdks/geo/README.md#getgeoingestsetup) - Get the install snippets
-* [issueGeoIngestToken](docs/sdks/geo/README.md#issuegeoingesttoken) - Issue the tracking token
-* [rotateGeoIngestToken](docs/sdks/geo/README.md#rotategeoingesttoken) - Rotate the tracking token
-
-### [Schedules](docs/sdks/schedules/README.md)
-
-* [listSchedules](docs/sdks/schedules/README.md#listschedules) - List schedules
-* [createSchedule](docs/sdks/schedules/README.md#createschedule) - Create a schedule
-* [deleteSchedule](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
-* [updateSchedule](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
-
-### [Skills](docs/sdks/skills/README.md)
-
-* [listSkills](docs/sdks/skills/README.md#listskills) - List skills
-* [createSkill](docs/sdks/skills/README.md#createskill) - Create a skill
-* [getSkill](docs/sdks/skills/README.md#getskill) - Get a single skill
-* [deleteSkill](docs/sdks/skills/README.md#deleteskill) - Delete a skill
-* [patchSkill](docs/sdks/skills/README.md#patchskill) - Update a skill
-
-</details>
-<!-- End Available Resources and Operations [operations] -->
-
-<!-- Start Standalone functions [standalone-funcs] -->
-## Standalone functions
-
-All the methods listed above are available as standalone functions. These
-functions are ideal for use in applications running in the browser, serverless
-runtimes or other environments where application bundle size is a primary
-concern. When using a bundler to build your application, all unused
-functionality will be either excluded from the final bundle or tree-shaken away.
-
-To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
-
-<details>
-
-<summary>Available standalone functions</summary>
-
-- [`agentCreateAgentSession`](docs/sdks/agent/README.md#createagentsession) - Start a durable agent session
-- [`agentListAgentChats`](docs/sdks/agent/README.md#listagentchats) - List agent sessions
-- [`agentSendAgentSessionMessage`](docs/sdks/agent/README.md#sendagentsessionmessage) - Send a follow-up message or answer a pending input request
-- [`agentStreamAgentSessionEvents`](docs/sdks/agent/README.md#streamagentsessionevents) - Stream an agent session's events
-- [`chatsCreateChat`](docs/sdks/chats/README.md#createchat) - Start a new chat and stream the reply
-- [`chatsGetChat`](docs/sdks/chats/README.md#getchat) - Get a single chat with messages
-- [`chatsGetChatByExternalChannel`](docs/sdks/chats/README.md#getchatbyexternalchannel) - Get a chat by external channel id
-- [`chatsListChats`](docs/sdks/chats/README.md#listchats) - List chats
-- [`chatsPostChatMessage`](docs/sdks/chats/README.md#postchatmessage) - Post a message to an existing chat and stream the reply
-- [`contentCreateBrandIdentity`](docs/sdks/content/README.md#createbrandidentity) - Queue async brand identity generation
-- [`contentCreateGitHubIntegration`](docs/sdks/content/README.md#creategithubintegration) - Create a GitHub integration
-- [`contentCreatePost`](docs/sdks/content/README.md#createpost) - Create a post
-- [`contentCreatePostGeneration`](docs/sdks/content/README.md#createpostgeneration) - Queue async post generation
-- [`contentDeleteBrandIdentity`](docs/sdks/content/README.md#deletebrandidentity) - Delete a single brand identity
-- [`contentDeleteIntegration`](docs/sdks/content/README.md#deleteintegration) - Delete a single integration
-- [`contentDeletePost`](docs/sdks/content/README.md#deletepost) - Delete a single post
-- [`contentGetBrandIdentity`](docs/sdks/content/README.md#getbrandidentity) - Get a single brand identity
-- [`contentGetBrandIdentityGeneration`](docs/sdks/content/README.md#getbrandidentitygeneration) - Get async brand identity generation status
-- [`contentGetPost`](docs/sdks/content/README.md#getpost) - Get a single post
-- [`contentGetPostGeneration`](docs/sdks/content/README.md#getpostgeneration) - Get async post generation status
-- [`contentListBrandIdentities`](docs/sdks/content/README.md#listbrandidentities) - List available brand identities
-- [`contentListIntegrations`](docs/sdks/content/README.md#listintegrations) - List available integrations
-- [`contentListPosts`](docs/sdks/content/README.md#listposts) - List posts
-- [`contentUpdateBrandIdentity`](docs/sdks/content/README.md#updatebrandidentity) - Update a single brand identity
-- [`contentUpdatePost`](docs/sdks/content/README.md#updatepost) - Update a single post
-- [`discoveryGetPublicApiStatus`](docs/sdks/discovery/README.md#getpublicapistatus) - Check public API reachability
-- [`discoveryGetWorkspaces`](docs/sdks/discovery/README.md#getworkspaces) - Get authenticated workspace context
-- [`eventTriggersCreateEventTrigger`](docs/sdks/eventtriggers/README.md#createeventtrigger) - Create an event trigger
-- [`eventTriggersDeleteEventTrigger`](docs/sdks/eventtriggers/README.md#deleteeventtrigger) - Delete an event trigger
-- [`eventTriggersGetEventTrigger`](docs/sdks/eventtriggers/README.md#geteventtrigger) - Get an event trigger
-- [`eventTriggersListEventTriggers`](docs/sdks/eventtriggers/README.md#listeventtriggers) - List event triggers
-- [`eventTriggersUpdateEventTrigger`](docs/sdks/eventtriggers/README.md#updateeventtrigger) - Update an event trigger
-- [`feedbackGetFeedback`](docs/sdks/feedback/README.md#getfeedback) - Get a single feedback entry
-- [`feedbackListFeedback`](docs/sdks/feedback/README.md#listfeedback) - List feedback
-- [`feedbackSubmitFeedback`](docs/sdks/feedback/README.md#submitfeedback) - Submit feedback with an API key
-- [`feedbackSubmitOrganizationFeedback`](docs/sdks/feedback/README.md#submitorganizationfeedback) - Submit feedback to an organization's feedback URL
-- [`feedbackUpdateFeedback`](docs/sdks/feedback/README.md#updatefeedback) - Update feedback status
-- [`geoApproveGEOContentBrief`](docs/sdks/geo/README.md#approvegeocontentbrief) - Approve a brief and start the writer
-- [`geoCreateGEOPrompt`](docs/sdks/geo/README.md#creategeoprompt) - Track a new GEO prompt
-- [`geoCreateGEOScan`](docs/sdks/geo/README.md#creategeoscan) - Trigger a GEO scan
-- [`geoCreateGEOSequence`](docs/sdks/geo/README.md#creategeosequence) - Create a GEO prompt sequence
-- [`geoCreateProject`](docs/sdks/geo/README.md#createproject) - Create a GEO project
-- [`geoDeleteGEOCompetitor`](docs/sdks/geo/README.md#deletegeocompetitor) - Stop tracking a GEO competitor
-- [`geoDeleteGEOPrompt`](docs/sdks/geo/README.md#deletegeoprompt) - Stop tracking a GEO prompt
-- [`geoDeleteGEOSequence`](docs/sdks/geo/README.md#deletegeosequence) - Delete a GEO prompt sequence
-- [`geoDeleteProject`](docs/sdks/geo/README.md#deleteproject) - Delete a GEO project and all of its GEO data
-- [`geoGetGEOAgentReadiness`](docs/sdks/geo/README.md#getgeoagentreadiness) - Get the latest agent readiness report
-- [`geoGetGEOContentBrief`](docs/sdks/geo/README.md#getgeocontentbrief) - Get a single content brief
-- [`geoGetGEOIngestSetup`](docs/sdks/geo/README.md#getgeoingestsetup) - Get the install snippets
-- [`geoGetGEOPromptHistory`](docs/sdks/geo/README.md#getgeoprompthistory) - Get the stored check history for one prompt
-- [`geoGetGEOPromptResultDetail`](docs/sdks/geo/README.md#getgeopromptresultdetail) - Get one full prompt result
-- [`geoGetGEOScan`](docs/sdks/geo/README.md#getgeoscan) - Get a single GEO scan
-- [`geoGetGEOSentiment`](docs/sdks/geo/README.md#getgeosentiment) - Get aggregate GEO sentiment
-- [`geoGetGEOSentimentAnalysis`](docs/sdks/geo/README.md#getgeosentimentanalysis) - Get the stored GEO sentiment analysis
-- [`geoGetGEOSettings`](docs/sdks/geo/README.md#getgeosettings) - Get a project's GEO settings
-- [`geoGetGEOTrafficJourney`](docs/sdks/geo/README.md#getgeotrafficjourney) - Get one journey's events
-- [`geoGetGEOTrafficLog`](docs/sdks/geo/README.md#getgeotrafficlog) - Get recent AI traffic events
-- [`geoGetGEOTrafficOverview`](docs/sdks/geo/README.md#getgeotrafficoverview) - Get AI traffic totals and sources
-- [`geoGetGEOVisibilityCompetitorDetail`](docs/sdks/geo/README.md#getgeovisibilitycompetitordetail) - Get one competitor's mention history
-- [`geoGetGEOVisibilityCompetitorShare`](docs/sdks/geo/README.md#getgeovisibilitycompetitorshare) - Get share of voice across tracked brands
-- [`geoGetGEOVisibilityLanguageShare`](docs/sdks/geo/README.md#getgeovisibilitylanguageshare) - Get mention rates per tracked language
-- [`geoGetGEOVisibilityOverview`](docs/sdks/geo/README.md#getgeovisibilityoverview) - Get mention rates per engine
-- [`geoGetGEOVisibilityPromptResults`](docs/sdks/geo/README.md#getgeovisibilitypromptresults) - Get the latest answer per prompt and engine
-- [`geoGetGEOVisibilityTimeseries`](docs/sdks/geo/README.md#getgeovisibilitytimeseries) - Get daily mention counts per engine
-- [`geoGetProject`](docs/sdks/geo/README.md#getproject) - Get a single GEO project
-- [`geoImportGEOCompetitors`](docs/sdks/geo/README.md#importgeocompetitors) - Bulk import GEO competitors
-- [`geoImportGEOPrompts`](docs/sdks/geo/README.md#importgeoprompts) - Bulk import GEO prompts
-- [`geoIssueGEOIngestToken`](docs/sdks/geo/README.md#issuegeoingesttoken) - Issue the tracking token
-- [`geoListGEOChanges`](docs/sdks/geo/README.md#listgeochanges) - Compare the two latest GEO scans
-- [`geoListGEOCompetitors`](docs/sdks/geo/README.md#listgeocompetitors) - List tracked GEO competitors
-- [`geoListGEOContentBriefs`](docs/sdks/geo/README.md#listgeocontentbriefs) - List content briefs
-- [`geoListGEOContentGaps`](docs/sdks/geo/README.md#listgeocontentgaps) - List content gaps
-- [`geoListGEOPromptResultSummaries`](docs/sdks/geo/README.md#listgeopromptresultsummaries) - List compact prompt result summaries
-- [`geoListGEOPrompts`](docs/sdks/geo/README.md#listgeoprompts) - List tracked GEO prompts
-- [`geoListGEOScans`](docs/sdks/geo/README.md#listgeoscans) - List GEO scans
-- [`geoListGEOSentimentEvidence`](docs/sdks/geo/README.md#listgeosentimentevidence) - List answers used as sentiment evidence
-- [`geoListGEOSequences`](docs/sdks/geo/README.md#listgeosequences) - List GEO prompt sequences
-- [`geoListGEOShelfSources`](docs/sdks/geo/README.md#listgeoshelfsources) - List stored GEO shelf sources
-- [`geoListGEOTrafficJourneys`](docs/sdks/geo/README.md#listgeotrafficjourneys) - List AI traffic journeys
-- [`geoListGEOTrafficPages`](docs/sdks/geo/README.md#listgeotrafficpages) - List the most visited pages
-- [`geoListProjects`](docs/sdks/geo/README.md#listprojects) - List GEO projects
-- [`geoPlanGEOContentBrief`](docs/sdks/geo/README.md#plangeocontentbrief) - Plan a content brief
-- [`geoRotateGEOIngestToken`](docs/sdks/geo/README.md#rotategeoingesttoken) - Rotate the tracking token
-- [`geoRunGEOSequence`](docs/sdks/geo/README.md#rungeosequence) - Run a GEO prompt sequence now
-- [`geoStartGEOAgentReadinessScan`](docs/sdks/geo/README.md#startgeoagentreadinessscan) - Start an agent readiness scan
-- [`geoSuggestGEOCompetitors`](docs/sdks/geo/README.md#suggestgeocompetitors) - Suggest GEO competitors for a domain
-- [`geoUpdateGEOPrompt`](docs/sdks/geo/README.md#updategeoprompt) - Update a tracked GEO prompt
-- [`geoUpdateGEOSequence`](docs/sdks/geo/README.md#updategeosequence) - Update a GEO prompt sequence
-- [`geoUpdateGEOSettings`](docs/sdks/geo/README.md#updategeosettings) - Replace a project's GEO settings
-- [`geoUpdateProject`](docs/sdks/geo/README.md#updateproject) - Rename a GEO project or relink its brand identity
-- [`geoUpsertGEOCompetitor`](docs/sdks/geo/README.md#upsertgeocompetitor) - Create or update a tracked GEO competitor
-- [`schedulesCreateSchedule`](docs/sdks/schedules/README.md#createschedule) - Create a schedule
-- [`schedulesDeleteSchedule`](docs/sdks/schedules/README.md#deleteschedule) - Delete a schedule
-- [`schedulesListSchedules`](docs/sdks/schedules/README.md#listschedules) - List schedules
-- [`schedulesUpdateSchedule`](docs/sdks/schedules/README.md#updateschedule) - Update a schedule
-- [`skillsCreateSkill`](docs/sdks/skills/README.md#createskill) - Create a skill
-- [`skillsDeleteSkill`](docs/sdks/skills/README.md#deleteskill) - Delete a skill
-- [`skillsGetSkill`](docs/sdks/skills/README.md#getskill) - Get a single skill
-- [`skillsListSkills`](docs/sdks/skills/README.md#listskills) - List skills
-- [`skillsPatchSkill`](docs/sdks/skills/README.md#patchskill) - Update a skill
-
-</details>
-<!-- End Standalone functions [standalone-funcs] -->
-
-<!-- Start Retries [retries] -->
-## Retries
-
-Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
-
-To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
-```typescript
-import { Notra } from "@usenotra/sdk";
-
-const notra = new Notra();
-
-async function run() {
-  const result = await notra.discovery.getPublicApiStatus({
-    retries: {
-      strategy: "backoff",
-      backoff: {
-        initialInterval: 1,
-        maxInterval: 50,
-        exponent: 1.1,
-        maxElapsedTime: 100,
-      },
-      retryConnectionErrors: false,
-    },
-  });
-
-  console.log(result);
-}
-
-run();
-
+const tag = notraScriptTag({ webKey: "nwk.…" });
 ```
 
-If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
-```typescript
-import { Notra } from "@usenotra/sdk";
+The tag loads the notra.js build pinned in this SDK version with its `integrity` hash, so the browser refuses to run the script if a single byte changes. You never set the hash yourself, and updating `@usenotra/sdk` moves you to the newest build. React is an optional peer dependency, needed only for `@usenotra/sdk/react`.
 
-const notra = new Notra({
-  retryConfig: {
-    strategy: "backoff",
-    backoff: {
-      initialInterval: 1,
-      maxInterval: 50,
-      exponent: 1.1,
-      maxElapsedTime: 100,
-    },
-    retryConnectionErrors: false,
-  },
-});
+## MCP analytics and agent feedback
 
-async function run() {
-  const result = await notra.discovery.getPublicApiStatus();
-
-  console.log(result);
-}
-
-run();
-
-```
-<!-- End Retries [retries] -->
-
-<!-- Start Error Handling [errors] -->
-## Error Handling
-
-[`NotraError`](./src/models/errors/notra-error.ts) is the base class for all HTTP error responses. It has the following properties:
-
-| Property            | Type       | Description                                                                             |
-| ------------------- | ---------- | --------------------------------------------------------------------------------------- |
-| `error.message`     | `string`   | Error message                                                                           |
-| `error.statusCode`  | `number`   | HTTP response status code eg `404`                                                      |
-| `error.headers`     | `Headers`  | HTTP response headers                                                                   |
-| `error.body`        | `string`   | HTTP body. Can be empty string if no body is returned.                                  |
-| `error.rawResponse` | `Response` | Raw HTTP response                                                                       |
-| `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
-
-### Example
-```typescript
-import { Notra } from "@usenotra/sdk";
-import * as errors from "@usenotra/sdk/models/errors";
-
-const notra = new Notra({
-  bearerAuth: process.env["NOTRA_BEARER_AUTH"] ?? "",
-});
-
-async function run() {
-  try {
-    const result = await notra.discovery.getWorkspaces();
-
-    console.log(result);
-  } catch (error) {
-    // The base class for HTTP error responses
-    if (error instanceof errors.NotraError) {
-      console.log(error.message);
-      console.log(error.statusCode);
-      console.log(error.body);
-      console.log(error.headers);
-
-      // Depending on the method different errors may be thrown
-      if (error instanceof errors.ErrorResponse) {
-        console.log(error.data$.error); // string
-        console.log(error.data$.code); // string
-        console.log(error.data$.recovery); // string
-      }
-    }
-  }
-}
-
-run();
-
+```ts
+import { trackMcpTransport } from "@usenotra/sdk/mcp";
+import { registerFeedbackTool } from "@usenotra/sdk/feedback";
 ```
 
-### Error Classes
-**Primary errors:**
-* [`NotraError`](./src/models/errors/notra-error.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/error-response.ts): *
+`trackMcpTransport` reports every request your MCP server answers, and `registerFeedbackTool` adds a `submit_feedback` tool so the agents using your product can report bugs and leave praise in your Notra inbox.
 
-<details><summary>Less common errors (8)</summary>
+Every option of the tracking side is in the [tracking guide](docs/tracking/README.md).
 
-<br />
+## Runtimes
 
-**Network errors:**
-* [`ConnectionError`](./src/models/errors/http-client-errors.ts): HTTP client was unable to make a request to a server.
-* [`RequestTimeoutError`](./src/models/errors/http-client-errors.ts): HTTP request timed out due to an AbortSignal signal.
-* [`RequestAbortedError`](./src/models/errors/http-client-errors.ts): HTTP request was aborted by the client.
-* [`InvalidRequestError`](./src/models/errors/http-client-errors.ts): Any input used to create a request is invalid.
-* [`UnexpectedClientError`](./src/models/errors/http-client-errors.ts): Unrecognised or unexpected error.
+Node.js 18 or newer, Bun, Deno, Cloudflare Workers, Vercel and Netlify Edge, and modern browsers. ESM and CommonJS are both included.
 
+## Upgrading
 
-**Inherit from [`NotraError`](./src/models/errors/notra-error.ts)**:
-* [`RateLimitErrorResponse`](./src/models/errors/rate-limit-error-response.ts): Status code `429`. Applicable to 21 of 100 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/service-unavailable-error.ts): Content generation is unavailable. Status code `503`. Applicable to 1 of 100 methods.*
-* [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
+Coming from `@usenotra/sdk` 1.x or `@usenotra/geo`? See [MIGRATION.md](MIGRATION.md). Method names and parameters stayed the same.
 
-</details>
+## Contributing
 
-\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
-<!-- End Error Handling [errors] -->
+The API client is generated from the Notra OpenAPI spec; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-<!-- Start Server Selection [server] -->
-## Server Selection
+## License
 
-### Override Server URL Per-Client
-
-The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
-```typescript
-import { Notra } from "@usenotra/sdk";
-
-const notra = new Notra({
-  serverURL: "https://api.usenotra.com",
-});
-
-async function run() {
-  const result = await notra.discovery.getPublicApiStatus();
-
-  console.log(result);
-}
-
-run();
-
-```
-<!-- End Server Selection [server] -->
-
-<!-- Start Custom HTTP Client [http-client] -->
-## Custom HTTP Client
-
-The TypeScript SDK makes API calls using an `HTTPClient` that wraps the native
-[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This
-client is a thin wrapper around `fetch` and provides the ability to attach hooks
-around the request lifecycle that can be used to modify the request or handle
-errors and response.
-
-The `HTTPClient` constructor takes an optional `fetcher` argument that can be
-used to integrate a third-party HTTP client or when writing tests to mock out
-the HTTP client and feed in fixtures.
-
-The following example shows how to:
-- route requests through a proxy server using [undici](https://www.npmjs.com/package/undici)'s ProxyAgent
-- use the `"beforeRequest"` hook to add a custom header and a timeout to requests
-- use the `"requestError"` hook to log errors
-
-```typescript
-import { Notra } from "@usenotra/sdk";
-import { ProxyAgent } from "undici";
-import { HTTPClient } from "@usenotra/sdk/lib/http";
-
-const dispatcher = new ProxyAgent("http://proxy.example.com:8080");
-
-const httpClient = new HTTPClient({
-  // 'fetcher' takes a function that has the same signature as native 'fetch'.
-  fetcher: (input, init) =>
-    // 'dispatcher' is specific to undici and not part of the standard Fetch API.
-    fetch(input, { ...init, dispatcher } as RequestInit),
-});
-
-httpClient.addHook("beforeRequest", (request) => {
-  const nextRequest = new Request(request, {
-    signal: request.signal || AbortSignal.timeout(5000)
-  });
-
-  nextRequest.headers.set("x-custom-header", "custom value");
-
-  return nextRequest;
-});
-
-httpClient.addHook("requestError", (error, request) => {
-  console.group("Request Error");
-  console.log("Reason:", `${error}`);
-  console.log("Endpoint:", `${request.method} ${request.url}`);
-  console.groupEnd();
-});
-
-const sdk = new Notra({ httpClient: httpClient });
-```
-<!-- End Custom HTTP Client [http-client] -->
-
-<!-- Start Debugging [debug] -->
-## Debugging
-
-You can setup your SDK to emit debug logs for SDK requests and responses.
-
-You can pass a logger that matches `console`'s interface as an SDK option.
-
-> [!WARNING]
-> Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
-
-```typescript
-import { Notra } from "@usenotra/sdk";
-
-const sdk = new Notra({ debugLogger: console });
-```
-
-You can also enable a default debug logger by setting an environment variable `NOTRA_DEBUG` to true.
-<!-- End Debugging [debug] -->
-
-<!-- Placeholder for Future Speakeasy SDK Sections -->
-# Development
-
-## Maturity
-
-This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning usage
-to a specific package version. This way, you can install the same version each time without breaking changes unless you are intentionally
-looking for the latest version.
-
-## Contributions
-
-While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
-
-### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=@usenotra/sdk&utm_campaign=typescript)
+MIT

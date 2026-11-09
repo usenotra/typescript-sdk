@@ -22,6 +22,7 @@ export {
   tagMarkdownResponse,
 } from "./tag-response.js";
 export { Tracker } from "./tracker.js";
+export type { FetchLike } from "../fetch.js";
 export type {
   GeoExcludeRule,
   GeoLocation,

@@ -1,3 +1,4 @@
+import type { FetchLike } from "../../fetch.js";
 import type { WaitUntil } from "../types.js";
 
 export type McpEventStatus = "ok" | "tool_error" | "rpc_error";
@@ -46,9 +47,10 @@ export interface McpEventBatch {
 
 export interface McpTransportLike {
   sessionId?: string | undefined;
-  onmessage?(message: unknown, extra?: unknown): void;
+  // Bivariant on purpose: real transports type `message` as their JSON-RPC message.
+  onmessage?: { handler(message: unknown, extra?: unknown): void }["handler"] | undefined;
   send(message: unknown, options?: unknown): Promise<void>;
-  close?(): Promise<void>;
+  close?: (() => Promise<void>) | undefined;
 }
 
 export interface McpRequestContext {
@@ -79,7 +81,7 @@ export interface McpAnalyticsOptions {
   waitUntil?: WaitUntil | undefined;
   flushIntervalMs?: number | undefined;
   onError?: ((error: unknown) => void) | undefined;
-  fetch?: typeof fetch | undefined;
+  fetch?: FetchLike | undefined;
 }
 
 export interface McpPendingRequest {

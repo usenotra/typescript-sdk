@@ -5,7 +5,7 @@ import { flushMcpEvents, trackMcpTransport } from "../../src/mcp.js";
 type Handler = (message: unknown, extra?: unknown) => void;
 
 class InnerTransport {
-  onmessage?: Handler;
+  onmessage?: Handler | undefined;
 
   receive(message: unknown) {
     this.onmessage?.(message);

@@ -1,3 +1,4 @@
+import type { FetchLike } from "../fetch.js";
 export type AiAgentCategory =
   | "training-crawler"
   | "search-index"
@@ -80,7 +81,7 @@ export interface GeoTagLinksConfig {
 export type GeoTagLinksOption = boolean | GeoTagLinksConfig;
 
 export interface GeoTagResponseOptions {
-  fetch?: typeof fetch | undefined;
+  fetch?: FetchLike | undefined;
   onError?: ((error: unknown) => void) | undefined;
   exclude?: GeoExcludeRule[] | undefined;
 }
@@ -93,7 +94,7 @@ export interface GeoTrackerOptions {
   exclude?: GeoExcludeRule[] | undefined;
   sample?: number | undefined;
   onError?: ((error: unknown) => void) | undefined;
-  fetch?: typeof fetch | undefined;
+  fetch?: FetchLike | undefined;
 }
 
 export interface GeoNextOptions extends GeoTrackerOptions {

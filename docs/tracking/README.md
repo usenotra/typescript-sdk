@@ -503,4 +503,4 @@ A self-hosted ingest at `endpoint` must serve the same pinned builds, or set `pi
 
 ### Updating the pinned builds
 
-Maintainers run `bun run sync-script` to pin the builds the ingest serves now. It reads the version of `/api/notra.js` and `/api/notra.plus.js` from their `ETag`, downloads `/api/notra.<version>.js` and `/api/notra.plus.<version>.js`, checks each body against its version, and rewrites `src/tracking/script/releases.ts` with the `sha384` integrity values. Pass another origin as the first argument to sync from a local ingest.
+Each SDK release pins the newest notra.js builds. Maintainers run `GH_TOKEN=$(gh auth token) bun run sync`: it takes the build file names and their `sha384` integrity values from the reviewed source of usenotra/notra, checks that `static.usenotra.com` serves exactly those bytes, and rewrites `src/tracking/script/releases.ts`. See [CONTRIBUTING.md](../../CONTRIBUTING.md).

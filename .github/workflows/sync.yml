@@ -1,0 +1,71 @@
+name: Sync API spec and notra.js pins
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+
+      # NOTRA_REPO_TOKEN only needs read access to usenotra/notra's contents,
+      # where the notra.js pins come from.
+      - name: Sync
+        run: bun run sync
+        env:
+          GH_TOKEN: ${{ secrets.NOTRA_REPO_TOKEN }}
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet; then
+            echo changed=false >> "$GITHUB_OUTPUT"
+          else
+            echo changed=true >> "$GITHUB_OUTPUT"
+            git diff --stat
+          fi
+
+      # Pull requests opened with GITHUB_TOKEN don't trigger CI, so verify here.
+      - name: Verify
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          bun run check-types
+          bun run lint
+          bun run test
+          bun run build
+
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="chore/sync-$(date -u +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add spec src/generated src/tracking/script/releases.ts docs/API.md
+          git commit -m "chore: sync the API spec and notra.js pins"
+          git push --force origin "$BRANCH"
+          gh pr view "$BRANCH" >/dev/null 2>&1 || gh pr create --base main --head "$BRANCH" \
+            --title "chore: sync the API spec and notra.js pins" \
+            --body "Daily sync from https://api.usenotra.com/openapi.json and usenotra/notra's packages/web-tracker. Typecheck, lint, tests and build passed in the sync run."
