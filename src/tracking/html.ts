@@ -52,7 +52,7 @@ function nextRawText(html: string, from: number): [number, number] | null {
     return null;
   }
   const start = open.index;
-  const close = open[1] ? new RegExp(`</${open[1]}`, "i") : /-->/;
+  const close = open[1] ? new RegExp(`</${open[1]}`, "i") : /--!?>/;
   const rest = html.slice(start + open[0].length);
   const found = close.exec(rest);
   return [start, found ? start + open[0].length + found.index + found[0].length : html.length];

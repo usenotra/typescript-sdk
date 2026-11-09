@@ -108,6 +108,7 @@ test.each([
   ['<a href="https://other.com/x"><a href="/\\evil.com/x">', '<a href="https://other.com/x"><a href="/\\evil.com/x">'],
   ['<script>"<a href="/x">"</script><!-- <a href="/c"> --><a HREF="/y">', '<script>"<a href="/x">"</script><!-- <a href="/c"> --><a HREF="/y?ntr=journey01">'],
   ['İİ<SCRIPT><a href="/x"></SCRIPT><a href="/y">', 'İİ<SCRIPT><a href="/x"></SCRIPT><a href="/y?ntr=journey01">'],
+  ['<!-- <a href="/c"> --!><a href="/y">', '<!-- <a href="/c"> --!><a href="/y?ntr=journey01">'],
 ])("HTML %j", (input, expected) => {
   expect(tagHtmlLinks(input, JOURNEY, { host: "example.com" })).toBe(expected);
 });
