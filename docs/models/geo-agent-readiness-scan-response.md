@@ -12,7 +12,7 @@ let value: GeoAgentReadinessScanResponse = {
     id: "<id>",
     slug: "<value>",
     name: "<value>",
-    logo: null,
+    logo: "<value>",
   },
 };
 ```

@@ -14,9 +14,8 @@ let value: ImportGeoCompetitorsResponse = {
     ],
     "key1": [
       "<value 1>",
-      "<value 2>",
-      "<value 3>",
     ],
+    "key2": [],
   },
   result: {
     imported: 89900,
@@ -33,7 +32,7 @@ let value: ImportGeoCompetitorsResponse = {
       id: "<id>",
       slug: "<value>",
       name: "<value>",
-      logo: null,
+      logo: "<value>",
     },
   },
 };

@@ -1,6 +1,6 @@
 # DataPoints
 
-Which kinds of activity to collect from the selected sources.
+Which kinds of activity to collect from the selected sources. At least one must be true, unless pullRequest is set, which ignores them.
 
 ## Example Usage
 

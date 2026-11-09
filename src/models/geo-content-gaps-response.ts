@@ -43,6 +43,10 @@ export type PromptGap = {
   mentionedEngines: Array<string>;
   competitors: Array<string>;
   discoveredCompetitors: Array<string>;
+  /**
+   * Web searches AI engines ran while answering this prompt.
+   */
+  searchQueries: Array<string>;
   ownMentionRate: number;
   engineCoverage: number;
   opportunity: number;
@@ -55,6 +59,18 @@ export type Query = {
   clicks: number;
   impressions: number;
   position: number;
+  /**
+   * Page Google showed most for this query.
+   */
+  page?: string | undefined;
+  /**
+   * Google position of that page for this query.
+   */
+  pagePosition?: number | undefined;
+  /**
+   * Impressions of that page for this query.
+   */
+  pageImpressions?: number | undefined;
 };
 
 export const SearchGapStatus = {
@@ -82,7 +98,7 @@ export type SearchGapBrief = {
 };
 
 /**
- * What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+ * What to do with this query cluster: create a new page, update the page Google already ranks or the strongest existing page, merge overlapping pages, or ignore thin demand.
  */
 export const Action = {
   Create: "create",
@@ -91,7 +107,7 @@ export const Action = {
   Ignore: "ignore",
 } as const;
 /**
- * What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+ * What to do with this query cluster: create a new page, update the page Google already ranks or the strongest existing page, merge overlapping pages, or ignore thin demand.
  */
 export type Action = OpenEnum<typeof Action>;
 
@@ -109,11 +125,15 @@ export type Target = {
   url: string | null;
   title: string;
   score: number;
+  /**
+   * Google position of the gap's queries on this page, when Search Console shows it already ranks there.
+   */
+  googlePosition?: number | undefined;
 };
 
 export type Recommendation = {
   /**
-   * What to do with this query cluster: create a new page, update the strongest existing page, merge overlapping pages, or ignore thin demand.
+   * What to do with this query cluster: create a new page, update the page Google already ranks or the strongest existing page, merge overlapping pages, or ignore thin demand.
    */
   action: Action;
   reason: string;
@@ -132,6 +152,47 @@ export type SearchGap = {
   recommendation: Recommendation;
 };
 
+export const AiSearchGapStatus = {
+  Draft: "draft",
+  Approved: "approved",
+  Writing: "writing",
+  Completed: "completed",
+  Failed: "failed",
+} as const;
+export type AiSearchGapStatus = OpenEnum<typeof AiSearchGapStatus>;
+
+export type AiSearchGapBaseline = {
+  mentionedEngines: number;
+  totalEngines: number;
+};
+
+export type AiSearchGapBrief = {
+  briefId: string;
+  status: AiSearchGapStatus;
+  postId: string | null;
+  workingTitle: string | null;
+  publishedAt: string | null;
+  baseline: AiSearchGapBaseline | null;
+  rescanned: boolean;
+};
+
+export type AiSearchGap = {
+  id: string;
+  query: string;
+  variants: Array<string>;
+  prompts: Array<string>;
+  engines: Array<string>;
+  /**
+   * Scan answers in which an engine ran this web search without mentioning the brand or citing its site.
+   */
+  searches: number;
+  ownMentionRate: number;
+  competitors: Array<string>;
+  discoveredCompetitors: Array<string>;
+  opportunity: number;
+  brief: AiSearchGapBrief | null;
+};
+
 export type GeoContentGapsResponseOrganization = {
   id: string;
   slug: string;
@@ -143,9 +204,17 @@ export type GeoContentGapsResponse = {
   promptGaps: Array<PromptGap>;
   searchGaps: Array<SearchGap>;
   /**
+   * Web searches AI engines ran in scan answers without mentioning the brand or citing its site.
+   */
+  aiSearchGaps: Array<AiSearchGap>;
+  /**
    * False until the project has at least one scan result.
    */
   hasScanData: boolean;
+  /**
+   * False while the project's content gaps snapshot is being prepared.
+   */
+  snapshotReady: boolean;
   organization: GeoContentGapsResponseOrganization;
 };
 
@@ -208,6 +277,7 @@ export const PromptGap$inboundSchema: z.ZodMiniType<PromptGap, unknown> = z
     mentionedEngines: z.array(types.string()),
     competitors: z.array(types.string()),
     discoveredCompetitors: z.array(types.string()),
+    searchQueries: z.array(types.string()),
     ownMentionRate: types.number(),
     engineCoverage: types.number(),
     opportunity: types.number(),
@@ -231,6 +301,9 @@ export const Query$inboundSchema: z.ZodMiniType<Query, unknown> = z.object({
   clicks: types.number(),
   impressions: types.number(),
   position: types.number(),
+  page: types.optional(types.string()),
+  pagePosition: types.optional(types.number()),
+  pageImpressions: types.optional(types.number()),
 });
 
 export function queryFromJSON(
@@ -309,6 +382,7 @@ export const Target$inboundSchema: z.ZodMiniType<Target, unknown> = z.object({
   url: types.nullable(types.string()),
   title: types.string(),
   score: types.number(),
+  googlePosition: types.optional(types.number()),
 });
 
 export function targetFromJSON(
@@ -366,6 +440,81 @@ export function searchGapFromJSON(
 }
 
 /** @internal */
+export const AiSearchGapStatus$inboundSchema: z.ZodMiniType<
+  AiSearchGapStatus,
+  unknown
+> = openEnums.inboundSchema(AiSearchGapStatus);
+
+/** @internal */
+export const AiSearchGapBaseline$inboundSchema: z.ZodMiniType<
+  AiSearchGapBaseline,
+  unknown
+> = z.object({
+  mentionedEngines: types.number(),
+  totalEngines: types.number(),
+});
+
+export function aiSearchGapBaselineFromJSON(
+  jsonString: string,
+): SafeParseResult<AiSearchGapBaseline, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AiSearchGapBaseline$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AiSearchGapBaseline' from JSON`,
+  );
+}
+
+/** @internal */
+export const AiSearchGapBrief$inboundSchema: z.ZodMiniType<
+  AiSearchGapBrief,
+  unknown
+> = z.object({
+  briefId: types.string(),
+  status: AiSearchGapStatus$inboundSchema,
+  postId: types.nullable(types.string()),
+  workingTitle: types.nullable(types.string()),
+  publishedAt: types.nullable(types.string()),
+  baseline: types.nullable(z.lazy(() => AiSearchGapBaseline$inboundSchema)),
+  rescanned: types.boolean(),
+});
+
+export function aiSearchGapBriefFromJSON(
+  jsonString: string,
+): SafeParseResult<AiSearchGapBrief, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AiSearchGapBrief$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AiSearchGapBrief' from JSON`,
+  );
+}
+
+/** @internal */
+export const AiSearchGap$inboundSchema: z.ZodMiniType<AiSearchGap, unknown> = z
+  .object({
+    id: types.string(),
+    query: types.string(),
+    variants: z.array(types.string()),
+    prompts: z.array(types.string()),
+    engines: z.array(types.string()),
+    searches: types.number(),
+    ownMentionRate: types.number(),
+    competitors: z.array(types.string()),
+    discoveredCompetitors: z.array(types.string()),
+    opportunity: types.number(),
+    brief: types.nullable(z.lazy(() => AiSearchGapBrief$inboundSchema)),
+  });
+
+export function aiSearchGapFromJSON(
+  jsonString: string,
+): SafeParseResult<AiSearchGap, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AiSearchGap$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AiSearchGap' from JSON`,
+  );
+}
+
+/** @internal */
 export const GeoContentGapsResponseOrganization$inboundSchema: z.ZodMiniType<
   GeoContentGapsResponseOrganization,
   unknown
@@ -394,7 +543,9 @@ export const GeoContentGapsResponse$inboundSchema: z.ZodMiniType<
 > = z.object({
   promptGaps: z.array(z.lazy(() => PromptGap$inboundSchema)),
   searchGaps: z.array(z.lazy(() => SearchGap$inboundSchema)),
+  aiSearchGaps: z.array(z.lazy(() => AiSearchGap$inboundSchema)),
   hasScanData: types.boolean(),
+  snapshotReady: types.boolean(),
   organization: z.lazy(() => GeoContentGapsResponseOrganization$inboundSchema),
 });
 

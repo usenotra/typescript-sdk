@@ -23,13 +23,15 @@ export const Service = {
 } as const;
 export type Service = ClosedEnum<typeof Service>;
 
-export const TypeEnum = {
+export const PublicStatusResponseType = {
   Bearer: "bearer",
 } as const;
-export type TypeEnum = ClosedEnum<typeof TypeEnum>;
+export type PublicStatusResponseType = ClosedEnum<
+  typeof PublicStatusResponseType
+>;
 
 export type PublicStatusResponseAuthentication = {
-  type: TypeEnum;
+  type: PublicStatusResponseType;
   resourceMetadata: string;
   guide: string;
 };
@@ -53,9 +55,9 @@ export const Service$inboundSchema: z.ZodMiniEnum<typeof Service> = z.enum(
 );
 
 /** @internal */
-export const TypeEnum$inboundSchema: z.ZodMiniEnum<typeof TypeEnum> = z.enum(
-  TypeEnum,
-);
+export const PublicStatusResponseType$inboundSchema: z.ZodMiniEnum<
+  typeof PublicStatusResponseType
+> = z.enum(PublicStatusResponseType);
 
 /** @internal */
 export const PublicStatusResponseAuthentication$inboundSchema: z.ZodMiniType<
@@ -63,7 +65,7 @@ export const PublicStatusResponseAuthentication$inboundSchema: z.ZodMiniType<
   unknown
 > = z.pipe(
   z.object({
-    type: TypeEnum$inboundSchema,
+    type: PublicStatusResponseType$inboundSchema,
     resource_metadata: types.string(),
     guide: types.string(),
   }),
