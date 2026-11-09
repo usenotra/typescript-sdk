@@ -59,7 +59,7 @@ Every error extends `NotraError`:
 import { NotraAPIError, NotraConnectionError, NotraRateLimitError } from "@usenotra/sdk";
 
 try {
-  await notra.content.getPost({ postId: "missing" });
+  await notra.content.getPost({ postId: "post_that_does_not_exist" }); // 404
 } catch (error) {
   if (error instanceof NotraRateLimitError) {
     console.log(`Rate limited, window resets in ${error.reset}`);
@@ -95,7 +95,7 @@ await notra.content.getPost({ postId: "post_123" }, { headers: { "X-Trace": "abc
 
 ### Streaming
 
-Chat and agent endpoints return a `NotraStream`. Iterate it, or pass its bytes straight on:
+The streaming endpoints, `chats.createChat()`, `chats.postChatMessage()` and `agent.streamAgentSessionEvents()`, return a `NotraStream`. Iterate it, or pass its bytes straight on:
 
 ```ts
 const stream = await notra.chats.createChat({ body: { message: "Summarize what shipped last week" } });
@@ -185,7 +185,7 @@ import { trackMcpTransport } from "@usenotra/sdk/mcp";
 import { registerFeedbackTool } from "@usenotra/sdk/feedback";
 ```
 
-`trackMcpTransport` reports every request your MCP server answers, and `registerFeedbackTool` adds a `submit_feedback` tool so the agents using your product can report bugs and leave praise in your Notra inbox.
+`trackMcpTransport` reports the requests your MCP server answers (except `ping`, which you can include with `excludeMethods`), and `registerFeedbackTool` adds a `submit_feedback` tool so the agents using your product can report bugs and leave praise in your Notra inbox. `@usenotra/sdk/feedback` needs `zod`, which every MCP server already has through the MCP SDK.
 
 Every option of the tracking side is in the [tracking guide](docs/tracking/README.md).
 

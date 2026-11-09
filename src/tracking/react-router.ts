@@ -19,3 +19,5 @@ export function createGeoMiddleware(options: GeoReactRouterOptions) {
     }
   };
 }
+
+export type { GeoReactRouterOptions, ReactRouterMiddlewareArgs } from "./types.js";

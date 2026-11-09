@@ -2,6 +2,7 @@ import { reportGeoError } from "../send.js";
 import { McpBatcher } from "./batcher.js";
 import { byteLength, captureJson } from "./capture.js";
 import {
+  MCP_MAX_PENDING_REQUESTS,
   DEFAULT_MCP_EXCLUDED_METHODS,
   MCP_CONTEXT_VALUE_MAX_LENGTH,
   MCP_ERROR_MESSAGE_MAX_LENGTH,
@@ -169,6 +170,21 @@ function findSetter(
  * unless `captureArguments` or `captureResponses` is set. Tracking a
  * transport that is already tracked returns it unchanged.
  */
+/** Keeps an unanswered request, dropping the oldest when a client never answers. */
+function remember(
+  requests: Map<string | number, McpPendingRequest>,
+  id: string | number,
+  request: McpPendingRequest
+): void {
+  if (requests.size >= MCP_MAX_PENDING_REQUESTS) {
+    const oldest = requests.keys().next();
+    if (!oldest.done) {
+      requests.delete(oldest.value);
+    }
+  }
+  requests.set(id, request);
+}
+
 export function trackMcpTransport<T extends McpTransportLike>(
   transport: T,
   options: McpAnalyticsOptions
@@ -225,7 +241,7 @@ export function trackMcpTransport<T extends McpTransportLike>(
     if (excluded.has(method)) {
       return;
     }
-    pending.set(id, {
+    remember(pending, id, {
       sequence: sequence++,
       method,
       target: readTarget(params),
@@ -336,7 +352,7 @@ export function trackMcpTransport<T extends McpTransportLike>(
       : undefined;
     const related = relatedId === undefined ? undefined : pending.get(relatedId);
     const params = isRecord(message["params"]) ? message["params"] : undefined;
-    outgoing.set(id, {
+    remember(outgoing, id, {
       sequence: sequence++,
       method,
       target: related?.target,
@@ -382,16 +398,29 @@ export function trackMcpTransport<T extends McpTransportLike>(
   Object.defineProperty(transport, "send", {
     configurable: true,
     writable: true,
-    value: (message: unknown, sendOptions?: unknown) => {
+    value: async (message: unknown, sendOptions?: unknown) => {
+      // Requests to the client are registered first: its answer can arrive before send() resolves.
+      const observe = (watch: (item: Record<string, unknown>) => void) => {
+        try {
+          eachMessage(message, watch);
+        } catch (error) {
+          reportGeoError(options.onError, error);
+        }
+      };
+      observe((item) => observeServerRequest(item, sendOptions));
       try {
-        eachMessage(message, (item) => {
-          observeResponse(item);
-          observeServerRequest(item, sendOptions);
-        });
+        await send(message, sendOptions);
       } catch (error) {
-        reportGeoError(options.onError, error);
+        observe((item) => {
+          const id = readRequestId(item["id"]);
+          if (id !== undefined) {
+            outgoing.delete(id);
+          }
+        });
+        throw error;
       }
-      return send(message, sendOptions);
+      // A response counts once it was actually delivered.
+      observe(observeResponse);
     },
   });
 

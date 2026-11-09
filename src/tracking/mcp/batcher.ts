@@ -51,7 +51,6 @@ export class McpBatcher {
 
   constructor(options: McpAnalyticsOptions) {
     this.#options = options;
-    batchers.add(this);
   }
 
   push(event: McpEvent): void {
@@ -64,6 +63,8 @@ export class McpBatcher {
       return;
     }
     this.#queue.push(fitted);
+    // Registered only while it has events, so transports that are never closed don't leak.
+    batchers.add(this);
     if (this.#queue.length >= MCP_BATCH_MAX_EVENTS) {
       this.#keepAlive(this.flush());
       return;
@@ -109,6 +110,9 @@ export class McpBatcher {
     } finally {
       if (this.#inFlight === current) {
         this.#inFlight = Promise.resolve();
+        if (this.#queue.length === 0) {
+          batchers.delete(this);
+        }
       }
       settle?.();
     }

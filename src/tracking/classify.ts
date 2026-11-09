@@ -39,3 +39,5 @@ export function classifyRequest(
 ): AiAgentMatch | null {
   return classifyUserAgent(headers.get("user-agent") ?? "");
 }
+
+export type { AiAgentMatch } from "./types.js";

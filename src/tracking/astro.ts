@@ -16,3 +16,5 @@ export function createGeoMiddleware(options: GeoTrackerOptions) {
     }
   };
 }
+
+export type { AstroMiddlewareContext, GeoTrackerOptions } from "./types.js";

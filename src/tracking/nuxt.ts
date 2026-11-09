@@ -77,3 +77,5 @@ export function createGeoHandler(options: GeoTrackerOptions) {
     await tracker.track(event);
   };
 }
+
+export type { GeoTrackerOptions, NitroEventLike, NodeRequestLike } from "./types.js";

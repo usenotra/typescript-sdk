@@ -78,3 +78,5 @@ export function createGeoProxy(options: GeoNextOptions) {
     event?: WaitUntilContext | undefined
   ): Promise<Response | undefined> => tracker.handle(request, event);
 }
+
+export type { GeoNextOptions, GeoTagLinksConfig, WaitUntilContext } from "./types.js";

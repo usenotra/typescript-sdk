@@ -18,6 +18,9 @@ export const MCP_BATCH_MAX_BYTES = 240 * 1024;
 
 export const MCP_FLUSH_INTERVAL_MS = 1000;
 
+/** Unanswered requests remembered per transport; the oldest are dropped first. */
+export const MCP_MAX_PENDING_REQUESTS = 1000;
+
 export const MCP_INTENT_PARAMETER = "_intent";
 
 export const MCP_MODEL_PARAMETER = "_model";

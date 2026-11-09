@@ -16,3 +16,5 @@ export function createGeoMiddleware(options: GeoTrackerOptions) {
     }
   };
 }
+
+export type { GeoTrackerOptions, TanStackMiddlewareContext } from "./types.js";

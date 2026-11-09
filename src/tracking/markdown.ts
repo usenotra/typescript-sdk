@@ -78,6 +78,25 @@ function indexOfUnescaped(text: string, char: string, from: number): number {
   return index;
 }
 
+/** The `]` that closes the label opened at `start`, allowing nested brackets. */
+function labelEnd(text: string, start: number): number {
+  let depth = 0;
+  for (let index = start + 1; index < text.length; index += 1) {
+    const char = text[index];
+    if ((char !== "[" && char !== "]") || isEscaped(text, index)) {
+      continue;
+    }
+    if (char === "[") {
+      depth += 1;
+    } else if (depth === 0) {
+      return index;
+    } else {
+      depth -= 1;
+    }
+  }
+  return -1;
+}
+
 /** End of a link destination: stops at whitespace or an unbalanced `)`. */
 function destinationEnd(text: string, start: number): number {
   let cursor = start;
@@ -119,16 +138,16 @@ function tagText(
       break;
     }
 
-    const labelEnd = indexOfUnescaped(text, "]", labelStart + 1);
-    if (labelEnd === -1) {
+    const labelEndIndex = labelEnd(text, labelStart);
+    if (labelEndIndex === -1) {
       break;
     }
-    if (text[labelEnd + 1] !== "(") {
-      searchFrom = labelEnd + 1;
+    if (text[labelEndIndex + 1] !== "(") {
+      searchFrom = labelEndIndex + 1;
       continue;
     }
 
-    let cursor = labelEnd + 2;
+    let cursor = labelEndIndex + 2;
     while (text[cursor]?.trim() === "") {
       cursor += 1;
     }
@@ -136,7 +155,7 @@ function tagText(
     const targetStart = cursor;
     cursor = destinationEnd(text, targetStart);
     if (cursor === targetStart) {
-      searchFrom = labelEnd + 1;
+      searchFrom = labelEndIndex + 1;
       continue;
     }
 
@@ -152,7 +171,7 @@ function tagText(
         cursor += 1;
       }
       if (cursor === text.length) {
-        searchFrom = labelEnd + 1;
+        searchFrom = labelEndIndex + 1;
         continue;
       }
 
@@ -164,7 +183,7 @@ function tagText(
     }
 
     if (text[cursor] !== ")") {
-      searchFrom = labelEnd + 1;
+      searchFrom = labelEndIndex + 1;
       continue;
     }
 
@@ -176,7 +195,7 @@ function tagText(
       continue;
     }
 
-    const label = text.slice(labelStart + 1, labelEnd);
+    const label = text.slice(labelStart + 1, labelEndIndex);
     const title = text.slice(targetEnd, titleEnd);
     output.push(
       text.slice(outputStart, labelStart),
@@ -293,3 +312,5 @@ export function tagMarkdownLinks(
     )
     .join("");
 }
+
+export type { TagMarkdownLinksOptions } from "./types.js";

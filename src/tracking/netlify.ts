@@ -64,3 +64,5 @@ export function createGeoHandler(options: GeoTrackerOptions) {
     tracker.track(request, context);
   };
 }
+
+export type { GeoLocation, GeoTrackerOptions, NetlifyContext, NetlifyGeoContext } from "./types.js";

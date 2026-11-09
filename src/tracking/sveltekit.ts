@@ -16,3 +16,5 @@ export function createGeoHandle(options: GeoTrackerOptions) {
     }
   };
 }
+
+export type { GeoTrackerOptions, SvelteKitHandleInput } from "./types.js";

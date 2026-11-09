@@ -154,10 +154,15 @@ export async function tagMarkdownResponse(
       ? tagMarkdownLinks(body, journeyId, { host })
       : tagHtmlLinks(body, journeyId, { host });
 
+    // The body carries this visitor's journey id: never cache or share it.
+    const taggedResponseHeaders = taggedHeaders(origin.headers);
+    taggedResponseHeaders.delete("etag");
+    taggedResponseHeaders.delete("last-modified");
+    taggedResponseHeaders.set("cache-control", "private, no-store");
     return new Response(tagged, {
       status: origin.status,
       statusText: origin.statusText,
-      headers: taggedHeaders(origin.headers),
+      headers: taggedResponseHeaders,
     });
   } catch (error) {
     reportGeoError(options.onError, error);

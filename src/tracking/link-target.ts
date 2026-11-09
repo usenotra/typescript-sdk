@@ -25,7 +25,7 @@ export function isTaggableTarget(
   if (value.length === 0 || value.startsWith("#") || value.startsWith("<")) {
     return false;
   }
-  if (EXISTING_JOURNEY_PARAM.test(value)) {
+  if (EXISTING_JOURNEY_PARAM.test(value.split("#")[0] ?? "")) {
     return false;
   }
   // Browsers read "/\\evil.com" like "//evil.com", another host.

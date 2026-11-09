@@ -70,6 +70,8 @@ jobs:
           git add spec src/generated src/tracking/script/releases.ts docs/API.md
           git commit -m "chore: sync the API spec and notra.js pins"
           git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$BRANCH"
-          gh pr view "$BRANCH" >/dev/null 2>&1 || gh pr create --base main --head "$BRANCH" \
+          # Only an open PR counts: a closed or merged one from earlier today needs a new PR.
+          OPEN="$(gh pr list --head "$BRANCH" --state open --json number --jq length)"
+          [ "$OPEN" != "0" ] || gh pr create --base main --head "$BRANCH" \
             --title "chore: sync the API spec and notra.js pins" \
             --body "Daily sync from https://api.usenotra.com/openapi.json and usenotra/notra's packages/web-tracker. Typecheck, lint, tests and build passed in the sync run."

@@ -43,7 +43,11 @@ export function matchesRule(
     return matchesPath(url.pathname, rule);
   }
   if (rule instanceof RegExp) {
-    return rule.test(url.pathname);
+    // A /g or /y regex keeps lastIndex between calls; start fresh every time.
+    rule.lastIndex = 0;
+    const matched = rule.test(url.pathname);
+    rule.lastIndex = 0;
+    return matched;
   }
   return rule(request, url);
 }

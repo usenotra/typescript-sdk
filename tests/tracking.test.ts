@@ -51,8 +51,8 @@ test("the script tag loads the pinned build with its integrity unless told other
 
 test("the tracker sends pages and llms.txt, but not assets, and nothing without a token", async () => {
   const { bodies, fetch } = ingest();
-  const tracker = new Tracker({ token: "t", fetch });
-  for (const path of ["/docs", "/_next/static/llms.txt", "/_next/static/chunk.js", "/logo.png"]) {
+  const tracker = new Tracker({ token: "t", fetch, exclude: [/^\/private/g] });
+  for (const path of ["/docs", "/_next/static/llms.txt", "/_next/static/chunk.js", "/logo.png", "/private", "/private"]) {
     await tracker.track(page(path, { "user-agent": BROWSER, "sec-fetch-mode": "navigate" }));
   }
   expect(bodies.map((body) => body["url"])).toEqual(["https://example.com/docs", "https://example.com/_next/static/llms.txt"]);
@@ -88,6 +88,7 @@ test.each([
   ["[a](/x)", "[a](/x?ntr=journey01)"],
   ['[t](/x "Title") ![img](/i.png)', '[t](/x?ntr=journey01 "Title") ![img](/i.png)'],
   ["[guide](/docs/v1_(legacy))", "[guide](/docs/v1_(legacy)?ntr=journey01)"],
+  ["[API [v2]](/docs) [a](/x#s?ntr=old)", "[API [v2]](/docs?ntr=journey01) [a](/x?ntr=journey01#s?ntr=old)"],
   ["[ref]: /docs\n", "[ref]: /docs?ntr=journey01\n"],
   ["\\[escaped](/x)", "\\[escaped](/x)"],
   ["[ext](https://other.com/x) [evil](/\\evil.com/x)", "[ext](https://other.com/x) [evil](/\\evil.com/x)"],
@@ -106,6 +107,7 @@ test.each([
   ['<a data-x=" href=\'/bad\'" href="/real">', '<a data-x=" href=\'/bad\'" href="/real?ntr=journey01">'],
   ['<a href="https://other.com/x"><a href="/\\evil.com/x">', '<a href="https://other.com/x"><a href="/\\evil.com/x">'],
   ['<script>"<a href="/x">"</script><!-- <a href="/c"> --><a HREF="/y">', '<script>"<a href="/x">"</script><!-- <a href="/c"> --><a HREF="/y?ntr=journey01">'],
+  ['İİ<SCRIPT><a href="/x"></SCRIPT><a href="/y">', 'İİ<SCRIPT><a href="/x"></SCRIPT><a href="/y?ntr=journey01">'],
 ])("HTML %j", (input, expected) => {
   expect(tagHtmlLinks(input, JOURNEY, { host: "example.com" })).toBe(expected);
 });
@@ -125,6 +127,7 @@ test("tagLinks answers agents with tagged Markdown, the route runs once, and vis
   const tagged = await proxy(page("/llms.txt", { "user-agent": AGENT }));
   expect(await tagged?.text()).toMatch(/^\[docs\]\(\/docs\?ntr=[\w-]+\)$/);
   expect(tagged?.headers.has("content-encoding")).toBe(false);
+  expect(tagged?.headers.get("cache-control")).toBe("private, no-store");
 
   // The proxy's own fetch carries a guard derived from the token and isn't counted again.
   const guard = origin[0]?.headers.get("x-notra-geo-tag") ?? "";

@@ -6,12 +6,7 @@ const ANCHOR_TAG = /<a\b[^>]*>/gi;
 /** One attribute: name, then an optional double-quoted, single-quoted or bare value. */
 const ATTRIBUTE = /([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'<>`=]+)))?/g;
 /** Elements whose content is not markup, so anchors inside them are left alone. */
-const RAW_TEXT = [
-  { open: "<script", close: "</script" },
-  { open: "<style", close: "</style" },
-  { open: "<textarea", close: "</textarea" },
-  { open: "<!--", close: "-->" },
-];
+const RAW_TEXT_OPEN = /<(script|style|textarea)\b|<!--/gi;
 const ENCODED_AMPERSAND = "&amp;";
 
 function tagHref(value: string, journeyId: string, host: string | undefined): string | null {
@@ -45,18 +40,22 @@ function tagAnchor(tag: string, journeyId: string, host: string | undefined): st
   return tag;
 }
 
-/** The next raw-text element at or after `from`, as the [start, end) range to keep untouched. */
-function nextRawText(lower: string, from: number): [number, number] | null {
-  let found: [number, number] | null = null;
-  for (const { open, close } of RAW_TEXT) {
-    const start = lower.indexOf(open, from);
-    if (start === -1 || (found && start >= found[0])) {
-      continue;
-    }
-    const closeAt = lower.indexOf(close, start + open.length);
-    found = [start, closeAt === -1 ? lower.length : closeAt + close.length];
+/**
+ * The next raw-text element at or after `from`, as the [start, end) range to
+ * keep untouched. Searches case-insensitively on the original string, because
+ * lowercasing can change its length.
+ */
+function nextRawText(html: string, from: number): [number, number] | null {
+  RAW_TEXT_OPEN.lastIndex = from;
+  const open = RAW_TEXT_OPEN.exec(html);
+  if (!open) {
+    return null;
   }
-  return found;
+  const start = open.index;
+  const close = open[1] ? new RegExp(`</${open[1]}`, "i") : /-->/;
+  const rest = html.slice(start + open[0].length);
+  const found = close.exec(rest);
+  return [start, found ? start + open[0].length + found.index + found[0].length : html.length];
 }
 
 export function tagHtmlLinks(
@@ -68,14 +67,15 @@ export function tagHtmlLinks(
     return html;
   }
 
-  const lower = html.toLowerCase();
   const tagMarkup = (markup: string) =>
     markup.replace(ANCHOR_TAG, (tag) => tagAnchor(tag, journeyId, options.host));
   let output = "";
   let cursor = 0;
-  for (let raw = nextRawText(lower, 0); raw; raw = nextRawText(lower, raw[1])) {
+  for (let raw = nextRawText(html, 0); raw; raw = nextRawText(html, raw[1])) {
     output += tagMarkup(html.slice(cursor, raw[0])) + html.slice(raw[0], raw[1]);
     cursor = raw[1];
   }
   return output + tagMarkup(html.slice(cursor));
 }
+
+export type { TagHtmlLinksOptions } from "./types.js";

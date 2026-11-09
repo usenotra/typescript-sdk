@@ -655,3 +655,5 @@ export const AI_AGENT_SIGNATURES: readonly AiAgentSignature[] = [
       "https://raw.githubusercontent.com/ai-robots-txt/ai.robots.txt/main/robots.json",
   },
 ];
+
+export type { AiAgentSignature } from "./types.js";

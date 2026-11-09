@@ -2,7 +2,7 @@
 
 # API reference
 
-Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each method takes its parameters as one object (path and query parameters by name, the JSON body as `body`) and an optional `RequestOptions` (`signal`, `timeoutMs`, `maxRetries`, `headers`). `<Method>Params` and `<Method>Result` types are exported for every method.
+Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each method takes its parameters as one object (path and query parameters by name, the JSON body as `body`) and an optional `RequestOptions` (`signal`, `timeoutMs`, `maxRetries`, `headers`). `<Method>Result` is exported for every method, and `<Method>Params` for every method that takes parameters.
 
 - [Discovery](#discovery) (`notra.discovery`)
 - [Content](#content) (`notra.content`)
