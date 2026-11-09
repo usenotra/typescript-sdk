@@ -47,6 +47,7 @@ export class McpBatcher {
   #queue: McpEvent[] = [];
   #timer: ReturnType<typeof setTimeout> | undefined;
   #settle: (() => void) | undefined;
+  #inFlight: Promise<unknown> = Promise.resolve();
 
   constructor(options: McpAnalyticsOptions) {
     this.#options = options;
@@ -99,9 +100,16 @@ export class McpBatcher {
       const events = takeBatch(this.#queue);
       sends.push(sendRequestLog({ type: "mcp", events }, this.#options));
     }
+    // A flush that is still sending counts too, so close() really waits.
+    const previous = this.#inFlight;
+    const current = Promise.all([previous, ...sends]).then(() => undefined);
+    this.#inFlight = current;
     try {
-      await Promise.all(sends);
+      await current;
     } finally {
+      if (this.#inFlight === current) {
+        this.#inFlight = Promise.resolve();
+      }
       settle?.();
     }
   }

@@ -9,10 +9,10 @@ const SANDBOX_URL = "https://demo-api.usenotra.com";
 const DEFAULT_TIMEOUT_MS = 60_000;
 const DEFAULT_MAX_RETRIES = 2;
 const MAX_RETRY_DELAY_MS = 60_000;
-/** Statuses retried for any method: the request was not processed. */
-const RETRY_ALWAYS = new Set([429, 503]);
-/** Statuses also retried for methods that are safe to repeat. */
-const RETRY_IDEMPOTENT = new Set([408, 500, 502, 504]);
+/** Retried for any method: a rate-limited request was not processed. */
+const RETRY_ALWAYS = new Set([429]);
+/** Also retried for methods that are safe to repeat. */
+const RETRY_IDEMPOTENT = new Set([408, 500, 502, 503, 504]);
 const IDEMPOTENT_METHODS = new Set<HttpMethod>(["GET", "PUT", "DELETE"]);
 
 export interface RawRequest {
@@ -35,7 +35,7 @@ export class Transport {
   constructor(options: NotraOptions = {}) {
     this.#apiKey = options.apiKey ?? env("NOTRA_API_KEY");
     this.#organization = options.organization ?? env("NOTRA_ORGANIZATION_ID");
-    this.#baseUrl = (options.baseUrl ?? (options.environment === "sandbox" ? SANDBOX_URL : PRODUCTION_URL)).replace(/\/+$/, "");
+    this.#baseUrl = trimTrailingSlashes(options.baseUrl ?? (options.environment === "sandbox" ? SANDBOX_URL : PRODUCTION_URL));
     this.#timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.#maxRetries = options.maxRetries ?? DEFAULT_MAX_RETRIES;
     this.#headers = options.headers ?? {};
@@ -211,7 +211,16 @@ function sleep(ms: number, signal: AbortSignal | undefined): Promise<void> {
   });
 }
 
-async function parseBody(response: Response): Promise<unknown> {
+function trimTrailingSlashes(value: string): string {
+  let end = value.length;
+  while (end > 0 && value[end - 1] === "/") {
+    end -= 1;
+  }
+  return value.slice(0, end);
+}
+
+/** The JSON body of a successful response, or undefined when it's empty. */
+export async function parseBody(response: Response): Promise<unknown> {
   const text = await response.text();
   if (!text) {
     return undefined;

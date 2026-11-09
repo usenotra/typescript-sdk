@@ -48,29 +48,53 @@ export class NotraStream<T> implements AsyncIterable<T> {
   }
 }
 
+/** Splits a byte stream into lines on LF, CRLF or CR, as SSE allows. */
 async function* readLines(body: ReadableStream<Uint8Array>): AsyncGenerator<string> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   let buffered = "";
+  let done = false;
+  // A CR ended the last line; skip the LF if the next chunk starts with one.
+  let afterCarriageReturn = false;
   try {
     while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
+      const chunk = await reader.read();
+      if (chunk.done) {
+        done = true;
         break;
       }
-      buffered += decoder.decode(value, { stream: true });
-      let newline = buffered.indexOf("\n");
-      while (newline !== -1) {
-        yield buffered.slice(0, newline).replace(/\r$/, "");
-        buffered = buffered.slice(newline + 1);
-        newline = buffered.indexOf("\n");
+      buffered += decoder.decode(chunk.value, { stream: true });
+      if (afterCarriageReturn && buffered.startsWith("\n")) {
+        buffered = buffered.slice(1);
       }
+      afterCarriageReturn = false;
+      let start = 0;
+      for (let index = 0; index < buffered.length; index += 1) {
+        const char = buffered[index];
+        if (char !== "\n" && char !== "\r") {
+          continue;
+        }
+        yield buffered.slice(start, index);
+        if (char === "\r") {
+          if (index + 1 === buffered.length) {
+            afterCarriageReturn = true;
+          } else if (buffered[index + 1] === "\n") {
+            index += 1;
+          }
+        }
+        start = index + 1;
+      }
+      buffered = buffered.slice(start);
     }
     buffered += decoder.decode();
     if (buffered) {
       yield buffered;
     }
   } finally {
+    // Stopping early (break, return or a parse error) closes the connection.
+    if (!done) {
+      await reader.cancel().catch(() => undefined);
+    }
     reader.releaseLock();
   }
 }

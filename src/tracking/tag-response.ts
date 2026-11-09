@@ -123,8 +123,15 @@ export async function tagMarkdownResponse(
     const send = options.fetch ?? globalThis.fetch;
     const origin = await send(request.url, { method: "GET", headers });
 
+    // The route already ran for this fetch; answering with it avoids running it twice.
+    const untouched = () =>
+      new Response(origin.body, {
+        status: origin.status,
+        statusText: origin.statusText,
+        headers: taggedHeaders(origin.headers),
+      });
     if (!origin.ok) {
-      return;
+      return untouched();
     }
 
     const contentType = origin.headers.get("content-type");
@@ -136,7 +143,7 @@ export async function tagMarkdownResponse(
       mode === "html" &&
       isTaggableContentType(contentType, TAGGABLE_HTML_CONTENT_TYPES);
     if (!(isMarkdownBody || isHtmlBody)) {
-      return;
+      return untouched();
     }
 
     const body = await origin.text();

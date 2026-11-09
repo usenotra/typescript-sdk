@@ -82,8 +82,8 @@ try {
 
 Requests are retried twice by default, with exponential backoff that honours `Retry-After` and the rate limit window:
 
-- 429 and 503 are retried for every method, because the API didn't process the request.
-- Network failures and 408, 500, 502 and 504 are retried only for `GET`, `PUT` and `DELETE`, so a `POST` is never sent twice.
+- 429 is retried for every method, because a rate-limited request wasn't processed.
+- Network failures and 408, 500, 502, 503 and 504 are retried only for `GET`, `PUT` and `DELETE`, so a `POST` is never sent twice.
 
 ```ts
 const notra = new Notra({ maxRetries: 4, timeoutMs: 30_000 });
@@ -121,7 +121,7 @@ const result = await notra.request("GET", "/v1/new-endpoint", { query: { limit: 
 
 ## AI traffic
 
-Add the middleware for your framework to see AI crawlers, AI assistant fetches and AI referrals in Notra. It never blocks or slows a response, and it runs on edge runtimes.
+Add the middleware for your framework to see AI crawlers, AI assistant fetches and AI referrals in Notra. Tracking never blocks or slows a response and runs on edge runtimes; only the optional Next.js `tagLinks`, which rewrites links in responses for AI agents, fetches the page before answering.
 
 ```ts
 // proxy.ts (Next.js 16; middleware.ts before that)

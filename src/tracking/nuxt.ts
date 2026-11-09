@@ -28,13 +28,21 @@ function toRequest(nodeRequest: NodeRequestLike): Request | null {
     return null;
   }
 
-  const protocol = headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
-  const url = `${protocol ?? "https"}://${host}${nodeRequest.url ?? "/"}`;
+  // Client-controlled: anything but http or https falls back to https.
+  const forwarded = headers.get("x-forwarded-proto")?.split(",")[0]?.trim().toLowerCase();
+  const protocol = forwarded === "http" || forwarded === "https" ? forwarded : "https";
+  const target = nodeRequest.url ?? "/";
+  // Absolute-form targets (proxies) already carry their origin.
+  const url = /^https?:\/\//i.test(target) ? target : `${protocol}://${host}${target}`;
 
-  return new Request(url, {
-    method: nodeRequest.method ?? "GET",
-    headers,
-  });
+  try {
+    return new Request(url, {
+      method: nodeRequest.method ?? "GET",
+      headers,
+    });
+  } catch {
+    return null;
+  }
 }
 
 export function toWebRequest(event: NitroEventLike): Request | null {

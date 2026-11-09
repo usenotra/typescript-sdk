@@ -28,8 +28,9 @@ export function isTaggableTarget(
   if (EXISTING_JOURNEY_PARAM.test(value)) {
     return false;
   }
-  if (value.startsWith("//")) {
-    return isSameHost(value, host);
+  // Browsers read "/\\evil.com" like "//evil.com", another host.
+  if (/^[/\\]{2}/.test(value)) {
+    return isSameHost(`//${value.slice(2)}`, host);
   }
   if (value.startsWith("/")) {
     return true;

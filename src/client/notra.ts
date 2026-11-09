@@ -1,5 +1,5 @@
 import { NotraApi } from "../generated/api.js";
-import { Transport } from "./transport.js";
+import { Transport, parseBody } from "./transport.js";
 import type { HttpMethod, NotraOptions, RequestOptions } from "./types.js";
 
 /**
@@ -26,7 +26,6 @@ export class Notra extends NotraApi {
     options?: RequestOptions
   ): Promise<T> {
     const response = await this.transport.send({ method, path, query: init.query, body: init.body }, options);
-    const text = await response.text();
-    return (text ? JSON.parse(text) : undefined) as T;
+    return (await parseBody(response)) as T;
   }
 }

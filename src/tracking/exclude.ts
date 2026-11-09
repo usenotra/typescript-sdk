@@ -15,15 +15,15 @@ function matchesPath(pathname: string, prefix: string): boolean {
 }
 
 function isAssetPath(pathname: string): boolean {
+  const lastSegment = pathname.slice(pathname.lastIndexOf("/") + 1);
+  if (LLMS_TXT_FILE.test(lastSegment)) {
+    return false;
+  }
+
   for (const prefix of ASSET_PATH_PREFIXES) {
     if (pathname.startsWith(prefix)) {
       return true;
     }
-  }
-
-  const lastSegment = pathname.slice(pathname.lastIndexOf("/") + 1);
-  if (LLMS_TXT_FILE.test(lastSegment)) {
-    return false;
   }
 
   const dot = lastSegment.lastIndexOf(".");

@@ -37,6 +37,9 @@ export class Tracker {
   }
 
   track(request: Request, context?: NetlifyContext): void {
+    if (!this.options.token) {
+      return;
+    }
     try {
       const payload = this.tracker.buildPayload(request);
       if (!payload) {

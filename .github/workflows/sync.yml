@@ -19,7 +19,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # No stored credential while syncing and verifying downloaded input; the
+      # push step authenticates on its own.
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
@@ -65,7 +69,7 @@ jobs:
           git switch -c "$BRANCH"
           git add spec src/generated src/tracking/script/releases.ts docs/API.md
           git commit -m "chore: sync the API spec and notra.js pins"
-          git push --force origin "$BRANCH"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$BRANCH"
           gh pr view "$BRANCH" >/dev/null 2>&1 || gh pr create --base main --head "$BRANCH" \
             --title "chore: sync the API spec and notra.js pins" \
             --body "Daily sync from https://api.usenotra.com/openapi.json and usenotra/notra's packages/web-tracker. Typecheck, lint, tests and build passed in the sync run."

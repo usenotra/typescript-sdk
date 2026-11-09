@@ -90,6 +90,17 @@ describe("requests", () => {
     expect(calls).toHaveLength(0);
   });
 
+  test("trailing slashes on baseUrl are ignored", async () => {
+    const { notra, calls } = client([json({})], { baseUrl: "https://proxy.example////" });
+    await notra.discovery.getPublicApiStatus();
+    expect(calls[0]?.url.toString()).toBe("https://proxy.example/v1/status");
+  });
+
+  test("request() turns a malformed success body into a NotraError", async () => {
+    const { notra } = client([new Response("<html>", { status: 200 })]);
+    await expect(notra.request("GET", "/v1/new")).rejects.toThrow("Expected JSON");
+  });
+
   test("request() reaches endpoints the SDK doesn't know yet", async () => {
     const { notra, calls } = client([json({ ok: true })]);
     expect(await notra.request("GET", "/v1/new", { query: { a: 1 } })).toEqual({ ok: true });
@@ -143,6 +154,16 @@ describe("retries", () => {
     expect(error).toBeInstanceOf(NotraRateLimitError);
     expect(error).toMatchObject({ limit: 120, remaining: 0, reset: 42 });
     expect(calls).toHaveLength(2);
+  });
+
+  test("503 is retried for GET but never for POST, which may have run", async () => {
+    const get = client([json({ error: "Busy" }, 503, { "retry-after": "0" }), json({})]);
+    await get.notra.content.getPost({ postId: "p" });
+    expect(get.calls).toHaveLength(2);
+
+    const post = client([json({ error: "Busy" }, 503, { "retry-after": "0" })]);
+    await expect(post.notra.content.createPost({ body: { title: "x" } as never })).rejects.toMatchObject({ status: 503 });
+    expect(post.calls).toHaveLength(1);
   });
 
   test("5xx is retried for GET but never for POST", async () => {
@@ -199,6 +220,42 @@ describe("streams", () => {
     }
     expect(events).toEqual([{ type: "start" }, { type: "text-delta", delta: "Hi" }]);
     expect(() => stream.toReadableStream()).toThrow("already consumed");
+  });
+
+  test("CR and CRLF line endings work, even split across chunks", async () => {
+    const chunks = ['data: {"type":"a"}\r', '\r', 'data: {"type":"b"}\r', '\n\r\ndata: {"type":"c"}\r\r'];
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const chunk of chunks) {
+          controller.enqueue(new TextEncoder().encode(chunk));
+        }
+        controller.close();
+      },
+    });
+    const { notra } = client([new Response(stream, { headers: { "content-type": "text/event-stream" } })]);
+    const events = [];
+    for await (const event of await notra.chats.createChat({ body: { message: "Hi" } })) {
+      events.push(event.type);
+    }
+    expect(events).toEqual(["a", "b", "c"]);
+  });
+
+  test("breaking out of a stream cancels the response", async () => {
+    let cancelled = false;
+    const endless = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        controller.enqueue(new TextEncoder().encode('data: {"type":"tick"}\n\n'));
+      },
+      cancel() {
+        cancelled = true;
+      },
+    });
+    const { notra } = client([new Response(endless, { headers: { "content-type": "text/event-stream" } })]);
+    for await (const event of await notra.chats.createChat({ body: { message: "Hi" } })) {
+      expect(event.type).toBe("tick");
+      break;
+    }
+    expect(cancelled).toBe(true);
   });
 
   test("agent sessions yield each NDJSON line", async () => {
