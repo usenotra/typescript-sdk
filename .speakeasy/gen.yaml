@@ -39,10 +39,22 @@ typescript:
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
-    devDependencies: {}
-    peerDependencies: {}
-  additionalPackageJSON: {}
-  additionalScripts: {}
+    devDependencies:
+      '@tanstack/react-start': 1.168.60
+      '@types/react': 19.3.0
+      '@types/react-dom': 19.3.0
+      react: 19.3.0
+      react-dom: 19.3.0
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0
+  additionalPackageJSON:
+    peerDependenciesMeta:
+      react:
+        optional: true
+  additionalScripts:
+    test: bun test tests/tracking
+    check-types:tracking: tsc --noEmit -p tests/tracking/tsconfig.json
+    sync-script: bun scripts/sync-notra-script.ts
   alwaysIncludeInboundAndOutbound: false
   apiPromiseHelpers: false
   author: Speakeasy

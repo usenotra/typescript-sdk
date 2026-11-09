@@ -67,6 +67,54 @@ yarn add @usenotra/sdk
 > This package is published with CommonJS and ES Modules (ESM) support.
 <!-- End SDK Installation [installation] -->
 
+## Tracking: AI traffic and web analytics
+
+The same package also tracks your website. Every part has its own import path, so middleware on the edge never loads the API client and the browser script helpers stay about 1.5 KB.
+
+| Import | What it does |
+| --- | --- |
+| `@usenotra/sdk` | The Notra API client (below) |
+| `@usenotra/sdk/next`, `/nuxt`, `/astro`, `/sveltekit`, `/tanstack`, `/react-router`, `/netlify` | AI traffic middleware: AI crawlers, AI assistant fetches and AI referrals |
+| `@usenotra/sdk/react` | `<NotraAnalytics />`: visitors, page views and Core Web Vitals with notra.js |
+| `@usenotra/sdk/script` | The same notra.js tag as an HTML string, for any template |
+| `@usenotra/sdk/mcp` | MCP server analytics |
+| `@usenotra/sdk/feedback` | A `submit_feedback` tool for your MCP server |
+| `@usenotra/sdk/markdown`, `/html` | Journey attribution links in responses for AI agents |
+| `@usenotra/sdk/geo`, `/classify`, `/signatures` | The core tracker and the AI agent signature table |
+
+```ts
+// proxy.ts (Next.js 16; middleware.ts before that)
+import { createGeoProxy } from "@usenotra/sdk/next";
+import { NextResponse } from "next/server";
+
+const geo = createGeoProxy({ token: process.env.NOTRA_GEO_TOKEN ?? "" });
+
+export function proxy(request: Request, event: { waitUntil(p: Promise<unknown>): void }) {
+  geo(request, event);
+  return NextResponse.next();
+}
+```
+
+```tsx
+// app/layout.tsx
+import { NotraAnalytics } from "@usenotra/sdk/react";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <NotraAnalytics webKey="nwk.…" disabled={process.env.NODE_ENV !== "production"} />
+      </body>
+    </html>
+  );
+}
+```
+
+`NotraAnalytics` and `notraScriptTag` load the notra.js build pinned in this SDK release with its Subresource Integrity hash, so the browser refuses to run the script if a single byte changes. You never set the hash yourself; updating `@usenotra/sdk` moves you to the newest build. React is an optional peer dependency, needed only for `@usenotra/sdk/react`.
+
+Every framework, option and payload is in the [tracking guide](docs/tracking/README.md).
+
 <!-- Start Requirements [requirements] -->
 ## Requirements
 
