@@ -27,9 +27,9 @@ import { NextResponse } from "next/server";
 
 const geo = createGeoProxy({ token: process.env.NOTRA_GEO_TOKEN ?? "" });
 
-export function proxy(request: Request, event: { waitUntil(p: Promise<unknown>): void }) {
-  geo(request, event);
-  return NextResponse.next();
+export async function proxy(request: Request, event: { waitUntil(p: Promise<unknown>): void }) {
+  // Returns a response only when it rewrote one (tagLinks); otherwise carry on.
+  return (await geo(request, event)) ?? NextResponse.next();
 }
 ```
 
