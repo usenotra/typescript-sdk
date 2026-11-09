@@ -194,8 +194,19 @@ type GeoRequestPayload = {
   accept?: string;
   acceptLanguage?: string;
   requestId?: string;
+  status?: number;
+  signals?: {
+    clientHints: boolean; // a sec-ch-ua header was sent
+    fetchMode: string | null; // sec-fetch-mode
+    tracing: boolean; // a traceparent or similar tracing header was sent
+    prefetch?: boolean; // a prefetch or prerender request
+  };
 };
 ```
+
+`signals` holds no header values except `sec-fetch-mode`, only whether the
+headers were present. Notra uses them to tell browsers, agents and prefetches
+apart.
 
 `ip` comes from the first entry of `x-forwarded-for`, then `x-real-ip`, then
 `x-vercel-forwarded-for`. `geo` comes from the `x-vercel-ip-*` headers with

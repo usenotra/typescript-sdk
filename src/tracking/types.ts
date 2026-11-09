@@ -82,6 +82,8 @@ export type GeoTagLinksOption = boolean | GeoTagLinksConfig;
 
 export interface GeoTagResponseOptions {
   fetch?: FetchLike | undefined;
+  /** Value of the loop-guard header on the internal fetch. Defaults to `"1"`. */
+  guard?: string | undefined;
   onError?: ((error: unknown) => void) | undefined;
   exclude?: GeoExcludeRule[] | undefined;
 }

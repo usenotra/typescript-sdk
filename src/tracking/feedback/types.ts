@@ -1,3 +1,4 @@
+import type { FetchLike } from "../../fetch.js";
 import type { FEEDBACK_KINDS, FEEDBACK_SENTIMENTS } from "./constants.js";
 
 export type FeedbackKind = (typeof FEEDBACK_KINDS)[number];
@@ -16,13 +17,15 @@ export interface FeedbackInput {
   idempotencyKey?: string | undefined;
   projectId?: string | undefined;
   metadata?: Record<string, unknown> | undefined;
+  /** Channel the feedback came through. `submitFeedback` sends `"sdk"`, the MCP tool `"mcp"`. */
+  source?: "mcp" | "api" | "sdk" | undefined;
 }
 
 export interface FeedbackClientOptions {
   url?: string | undefined;
   token?: string | undefined;
   endpoint?: string | undefined;
-  fetch?: typeof globalThis.fetch | undefined;
+  fetch?: FetchLike | undefined;
   timeoutMs?: number | undefined;
 }
 

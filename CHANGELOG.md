@@ -13,4 +13,8 @@ One SDK for everything Notra. See [MIGRATION.md](MIGRATION.md).
 - **`@usenotra/geo` moved in** under the same subpaths: `@usenotra/sdk/next`, `/nuxt`, `/astro`, `/sveltekit`, `/tanstack`, `/react-router`, `/netlify`, `/mcp`, `/feedback`, `/markdown`, `/html`, `/classify`, `/signatures` and `/geo`.
 - **Web analytics:** `<NotraAnalytics />` from `@usenotra/sdk/react` and `notraScriptTag()` from `@usenotra/sdk/script` load notra.js pinned with its Subresource Integrity hash.
 - **Tracking fixes** over `@usenotra/geo` 0.8.1: a malformed `x-forwarded-proto` can no longer fail a Nuxt request; links like `/\evil.com` count as another host and get no journey id; with `tagLinks`, the internal fetch is no longer tracked as a second visit and a page that can't be tagged is answered as fetched instead of running the route twice; Netlify sends nothing without a token; `close()` and `flushMcpEvents()` wait for a flush that's already sending; `llms.txt` is tracked under asset prefixes too.
+- **Link tagging:** Markdown keeps escaped brackets, links with parentheses, multi-backtick code spans and unclosed fences intact; HTML finds the real `href` among other attributes, leaves `<script>`, `<style>`, `<textarea>` and comments alone, and keeps whitespace around the URL. In HTML mode only `text/markdown` bodies are rewritten as Markdown, never `text/plain`.
+- **`tagLinks` loop guard** is derived from the token, so visitors can't send it to hide from analytics.
+- **Agent feedback** records its channel: `mcp` from the MCP tool, `sdk` from `submitFeedback()`.
+- **Node.js 20 or newer**, as Node.js 18 has reached its end of life.
 - **Releases** are published from GitHub Actions with npm trusted publishing and provenance.

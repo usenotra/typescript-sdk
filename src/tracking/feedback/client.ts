@@ -72,7 +72,7 @@ export async function submitFeedback(
   const response = await send(feedbackUrl(options), {
     method: "POST",
     headers: feedbackHeaders(options),
-    body: JSON.stringify(input),
+    body: JSON.stringify({ source: "sdk", ...input }),
     signal: AbortSignal.timeout(options.timeoutMs ?? SUBMIT_TIMEOUT_MS),
   });
 

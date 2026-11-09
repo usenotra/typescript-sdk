@@ -6,6 +6,7 @@ import {
   TAG_STRIPPED_RESPONSE_HEADER_PREFIXES,
   TAG_STRIPPED_RESPONSE_HEADERS,
   TAGGABLE_CONTENT_TYPES,
+  TAGGABLE_MARKDOWN_CONTENT_TYPES,
   TAGGABLE_HTML_CONTENT_TYPES,
 } from "./constants.js";
 import { matchesAnyRule, shouldTrackRequest } from "./exclude.js";
@@ -118,7 +119,7 @@ export async function tagMarkdownResponse(
 
     const journeyId = getJourneyId(url) ?? mintJourneyId();
     const headers = new Headers(request.headers);
-    headers.set(TAG_LOOP_GUARD_HEADER, TAG_LOOP_GUARD_VALUE);
+    headers.set(TAG_LOOP_GUARD_HEADER, options.guard ?? TAG_LOOP_GUARD_VALUE);
 
     const send = options.fetch ?? globalThis.fetch;
     const origin = await send(request.url, { method: "GET", headers });
@@ -135,9 +136,10 @@ export async function tagMarkdownResponse(
     }
 
     const contentType = origin.headers.get("content-type");
+    // HTML mode is a normal page fetch: only real Markdown is rewritten, never text/plain.
     const isMarkdownBody = isTaggableContentType(
       contentType,
-      TAGGABLE_CONTENT_TYPES
+      mode === "markdown" ? TAGGABLE_CONTENT_TYPES : TAGGABLE_MARKDOWN_CONTENT_TYPES
     );
     const isHtmlBody =
       mode === "html" &&

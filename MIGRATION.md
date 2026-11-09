@@ -11,6 +11,8 @@
 npm install @usenotra/sdk@2
 ```
 
+2.0 needs Node.js 20 or newer (or Bun, Deno, or an edge runtime).
+
 ### What stays the same
 
 - All 100 methods of 1.x have the same name in the same group, such as `notra.geo.getGeoTrafficLog()` and `notra.content.updatePost()`.

@@ -28,6 +28,8 @@ export const DEFAULT_TAG_PATHS: GeoPathRule[] = [
 
 export const TAGGABLE_CONTENT_TYPES = ["text/markdown", "text/plain"];
 
+export const TAGGABLE_MARKDOWN_CONTENT_TYPES = ["text/markdown"];
+
 export const TAGGABLE_HTML_CONTENT_TYPES = ["text/html"];
 
 export const TAG_STRIPPED_RESPONSE_HEADERS = [

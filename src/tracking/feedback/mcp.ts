@@ -87,6 +87,7 @@ export function createFeedbackToolHandler(options: FeedbackToolOptions) {
     const input: FeedbackInput = {
       ...options.defaults,
       ...parsed.data,
+      source: "mcp",
     };
 
     try {

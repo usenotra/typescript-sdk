@@ -83,7 +83,7 @@ try {
 Requests are retried twice by default, with exponential backoff that honours `Retry-After` and the rate limit window:
 
 - 429 is retried for every method, because a rate-limited request wasn't processed.
-- Network failures and 408, 500, 502, 503 and 504 are retried only for `GET`, `PUT` and `DELETE`, so a `POST` is never sent twice.
+- Network failures and 408, 500, 502, 503 and 504 are retried only for `GET`, `PUT` and `DELETE`. A `POST` or `PATCH` is retried only after a 429, which the API rejected without running it.
 
 ```ts
 const notra = new Notra({ maxRetries: 4, timeoutMs: 30_000 });
@@ -191,7 +191,7 @@ Every option of the tracking side is in the [tracking guide](docs/tracking/READM
 
 ## Runtimes
 
-Node.js 18 or newer, Bun, Deno, Cloudflare Workers, Vercel and Netlify Edge, and modern browsers. ESM and CommonJS are both included.
+Node.js 20 or newer, Bun, Deno, Cloudflare Workers, Vercel and Netlify Edge, and modern browsers. ESM and CommonJS are both included.
 
 ## Upgrading
 

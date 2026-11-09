@@ -10,8 +10,9 @@ import {
 } from "./link-target.js";
 import type { TagMarkdownLinksOptions } from "./types.js";
 
-const FENCE_SPLIT = /(```[\s\S]*?```|~~~[\s\S]*?~~~)/;
-const INLINE_CODE_SPLIT = /(`+[^`]*`+)/;
+const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
+const FENCE_CLOSE = /^ {0,3}(`{3,}|~{3,})[ \t]*\r?$/;
+const LINES = /[^\n]*\n|[^\n]+$/g;
 const REFERENCE_LINK = /^([ \t]{0,3}\[[^\]]+\]:[ \t]*)(\S+)/gm;
 const BASE64_URL_UNSAFE = /[+/]/g;
 const BASE64_PADDING = /=+$/;
@@ -60,6 +61,49 @@ export function getJourneyId(request: Request | URL | string): string | null {
   return value;
 }
 
+/** Whether the character at `index` is escaped by an odd run of backslashes. */
+function isEscaped(text: string, index: number): boolean {
+  let backslashes = 0;
+  for (let i = index - 1; i >= 0 && text[i] === "\\"; i -= 1) {
+    backslashes += 1;
+  }
+  return backslashes % 2 === 1;
+}
+
+function indexOfUnescaped(text: string, char: string, from: number): number {
+  let index = text.indexOf(char, from);
+  while (index !== -1 && isEscaped(text, index)) {
+    index = text.indexOf(char, index + 1);
+  }
+  return index;
+}
+
+/** End of a link destination: stops at whitespace or an unbalanced `)`. */
+function destinationEnd(text: string, start: number): number {
+  let cursor = start;
+  let depth = 0;
+  while (cursor < text.length) {
+    const char = text[cursor];
+    if (char === "\\" && cursor + 1 < text.length) {
+      cursor += 2;
+      continue;
+    }
+    if (char === undefined || char.trim() === "") {
+      break;
+    }
+    if (char === "(") {
+      depth += 1;
+    } else if (char === ")") {
+      if (depth === 0) {
+        break;
+      }
+      depth -= 1;
+    }
+    cursor += 1;
+  }
+  return depth === 0 ? cursor : start;
+}
+
 function tagText(
   text: string,
   journeyId: string,
@@ -70,12 +114,12 @@ function tagText(
   let searchFrom = 0;
 
   while (searchFrom < text.length) {
-    const labelStart = text.indexOf("[", searchFrom);
+    const labelStart = indexOfUnescaped(text, "[", searchFrom);
     if (labelStart === -1) {
       break;
     }
 
-    const labelEnd = text.indexOf("]", labelStart + 1);
+    const labelEnd = indexOfUnescaped(text, "]", labelStart + 1);
     if (labelEnd === -1) {
       break;
     }
@@ -90,14 +134,7 @@ function tagText(
     }
 
     const targetStart = cursor;
-    while (
-      cursor < text.length &&
-      text[cursor]?.trim() !== "" &&
-      text[cursor] !== "(" &&
-      text[cursor] !== ")"
-    ) {
-      cursor += 1;
-    }
+    cursor = destinationEnd(text, targetStart);
     if (cursor === targetStart) {
       searchFrom = labelEnd + 1;
       continue;
@@ -163,17 +200,78 @@ function tagText(
   );
 }
 
-function tagSegment(
-  segment: string,
-  journeyId: string,
-  host: string | undefined
-): string {
-  return segment
-    .split(INLINE_CODE_SPLIT)
-    .map((part) =>
-      part.startsWith("`") ? part : tagText(part, journeyId, host)
-    )
-    .join("");
+/** Splits text into code spans (a run of backticks closed by an equal run) and the rest. */
+function splitInlineCode(text: string): Array<{ code: boolean; text: string }> {
+  const parts: Array<{ code: boolean; text: string }> = [];
+  let start = 0;
+  let index = 0;
+  while (index < text.length) {
+    if (text[index] !== "`" || isEscaped(text, index)) {
+      index += 1;
+      continue;
+    }
+    let run = index;
+    while (text[run] === "`") {
+      run += 1;
+    }
+    const length = run - index;
+    let close = run;
+    let end = -1;
+    while (close < text.length) {
+      if (text[close] !== "`") {
+        close += 1;
+        continue;
+      }
+      let closeRun = close;
+      while (text[closeRun] === "`") {
+        closeRun += 1;
+      }
+      if (closeRun - close === length) {
+        end = closeRun;
+        break;
+      }
+      close = closeRun;
+    }
+    if (end === -1) {
+      index = run;
+      continue;
+    }
+    parts.push({ code: false, text: text.slice(start, index) }, { code: true, text: text.slice(index, end) });
+    start = end;
+    index = end;
+  }
+  parts.push({ code: false, text: text.slice(start) });
+  return parts;
+}
+
+/** Splits Markdown into fenced code blocks and the rest; an unclosed fence runs to the end. */
+function splitFences(markdown: string): Array<{ code: boolean; text: string }> {
+  const parts: Array<{ code: boolean; text: string }> = [];
+  let buffer = "";
+  let fence: string | null = null;
+  for (const line of markdown.match(LINES) ?? []) {
+    if (fence === null) {
+      const open = FENCE_OPEN.exec(line)?.[1];
+      // A backtick fence's info string can't contain backticks.
+      if (open && !(open.startsWith("`") && line.slice(line.indexOf(open) + open.length).includes("`"))) {
+        parts.push({ code: false, text: buffer });
+        buffer = line;
+        fence = open;
+      } else {
+        buffer += line;
+      }
+      continue;
+    }
+    buffer += line;
+    const close = FENCE_CLOSE.exec(line.endsWith("\n") ? line.slice(0, -1) : line)?.[1];
+    if (close && close[0] === fence[0] && close.length >= fence.length) {
+      parts.push({ code: true, text: buffer });
+      buffer = "";
+      fence = null;
+    }
+  }
+  parts.push({ code: fence !== null, text: buffer });
+  return parts;
 }
 
 export function tagMarkdownLinks(
@@ -185,11 +283,13 @@ export function tagMarkdownLinks(
     return markdown;
   }
 
-  return markdown
-    .split(FENCE_SPLIT)
-    .map((segment) => {
-      const isFence = segment.startsWith("```") || segment.startsWith("~~~");
-      return isFence ? segment : tagSegment(segment, journeyId, options.host);
-    })
+  return splitFences(markdown)
+    .map((block) =>
+      block.code
+        ? block.text
+        : splitInlineCode(block.text)
+            .map((part) => (part.code ? part.text : tagText(part.text, journeyId, options.host)))
+            .join("")
+    )
     .join("");
 }
