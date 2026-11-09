@@ -162,7 +162,8 @@ test("MCP analytics wraps any transport once and reports each request", async ()
       this.inner.onmessage = handler;
     }
     async send(message: unknown) {
-      this.sent.push(message);
+      // Real transports serialize on send, so later changes don't reach the client.
+      this.sent.push(structuredClone(message));
     }
   }
   const { bodies, fetch } = ingest();
@@ -175,6 +176,16 @@ test("MCP analytics wraps any transport once and reports each request", async ()
   transport.inner.onmessage?.(initialize);
   await tracked.send({ jsonrpc: "2.0", id: 1, result: { serverInfo: { name: "server", version: "2" } } });
   await flushMcpEvents();
+
+  // contextParameters adds _intent and _model to the tool list the client receives.
+  const withContext = new Delegating();
+  trackMcpTransport(withContext, { token: "t", fetch, contextParameters: true });
+  withContext.inner.onmessage = () => undefined;
+  withContext.onmessage = () => undefined;
+  withContext.inner.onmessage?.({ jsonrpc: "2.0", id: 2, method: "tools/list" });
+  await withContext.send({ jsonrpc: "2.0", id: 2, result: { tools: [{ name: "echo", inputSchema: { type: "object", properties: {} } }] } });
+  const listed = withContext.sent[0] as { result: { tools: Array<{ inputSchema: { properties: Record<string, unknown> } }> } };
+  expect(Object.keys(listed.result.tools[0]?.inputSchema.properties ?? {})).toEqual(expect.arrayContaining(["_intent", "_model"]));
 
   expect(received).toEqual([initialize]);
   expect(bodies).toHaveLength(1);

@@ -291,9 +291,6 @@ export function trackMcpTransport<T extends McpTransportLike>(
       }
       if (request.method === "tools/list") {
         event.tools = readToolListing(result);
-        if (options.contextParameters) {
-          addContextParameters(result);
-        }
       }
       event.responseBytes = byteLength(result);
       if (request.method === "elicitation/create") {
@@ -312,6 +309,17 @@ export function trackMcpTransport<T extends McpTransportLike>(
     }
 
     report({ ...event, protocolVersion, server, client });
+  };
+
+  /** Adds `_intent` and `_model` to the tool list before it reaches the client. */
+  const prepareResponse = (message: Record<string, unknown>) => {
+    const id = readRequestId(message["id"]);
+    if (!options.contextParameters || id === undefined || "method" in message) {
+      return;
+    }
+    if (pending.get(id)?.method === "tools/list" && isRecord(message["result"])) {
+      addContextParameters(message["result"]);
+    }
   };
 
   const observeResponse = (message: Record<string, unknown>) => {
@@ -407,7 +415,10 @@ export function trackMcpTransport<T extends McpTransportLike>(
           reportGeoError(options.onError, error);
         }
       };
-      observe((item) => observeServerRequest(item, sendOptions));
+      observe((item) => {
+        prepareResponse(item);
+        observeServerRequest(item, sendOptions);
+      });
       try {
         await send(message, sendOptions);
       } catch (error) {
