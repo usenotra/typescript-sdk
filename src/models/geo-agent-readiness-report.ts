@@ -45,24 +45,28 @@ export type ScoreBreakdown = {
   bonus: Bonus;
 };
 
-export const Tier = {
+export const GeoAgentReadinessReportTier = {
   Essential: "essential",
   Recommended: "recommended",
   Bonus: "bonus",
 } as const;
-export type Tier = OpenEnum<typeof Tier>;
+export type GeoAgentReadinessReportTier = OpenEnum<
+  typeof GeoAgentReadinessReportTier
+>;
 
-export const ResultEnum = {
+export const GeoAgentReadinessReportResult = {
   Failed: "failed",
   Partial: "partial",
 } as const;
-export type ResultEnum = OpenEnum<typeof ResultEnum>;
+export type GeoAgentReadinessReportResult = OpenEnum<
+  typeof GeoAgentReadinessReportResult
+>;
 
 export type GeoAgentReadinessReportIssue = {
   id: string;
   name: string;
-  tier: Tier;
-  result: ResultEnum;
+  tier: GeoAgentReadinessReportTier;
+  result: GeoAgentReadinessReportResult;
   details: string | null;
   recommendation: string | null;
 };
@@ -79,7 +83,6 @@ export type GeoAgentReadinessReport = {
   scoreBreakdown: ScoreBreakdown | null;
   issues: Array<GeoAgentReadinessReportIssue>;
   eligibleChecks: number | null;
-  reportUrl: string | null;
   errorMessage: string | null;
   scannedAt: string | null;
   createdAt: string;
@@ -166,12 +169,16 @@ export function scoreBreakdownFromJSON(
 }
 
 /** @internal */
-export const Tier$inboundSchema: z.ZodMiniType<Tier, unknown> = openEnums
-  .inboundSchema(Tier);
+export const GeoAgentReadinessReportTier$inboundSchema: z.ZodMiniType<
+  GeoAgentReadinessReportTier,
+  unknown
+> = openEnums.inboundSchema(GeoAgentReadinessReportTier);
 
 /** @internal */
-export const ResultEnum$inboundSchema: z.ZodMiniType<ResultEnum, unknown> =
-  openEnums.inboundSchema(ResultEnum);
+export const GeoAgentReadinessReportResult$inboundSchema: z.ZodMiniType<
+  GeoAgentReadinessReportResult,
+  unknown
+> = openEnums.inboundSchema(GeoAgentReadinessReportResult);
 
 /** @internal */
 export const GeoAgentReadinessReportIssue$inboundSchema: z.ZodMiniType<
@@ -180,8 +187,8 @@ export const GeoAgentReadinessReportIssue$inboundSchema: z.ZodMiniType<
 > = z.object({
   id: types.string(),
   name: types.string(),
-  tier: Tier$inboundSchema,
-  result: ResultEnum$inboundSchema,
+  tier: GeoAgentReadinessReportTier$inboundSchema,
+  result: GeoAgentReadinessReportResult$inboundSchema,
   details: types.nullable(types.string()),
   recommendation: types.nullable(types.string()),
 });
@@ -209,7 +216,6 @@ export const GeoAgentReadinessReport$inboundSchema: z.ZodMiniType<
   scoreBreakdown: types.nullable(z.lazy(() => ScoreBreakdown$inboundSchema)),
   issues: z.array(z.lazy(() => GeoAgentReadinessReportIssue$inboundSchema)),
   eligibleChecks: types.nullable(types.number()),
-  reportUrl: types.nullable(types.string()),
   errorMessage: types.nullable(types.string()),
   scannedAt: types.nullable(types.string()),
   createdAt: types.string(),

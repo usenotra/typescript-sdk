@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  * Get AI traffic totals and sources
  *
  * @remarks
- * Crawler and AI-referral visit totals, a per-source breakdown and the daily timeseries behind it.
+ * Crawler and AI-referral visit totals, a per-source breakdown and the daily timeseries behind it. Filter by host, exact page path or Notra Sites the way the dashboard does. Explicit ranges can span at most 366 days.
  */
 export function geoGetGEOTrafficOverview(
   client: NotraCore,
@@ -106,6 +106,9 @@ async function $do(
   const query = encodeFormQuery({
     "days": payload.days,
     "from": payload.from,
+    "host": payload.host,
+    "path": payload.path,
+    "sites": payload.sites,
     "to": payload.to,
   });
 

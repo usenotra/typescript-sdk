@@ -3,10 +3,13 @@
  * @generated-id: 50e9f8ceaf0b
  */
 
+import * as z from "zod/v4-mini";
 import { NotraCore } from "../core.js";
+import { encodeFormQuery } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -22,6 +25,7 @@ import { NotraError } from "../models/errors/notra-error.js";
 import { ResponseValidationError } from "../models/errors/response-validation-error.js";
 import { SDKValidationError } from "../models/errors/sdk-validation-error.js";
 import * as models from "../models/index.js";
+import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
@@ -29,10 +33,11 @@ import { Result } from "../types/fp.js";
  * Get the install snippets
  *
  * @remarks
- * The endpoint and framework snippets needed to send AI traffic to Notra. The snippets read the token from an environment variable; the token itself is issued by `POST /geo/ingest/token`, which requires a write scope.
+ * The endpoint and framework snippets needed to send AI traffic to Notra, plus, when web analytics is enabled for the workspace, the notra.js install: the public web key, the script tag and the pinned script URLs with their Subresource Integrity values. Web keys always belong to one project: pass `projectId` for that project's key, or omit it for the organization's oldest project. The snippets read the tracking token from an environment variable; the token itself is issued by `POST /geo/ingest/token`, which requires a write scope.
  */
 export function geoGetGEOIngestSetup(
   client: NotraCore,
+  request?: operations.GetGeoIngestSetupRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -50,12 +55,14 @@ export function geoGetGEOIngestSetup(
 > {
   return new APIPromise($do(
     client,
+    request,
     options,
   ));
 }
 
 async function $do(
   client: NotraCore,
+  request?: operations.GetGeoIngestSetupRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
@@ -74,7 +81,26 @@ async function $do(
     APICall,
   ]
 > {
+  const parsed = safeParse(
+    request,
+    (value) =>
+      z.parse(
+        z.optional(operations.GetGeoIngestSetupRequest$outboundSchema),
+        value,
+      ),
+    "Input validation failed",
+  );
+  if (!parsed.ok) {
+    return [parsed, { status: "invalid" }];
+  }
+  const payload = parsed.value;
+  const body = null;
+
   const path = pathToFunc("/v1/geo/ingest/setup")();
+
+  const query = encodeFormQuery({
+    "projectId": payload?.projectId,
+  });
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -105,6 +131,8 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
+    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);

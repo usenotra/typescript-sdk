@@ -21,7 +21,7 @@ export type GeoTrafficPagesResponseVisitorType = OpenEnum<
   typeof GeoTrafficPagesResponseVisitorType
 >;
 
-export type Page = {
+export type GeoTrafficPagesResponsePage = {
   path: string;
   host: string;
   source: string;
@@ -43,7 +43,7 @@ export type GeoTrafficPagesResponse = {
    * False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error.
    */
   configured: boolean;
-  pages: Array<Page>;
+  pages: Array<GeoTrafficPagesResponsePage>;
   organization: GeoTrafficPagesResponseOrganization;
 };
 
@@ -54,7 +54,10 @@ export const GeoTrafficPagesResponseVisitorType$inboundSchema: z.ZodMiniType<
 > = openEnums.inboundSchema(GeoTrafficPagesResponseVisitorType);
 
 /** @internal */
-export const Page$inboundSchema: z.ZodMiniType<Page, unknown> = z.object({
+export const GeoTrafficPagesResponsePage$inboundSchema: z.ZodMiniType<
+  GeoTrafficPagesResponsePage,
+  unknown
+> = z.object({
   path: types.string(),
   host: types.string(),
   source: types.string(),
@@ -64,13 +67,13 @@ export const Page$inboundSchema: z.ZodMiniType<Page, unknown> = z.object({
   lastSeenAt: types.string(),
 });
 
-export function pageFromJSON(
+export function geoTrafficPagesResponsePageFromJSON(
   jsonString: string,
-): SafeParseResult<Page, SDKValidationError> {
+): SafeParseResult<GeoTrafficPagesResponsePage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Page$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Page' from JSON`,
+    (x) => GeoTrafficPagesResponsePage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoTrafficPagesResponsePage' from JSON`,
   );
 }
 
@@ -102,7 +105,7 @@ export const GeoTrafficPagesResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   configured: types.boolean(),
-  pages: z.array(z.lazy(() => Page$inboundSchema)),
+  pages: z.array(z.lazy(() => GeoTrafficPagesResponsePage$inboundSchema)),
   organization: z.lazy(() => GeoTrafficPagesResponseOrganization$inboundSchema),
 });
 

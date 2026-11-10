@@ -74,7 +74,7 @@ export type CreatePostGenerationGithub = {
 };
 
 /**
- * Which kinds of activity to collect from the selected sources.
+ * Which kinds of activity to collect from the selected sources. At least one must be true, unless pullRequest is set, which ignores them.
  */
 export type DataPoints = {
   includePullRequests?: boolean | undefined;
@@ -108,6 +108,15 @@ export type SelectedItems = {
   pullRequestNumbers?: Array<PullRequestNumber> | undefined;
   releaseTagNames?: Array<ReleaseTagName | string> | undefined;
   linearIssueIds?: Array<LinearIssueId> | undefined;
+};
+
+/**
+ * Write about exactly this pull request in a connected repository, open or merged, whatever its age. Uses only its pull request data, so dataPoints and lookbackWindow do not apply. Cannot be combined with other source selectors or selectedItems.
+ */
+export type CreatePostGenerationPullRequest = {
+  owner: string;
+  repo: string;
+  number: number;
 };
 
 export type CreatePostGenerationRequest = {
@@ -144,7 +153,7 @@ export type CreatePostGenerationRequest = {
    */
   github?: CreatePostGenerationGithub | undefined;
   /**
-   * Which kinds of activity to collect from the selected sources.
+   * Which kinds of activity to collect from the selected sources. At least one must be true, unless pullRequest is set, which ignores them.
    */
   dataPoints?: DataPoints | undefined;
   /**
@@ -155,6 +164,14 @@ export type CreatePostGenerationRequest = {
    * IANA timezone used for relative lookback windows such as current_day and yesterday.
    */
   timezone?: string | undefined;
+  /**
+   * Write about exactly this pull request in a connected repository, open or merged, whatever its age. Uses only its pull request data, so dataPoints and lookbackWindow do not apply. Cannot be combined with other source selectors or selectedItems.
+   */
+  pullRequest?: CreatePostGenerationPullRequest | undefined;
+  /**
+   * What the post should be about and what it should cover, in your own words. Steers the topic, angle and structure; facts still come from the selected sources.
+   */
+  brief?: string | undefined;
 };
 
 export type CreatePostGenerationOrganization = {
@@ -231,6 +248,10 @@ export type CreatePostGenerationJob = {
    * Failure reason when status is failed.
    */
   error: string | null;
+  /**
+   * Stable machine-readable failure code when status is failed, such as NO_ACTIVITY_TYPES_SELECTED or NO_AVAILABLE_SOURCES. Absent or null for other failures and for older jobs.
+   */
+  errorCode?: string | null | undefined;
   source: CreatePostGenerationSource;
   createdAt: string;
   updatedAt: string;
@@ -453,6 +474,33 @@ export function selectedItemsToJSON(selectedItems: SelectedItems): string {
 }
 
 /** @internal */
+export type CreatePostGenerationPullRequest$Outbound = {
+  owner: string;
+  repo: string;
+  number: number;
+};
+
+/** @internal */
+export const CreatePostGenerationPullRequest$outboundSchema: z.ZodMiniType<
+  CreatePostGenerationPullRequest$Outbound,
+  CreatePostGenerationPullRequest
+> = z.object({
+  owner: z.string(),
+  repo: z.string(),
+  number: z.int(),
+});
+
+export function createPostGenerationPullRequestToJSON(
+  createPostGenerationPullRequest: CreatePostGenerationPullRequest,
+): string {
+  return JSON.stringify(
+    CreatePostGenerationPullRequest$outboundSchema.parse(
+      createPostGenerationPullRequest,
+    ),
+  );
+}
+
+/** @internal */
 export type CreatePostGenerationRequest$Outbound = {
   contentType: string;
   lookbackWindow: string;
@@ -465,6 +513,8 @@ export type CreatePostGenerationRequest$Outbound = {
   dataPoints?: DataPoints$Outbound | undefined;
   selectedItems?: SelectedItems$Outbound | undefined;
   timezone?: string | undefined;
+  pullRequest?: CreatePostGenerationPullRequest$Outbound | undefined;
+  brief?: string | undefined;
 };
 
 /** @internal */
@@ -486,6 +536,10 @@ export const CreatePostGenerationRequest$outboundSchema: z.ZodMiniType<
   dataPoints: z.optional(z.lazy(() => DataPoints$outboundSchema)),
   selectedItems: z.optional(z.lazy(() => SelectedItems$outboundSchema)),
   timezone: z.optional(z.string()),
+  pullRequest: z.optional(
+    z.lazy(() => CreatePostGenerationPullRequest$outboundSchema),
+  ),
+  brief: z.optional(z.string()),
 });
 
 export function createPostGenerationRequestToJSON(
@@ -558,6 +612,7 @@ export const CreatePostGenerationJob$inboundSchema: z.ZodMiniType<
   workflowRunId: types.nullable(types.string()),
   postId: types.nullable(types.string()),
   error: types.nullable(types.string()),
+  errorCode: z.optional(z.nullable(types.string())),
   source: CreatePostGenerationSource$inboundSchema,
   createdAt: types.string(),
   updatedAt: types.string(),

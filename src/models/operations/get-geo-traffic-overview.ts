@@ -4,6 +4,20 @@
  */
 
 import * as z from "zod/v4-mini";
+import { ClosedEnum } from "../../types/enums.js";
+
+/**
+ * `exclude` leaves out traffic to sites hosted on Notra Sites.
+ */
+export const GetGeoTrafficOverviewSites = {
+  Exclude: "exclude",
+} as const;
+/**
+ * `exclude` leaves out traffic to sites hosted on Notra Sites.
+ */
+export type GetGeoTrafficOverviewSites = ClosedEnum<
+  typeof GetGeoTrafficOverviewSites
+>;
 
 export type GetGeoTrafficOverviewRequest = {
   projectId: string;
@@ -13,7 +27,24 @@ export type GetGeoTrafficOverviewRequest = {
   days?: number | undefined;
   from?: string | undefined;
   to?: string | undefined;
+  /**
+   * Hostname to filter on, such as www.example.com. Subdomains are included. Omit for every host.
+   */
+  host?: string | undefined;
+  /**
+   * Only count this exact page path, such as /pricing.
+   */
+  path?: string | undefined;
+  /**
+   * `exclude` leaves out traffic to sites hosted on Notra Sites.
+   */
+  sites?: GetGeoTrafficOverviewSites | undefined;
 };
+
+/** @internal */
+export const GetGeoTrafficOverviewSites$outboundSchema: z.ZodMiniEnum<
+  typeof GetGeoTrafficOverviewSites
+> = z.enum(GetGeoTrafficOverviewSites);
 
 /** @internal */
 export type GetGeoTrafficOverviewRequest$Outbound = {
@@ -21,6 +52,9 @@ export type GetGeoTrafficOverviewRequest$Outbound = {
   days?: number | undefined;
   from?: string | undefined;
   to?: string | undefined;
+  host?: string | undefined;
+  path?: string | undefined;
+  sites?: string | undefined;
 };
 
 /** @internal */
@@ -32,6 +66,9 @@ export const GetGeoTrafficOverviewRequest$outboundSchema: z.ZodMiniType<
   days: z.optional(z.int()),
   from: z.optional(z.string()),
   to: z.optional(z.string()),
+  host: z.optional(z.string()),
+  path: z.optional(z.string()),
+  sites: z.optional(GetGeoTrafficOverviewSites$outboundSchema),
 });
 
 export function getGeoTrafficOverviewRequestToJSON(

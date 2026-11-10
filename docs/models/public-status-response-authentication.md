@@ -14,8 +14,8 @@ let value: PublicStatusResponseAuthentication = {
 
 ## Fields
 
-| Field                                     | Type                                      | Required                                  | Description                               |
-| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| `type`                                    | [models.TypeEnum](../models/type-enum.md) | :heavy_check_mark:                        | N/A                                       |
-| `resourceMetadata`                        | *string*                                  | :heavy_check_mark:                        | N/A                                       |
-| `guide`                                   | *string*                                  | :heavy_check_mark:                        | N/A                                       |
+| Field                                                                       | Type                                                                        | Required                                                                    | Description                                                                 |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `type`                                                                      | [models.PublicStatusResponseType](../models/public-status-response-type.md) | :heavy_check_mark:                                                          | N/A                                                                         |
+| `resourceMetadata`                                                          | *string*                                                                    | :heavy_check_mark:                                                          | N/A                                                                         |
+| `guide`                                                                     | *string*                                                                    | :heavy_check_mark:                                                          | N/A                                                                         |
