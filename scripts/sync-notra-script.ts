@@ -1,8 +1,10 @@
 // Pins the notra.js builds this SDK loads by default. The pins come from the
 // reviewed source of usenotra/notra (packages/web-tracker), never from what the
 // script host happens to serve, and the served files must match them exactly.
-// usenotra/notra is private, so GH_TOKEN needs read access to its contents.
-// Usage: GH_TOKEN=$(gh auth token) bun scripts/sync-notra-script.ts [git ref]
+// usenotra/notra is private. Locally, GH_TOKEN reads it:
+//   GH_TOKEN=$(gh auth token) bun scripts/sync-notra-script.ts [git ref]
+// In CI, a separate job without dependencies reads the four values and passes
+// them in as TRACKER_* environment variables, so no token reaches this script.
 import { createHash } from "node:crypto";
 
 import { SCRIPT_HOST } from "../src/tracking/script/constants.js";
@@ -11,23 +13,30 @@ import type { NotraScriptRelease } from "../src/tracking/script/types.js";
 const RELEASES_FILE = new URL("../src/tracking/script/releases.ts", import.meta.url);
 const ref = process.argv[2] ?? "main";
 const SOURCE_URL = `https://api.github.com/repos/usenotra/notra/contents/packages/web-tracker/src/generated/script.ts?ref=${encodeURIComponent(ref)}`;
-const token = process.env["GH_TOKEN"] ?? process.env["GITHUB_TOKEN"];
-if (!token) {
-  throw new Error("Set GH_TOKEN to a token that can read usenotra/notra, e.g. GH_TOKEN=$(gh auth token)");
+const NAMES = ["TRACKER_SCRIPT_VERSION", "TRACKER_SCRIPT_INTEGRITY", "TRACKER_PLUS_SCRIPT_VERSION", "TRACKER_PLUS_SCRIPT_INTEGRITY"] as const;
+const FORMAT = { VERSION: /^[0-9a-f]{12}$/, INTEGRITY: /^sha384-[A-Za-z0-9+/]{64}$/ };
+
+async function readSource(): Promise<string> {
+  const token = process.env["GH_TOKEN"] ?? process.env["GITHUB_TOKEN"];
+  if (!token) {
+    throw new Error("Set GH_TOKEN to a token that can read usenotra/notra, e.g. GH_TOKEN=$(gh auth token)");
+  }
+  const source = await fetch(SOURCE_URL, {
+    headers: { Accept: "application/vnd.github.raw+json", Authorization: `Bearer ${token}`, "X-GitHub-Api-Version": "2022-11-28" },
+  });
+  if (!source.ok) {
+    throw new Error(`${SOURCE_URL}: HTTP ${source.status}`);
+  }
+  return source.text();
 }
 
-const source = await fetch(SOURCE_URL, {
-  headers: { Accept: "application/vnd.github.raw+json", Authorization: `Bearer ${token}`, "X-GitHub-Api-Version": "2022-11-28" },
-});
-if (!source.ok) {
-  throw new Error(`${SOURCE_URL}: HTTP ${source.status}`);
-}
-const module = await source.text();
+const fromEnv = NAMES.every((name) => process.env[name]);
+const module = fromEnv ? "" : await readSource();
 
-function constant(name: string): string {
-  const value = new RegExp(`export const ${name} = "([^"]+)";`).exec(module)?.[1];
-  if (!value) {
-    throw new Error(`${name} is missing from ${SOURCE_URL}`);
+function constant(name: (typeof NAMES)[number]): string {
+  const value = fromEnv ? process.env[name] : new RegExp(`export const ${name} = "([^"]+)";`).exec(module)?.[1];
+  if (!(value && FORMAT[name.endsWith("VERSION") ? "VERSION" : "INTEGRITY"].test(value))) {
+    throw new Error(`${name} is missing or malformed`);
   }
   return value;
 }
@@ -66,4 +75,4 @@ import type { NotraScriptRelease } from "./types.js";
 ${render("NOTRA_SCRIPT_RELEASE", release)}
 ${render("NOTRA_SCRIPT_PLUS_RELEASE", plusRelease)}`
 );
-console.log(`Pinned ${release.file} and ${plusRelease.file} from usenotra/notra@${ref}`);
+console.log(`Pinned ${release.file} and ${plusRelease.file} from usenotra/notra${fromEnv ? "" : `@${ref}`}`);

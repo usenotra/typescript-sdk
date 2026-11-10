@@ -19,6 +19,8 @@ GH_TOKEN=$(gh auth token) bun run sync
 2. `scripts/sync-notra-script.ts` pins the notra.js builds from the reviewed source of usenotra/notra (`packages/web-tracker`) and checks that `static.usenotra.com` serves exactly those bytes. It refuses to pin anything else.
 3. `scripts/generate.ts` writes `src/generated/schema.ts` (types, via openapi-typescript), `src/generated/api.ts` (one class per API tag, one method per `operationId`) and `docs/API.md`.
 
+In CI the pins come from a separate `pins` job: it holds the only credential (`NOTRA_REPO_TOKEN`, read-only Contents on usenotra/notra, in the `notra-source` environment restricted to `main`), checks out and installs nothing, and passes the four public values to the sync job, which has no token.
+
 A test fails when the generated files don't match the spec, so CI catches a forgotten `bun run generate`. The Sync workflow runs this every day. When something changed it bumps the version (`scripts/bump-version.ts`: minor for API changes, patch for new notra.js pins) and opens a pull request; merging it stages the release on npm.
 
 Hand-written code:
