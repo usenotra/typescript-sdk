@@ -39,13 +39,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.NOTRA_REPO_TOKEN }}
 
-      - name: Check for changes
+      # A new version makes merging the PR publish it: minor for API changes,
+      # patch for new notra.js pins.
+      - name: Check for changes and bump the version
         id: diff
         run: |
-          if git diff --quiet; then
+          VERSION="$(bun scripts/bump-version.ts)"
+          if [ -z "$VERSION" ]; then
             echo changed=false >> "$GITHUB_OUTPUT"
           else
             echo changed=true >> "$GITHUB_OUTPUT"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
             git diff --stat
           fi
 
@@ -67,11 +71,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git switch -c "$BRANCH"
-          git add spec src/generated src/tracking/script/releases.ts docs/API.md
-          git commit -m "chore: sync the API spec and notra.js pins"
+          git add spec src/generated src/tracking/script/releases.ts docs/API.md package.json src/version.ts CHANGELOG.md
+          git commit -m "chore: release ${{ steps.diff.outputs.version }} with the synced API spec and notra.js pins"
           git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$BRANCH"
           # Only an open PR counts: a closed or merged one from earlier today needs a new PR.
           OPEN="$(gh pr list --head "$BRANCH" --state open --json number --jq length)"
           [ "$OPEN" != "0" ] || gh pr create --base main --head "$BRANCH" \
-            --title "chore: sync the API spec and notra.js pins" \
-            --body "Daily sync from https://api.usenotra.com/openapi.json and usenotra/notra's packages/web-tracker. Typecheck, lint, tests and build passed in the sync run."
+            --title "chore: release ${{ steps.diff.outputs.version }} with the synced API spec and notra.js pins" \
+            --body "Daily sync from https://api.usenotra.com/openapi.json and usenotra/notra's packages/web-tracker, released as ${{ steps.diff.outputs.version }}. Merging stages the release on npm; approve it with npm stage approve. Typecheck, lint, tests and build passed in the sync run."
