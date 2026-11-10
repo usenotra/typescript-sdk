@@ -31,12 +31,12 @@ export class NotraStream<T> implements AsyncIterable<T> {
     if (!body) {
       return;
     }
-    const lines = this.#format === "sse" ? sseData(readLines(body)) : readLines(body);
-    for await (const line of lines) {
-      if (line.trim() === "" || line === "[DONE]") {
-        continue;
+    // Each network chunk is parsed synchronously; only finished events are yielded.
+    const parser = new LineParser(this.#format);
+    for await (const payloads of readChunks(body, parser)) {
+      for (const payload of payloads) {
+        yield JSON.parse(payload) as T;
       }
-      yield JSON.parse(line) as T;
     }
   }
 
@@ -48,8 +48,44 @@ export class NotraStream<T> implements AsyncIterable<T> {
   }
 }
 
-/** Splits a byte stream into lines on LF, CRLF or CR, as SSE allows. */
-async function* readLines(body: ReadableStream<Uint8Array>): AsyncGenerator<string> {
+/** Turns lines into JSON payloads: one per NDJSON line, or one per server-sent event. */
+class LineParser {
+  readonly #sse: boolean;
+  #data: string[] = [];
+
+  constructor(format: StreamFormat) {
+    this.#sse = format === "sse";
+  }
+
+  line(line: string, out: string[]): void {
+    if (!this.#sse) {
+      if (line.trim() !== "") {
+        out.push(line);
+      }
+      return;
+    }
+    if (line === "") {
+      this.end(out);
+    } else if (line.startsWith("data:")) {
+      this.#data.push(line.slice(line.startsWith("data: ") ? 6 : 5));
+    }
+  }
+
+  /** Emits a pending event, at a blank line or the end of the stream. */
+  end(out: string[]): void {
+    if (this.#data.length === 0) {
+      return;
+    }
+    const payload = this.#data.join("\n");
+    this.#data = [];
+    if (payload.trim() !== "" && payload !== "[DONE]") {
+      out.push(payload);
+    }
+  }
+}
+
+/** Reads the body and yields the payloads each chunk completes. Lines end on LF, CRLF or CR. */
+async function* readChunks(body: ReadableStream<Uint8Array>, parser: LineParser): AsyncGenerator<string[]> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   const newline = /\r\n?|\n/g;
@@ -69,18 +105,27 @@ async function* readLines(body: ReadableStream<Uint8Array>): AsyncGenerator<stri
         buffered = buffered.slice(1);
       }
       afterCarriageReturn = false;
+      const out: string[] = [];
       let start = 0;
       newline.lastIndex = 0;
       for (let match = newline.exec(buffered); match; match = newline.exec(buffered)) {
-        yield buffered.slice(start, match.index);
+        parser.line(buffered.slice(start, match.index), out);
         start = match.index + match[0].length;
         afterCarriageReturn = match[0] === "\r" && start === buffered.length;
       }
       buffered = buffered.slice(start);
+      if (out.length > 0) {
+        yield out;
+      }
     }
+    const out: string[] = [];
     buffered += decoder.decode();
     if (buffered) {
-      yield buffered;
+      parser.line(buffered, out);
+    }
+    parser.end(out);
+    if (out.length > 0) {
+      yield out;
     }
   } finally {
     // Stopping early (break, return or a parse error) closes the connection.
@@ -88,23 +133,5 @@ async function* readLines(body: ReadableStream<Uint8Array>): AsyncGenerator<stri
       await reader.cancel().catch(() => undefined);
     }
     reader.releaseLock();
-  }
-}
-
-/** The `data:` payload of each server-sent event; multi-line data is joined. */
-async function* sseData(lines: AsyncGenerator<string>): AsyncGenerator<string> {
-  let data: string[] = [];
-  for await (const line of lines) {
-    if (line === "") {
-      if (data.length > 0) {
-        yield data.join("\n");
-        data = [];
-      }
-    } else if (line.startsWith("data:")) {
-      data.push(line.slice(line.startsWith("data: ") ? 6 : 5));
-    }
-  }
-  if (data.length > 0) {
-    yield data.join("\n");
   }
 }
