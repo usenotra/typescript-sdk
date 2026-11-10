@@ -1,0 +1,103 @@
+name: Publish package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - package.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify package
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.version.outputs.publish }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+
+      - name: Check version is unpublished
+        id: version
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [ -n "$(npm view "@usenotra/sdk@$VERSION" version 2>/dev/null)" ]; then
+            echo "@usenotra/sdk@$VERSION is already on npm, skipping."
+            echo publish=false >> "$GITHUB_OUTPUT"
+          else
+            echo "Publishing @usenotra/sdk@$VERSION."
+            echo publish=true >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Bun
+        if: steps.version.outputs.publish == 'true'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.4
+
+      - name: Install dependencies
+        if: steps.version.outputs.publish == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck, lint, test and build
+        if: steps.version.outputs.publish == 'true'
+        run: |
+          bun run check-types
+          bun run lint
+          bun run test
+          bun run build
+
+      - name: Pack
+        if: steps.version.outputs.publish == 'true'
+        run: bun pm pack --filename "$RUNNER_TEMP/sdk.tgz"
+
+      - name: Upload tarball
+        if: steps.version.outputs.publish == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sdk-tarball
+          path: ${{ runner.temp }}/sdk.tgz
+          retention-days: 1
+
+  publish:
+    name: Publish to npm
+    needs: verify
+    if: needs.verify.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          check-latest: true
+          registry-url: https://registry.npmjs.org
+
+      # No checkout or rebuild: publish exactly the tarball verify tested.
+      - name: Download tarball
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: sdk-tarball
+
+      - name: Install npm with staged publishing
+        run: npm install -g npm@12.2.0
+
+      - name: Stage publish
+        run: npm stage publish ./sdk.tgz --provenance --access public

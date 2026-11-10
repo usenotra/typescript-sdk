@@ -1,0 +1,171 @@
+import { classifyRequest } from "./classify.js";
+import {
+  DEFAULT_TAG_PATHS,
+  TAG_LOOP_GUARD_HEADER,
+  TAG_LOOP_GUARD_VALUE,
+  TAG_STRIPPED_RESPONSE_HEADER_PREFIXES,
+  TAG_STRIPPED_RESPONSE_HEADERS,
+  TAGGABLE_CONTENT_TYPES,
+  TAGGABLE_MARKDOWN_CONTENT_TYPES,
+  TAGGABLE_HTML_CONTENT_TYPES,
+} from "./constants.js";
+import { matchesAnyRule, shouldTrackRequest } from "./exclude.js";
+import { tagHtmlLinks } from "./html.js";
+import { getJourneyId, mintJourneyId, tagMarkdownLinks } from "./markdown.js";
+import { reportGeoError } from "./send.js";
+import type {
+  GeoExcludeRule,
+  GeoTagLinksConfig,
+  GeoTagLinksOption,
+  GeoTagMode,
+  GeoTagResponseOptions,
+} from "./types.js";
+
+export function resolveTagLinksConfig(
+  option: GeoTagLinksOption | undefined
+): GeoTagLinksConfig | null {
+  if (!option) {
+    return null;
+  }
+  if (option === true) {
+    return {};
+  }
+  return option;
+}
+
+function passesSharedGates(request: Request): boolean {
+  if (request.headers.has(TAG_LOOP_GUARD_HEADER)) {
+    return false;
+  }
+  if (request.method.toUpperCase() !== "GET") {
+    return false;
+  }
+  return classifyRequest(request.headers) !== null;
+}
+
+export function shouldTagRequest(
+  request: Request,
+  url: URL,
+  config: GeoTagLinksConfig
+): boolean {
+  if (!passesSharedGates(request)) {
+    return false;
+  }
+  return matchesAnyRule(request, url, config.paths ?? DEFAULT_TAG_PATHS);
+}
+
+export function resolveTagMode(
+  request: Request,
+  url: URL,
+  config: GeoTagLinksConfig,
+  exclude?: GeoExcludeRule[] | undefined
+): GeoTagMode | null {
+  if (!passesSharedGates(request)) {
+    return null;
+  }
+  if (matchesAnyRule(request, url, config.paths ?? DEFAULT_TAG_PATHS)) {
+    return "markdown";
+  }
+  if (!config.html) {
+    return null;
+  }
+  if (!shouldTrackRequest(request, url, exclude)) {
+    return null;
+  }
+  return "html";
+}
+
+function isTaggableContentType(
+  value: string | null,
+  allowed: readonly string[]
+): boolean {
+  if (!value) {
+    return false;
+  }
+  const normalized = value.toLowerCase();
+  return allowed.some((type) => normalized.includes(type));
+}
+
+function taggedHeaders(source: Headers): Headers {
+  const headers = new Headers(source);
+
+  for (const name of TAG_STRIPPED_RESPONSE_HEADERS) {
+    headers.delete(name);
+  }
+
+  for (const name of Array.from(headers.keys())) {
+    const isControlHeader = TAG_STRIPPED_RESPONSE_HEADER_PREFIXES.some(
+      (prefix) => name.startsWith(prefix)
+    );
+    if (isControlHeader) {
+      headers.delete(name);
+    }
+  }
+
+  return headers;
+}
+
+export async function tagMarkdownResponse(
+  request: Request,
+  config: GeoTagLinksConfig,
+  options: GeoTagResponseOptions = {}
+): Promise<Response | undefined> {
+  try {
+    const url = new URL(request.url);
+    const mode = resolveTagMode(request, url, config, options.exclude);
+    if (!mode) {
+      return;
+    }
+
+    const journeyId = getJourneyId(url) ?? mintJourneyId();
+    const headers = new Headers(request.headers);
+    headers.set(TAG_LOOP_GUARD_HEADER, options.guard ?? TAG_LOOP_GUARD_VALUE);
+
+    const send = options.fetch ?? globalThis.fetch;
+    const origin = await send(request.url, { method: "GET", headers });
+
+    // The route already ran for this fetch; answering with it avoids running it twice.
+    const untouched = () =>
+      new Response(origin.body, {
+        status: origin.status,
+        statusText: origin.statusText,
+        headers: taggedHeaders(origin.headers),
+      });
+    if (!origin.ok) {
+      return untouched();
+    }
+
+    const contentType = origin.headers.get("content-type");
+    // HTML mode is a normal page fetch: only real Markdown is rewritten, never text/plain.
+    const isMarkdownBody = isTaggableContentType(
+      contentType,
+      mode === "markdown" ? TAGGABLE_CONTENT_TYPES : TAGGABLE_MARKDOWN_CONTENT_TYPES
+    );
+    const isHtmlBody =
+      mode === "html" &&
+      isTaggableContentType(contentType, TAGGABLE_HTML_CONTENT_TYPES);
+    if (!(isMarkdownBody || isHtmlBody)) {
+      return untouched();
+    }
+
+    const body = await origin.text();
+    const host = config.host ?? url.hostname;
+    const tagged = isMarkdownBody
+      ? tagMarkdownLinks(body, journeyId, { host })
+      : tagHtmlLinks(body, journeyId, { host });
+
+    // The body carries this visitor's journey id: never cache or share it.
+    const taggedResponseHeaders = taggedHeaders(origin.headers);
+    taggedResponseHeaders.delete("etag");
+    taggedResponseHeaders.delete("last-modified");
+    taggedResponseHeaders.set("cache-control", "private, no-store");
+    return new Response(tagged, {
+      status: origin.status,
+      statusText: origin.statusText,
+      headers: taggedResponseHeaders,
+    });
+  } catch (error) {
+    reportGeoError(options.onError, error);
+    return;
+  }
+}

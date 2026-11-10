@@ -1,22 +1,19 @@
-import globals from "globals";
 import pluginJs from "@eslint/js";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { files: ["**/*.{js,mjs,cjs,ts}"] },
-  { languageOptions: { globals: globals.browser } },
+  { ignores: ["dist", ".tshy", ".tshy-build", "src/generated"] },
+  { files: ["**/*.{js,mjs,cjs,ts,tsx}"] },
+  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
     rules: {
-      "no-constant-condition": "off",
-      "no-useless-escape": "off",
-      // Handled by typescript compiler
+      // The compiler checks these.
       "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-empty-object-type": "off",
-      "@typescript-eslint/no-namespace": "off",
+      "no-undef": "off",
     },
   },
 ];
