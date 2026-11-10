@@ -10,9 +10,8 @@ import {
 } from "./link-target.js";
 import type { TagMarkdownLinksOptions } from "./types.js";
 
-const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
-const FENCE_CLOSE = /^ {0,3}(`{3,}|~{3,})[ \t]*\r?$/;
-const LINES = /[^\n]*\n|[^\n]+$/g;
+/** A fence line: marker and the rest of the line (info string or trailing spaces). */
+const FENCE_LINE = /^ {0,3}(`{3,}|~{3,})(.*)$/gm;
 const REFERENCE_LINK = /^([ \t]{0,3}\[[^\]]+\]:[ \t]*)(\S+)/gm;
 const BASE64_URL_UNSAFE = /[+/]/g;
 const BASE64_PADDING = /=+$/;
@@ -61,6 +60,12 @@ export function getJourneyId(request: Request | URL | string): string | null {
   return value;
 }
 
+/** Markdown whitespace: space, tab, line feed, form feed, carriage return. */
+function isSpace(text: string, index: number): boolean {
+  const code = text.charCodeAt(index);
+  return code === 32 || (code >= 9 && code <= 13);
+}
+
 /** Whether the character at `index` is escaped by an odd run of backslashes. */
 function isEscaped(text: string, index: number): boolean {
   let backslashes = 0;
@@ -107,7 +112,7 @@ function destinationEnd(text: string, start: number): number {
       cursor += 2;
       continue;
     }
-    if (char === undefined || char.trim() === "") {
+    if (char === undefined || isSpace(text, cursor)) {
       break;
     }
     if (char === "(") {
@@ -148,7 +153,7 @@ function tagText(
     }
 
     let cursor = labelEndIndex + 2;
-    while (text[cursor]?.trim() === "") {
+    while (isSpace(text, cursor)) {
       cursor += 1;
     }
 
@@ -160,7 +165,7 @@ function tagText(
     }
 
     const targetEnd = cursor;
-    while (text[cursor]?.trim() === "") {
+    while (isSpace(text, cursor)) {
       cursor += 1;
     }
 
@@ -177,7 +182,7 @@ function tagText(
 
       cursor += 1;
       titleEnd = cursor;
-      while (text[cursor]?.trim() === "") {
+      while (isSpace(text, cursor)) {
         cursor += 1;
       }
     }
@@ -223,24 +228,19 @@ function tagText(
 function splitInlineCode(text: string): Array<{ code: boolean; text: string }> {
   const parts: Array<{ code: boolean; text: string }> = [];
   let start = 0;
-  let index = 0;
-  while (index < text.length) {
-    if (text[index] !== "`" || isEscaped(text, index)) {
-      index += 1;
-      continue;
-    }
+  let index = text.indexOf("`");
+  while (index !== -1) {
     let run = index;
     while (text[run] === "`") {
       run += 1;
     }
+    if (isEscaped(text, index)) {
+      index = text.indexOf("`", index + 1);
+      continue;
+    }
     const length = run - index;
-    let close = run;
     let end = -1;
-    while (close < text.length) {
-      if (text[close] !== "`") {
-        close += 1;
-        continue;
-      }
+    for (let close = text.indexOf("`", run); close !== -1; ) {
       let closeRun = close;
       while (text[closeRun] === "`") {
         closeRun += 1;
@@ -249,15 +249,15 @@ function splitInlineCode(text: string): Array<{ code: boolean; text: string }> {
         end = closeRun;
         break;
       }
-      close = closeRun;
+      close = text.indexOf("`", closeRun);
     }
     if (end === -1) {
-      index = run;
+      index = text.indexOf("`", run);
       continue;
     }
     parts.push({ code: false, text: text.slice(start, index) }, { code: true, text: text.slice(index, end) });
     start = end;
-    index = end;
+    index = text.indexOf("`", end);
   }
   parts.push({ code: false, text: text.slice(start) });
   return parts;
@@ -266,30 +266,29 @@ function splitInlineCode(text: string): Array<{ code: boolean; text: string }> {
 /** Splits Markdown into fenced code blocks and the rest; an unclosed fence runs to the end. */
 function splitFences(markdown: string): Array<{ code: boolean; text: string }> {
   const parts: Array<{ code: boolean; text: string }> = [];
-  let buffer = "";
-  let fence: string | null = null;
-  for (const line of markdown.match(LINES) ?? []) {
-    if (fence === null) {
-      const open = FENCE_OPEN.exec(line)?.[1];
-      // A backtick fence's info string can't contain backticks.
-      if (open && !(open.startsWith("`") && line.slice(line.indexOf(open) + open.length).includes("`"))) {
-        parts.push({ code: false, text: buffer });
-        buffer = line;
-        fence = open;
-      } else {
-        buffer += line;
-      }
+  const fenceLine = new RegExp(FENCE_LINE);
+  let start = 0;
+  for (let open = fenceLine.exec(markdown); open; open = fenceLine.exec(markdown)) {
+    const marker = open[1] ?? "";
+    // A backtick fence's info string can't contain backticks.
+    if (marker.startsWith("`") && (open[2] ?? "").includes("`")) {
       continue;
     }
-    buffer += line;
-    const close = FENCE_CLOSE.exec(line.endsWith("\n") ? line.slice(0, -1) : line)?.[1];
-    if (close && close[0] === fence[0] && close.length >= fence.length) {
-      parts.push({ code: true, text: buffer });
-      buffer = "";
-      fence = null;
+    let end = markdown.length;
+    for (let close = fenceLine.exec(markdown); close; close = fenceLine.exec(markdown)) {
+      const closing = close[1] ?? "";
+      if (closing[0] === marker[0] && closing.length >= marker.length && (close[2] ?? "").trim() === "") {
+        end = close.index + close[0].length;
+        break;
+      }
+    }
+    parts.push({ code: false, text: markdown.slice(start, open.index) }, { code: true, text: markdown.slice(open.index, end) });
+    start = end;
+    if (end === markdown.length) {
+      break;
     }
   }
-  parts.push({ code: fence !== null, text: buffer });
+  parts.push({ code: false, text: markdown.slice(start) });
   return parts;
 }
 

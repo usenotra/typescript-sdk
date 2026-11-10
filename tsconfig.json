@@ -7,8 +7,6 @@
     "jsx": "react-jsx",
     "types": [],
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "strict": true,
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,

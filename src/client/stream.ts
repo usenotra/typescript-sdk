@@ -52,9 +52,10 @@ export class NotraStream<T> implements AsyncIterable<T> {
 async function* readLines(body: ReadableStream<Uint8Array>): AsyncGenerator<string> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
+  const newline = /\r\n?|\n/g;
   let buffered = "";
   let done = false;
-  // A CR ended the last line; skip the LF if the next chunk starts with one.
+  // A chunk ended on CR; skip the LF if the next chunk starts with one.
   let afterCarriageReturn = false;
   try {
     while (true) {
@@ -69,20 +70,11 @@ async function* readLines(body: ReadableStream<Uint8Array>): AsyncGenerator<stri
       }
       afterCarriageReturn = false;
       let start = 0;
-      for (let index = 0; index < buffered.length; index += 1) {
-        const char = buffered[index];
-        if (char !== "\n" && char !== "\r") {
-          continue;
-        }
-        yield buffered.slice(start, index);
-        if (char === "\r") {
-          if (index + 1 === buffered.length) {
-            afterCarriageReturn = true;
-          } else if (buffered[index + 1] === "\n") {
-            index += 1;
-          }
-        }
-        start = index + 1;
+      newline.lastIndex = 0;
+      for (let match = newline.exec(buffered); match; match = newline.exec(buffered)) {
+        yield buffered.slice(start, match.index);
+        start = match.index + match[0].length;
+        afterCarriageReturn = match[0] === "\r" && start === buffered.length;
       }
       buffered = buffered.slice(start);
     }
