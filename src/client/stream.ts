@@ -59,7 +59,7 @@ class LineParser {
 
   line(line: string, out: string[]): void {
     if (!this.#sse) {
-      if (line.trim() !== "") {
+      if (line.trim() !== "" && line !== "[DONE]") {
         out.push(line);
       }
       return;

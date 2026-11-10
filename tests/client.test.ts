@@ -111,7 +111,7 @@ test("streams parse SSE and NDJSON across chunks, and stopping early closes the 
     new Response(chunked('data: {"type":"start"}\r', '\n\r\ndata: {"type":"text-del', 'ta","delta":"Hi"}\r\rdata: [DONE]\n\n'), {
       headers: { "x-chat-id": "c1" },
     }),
-    new Response(chunked('{"type":"a"}\n{"ty', 'pe":"b"}')),
+    new Response(chunked('{"type":"a"}\n{"ty', 'pe":"b"}\n[DONE]')),
     new Response(endless),
   ]);
 
