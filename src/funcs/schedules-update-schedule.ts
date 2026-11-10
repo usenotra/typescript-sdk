@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Update a schedule
  *
  * @remarks
- * Replaces the schedule. Send the full schedule body; fields that are omitted are not preserved from the existing schedule.
+ * Updates only the fields you send; everything else keeps its current value. targets and outputConfig merge field by field, sourceConfig.cron is replaced as a whole, and null clears an outputConfig field. The updated schedule is validated like a new one, so it must keep at least one GitHub or Linear integration.
  */
 export function schedulesUpdateSchedule(
   client: NotraCore,

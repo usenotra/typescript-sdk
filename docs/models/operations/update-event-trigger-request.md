@@ -10,9 +10,7 @@ let value: UpdateEventTriggerRequest = {
   body: {
     sourceType: "github_webhook",
     sourceConfig: {
-      eventTypes: [
-        "push",
-      ],
+      eventTypes: [],
     },
     targets: {
       repositoryIds: [
@@ -20,7 +18,7 @@ let value: UpdateEventTriggerRequest = {
         "<value 2>",
       ],
     },
-    outputType: "changelog",
+    outputType: "blog_post",
     enabled: false,
   },
 };

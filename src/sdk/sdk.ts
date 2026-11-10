@@ -12,7 +12,9 @@ import { EventTriggers } from "./event-triggers.js";
 import { Feedback } from "./feedback.js";
 import { Geo } from "./geo.js";
 import { Schedules } from "./schedules.js";
+import { Sites } from "./sites.js";
 import { Skills } from "./skills.js";
+import { Webhooks } from "./webhooks.js";
 
 export class Notra extends ClientSDK {
   private _discovery?: Discovery;
@@ -23,6 +25,11 @@ export class Notra extends ClientSDK {
   private _content?: Content;
   get content(): Content {
     return (this._content ??= new Content(this._options));
+  }
+
+  private _webhooks?: Webhooks;
+  get webhooks(): Webhooks {
+    return (this._webhooks ??= new Webhooks(this._options));
   }
 
   private _schedules?: Schedules;
@@ -43,6 +50,11 @@ export class Notra extends ClientSDK {
   private _skills?: Skills;
   get skills(): Skills {
     return (this._skills ??= new Skills(this._options));
+  }
+
+  private _sites?: Sites;
+  get sites(): Sites {
+    return (this._sites ??= new Sites(this._options));
   }
 
   private _feedback?: Feedback;

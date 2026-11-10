@@ -13,6 +13,18 @@ export type GeoIngestSetupResponseSnippets = {
   next: string;
   nuxt: string;
   netlify: string;
+  tanstack: string;
+  astro: string;
+  sveltekit: string;
+  reactRouter: string;
+};
+
+/**
+ * Endpoints a Vercel log drain or Cloudflare Logpush job posts request logs to, authenticated with the tracking token.
+ */
+export type GeoIngestSetupResponseDrainUrls = {
+  vercel: string;
+  cloudflare: string;
 };
 
 export type GeoIngestSetupResponseOrganization = {
@@ -20,6 +32,50 @@ export type GeoIngestSetupResponseOrganization = {
   slug: string;
   name: string;
   logo: string | null;
+};
+
+/**
+ * notra.js: the auto-updating URL and the current build pinned with Subresource Integrity. Only present when web analytics is enabled for the workspace.
+ */
+export type GeoIngestSetupResponseWebScript = {
+  /**
+   * Always serves the latest build.
+   */
+  url: string;
+  /**
+   * Serves exactly this build forever; it never updates.
+   */
+  pinnedUrl: string;
+  /**
+   * Subresource Integrity value for pinnedUrl (sha384). Use it with crossorigin="anonymous".
+   */
+  integrity: string;
+  /**
+   * Where page views go when the script loads from Notra's script host; set it as the tag's data-api.
+   */
+  collectUrl?: string | undefined;
+};
+
+/**
+ * notra.plus.js (notra.js with JavaScript error reporting), auto-updating and pinned. Only present when web analytics is enabled for the workspace.
+ */
+export type GeoIngestSetupResponseWebPlusScript = {
+  /**
+   * Always serves the latest build.
+   */
+  url: string;
+  /**
+   * Serves exactly this build forever; it never updates.
+   */
+  pinnedUrl: string;
+  /**
+   * Subresource Integrity value for pinnedUrl (sha384). Use it with crossorigin="anonymous".
+   */
+  integrity: string;
+  /**
+   * Where page views go when the script loads from Notra's script host; set it as the tag's data-api.
+   */
+  collectUrl?: string | undefined;
 };
 
 export type GeoIngestSetupResponse = {
@@ -32,7 +88,27 @@ export type GeoIngestSetupResponse = {
    */
   snippet: string;
   snippets: GeoIngestSetupResponseSnippets;
+  /**
+   * Endpoints a Vercel log drain or Cloudflare Logpush job posts request logs to, authenticated with the tracking token.
+   */
+  drainUrls: GeoIngestSetupResponseDrainUrls;
   organization: GeoIngestSetupResponseOrganization;
+  /**
+   * Public key for the notra.js browser script, bound to one project. Safe to put in page HTML; it only records human page views on that project's tracked domains and survives token rotation. Only present when web analytics is enabled for the workspace and it has a project.
+   */
+  webKey?: string | undefined;
+  /**
+   * Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace.
+   */
+  webSnippet?: string | undefined;
+  /**
+   * notra.js: the auto-updating URL and the current build pinned with Subresource Integrity. Only present when web analytics is enabled for the workspace.
+   */
+  webScript?: GeoIngestSetupResponseWebScript | undefined;
+  /**
+   * notra.plus.js (notra.js with JavaScript error reporting), auto-updating and pinned. Only present when web analytics is enabled for the workspace.
+   */
+  webPlusScript?: GeoIngestSetupResponseWebPlusScript | undefined;
 };
 
 /** @internal */
@@ -43,6 +119,10 @@ export const GeoIngestSetupResponseSnippets$inboundSchema: z.ZodMiniType<
   next: types.string(),
   nuxt: types.string(),
   netlify: types.string(),
+  tanstack: types.string(),
+  astro: types.string(),
+  sveltekit: types.string(),
+  reactRouter: types.string(),
 });
 
 export function geoIngestSetupResponseSnippetsFromJSON(
@@ -52,6 +132,25 @@ export function geoIngestSetupResponseSnippetsFromJSON(
     jsonString,
     (x) => GeoIngestSetupResponseSnippets$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'GeoIngestSetupResponseSnippets' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoIngestSetupResponseDrainUrls$inboundSchema: z.ZodMiniType<
+  GeoIngestSetupResponseDrainUrls,
+  unknown
+> = z.object({
+  vercel: types.string(),
+  cloudflare: types.string(),
+});
+
+export function geoIngestSetupResponseDrainUrlsFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoIngestSetupResponseDrainUrls, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoIngestSetupResponseDrainUrls$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoIngestSetupResponseDrainUrls' from JSON`,
   );
 }
 
@@ -78,6 +177,49 @@ export function geoIngestSetupResponseOrganizationFromJSON(
 }
 
 /** @internal */
+export const GeoIngestSetupResponseWebScript$inboundSchema: z.ZodMiniType<
+  GeoIngestSetupResponseWebScript,
+  unknown
+> = z.object({
+  url: types.string(),
+  pinnedUrl: types.string(),
+  integrity: types.string(),
+  collectUrl: types.optional(types.string()),
+});
+
+export function geoIngestSetupResponseWebScriptFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoIngestSetupResponseWebScript, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GeoIngestSetupResponseWebScript$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoIngestSetupResponseWebScript' from JSON`,
+  );
+}
+
+/** @internal */
+export const GeoIngestSetupResponseWebPlusScript$inboundSchema: z.ZodMiniType<
+  GeoIngestSetupResponseWebPlusScript,
+  unknown
+> = z.object({
+  url: types.string(),
+  pinnedUrl: types.string(),
+  integrity: types.string(),
+  collectUrl: types.optional(types.string()),
+});
+
+export function geoIngestSetupResponseWebPlusScriptFromJSON(
+  jsonString: string,
+): SafeParseResult<GeoIngestSetupResponseWebPlusScript, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      GeoIngestSetupResponseWebPlusScript$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GeoIngestSetupResponseWebPlusScript' from JSON`,
+  );
+}
+
+/** @internal */
 export const GeoIngestSetupResponse$inboundSchema: z.ZodMiniType<
   GeoIngestSetupResponse,
   unknown
@@ -85,7 +227,16 @@ export const GeoIngestSetupResponse$inboundSchema: z.ZodMiniType<
   ingestUrl: types.string(),
   snippet: types.string(),
   snippets: z.lazy(() => GeoIngestSetupResponseSnippets$inboundSchema),
+  drainUrls: z.lazy(() => GeoIngestSetupResponseDrainUrls$inboundSchema),
   organization: z.lazy(() => GeoIngestSetupResponseOrganization$inboundSchema),
+  webKey: types.optional(types.string()),
+  webSnippet: types.optional(types.string()),
+  webScript: types.optional(
+    z.lazy(() => GeoIngestSetupResponseWebScript$inboundSchema),
+  ),
+  webPlusScript: types.optional(
+    z.lazy(() => GeoIngestSetupResponseWebPlusScript$inboundSchema),
+  ),
 });
 
 export function geoIngestSetupResponseFromJSON(

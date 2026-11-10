@@ -23,6 +23,7 @@ let value: GetPostGenerationResponse = {
     workflowRunId: "<id>",
     postId: "<id>",
     error: "<value>",
+    errorCode: "NO_AVAILABLE_SOURCES",
     source: "api",
     createdAt: "1733970091582",
     updatedAt: "1735666569609",
@@ -46,7 +47,7 @@ let value: GetPostGenerationResponse = {
 
 ## Fields
 
-| Field                                                                                 | Type                                                                                  | Required                                                                              | Description                                                                           |
-| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `job`                                                                                 | [operations.GetPostGenerationJob](../../models/operations/get-post-generation-job.md) | :heavy_check_mark:                                                                    | N/A                                                                                   |
-| `events`                                                                              | [operations.Event](../../models/operations/event.md)[]                                | :heavy_check_mark:                                                                    | N/A                                                                                   |
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `job`                                                                                       | [operations.GetPostGenerationJob](../../models/operations/get-post-generation-job.md)       | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `events`                                                                                    | [operations.GetPostGenerationEvent](../../models/operations/get-post-generation-event.md)[] | :heavy_check_mark:                                                                          | N/A                                                                                         |

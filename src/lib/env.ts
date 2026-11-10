@@ -14,8 +14,14 @@ export interface Env {
 export const envSchema: z.ZodMiniType<Env, unknown> = z.object({
   NOTRA_BEARER_AUTH: z.optional(z.string()),
 
-  NOTRA_DEBUG: z.optional(z.coerce.boolean()),
+  NOTRA_DEBUG: z.optional(z.pipe(z.unknown(), z.transform(parseEnvFlag))),
 });
+
+function parseEnvFlag(value: unknown): boolean {
+  return ["true", "1", "yes", "on"].includes(
+    String(value).trim().toLowerCase(),
+  );
+}
 
 /**
  * Checks for the existence of the Deno global object to determine the environment.

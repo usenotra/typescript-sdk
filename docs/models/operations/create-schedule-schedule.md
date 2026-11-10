@@ -23,19 +23,24 @@ let value: CreateScheduleSchedule = {
   },
   targets: {
     repositoryIds: [
-      "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
+      "<value 1>",
+      "<value 2>",
     ],
   },
-  outputType: "twitter_post",
+  outputType: "blog_post",
   outputConfig: {
     brandVoiceId: "51c2f3aa-efdd-4e28-8e69-23fa2dfd3561",
     instructions:
       "Write a tutorial-style post that walks through one feature shipped in this window, with code samples.",
+    notify: {
+      slack: true,
+      email: false,
+    },
   },
   enabled: false,
   autoPublish: false,
-  createdAt: "1719960250538",
-  updatedAt: "1735625595953",
+  createdAt: "1712328217258",
+  updatedAt: "1735635943804",
   lookbackWindow: "yesterday",
 };
 ```
