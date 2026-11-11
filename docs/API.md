@@ -117,6 +117,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.sites.deleteSiteAuthor()` | `DELETE /v1/sites/{siteId}/authors/{authorId}` | Delete a site author |
 | `notra.sites.importSiteAuthors()` | `POST /v1/sites/{siteId}/authors/import` | Import Notra authors into a site |
 | `notra.sites.updateSiteAuthorPage()` | `PATCH /v1/sites/{siteId}/author-page` | Set the author page layout |
+| `notra.sites.updateSiteSections()` | `PATCH /v1/sites/{siteId}/sections` | Set the blog and changelog paths |
 | `notra.sites.publishSite()` | `POST /v1/sites/{siteId}/publish` | Publish a site's Design changes |
 | `notra.sites.getSite()` | `GET /v1/sites/{siteId}` | Get a Site |
 | `notra.sites.listSiteDeployments()` | `GET /v1/sites/{siteId}/deployments` | List a Site's deployments |

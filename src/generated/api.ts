@@ -293,6 +293,11 @@ export type UpdateSiteAuthorPageParams = Prettify<operations["updateSiteAuthorPa
 /** What `sites.updateSiteAuthorPage()` resolves to. */
 export type UpdateSiteAuthorPageResult = operations["updateSiteAuthorPage"]["responses"][200]["content"]["application/json"];
 
+/** Parameters of `sites.updateSiteSections()`. */
+export type UpdateSiteSectionsParams = Prettify<operations["updateSiteSections"]["parameters"]["path"] & { body: operations["updateSiteSections"]["requestBody"]["content"]["application/json"] }>;
+/** What `sites.updateSiteSections()` resolves to. */
+export type UpdateSiteSectionsResult = operations["updateSiteSections"]["responses"][200]["content"]["application/json"];
+
 /** Parameters of `sites.publishSite()`. */
 export type PublishSiteParams = Prettify<operations["publishSite"]["parameters"]["path"] & { body?: NonNullable<operations["publishSite"]["requestBody"]>["content"]["application/json"] }>;
 /** What `sites.publishSite()` resolves to. */
@@ -833,6 +838,7 @@ const OPERATIONS = {
   deleteSiteAuthor: {"method":"DELETE","path":"/v1/sites/{siteId}/authors/{authorId}","pathParams":["siteId","authorId"],"queryParams":["force"],"body":false,"response":"json"},
   importSiteAuthors: {"method":"POST","path":"/v1/sites/{siteId}/authors/import","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   updateSiteAuthorPage: {"method":"PATCH","path":"/v1/sites/{siteId}/author-page","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
+  updateSiteSections: {"method":"PATCH","path":"/v1/sites/{siteId}/sections","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   publishSite: {"method":"POST","path":"/v1/sites/{siteId}/publish","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   getSite: {"method":"GET","path":"/v1/sites/{siteId}","pathParams":["siteId"],"queryParams":[],"body":false,"response":"json"},
   listSiteDeployments: {"method":"GET","path":"/v1/sites/{siteId}/deployments","pathParams":["siteId"],"queryParams":["limit"],"body":false,"response":"json"},
@@ -1673,6 +1679,17 @@ export class SitesResource {
   }
 
   /**
+   * Set the blog and changelog paths
+   *
+   * Sets sections in blog.json: which of the blog and changelog the Site serves, and at which paths. A section left out is turned off. Once a production build with them goes live, they replace the dashboard's Sections setting, and a section that moves or turns off stops answering at its old path, so add redirects for it. Changes are saved as unpublished Design changes to the site's blog.json, the same draft the dashboard's Design tab shows, and go live when published with POST /v1/sites/{siteId}/publish or from the dashboard.
+   *
+   * `PATCH /v1/sites/{siteId}/sections`
+   */
+  updateSiteSections(params: UpdateSiteSectionsParams, options?: RequestOptions): Promise<UpdateSiteSectionsResult> {
+    return this.#transport.call(OPERATIONS.updateSiteSections, params, options) as Promise<UpdateSiteSectionsResult>;
+  }
+
+  /**
    * Publish a site's Design changes
    *
    * Commits the unpublished blog.json changes, with the images they use, to the site's production branch and deploys it, like Publish in the dashboard. Returns 409 with code SITE_HAS_OTHER_CHANGES when other files have unpublished changes, so work staged in the dashboard is never published by accident; publish those from the dashboard.
@@ -1853,6 +1870,8 @@ export class GeoResource {
 
   /**
    * Create a GEO project
+   *
+   * Analyzes the linked brand identity's website and seeds the project with tracked prompts, competitors, conversations and settings, like creating a project in the dashboard. This can take up to a minute. Set startScan to also start scanning, which uses AI credits.
    *
    * `POST /v1/projects`
    */
