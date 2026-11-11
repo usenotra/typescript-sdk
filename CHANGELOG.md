@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- Synced with the latest Notra API spec.
+
 ## 2.0.0
 
 One SDK for everything Notra. See [MIGRATION.md](MIGRATION.md).

@@ -1895,6 +1895,78 @@
           "layout": "stacked"
         }
       },
+      "SiteSectionsResponse": {
+        "type": "object",
+        "properties": {
+          "site": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ]
+          },
+          "sections": {
+            "type": "object",
+            "properties": {
+              "blog": {
+                "type": "string"
+              },
+              "changelog": {
+                "type": "string"
+              }
+            },
+            "description": "The sections blog.json sets with unpublished changes applied. They take over from the dashboard setting once a production build of them goes live."
+          },
+          "liveSections": {
+            "type": "object",
+            "properties": {
+              "blog": {
+                "type": "string"
+              },
+              "changelog": {
+                "type": "string"
+              }
+            },
+            "description": "The paths the live site serves now."
+          },
+          "hasUnpublishedChanges": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "site",
+          "sections",
+          "liveSections",
+          "hasUnpublishedChanges"
+        ]
+      },
+      "PatchSiteSectionsRequest": {
+        "type": "object",
+        "properties": {
+          "blog": {
+            "type": "string",
+            "description": "Path of the blog, like /blog. Omit to turn the blog off.",
+            "example": "/blog"
+          },
+          "changelog": {
+            "type": "string",
+            "description": "Path of the changelog, like /changelog. Omit to turn the changelog off.",
+            "example": "/changelog"
+          }
+        },
+        "example": {
+          "blog": "/blog",
+          "changelog": "/changelog"
+        }
+      },
       "PublishSiteResponse": {
         "type": "object",
         "properties": {
@@ -2067,6 +2139,10 @@
               }
             }
           },
+          "mountsFromConfig": {
+            "type": "boolean",
+            "description": "True when the live build's blog.json sets the sections, so the dashboard can't change them. Change them with PATCH /v1/sites/{siteId}/sections or in blog.json."
+          },
           "previewsEnabled": {
             "type": "boolean"
           },
@@ -2117,6 +2193,7 @@
           "publicOrigin",
           "aliasOrigin",
           "mounts",
+          "mountsFromConfig",
           "previewsEnabled",
           "previewVisibility",
           "smartDeployments",
@@ -3338,6 +3415,10 @@
             "minLength": 1,
             "pattern": "^[A-Za-z0-9_-]{1,100}$",
             "description": "Brand identity to link. Defaults to the organization's default identity."
+          },
+          "startScan": {
+            "type": "boolean",
+            "description": "Turn on recurring scans and start the first one now. Scans use AI credits. Defaults to false, which saves tracking as disabled; enable it later with the settings endpoint."
           }
         },
         "required": [
@@ -11292,7 +11373,7 @@
           },
           "webSnippet": {
             "type": "string",
-            "description": "Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace."
+            "description": "Script tag that installs notra.js with the public key, pinned to the current build with its Subresource Integrity hash and crossorigin=\"anonymous\". Build an auto-updating tag from webScript.url instead if you want new builds without copying the tag again. Only present when web analytics is enabled for the workspace."
           },
           "webScript": {
             "type": "object",
@@ -11455,7 +11536,7 @@
           },
           "webSnippet": {
             "type": "string",
-            "description": "Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace."
+            "description": "Script tag that installs notra.js with the public key, pinned to the current build with its Subresource Integrity hash and crossorigin=\"anonymous\". Build an auto-updating tag from webScript.url instead if you want new builds without copying the tag again. Only present when web analytics is enabled for the workspace."
           },
           "webScript": {
             "type": "object",
@@ -11541,7 +11622,9 @@
                   "plausible_csv",
                   "vercel",
                   "cloudflare",
-                  "cloudflare_rum"
+                  "cloudflare_rum",
+                  "rybbit",
+                  "databuddy"
                 ]
               },
               "until": {
@@ -11707,7 +11790,9 @@
                   "plausible_csv",
                   "vercel",
                   "cloudflare",
-                  "cloudflare_rum"
+                  "cloudflare_rum",
+                  "rybbit",
+                  "databuddy"
                 ]
               },
               "until": {
@@ -12297,7 +12382,9 @@
                     "plausible_csv",
                     "vercel",
                     "cloudflare",
-                    "cloudflare_rum"
+                    "cloudflare_rum",
+                    "rybbit",
+                    "databuddy"
                   ]
                 },
                 "kind": {
@@ -25389,6 +25476,157 @@
         }
       }
     },
+    "/v1/sites/{siteId}/sections": {
+      "patch": {
+        "tags": [
+          "Sites"
+        ],
+        "operationId": "updateSiteSections",
+        "summary": "Set the blog and changelog paths",
+        "description": "Sets sections in blog.json: which of the blog and changelog the Site serves, and at which paths. A section left out is turned off. Once a production build with them goes live, they replace the dashboard's Sections setting, and a section that moves or turns off stops answering at its old path, so add redirects for it. Changes are saved as unpublished Design changes to the site's blog.json, the same draft the dashboard's Design tab shows, and go live when published with POST /v1/sites/{siteId}/publish or from the dashboard.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_-]{1,100}$",
+              "example": "site_8f2kq1"
+            },
+            "required": true,
+            "in": "path",
+            "name": "siteId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchSiteSectionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sections saved as an unpublished change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteSectionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid path params or request body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Site or author not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The site has no blog, blog.json can't be edited as it is, another editor changed it meanwhile, or the author is in use (code SITE_AUTHOR_IN_USE)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded. This endpoint allows 60 requests per 1 minute per API key.",
+            "headers": {
+              "RateLimit-Limit": {
+                "description": "Maximum requests allowed in the current window.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "RateLimit-Remaining": {
+                "description": "Requests remaining in the current window.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "RateLimit-Reset": {
+                "description": "Seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Retry-After": {
+                "description": "Seconds the client should wait before retrying.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Notra Sites or authentication is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "The site's repository didn't answer in time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/sites/{siteId}/publish": {
       "post": {
         "tags": [
@@ -27484,6 +27722,7 @@
         ],
         "operationId": "createProject",
         "summary": "Create a GEO project",
+        "description": "Analyzes the linked brand identity's website and seeds the project with tracked prompts, competitors, conversations and settings, like creating a project in the dashboard. This can take up to a minute. Set startScan to also start scanning, which uses AI credits.",
         "requestBody": {
           "required": true,
           "content": {
