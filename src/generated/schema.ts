@@ -842,6 +842,26 @@ export interface paths {
         patch: operations["updateSiteAuthorPage"];
         trace?: never;
     };
+    "/v1/sites/{siteId}/sections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Set the blog and changelog paths
+         * @description Sets sections in blog.json: which of the blog and changelog the Site serves, and at which paths. A section left out is turned off. Once a production build with them goes live, they replace the dashboard's Sections setting, and a section that moves or turns off stops answering at its old path, so add redirects for it. Changes are saved as unpublished Design changes to the site's blog.json, the same draft the dashboard's Design tab shows, and go live when published with POST /v1/sites/{siteId}/publish or from the dashboard.
+         */
+        patch: operations["updateSiteSections"];
+        trace?: never;
+    };
     "/v1/sites/{siteId}/publish": {
         parameters: {
             query?: never;
@@ -1095,7 +1115,10 @@ export interface paths {
         /** List GEO projects */
         get: operations["listProjects"];
         put?: never;
-        /** Create a GEO project */
+        /**
+         * Create a GEO project
+         * @description Analyzes the linked brand identity's website and seeds the project with tracked prompts, competitors, conversations and settings, like creating a project in the dashboard. This can take up to a minute. Set startScan to also start scanning, which uses AI credits.
+         */
         post: operations["createProject"];
         delete?: never;
         options?: never;
@@ -2172,7 +2195,7 @@ export interface paths {
         };
         /**
          * Get MCP server analytics
-         * @description Usage of your own MCP server, as reported by the `@usenotra/geo` SDK: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
+         * @description Usage of your own MCP server, as reported by `@usenotra/sdk/mcp`: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
          */
         get: operations["getGeoMcpAnalytics"];
         put?: never;
@@ -2271,8 +2294,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get website analytics totals and trend (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
+         * Get website analytics totals and trend
+         * @description Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
          */
         get: operations["getGeoWebAnalytics"];
         put?: never;
@@ -2291,8 +2314,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get website analytics breakdowns (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
+         * Get website analytics breakdowns
+         * @description Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
          */
         get: operations["getGeoWebAnalyticsBreakdowns"];
         put?: never;
@@ -2311,8 +2334,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get website sessions by UTM parameter (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
+         * Get website sessions by UTM parameter
+         * @description Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
          */
         get: operations["getGeoWebAnalyticsUtm"];
         put?: never;
@@ -2331,8 +2354,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get AI journey statistics (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
+         * Get AI journey statistics
+         * @description Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
          */
         get: operations["getGeoTrafficJourneyStats"];
         put?: never;
@@ -2351,8 +2374,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List history imports (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Imports of earlier analytics from Plausible, Cloudflare or Vercel and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
+         * List history imports
+         * @description Imports of earlier analytics from Plausible, Cloudflare or Vercel and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
          */
         get: operations["listGeoAnalyticsImports"];
         put?: never;
@@ -3073,6 +3096,41 @@ export interface components {
             /** @enum {string} */
             layout: "inline" | "stacked";
         };
+        SiteSectionsResponse: {
+            site: {
+                id: string;
+                name: string;
+            };
+            /** @description The sections blog.json sets with unpublished changes applied. They take over from the dashboard setting once a production build of them goes live. */
+            sections: {
+                blog?: string;
+                changelog?: string;
+            };
+            /** @description The paths the live site serves now. */
+            liveSections: {
+                blog?: string;
+                changelog?: string;
+            };
+            hasUnpublishedChanges: boolean;
+        };
+        /**
+         * @example {
+         *       "blog": "/blog",
+         *       "changelog": "/changelog"
+         *     }
+         */
+        PatchSiteSectionsRequest: {
+            /**
+             * @description Path of the blog, like /blog. Omit to turn the blog off.
+             * @example /blog
+             */
+            blog?: string;
+            /**
+             * @description Path of the changelog, like /changelog. Omit to turn the changelog off.
+             * @example /changelog
+             */
+            changelog?: string;
+        };
         PublishSiteResponse: {
             /** @description False when there was nothing to publish. */
             published: boolean;
@@ -3127,6 +3185,8 @@ export interface components {
                 blog?: string;
                 changelog?: string;
             };
+            /** @description True when the live build's blog.json sets the sections, so the dashboard can't change them. Change them with PATCH /v1/sites/{siteId}/sections or in blog.json. */
+            mountsFromConfig: boolean;
             previewsEnabled: boolean;
             /** @enum {string} */
             previewVisibility: "public" | "protected";
@@ -3453,6 +3513,8 @@ export interface components {
             name: string;
             /** @description Brand identity to link. Defaults to the organization's default identity. */
             brandSettingsId?: string;
+            /** @description Turn on recurring scans and start the first one now. Scans use AI credits. Defaults to false, which saves tracking as disabled; enable it later with the settings endpoint. */
+            startScan?: boolean;
         };
         PatchGeoProjectRequest: {
             name?: string;
@@ -5251,7 +5313,7 @@ export interface components {
             };
             /** @description Public key for the notra.js browser script, bound to one project. Safe to put in page HTML; it only records human page views on that project's tracked domains and survives token rotation. Only present when web analytics is enabled for the workspace and it has a project. */
             webKey?: string;
-            /** @description Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace. */
+            /** @description Script tag that installs notra.js with the public key, pinned to the current build with its Subresource Integrity hash and crossorigin="anonymous". Build an auto-updating tag from webScript.url instead if you want new builds without copying the tag again. Only present when web analytics is enabled for the workspace. */
             webSnippet?: string;
             /** @description notra.js: the auto-updating URL and the current build pinned with Subresource Integrity. Only present when web analytics is enabled for the workspace. */
             webScript?: {
@@ -5305,7 +5367,7 @@ export interface components {
             token: string;
             /** @description Public key for the notra.js browser script, bound to one project. Safe to put in page HTML; it only records human page views on that project's tracked domains and survives token rotation. Only present when web analytics is enabled for the workspace and it has a project. */
             webKey?: string;
-            /** @description Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace. */
+            /** @description Script tag that installs notra.js with the public key, pinned to the current build with its Subresource Integrity hash and crossorigin="anonymous". Build an auto-updating tag from webScript.url instead if you want new builds without copying the tag again. Only present when web analytics is enabled for the workspace. */
             webSnippet?: string;
             /** @description notra.js: the auto-updating URL and the current build pinned with Subresource Integrity. Only present when web analytics is enabled for the workspace. */
             webScript?: {
@@ -5336,7 +5398,7 @@ export interface components {
             /** @description Latest completed history import. Days up to `until` come from it; native tracking starts the day after. */
             imported?: {
                 /** @enum {string} */
-                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum";
+                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum" | "rybbit" | "databuddy";
                 /** @description Last imported day. */
                 until: string;
                 /** @description First day Notra tracked natively, when known. */
@@ -5378,7 +5440,7 @@ export interface components {
             /** @description Latest completed history import. Days up to `until` come from it; native tracking starts the day after. */
             imported?: {
                 /** @enum {string} */
-                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum";
+                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum" | "rybbit" | "databuddy";
                 /** @description Last imported day. */
                 until: string;
                 /** @description First day Notra tracked natively, when known. */
@@ -5518,7 +5580,7 @@ export interface components {
                 id: string;
                 projectId: string;
                 /** @enum {string} */
-                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum";
+                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum" | "rybbit" | "databuddy";
                 /**
                  * @description web: page views; geo: AI crawler requests.
                  * @enum {string}
@@ -5632,6 +5694,8 @@ export type PutSiteAuthorRequest = components['schemas']['PutSiteAuthorRequest']
 export type ImportSiteAuthorsResponse = components['schemas']['ImportSiteAuthorsResponse'];
 export type ImportSiteAuthorsRequest = components['schemas']['ImportSiteAuthorsRequest'];
 export type PatchSiteAuthorPageRequest = components['schemas']['PatchSiteAuthorPageRequest'];
+export type SiteSectionsResponse = components['schemas']['SiteSectionsResponse'];
+export type PatchSiteSectionsRequest = components['schemas']['PatchSiteSectionsRequest'];
 export type PublishSiteResponse = components['schemas']['PublishSiteResponse'];
 export type PublishSiteRequest = components['schemas']['PublishSiteRequest'];
 export type GetSiteResponse = components['schemas']['GetSiteResponse'];
@@ -12509,6 +12573,112 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SiteAuthors"];
+                };
+            };
+            /** @description Invalid path params or request body */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Missing or invalid API key */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Site or author not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The site has no blog, blog.json can't be edited as it is, another editor changed it meanwhile, or the author is in use (code SITE_AUTHOR_IN_USE) */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded. This endpoint allows 60 requests per 1 minute per API key. */
+            429: {
+                headers: {
+                    /** @description Maximum requests allowed in the current window. */
+                    "RateLimit-Limit"?: number;
+                    /** @description Requests remaining in the current window. */
+                    "RateLimit-Remaining"?: number;
+                    /** @description Seconds until the current window resets. */
+                    "RateLimit-Reset"?: number;
+                    /** @description Seconds the client should wait before retrying. */
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RateLimitErrorResponse"];
+                };
+            };
+            /** @description Notra Sites or authentication is unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The site's repository didn't answer in time */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    updateSiteSections: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                siteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchSiteSectionsRequest"];
+            };
+        };
+        responses: {
+            /** @description Sections saved as an unpublished change */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteSectionsResponse"];
                 };
             };
             /** @description Invalid path params or request body */
@@ -21977,7 +22147,10 @@ export interface operations {
     };
     streamAgentSessionEvents: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Index of the first event to send, to resume a stream after the last event you received. */
+                startIndex?: number | null;
+            };
             header?: never;
             path: {
                 sessionId: string;
