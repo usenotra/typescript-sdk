@@ -1,6 +1,6 @@
 {
   "name": "@usenotra/sdk",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "The official Notra SDK: a typed API client, AI traffic middleware for every major framework, and the pinned notra.js web analytics script.",
   "keywords": [
     "notra",
