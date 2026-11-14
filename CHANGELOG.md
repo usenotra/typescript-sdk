@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- Synced with the latest Notra API spec.
+
 ## 2.0.1
 
 - **20 more AI agent signatures**, matching what Mintlify's open user-agent classification catches: Codex CLI, Google NotebookLM, Grok DeepSearch, Qwen-User, WarpBot, Amazon Bedrock AgentCore Browser, MistralAI-Index, Ref, and AI data crawlers from Baidu, Alibaba, ByteDance, CMU, NICT and others.
