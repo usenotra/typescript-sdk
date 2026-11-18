@@ -293,6 +293,11 @@ export type UpdateSiteAuthorPageParams = Prettify<operations["updateSiteAuthorPa
 /** What `sites.updateSiteAuthorPage()` resolves to. */
 export type UpdateSiteAuthorPageResult = operations["updateSiteAuthorPage"]["responses"][200]["content"]["application/json"];
 
+/** Parameters of `sites.updateSiteSections()`. */
+export type UpdateSiteSectionsParams = Prettify<operations["updateSiteSections"]["parameters"]["path"] & { body: operations["updateSiteSections"]["requestBody"]["content"]["application/json"] }>;
+/** What `sites.updateSiteSections()` resolves to. */
+export type UpdateSiteSectionsResult = operations["updateSiteSections"]["responses"][200]["content"]["application/json"];
+
 /** Parameters of `sites.publishSite()`. */
 export type PublishSiteParams = Prettify<operations["publishSite"]["parameters"]["path"] & { body?: NonNullable<operations["publishSite"]["requestBody"]>["content"]["application/json"] }>;
 /** What `sites.publishSite()` resolves to. */
@@ -762,7 +767,7 @@ export type SendAgentSessionMessageParams = Prettify<operations["sendAgentSessio
 export type SendAgentSessionMessageResult = operations["sendAgentSessionMessage"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `agent.streamAgentSessionEvents()`. */
-export type StreamAgentSessionEventsParams = Prettify<operations["streamAgentSessionEvents"]["parameters"]["path"]>;
+export type StreamAgentSessionEventsParams = Prettify<operations["streamAgentSessionEvents"]["parameters"]["path"] & NonNullable<operations["streamAgentSessionEvents"]["parameters"]["query"]>>;
 /** What `agent.streamAgentSessionEvents()` resolves to. */
 export type StreamAgentSessionEventsResult = NotraStream<NotraAgentEvent>;
 
@@ -833,6 +838,7 @@ const OPERATIONS = {
   deleteSiteAuthor: {"method":"DELETE","path":"/v1/sites/{siteId}/authors/{authorId}","pathParams":["siteId","authorId"],"queryParams":["force"],"body":false,"response":"json"},
   importSiteAuthors: {"method":"POST","path":"/v1/sites/{siteId}/authors/import","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   updateSiteAuthorPage: {"method":"PATCH","path":"/v1/sites/{siteId}/author-page","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
+  updateSiteSections: {"method":"PATCH","path":"/v1/sites/{siteId}/sections","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   publishSite: {"method":"POST","path":"/v1/sites/{siteId}/publish","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   getSite: {"method":"GET","path":"/v1/sites/{siteId}","pathParams":["siteId"],"queryParams":[],"body":false,"response":"json"},
   listSiteDeployments: {"method":"GET","path":"/v1/sites/{siteId}/deployments","pathParams":["siteId"],"queryParams":["limit"],"body":false,"response":"json"},
@@ -927,7 +933,7 @@ const OPERATIONS = {
   listGeoAnalyticsImports: {"method":"GET","path":"/v1/projects/{projectId}/geo/traffic/imports","pathParams":["projectId"],"queryParams":[],"body":false,"response":"json"},
   createAgentSession: {"method":"POST","path":"/v2/eve/v1/session","pathParams":[],"queryParams":[],"body":true,"response":"json"},
   sendAgentSessionMessage: {"method":"POST","path":"/v2/eve/v1/session/{sessionId}","pathParams":["sessionId"],"queryParams":[],"body":true,"response":"json"},
-  streamAgentSessionEvents: {"method":"GET","path":"/v2/eve/v1/session/{sessionId}/stream","pathParams":["sessionId"],"queryParams":[],"body":false,"response":"ndjson"},
+  streamAgentSessionEvents: {"method":"GET","path":"/v2/eve/v1/session/{sessionId}/stream","pathParams":["sessionId"],"queryParams":["startIndex"],"body":false,"response":"ndjson"},
   listAgentChats: {"method":"GET","path":"/v2/agent-chats","pathParams":[],"queryParams":["limit"],"body":false,"response":"json"},
 } satisfies Record<string, OperationSpec>;
 
@@ -1673,6 +1679,17 @@ export class SitesResource {
   }
 
   /**
+   * Set the blog and changelog paths
+   *
+   * Sets sections in blog.json: which of the blog and changelog the Site serves, and at which paths. A section left out is turned off. Once a production build with them goes live, they replace the dashboard's Sections setting, and a section that moves or turns off stops answering at its old path, so add redirects for it. Changes are saved as unpublished Design changes to the site's blog.json, the same draft the dashboard's Design tab shows, and go live when published with POST /v1/sites/{siteId}/publish or from the dashboard.
+   *
+   * `PATCH /v1/sites/{siteId}/sections`
+   */
+  updateSiteSections(params: UpdateSiteSectionsParams, options?: RequestOptions): Promise<UpdateSiteSectionsResult> {
+    return this.#transport.call(OPERATIONS.updateSiteSections, params, options) as Promise<UpdateSiteSectionsResult>;
+  }
+
+  /**
    * Publish a site's Design changes
    *
    * Commits the unpublished blog.json changes, with the images they use, to the site's production branch and deploys it, like Publish in the dashboard. Returns 409 with code SITE_HAS_OTHER_CHANGES when other files have unpublished changes, so work staged in the dashboard is never published by accident; publish those from the dashboard.
@@ -1853,6 +1870,8 @@ export class GeoResource {
 
   /**
    * Create a GEO project
+   *
+   * Analyzes the linked brand identity's website and seeds the project with tracked prompts, competitors, conversations and settings, like creating a project in the dashboard. This can take up to a minute. Set startScan to also start scanning, which uses AI credits.
    *
    * `POST /v1/projects`
    */
@@ -2546,7 +2565,7 @@ export class GeoResource {
   /**
    * Get MCP server analytics
    *
-   * Usage of your own MCP server, as reported by the `@usenotra/geo` SDK: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
+   * Usage of your own MCP server, as reported by `@usenotra/sdk/mcp`: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/mcp`
    */
@@ -2599,9 +2618,9 @@ export class GeoResource {
   }
 
   /**
-   * Get website analytics totals and trend (private beta)
+   * Get website analytics totals and trend
    *
-   * Private beta: workspaces without web analytics access get 403. Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
+   * Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/web`
    */
@@ -2610,9 +2629,9 @@ export class GeoResource {
   }
 
   /**
-   * Get website analytics breakdowns (private beta)
+   * Get website analytics breakdowns
    *
-   * Private beta: workspaces without web analytics access get 403. Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
+   * Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns`
    */
@@ -2621,9 +2640,9 @@ export class GeoResource {
   }
 
   /**
-   * Get website sessions by UTM parameter (private beta)
+   * Get website sessions by UTM parameter
    *
-   * Private beta: workspaces without web analytics access get 403. Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
+   * Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/web/utm`
    */
@@ -2632,9 +2651,9 @@ export class GeoResource {
   }
 
   /**
-   * Get AI journey statistics (private beta)
+   * Get AI journey statistics
    *
-   * Private beta: workspaces without web analytics access get 403. Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
+   * Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/journey-stats`
    */
@@ -2643,9 +2662,9 @@ export class GeoResource {
   }
 
   /**
-   * List history imports (private beta)
+   * List history imports
    *
-   * Private beta: workspaces without web analytics access get 403. Imports of earlier analytics from Plausible, Cloudflare or Vercel and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
+   * Imports of earlier analytics from Plausible, Cloudflare or Vercel and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/imports`
    */
