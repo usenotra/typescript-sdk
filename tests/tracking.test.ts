@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { createGeoMiddleware as astroMiddleware } from "../src/astro.js";
-import { submitFeedback } from "../src/feedback.js";
+import { createFeedbackToolHandler, submitFeedback } from "../src/feedback.js";
 import { Tracker, tagHtmlLinks, tagMarkdownResponse } from "../src/geo.js";
 import { tagMarkdownLinks } from "../src/markdown.js";
 import { flushMcpEvents, trackMcpTransport } from "../src/mcp.js";
@@ -205,4 +205,31 @@ test("feedback is sent with its source", async () => {
     }
   );
   expect(body).toEqual({ source: "sdk", message: "Great docs" });
+});
+
+const feedbackArgs = { message: "Scans fail on Gemini", kind: "bug" };
+const feedbackTool = (fetch: NonNullable<Parameters<typeof createFeedbackToolHandler>[0]["fetch"]>) =>
+  createFeedbackToolHandler({ url: "https://api.usenotra.com/v1/feedback/inbox_1", fetch });
+
+test("a timed-out feedback submission says it may already be recorded", async () => {
+  const result = await feedbackTool(async () => {
+    throw new DOMException("The operation timed out.", "TimeoutError");
+  })(feedbackArgs);
+  expect(result.isError).toBe(true);
+  expect(result.content[0]?.text).toContain("may already be recorded");
+});
+
+test("a rejected feedback submission still reports the API error", async () => {
+  const result = await feedbackTool(
+    async () => new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429 })
+  )(feedbackArgs);
+  expect(result.content[0]?.text).toBe("Feedback could not be submitted (429): Rate limit exceeded");
+});
+
+test("a repeated feedback submission reports the recorded entry", async () => {
+  const result = await feedbackTool(
+    async () => new Response(JSON.stringify({ feedback: { id: "f1" }, deduplicated: true }), { status: 202 })
+  )(feedbackArgs);
+  expect(result.structuredContent).toEqual({ id: "f1", deduplicated: true });
+  expect(result.content[0]?.text).toBe("This feedback was already recorded.");
 });
