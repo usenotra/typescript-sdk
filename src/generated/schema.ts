@@ -241,7 +241,7 @@ export interface paths {
         };
         /**
          * Get a post's publishing schedule
-         * @description Returns the post's current schedule with the state of every destination, or null when nothing is scheduled.
+         * @description Returns the post's latest schedule with destinations that were not canceled, and the state of each of them. The schedule stays after it published or failed, and destinations that already published remain after a cancel, so check each publication's status. schedule is null when the post was never scheduled or all its destinations were canceled.
          */
         get: operations["getPostSchedule"];
         put?: never;
@@ -505,7 +505,7 @@ export interface paths {
         };
         /**
          * List schedules
-         * @description Returns the organization's cron schedules, newest first. repositoryMap maps each targeted GitHub integration ID to an owner/repo label.
+         * @description Returns the organization's cron schedules, newest first. repositoryMap maps each targeted GitHub integration ID to an owner/repo label, followed by " · <branch>" when the integration has a default branch set.
          */
         get: operations["listSchedules"];
         put?: never;
@@ -842,6 +842,26 @@ export interface paths {
         patch: operations["updateSiteAuthorPage"];
         trace?: never;
     };
+    "/v1/sites/{siteId}/sections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Set the blog and changelog paths
+         * @description Sets sections in blog.json: which of the blog and changelog the Site serves, and at which paths. A section left out is turned off. Once a production build with them goes live, they replace the dashboard's Sections setting, and a section that moves or turns off stops answering at its old path, so add redirects for it. Changes are saved as unpublished Design changes to the site's blog.json, the same draft the dashboard's Design tab shows, and go live when published with POST /v1/sites/{siteId}/publish or from the dashboard.
+         */
+        patch: operations["updateSiteSections"];
+        trace?: never;
+    };
     "/v1/sites/{siteId}/publish": {
         parameters: {
             query?: never;
@@ -1095,7 +1115,10 @@ export interface paths {
         /** List GEO projects */
         get: operations["listProjects"];
         put?: never;
-        /** Create a GEO project */
+        /**
+         * Create a GEO project
+         * @description Analyzes the linked brand identity's website and seeds the project with tracked prompts, competitors, conversations and settings, like creating a project in the dashboard. This can take up to a minute. Set startScan to also start scanning, which uses AI credits.
+         */
         post: operations["createProject"];
         delete?: never;
         options?: never;
@@ -1601,7 +1624,7 @@ export interface paths {
         put?: never;
         /**
          * Trigger a GEO scan
-         * @description Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight, and 402 when the plan or AI credits cannot cover a scan.
+         * @description Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. Pass `engines` to run only some engines. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight, and 402 when the plan or AI credits cannot cover a scan.
          */
         post: operations["createGeoScan"];
         delete?: never;
@@ -1621,7 +1644,7 @@ export interface paths {
         put?: never;
         /**
          * Rescan a single GEO prompt
-         * @description Queues a scan of one enabled tracked prompt across the project's engines, for example to check a prompt again after publishing content for it. Only that prompt's checks run, so it costs less than a full scan. Otherwise it behaves like `POST /v1/projects/{projectId}/geo/scans`: poll `statusUrl` until `status` leaves `running`, 409 while another scan is in flight, 402 when the plan or AI credits cannot cover it, and it shares that route's rate limit. Returns 404 for a prompt that is unknown or disabled.
+         * @description Queues a scan of one enabled tracked prompt, for example to check a prompt again after publishing content for it. It runs on every tracked engine, or only on the engines in `engines`, such as one engine to compare a single answer. Only that prompt's checks run, so it costs less than a full scan. Otherwise it behaves like `POST /v1/projects/{projectId}/geo/scans`: poll `statusUrl` until `status` leaves `running`, 409 while another scan is in flight, 402 when the plan or AI credits cannot cover it, and it shares that route's rate limit. Returns 404 for a prompt that is unknown or disabled.
          */
         post: operations["createGeoPromptScan"];
         delete?: never;
@@ -1799,7 +1822,7 @@ export interface paths {
         };
         /**
          * Get one competitor's mention history
-         * @description Daily mentions and the prompts that produced them for a single brand. Without a window this falls back to the competitor-detail default rather than the project default, matching the dashboard.
+         * @description Daily mentions and the prompts that produced them for a single brand. Without a window this covers the last 30 days, matching the dashboard, while the other visibility endpoints cover all history.
          */
         get: operations["getGeoVisibilityCompetitorDetail"];
         put?: never;
@@ -2172,7 +2195,7 @@ export interface paths {
         };
         /**
          * Get MCP server analytics
-         * @description Usage of your own MCP server, as reported by the `@usenotra/geo` SDK: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
+         * @description Usage of your own MCP server, as reported by `@usenotra/sdk/mcp`: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
          */
         get: operations["getGeoMcpAnalytics"];
         put?: never;
@@ -2271,8 +2294,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get website analytics totals and trend (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
+         * Get website analytics totals and trend
+         * @description Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
          */
         get: operations["getGeoWebAnalytics"];
         put?: never;
@@ -2291,8 +2314,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get website analytics breakdowns (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
+         * Get website analytics breakdowns
+         * @description Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
          */
         get: operations["getGeoWebAnalyticsBreakdowns"];
         put?: never;
@@ -2311,8 +2334,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get website sessions by UTM parameter (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
+         * Get website sessions by UTM parameter
+         * @description Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
          */
         get: operations["getGeoWebAnalyticsUtm"];
         put?: never;
@@ -2331,8 +2354,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get AI journey statistics (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
+         * Get AI journey statistics
+         * @description Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
          */
         get: operations["getGeoTrafficJourneyStats"];
         put?: never;
@@ -2351,8 +2374,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List history imports (private beta)
-         * @description Private beta: workspaces without web analytics access get 403. Imports of earlier analytics from Plausible, Cloudflare or Vercel and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
+         * List history imports
+         * @description Imports of earlier analytics from Plausible, Cloudflare, Vercel, PostHog, Rybbit or Databuddy and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
          */
         get: operations["listGeoAnalyticsImports"];
         put?: never;
@@ -2463,8 +2486,11 @@ export interface components {
         };
         RateLimitErrorResponse: {
             error: string;
+            /** @description Requests allowed per window. */
             limit: number;
+            /** @description Requests left in the current window. */
             remaining: number;
+            /** @description When the window resets, as a Unix timestamp in milliseconds. Retry-After gives the wait in seconds. */
             reset: number;
         };
         ErrorResponse: {
@@ -2474,23 +2500,34 @@ export interface components {
         };
         PostScheduleResponse: {
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
-            schedule: components["schemas"]["PostSchedule"];
+            /** @description The post's latest schedule with destinations that were not canceled, listing only those destinations. It stays after they published or failed, and destinations that already published remain after a cancel. Null when the post was never scheduled or all its destinations were canceled. */
+            schedule: components["schemas"]["PostSchedule"] | null;
         };
         PostSchedule: {
             postId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description When the post publishes (ISO 8601, UTC).
+             */
             scheduledAt: string;
+            /** @description IANA time zone the schedule was picked in, for display only. */
             timeZone: string;
+            /** @description One entry per destination of the schedule. */
             publications: components["schemas"]["ScheduledPublication"][];
-        } | null;
+        };
         ScheduledPublication: {
             id: string;
-            /** @enum {string} */
+            /**
+             * @description notra marks the post as published in Notra; github opens or merges a pull request; social posts to a connected X or LinkedIn account.
+             * @enum {string}
+             */
             destination: "notra" | "github" | "social";
             config: {
                 /** @enum {string} */
@@ -2513,12 +2550,18 @@ export interface components {
             /** Format: date-time */
             scheduledAt: string;
             timeZone: string;
+            /** @description Publishing attempts started for this destination, including automatic retries. */
             attempts: number;
+            /** @description Machine-readable code of the last failed attempt, such as github_publish_failed or too_many_attempts. Cleared when the destination publishes. */
             errorCode: string | null;
+            /** @description Message of the last failed attempt. Cleared when the destination publishes. */
             lastError: string | null;
             /** @description Pull request or social post URL once published. */
             resultUrl: string | null;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description When this destination published. Null until then.
+             */
             publishedAt: string | null;
         };
         SchedulePostRequest: {
@@ -2564,9 +2607,11 @@ export interface components {
         };
         CancelPostScheduleResponse: {
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
             /** @description Destinations that were canceled or cleared. */
@@ -2576,9 +2621,11 @@ export interface components {
         };
         PostAgentReachResponse: {
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
             agentReach: components["schemas"]["PostAgentReach"];
@@ -2586,13 +2633,17 @@ export interface components {
         /** @description Null when the post isn't live on a Notra Site: never published to one, published to another branch, or the Site has no production deployment. */
         PostAgentReach: {
             postId: string;
+            /** @description Notra Site the post is live on. Use it with the /v1/sites endpoints. */
             siteId: string;
             /**
              * @description Path the post is served at on its Site. Visits to its Markdown copy (`<path>.md`) and index files are counted too.
              * @example /blog/launch
              */
             path: string;
-            /** @example https://example.com/blog/launch */
+            /**
+             * @description Public URL of the post on the Site's production origin.
+             * @example https://example.com/blog/launch
+             */
             url: string;
             /** @description False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
@@ -2603,28 +2654,51 @@ export interface components {
                 cited: number;
                 /** @description People who clicked through from an AI answer. */
                 referred: number;
+                /** @description Sum of crawled, cited and referred. */
                 total: number;
             };
+            /** @description Visits per AI crawler and AI referral source in the window. */
             sources: {
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Crawler that made the request. Empty for referrals. */
                 agent: string;
+                /** @description Request purpose, such as training-crawler, search-index or assistant-browse (an assistant reading the page live to answer). assistant-referral for referrals. */
                 category: string;
+                /** @description How the visitor was identified. verified: a crawler user agent whose operator publishes a way to verify it, such as IP ranges; Notra matches the user agent and does not check the IP. reported: a user agent the operator documents without verification, a known request fingerprint, a fetch of a machine-readable file, or, for AI referrals, the referrer. Sources detected only by heuristics are left out of these endpoints. */
                 confidence: string;
+                /** @description Requests in the window, including imported history. */
                 visits: number;
+                /** @description Requests in the previous window of the same length, right before this one. */
                 previousVisits?: number;
+                /** @description Requests that asked for Markdown or a machine-readable file. 0 when filtering by host or path, and for imported history. */
                 markdownVisits: number;
+                /** @description Markdown requests in the previous window of the same length, right before this one. */
                 previousMarkdownVisits?: number;
+                /** @description Distinct page paths requested in the window. */
                 paths: number;
+                /** @description Distinct paths in the previous window of the same length, right before this one. */
                 previousPaths?: number;
+                /** @description UTC time of the newest request in the window, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. Midnight of the day for imported history. `1970-01-01 00:00:00` when the source only had requests in the previous window. */
                 lastSeenAt: string;
             }[];
+            /** @description Daily visits per source and visitor type. */
             points: {
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
+                /** @description Requests from this source on this day. */
                 visits: number;
             }[];
         } | null;
@@ -2664,7 +2738,7 @@ export interface components {
                      */
                     dayOfWeek?: number;
                     /**
-                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly. Months without that day are skipped, so 31 runs only in 31-day months.
                      * @example 1
                      */
                     dayOfMonth?: number;
@@ -2696,7 +2770,8 @@ export interface components {
             /** @description Output setting changes, merged field by field into the current settings. Set a field to null to clear it, or send null to clear all of them. */
             outputConfig?: {
                 /**
-                 * @description Where auto-published posts are sent.
+                 * @deprecated
+                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
                  * @enum {string|null}
                  */
                 publishDestination?: "webflow" | "framer" | "custom" | null;
@@ -2727,7 +2802,7 @@ export interface components {
              * @example true
              */
             enabled?: boolean;
-            /** @description Publish generated posts automatically instead of saving them as drafts. */
+            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
             autoPublish?: boolean;
             /**
              * @description How far back each run collects source activity.
@@ -2739,28 +2814,49 @@ export interface components {
             /** @enum {string} */
             sourceType: "github_webhook";
             sourceConfig: {
+                /** @description GitHub webhook events that start a run: published releases, pushes, or both. */
                 eventTypes: ("release" | "push")[];
-                /** @default true */
+                /**
+                 * @description Whether releases marked as pre-releases on GitHub also start a run.
+                 * @default true
+                 */
                 includePreReleases: boolean;
-                /** @default [] */
+                /**
+                 * @description Case-insensitive JavaScript regular expressions tested against each commit message of a push, matching anywhere unless anchored. A push is skipped only when every commit matches at least one pattern. Releases are not filtered.
+                 * @default []
+                 * @example [
+                 *       "^chore(\\(|:)",
+                 *       "\\[skip ci\\]"
+                 *     ]
+                 */
                 ignoreCommitPatterns: string[];
             };
             targets: {
+                /** @description GitHub integration IDs whose webhook events start the trigger, as returned in the github array of GET /v1/integrations. */
                 repositoryIds: string[];
             };
             /** @enum {string} */
             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
             outputConfig?: {
-                /** @enum {string} */
+                /**
+                 * @deprecated
+                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
+                 * @enum {string}
+                 */
                 publishDestination?: "webflow" | "framer" | "custom";
+                /** @description Brand identity ID to write in. Falls back to the organization's default brand identity when unset or not found. */
                 brandVoiceId?: string;
+                /** @description Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners. */
                 notify?: {
                     slack: boolean;
                     email: boolean;
                 };
             };
             enabled: boolean;
-            /** @default false */
+            /**
+             * @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts.
+             * @default false
+             */
             autoPublish: boolean;
         };
         GetChatsResponse: {
@@ -2846,13 +2942,16 @@ export interface components {
             id?: string;
         };
         ListSkillsResponse: {
+            /** @description Skills sorted by name, without their content. */
             skills: components["schemas"]["SkillSummary"][];
         };
         SkillSummary: {
             id: string;
+            /** @description Unique within the organization. Use it as {name} in /v1/skills/{name}. */
             name: string;
+            /** @description Short description of when the skill should be used. */
             description: string;
-            /** @description True for built-in skills provided by Notra. System skills cannot be renamed or deleted. */
+            /** @description True for built-in skills provided by Notra. System skills can be edited but not renamed or deleted. */
             isSystem: boolean;
             updatedAt: string;
         };
@@ -2860,6 +2959,7 @@ export interface components {
             skill: components["schemas"]["Skill"];
         };
         Skill: components["schemas"]["SkillSummary"] & {
+            /** @description Full skill instructions, typically Markdown. */
             content: string;
             createdAt: string;
         };
@@ -3073,6 +3173,41 @@ export interface components {
             /** @enum {string} */
             layout: "inline" | "stacked";
         };
+        SiteSectionsResponse: {
+            site: {
+                id: string;
+                name: string;
+            };
+            /** @description The sections blog.json sets with unpublished changes applied. They take over from the dashboard setting once a production build of them goes live. */
+            sections: {
+                blog?: string;
+                changelog?: string;
+            };
+            /** @description The paths the live site serves now. */
+            liveSections: {
+                blog?: string;
+                changelog?: string;
+            };
+            hasUnpublishedChanges: boolean;
+        };
+        /**
+         * @example {
+         *       "blog": "/blog",
+         *       "changelog": "/changelog"
+         *     }
+         */
+        PatchSiteSectionsRequest: {
+            /**
+             * @description Path of the blog, like /blog. Omit to turn the blog off.
+             * @example /blog
+             */
+            blog?: string;
+            /**
+             * @description Path of the changelog, like /changelog. Omit to turn the changelog off.
+             * @example /changelog
+             */
+            changelog?: string;
+        };
         PublishSiteResponse: {
             /** @description False when there was nothing to publish. */
             published: boolean;
@@ -3093,25 +3228,36 @@ export interface components {
             domains: components["schemas"]["SiteDomain"][];
             previews: components["schemas"]["SitePreview"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         SiteDetail: {
             id: string;
+            /** @description Notra project the Site belongs to. Use it as projectId in /v1/projects/{projectId}. */
             projectId: string;
             name: string;
+            /** @description Used in the Site's Notra-hosted addresses. */
             slug: string;
-            /** @enum {string} */
+            /**
+             * @description suspended while the Site is paused.
+             * @enum {string}
+             */
             status: "active" | "suspended";
+            /** @description Why the Site is suspended. Null while active or when no reason was given. */
             suspendedReason: string | null;
+            /** @description GitHub repository the Site builds from, or null when none is connected. */
             repository: {
+                /** @description GitHub's ID for the repository. */
                 id: string | null;
                 owner: string;
                 name: string;
             } | null;
+            /** @description Branch that production deployments build from. */
             productionBranch: string;
             /** @description Directory in the repository that holds blog.json. */
             rootDirectory: string;
@@ -3120,45 +3266,72 @@ export interface components {
              * @example https://example.com/blog
              */
             liveUrl: string;
+            /** @description Origin the Site is served from: the primary custom domain, or the Notra-hosted address when there is none. */
             publicOrigin: string;
             /** @description Notra-hosted address that always serves the Site. */
             aliasOrigin: string;
+            /** @description Paths the blog and changelog are served under. A missing key means that section is off. */
             mounts: {
                 blog?: string;
                 changelog?: string;
             };
+            /** @description True when the live build's blog.json sets the sections, so the dashboard can't change them. Change them with PATCH /v1/sites/{siteId}/sections or in blog.json. */
+            mountsFromConfig: boolean;
+            /** @description Whether preview deployments are built and served. */
             previewsEnabled: boolean;
-            /** @enum {string} */
+            /**
+             * @description public previews open for anyone; protected previews need a workspace sign-in or the preview's password.
+             * @enum {string}
+             */
             previewVisibility: "public" | "protected";
+            /** @description Pushes and pull requests whose site inputs are unchanged from an existing build are not rebuilt; their deployments end as skipped. */
             smartDeployments: boolean;
+            /** @description Whether the live production site serves Notra's cookieless notra.js script and counts visitors and AI agent visits into the project's AI traffic and web analytics. On by default; previews are never counted. */
             analyticsEnabled: boolean;
+            /** @description Production deployment serving visitors now, or null when nothing is live. */
             liveDeploymentId: string | null;
             /** @description Production is pinned to an older build; new builds finish but don't go live until someone promotes one in the dashboard. */
             rollbackActive: boolean;
+            /** @description When the live production deployment started serving. */
             liveSince: string | null;
             createdAt: string;
         };
         SiteDomain: {
             id: string;
             hostname: string;
-            /** @enum {string} */
+            /**
+             * @description subdomain points the hostname at Notra with DNS records and Notra issues its certificate; proxy keeps your existing website on the hostname, which forwards the Site's paths to Notra with rewrites.
+             * @enum {string}
+             */
             kind: "subdomain" | "proxy";
-            /** @enum {string} */
+            /**
+             * @description pending until the first check, verifying while checks have not passed yet, active once verified, failed when a domain that was active or failed fails a check. Domains that are not active are rechecked automatically.
+             * @enum {string}
+             */
             status: "pending" | "verifying" | "active" | "failed";
+            /** @description The domain is the Site's publicOrigin. */
             isPrimary: boolean;
+            /** @description DNS records to create for the domain. */
             records: {
                 /** @enum {string} */
                 type: "CNAME" | "TXT" | "A";
                 name: string;
                 value: string;
-                /** @enum {string} */
+                /**
+                 * @description routing points the hostname at Notra, ownership proves control of the domain, and certificate lets the TLS certificate be issued.
+                 * @enum {string}
+                 */
                 purpose: "routing" | "ownership" | "certificate";
             }[];
+            /** @description What the latest check found missing, such as a DNS record, the ownership TXT record, the certificate or the proxy rewrites. Null after a passing check. */
             lastError: string | null;
+            /** @description When the domain first verified. Kept if a later check fails; null until it verifies. */
             verifiedAt: string | null;
         };
         SitePreview: {
+            /** @description Identifies the preview: one per branch, and one per post for post previews. */
             previewKey: string;
+            /** @description Deployment serving the preview. */
             deploymentId: string;
             /** @enum {string} */
             visibility: "public" | "protected";
@@ -3166,46 +3339,65 @@ export interface components {
             branch: string | null;
             pullRequestNumber: number | null;
             commitSha: string | null;
+            /** @description When the deployment started serving the preview. */
             activatedAt: string;
         };
         ListSiteDeploymentsResponse: {
             deployments: components["schemas"]["SiteDeployment"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         SiteDeployment: {
             id: string;
-            /** @enum {string} */
+            /**
+             * @description production builds the production branch for visitors; preview builds a branch, pull request or post preview.
+             * @enum {string}
+             */
             kind: "production" | "preview";
+            /** @description Preview the deployment builds, matching previewKey in a Site's previews. Null for production. */
             previewKey: string | null;
-            /** @enum {string} */
+            /**
+             * @description push and pull_request come from GitHub, manual from a deploy request, redeploy from a rebuild, config from a settings change, and toolchain from Notra rebuilding the live commit after a builder update.
+             * @enum {string}
+             */
             trigger: "push" | "pull_request" | "manual" | "redeploy" | "config" | "toolchain";
             /**
              * @description queued, building and uploading are in progress; ready, superseded, skipped, failed, canceled and expired are final.
              * @enum {string}
              */
             status: "queued" | "building" | "uploading" | "ready" | "superseded" | "skipped" | "failed" | "canceled" | "expired";
+            /** @description The deployment is serving production or a preview now. */
             live: boolean;
+            /** @description When it started serving. Null when not live. */
             liveSince: string | null;
             branch: string;
             commitSha: string;
             commitMessage: string | null;
             commitAuthor: string | null;
             pullRequestNumber: number | null;
+            /** @description Where the deployment serves its first section. */
             url: string;
+            /** @description Files in the built output. Set when the build becomes ready; null for deployments that never finished a build, such as queued, skipped, failed or canceled ones. */
             fileCount: number | null;
+            /** @description Total size of the built output in bytes. Null under the same conditions as fileCount. */
             totalBytes: number | null;
+            /** @description Build time in milliseconds. */
             buildDurationMs: number | null;
+            /** @description Why the build failed, or why it was canceled or superseded before building. */
             errorMessage: string | null;
+            /** @description Why smart deployments skipped the build. */
             skipReason: string | null;
             /** @description Compiler errors and warnings with file and line. */
             diagnostics: {
                 /** @enum {string} */
                 severity: "error" | "warning";
+                /** @description File the diagnostic points at, or null when it has none. */
                 file: string | null;
                 line?: number;
                 column?: number;
@@ -3219,9 +3411,11 @@ export interface components {
         StartSiteDeploymentResponse: {
             deployment: components["schemas"]["SiteDeployment"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3229,11 +3423,14 @@ export interface components {
             deployment: components["schemas"]["SiteDeployment"];
             /** @description Newest build log output, trimmed at the start when long. */
             log: string | null;
+            /** @description The log was cut to its last 64,000 characters. */
             logTruncated: boolean;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3241,51 +3438,76 @@ export interface components {
             /** @description Null when the post has no preview on this Site. */
             preview: components["schemas"]["SitePostPreview"] | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         SitePostPreview: {
             /** @description Status of the preview's latest build. */
             status: string;
+            /** @description The preview is being served and has not expired. */
             live: boolean;
+            /** @description The preview is being removed. */
             deleting: boolean;
+            /** @description Why the latest build failed or stopped. */
             errorMessage: string | null;
+            /** @description When the preview stops being served. */
             expiresAt: string;
+            /** @description People outside the workspace can open it with a password. */
             hasPassword: boolean;
+            /** @description The post's page on the preview. */
             url: string;
         };
         PublishSitePostResponse: {
-            /** @enum {string} */
+            /**
+             * @description created when a new pull request was opened, updated when the post's open pull request was updated.
+             * @enum {string}
+             */
             operation: "created" | "updated";
+            /** @description Branch the pull request merges from. */
             branchName: string;
+            /** @description Path of the post's file in the repository. */
             path: string;
             pullRequestNumber: number;
             pullRequestUrl: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GetWorkspacesResponse: {
             currentWorkspace: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
+            /** @description Current workspace first, then active memberships, then pending invitations, each sorted by name. Single-organization API keys only see the current workspace. */
             workspaces: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
+                /** @description Your role in the workspace, or the invited role for pending invitations. Null for single-organization API keys or when the role is unknown. */
                 role: string | null;
-                /** @enum {string} */
+                /**
+                 * @description active for accepted memberships, pending for invitations not yet accepted.
+                 * @enum {string}
+                 */
                 status: "active" | "pending";
+                /** @description The workspace this request acts on. */
                 isCurrent: boolean;
             }[];
             authentication: {
@@ -3294,7 +3516,9 @@ export interface components {
             } | {
                 /** @enum {string} */
                 type: "oauth";
+                /** @description Notra user ID of the signed-in account. */
                 accountId: string;
+                /** @description OAuth scopes granted to the token. */
                 scopes: string[];
             };
         };
@@ -3305,6 +3529,7 @@ export interface components {
         };
         Feedback: {
             id: string;
+            /** @description Project the feedback is filed under, or null for none. */
             projectId: string | null;
             /**
              * @description Channel the feedback arrived through.
@@ -3313,13 +3538,13 @@ export interface components {
              */
             source: "mcp" | "api" | "sdk";
             /**
-             * @description What kind of feedback this is.
+             * @description What kind of feedback this is, as submitted or classified by Notra. other when classification failed.
              * @example bug
              * @enum {string}
              */
             kind: "bug" | "feature" | "praise" | "question" | "other";
             /**
-             * @description Overall sentiment of the feedback.
+             * @description Overall sentiment, as submitted or classified by Notra. Null when it could not be classified.
              * @example negative
              * @enum {string|null}
              */
@@ -3330,6 +3555,7 @@ export interface components {
              * @enum {string}
              */
             status: "new" | "triaged" | "resolved" | "archived";
+            /** @description Short summary, as submitted or written by Notra. Null when none could be written. */
             title: string | null;
             message: string;
             agentClient: string | null;
@@ -3339,9 +3565,11 @@ export interface components {
             contextUrl: string | null;
             externalId: string | null;
             idempotencyKey: string | null;
+            /** @description JSON submitted with the feedback, or null. */
             metadata: {
                 [key: string]: unknown;
             } | null;
+            /** @description When the status was last set to resolved. Cleared when it changes to another status. */
             resolvedAt: string | null;
             createdAt: string;
             updatedAt: string;
@@ -3404,6 +3632,7 @@ export interface components {
             };
         };
         ListFeedbackResponse: {
+            /** @description Feedback on this page, newest first. */
             feedback: components["schemas"]["Feedback"][];
             pagination: {
                 limit: number;
@@ -3426,26 +3655,33 @@ export interface components {
             status: "new" | "triaged" | "resolved" | "archived";
         };
         ListGeoProjectsResponse: {
+            /** @description Projects, oldest first. */
             projects: components["schemas"]["GeoProject"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoProject: {
+            /** @description Use as projectId in the endpoints under /v1/projects/{projectId}. */
             id: string;
             name: string;
+            /** @description ID of the brand identity linked to the project, as listed by GET /v1/brand-identities. */
             brandSettingsId: string;
             createdAt: string;
         };
         GeoProjectResponse: {
             project: components["schemas"]["GeoProject"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3453,6 +3689,8 @@ export interface components {
             name: string;
             /** @description Brand identity to link. Defaults to the organization's default identity. */
             brandSettingsId?: string;
+            /** @description Turn on recurring scans and start the first one now. Scans use AI credits. Defaults to false, which saves tracking as disabled; enable it later with the settings endpoint. */
+            startScan?: boolean;
         };
         PatchGeoProjectRequest: {
             name?: string;
@@ -3461,20 +3699,25 @@ export interface components {
         DeleteGeoProjectResponse: {
             id: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoSettingsResponse: {
-            /** @description Whether the analytics backend is configured. */
+            /** @description Whether the analytics store behind AI traffic and web analytics is set up on this Notra deployment. It does not depend on the project or its settings. */
             configured: boolean;
-            settings: components["schemas"]["GeoSettings"];
+            /** @description Null when the project has no saved GEO settings yet. Save them with PATCH /v1/projects/{projectId}/geo/settings. */
+            settings: components["schemas"]["GeoSettings"] | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3482,32 +3725,52 @@ export interface components {
             id: string;
             organizationId: string;
             projectId: string;
+            /** @description Brand name that scans look for in AI answers. */
             companyName: string;
+            /** @description Other names that also count as a brand mention. */
             aliases: string[];
+            /** @description Paths that count as a conversion when an AI referral reaches them. Prefix match. */
             conversionPaths: string[];
+            /** @description Additional hostnames that send AI traffic to this project, besides the brand website. Subdomains are included. */
             domains: string[];
+            /** @description Names of the project's competitors, kept in sync with the competitors endpoints. */
             competitors: string[];
+            /** @description Supported languages scans run in. Unsupported or duplicate stored values are left out. */
             languages: string[];
+            /** @description Engine ids scans run on, from GET /v1/projects/{projectId}/geo/engines. Unknown ids are dropped and the default set is used when none remain. With enforceZdr on, engines that can't run under zero data retention are left out. */
             engines: string[];
+            /** @description Only run engines with zero data retention, plus those listed in nonZdrApprovedEngines. */
             enforceZdr: boolean;
+            /** @description Engines without zero data retention that may still run while enforceZdr is on. */
             nonZdrApprovedEngines: string[];
+            /** @description Also scan search-capable models without web search. */
             trackWithoutSearch: boolean;
+            /** @description Ids of auto-generated prompts skipped in scans. */
             pausedAutoPromptIds: string[];
+            /** @description Ids of auto-generated prompts removed from tracking. */
             removedAutoPromptIds: string[];
+            /** @description Whether recurring scans run. */
             enabled: boolean;
+            /** @description Hours between automatic scans, in whole days. */
             scanIntervalHours: number;
+            /** @description When the scan in progress started. Usually cleared when it finishes. */
             scanStartedAt: string | null;
+            /** @description When the latest scan finished, whether it succeeded or failed. Null before the first scan. */
             lastScanAt: string | null;
+            /** @description A scan started after the latest finished one and less than two hours ago. */
             isScanning: boolean;
             createdAt: string;
             updatedAt: string;
-        } | null;
+        };
         GeoEngineListResponse: {
+            /** @description Engines this organization can select. Legacy engines a project already tracks are not listed. */
             engines: components["schemas"]["GeoEngine"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3517,7 +3780,12 @@ export interface components {
              * @example google/ai-overview
              */
             id: string;
+            /** @description Display name. */
             label: string;
+            /**
+             * @description Vendor the engine is grouped under, such as anthropic, openai, google, perplexity or microsoft. Coding-agent engines use the agent instead, such as cursor, opencode, claude-code or codex.
+             * @example google
+             */
             provider: string;
             /**
              * @description Zero data retention coverage. Engines with `none` need `enforceZdr: false` or an entry in `nonZdrApprovedEngines`.
@@ -3526,6 +3794,7 @@ export interface components {
             zdr: "all" | "some" | "none";
             /** @description Part of the default engine set for new projects. */
             default: boolean;
+            /** @description Currently always false for engines listed by the API. */
             supportsGroundedChecks: boolean;
         };
         PatchGeoSettingsRequest: {
@@ -3550,30 +3819,43 @@ export interface components {
             scanIntervalHours: number;
         };
         ListGeoPromptsResponse: {
+            /** @description Whether the analytics backend is configured. It does not affect which prompts are returned. */
             configured: boolean;
+            /** @description Custom prompts, newest first, followed by auto prompts. Auto prompts the user removed are left out. */
             prompts: components["schemas"]["GeoPrompt"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoPrompt: {
+            /** @description Use as `promptId` in the prompt endpoints, including `GET /v1/projects/{projectId}/geo/prompts/{promptId}/history`. A UUID for custom prompts, a fixed slug such as `best-tools` for auto prompts. */
             id: string;
             prompt: string;
+            /** @description Whether project scans ask this prompt. */
             enabled: boolean;
-            /** @enum {string} */
+            /**
+             * @description `custom` for prompts added by the user, `auto` for prompts Notra generates from the brand settings.
+             * @enum {string}
+             */
             source: "custom" | "auto";
+            /** @description Labels on custom prompts. Always empty for auto prompts. */
             tags: string[];
+            /** @description When the custom prompt was added. `null` for auto prompts. */
             createdAt: string | null;
         };
         GeoPromptResponse: {
             prompt: components["schemas"]["GeoPrompt"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3588,27 +3870,37 @@ export interface components {
             tags?: string[];
         };
         DeleteGeoPromptResponse: {
+            /** @description Id of the deleted prompt. */
             id: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         ImportGeoPromptsResponse: {
+            /** @description Prompts added as new custom prompts. */
             imported: number;
+            /** @description Always 0: existing prompts are never changed by an import. */
             updated: number;
+            /** @description Rows not added because the prompt was blank or already tracked, or repeated in the import. Compared case-insensitively. */
             skipped: number;
             /** @description Rows rejected while parsing CSV. Always empty for `rows`. */
             issues: {
+                /** @description CSV line number of the rejected row. */
                 line: number;
+                /** @description Why the row was rejected. */
                 message: string;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3621,61 +3913,80 @@ export interface components {
             csv?: string;
         };
         ListGeoPromptSuggestionsResponse: {
+            /** @description Pending suggestions, newest first. */
             suggestions: components["schemas"]["GeoPromptSuggestion"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoPromptSuggestion: {
+            /** @description Suggestion id for the accept and dismiss endpoints. */
             id: string;
+            /** @description Prompt that would be tracked when accepted. */
             prompt: string;
+            /** @description Suggested headline for an article that could win this prompt, or `null`. */
             title: string | null;
             /** @enum {string} */
             source: "search_console";
             /** @description Search Console queries the suggestion was derived from. */
             keywords: {
                 query: string;
+                /** @description Search Console clicks over the 28 days ending 3 days before the suggestion was created (Search Console data lags by about 3 days). */
                 clicks: number;
+                /** @description Search Console impressions over the 28 days ending 3 days before the suggestion was created (Search Console data lags by about 3 days). */
                 impressions: number;
+                /** @description Average Google search position over the 28 days ending 3 days before the suggestion was created (Search Console data lags by about 3 days). */
                 position: number;
             }[];
             createdAt: string;
         };
         DismissGeoPromptSuggestionResponse: {
             id: string;
+            /** @description Always `true`. Dismissing an unknown or already handled suggestion returns 404. */
             dismissed: boolean;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         ListGeoSequencesResponse: {
+            /** @description The project's sequences, oldest first. */
             sequences: components["schemas"]["GeoSequence"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoSequence: {
             id: string;
             name: string;
+            /** @description Messages sent in order as one conversation with each engine. */
             steps: string[];
+            /** @description Whether project scans play this conversation. */
             enabled: boolean;
             createdAt: string;
         };
         GeoSequenceResponse: {
             sequence: components["schemas"]["GeoSequence"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3689,11 +4000,14 @@ export interface components {
             enabled?: boolean;
         };
         DeleteGeoSequenceResponse: {
+            /** @description Id of the deleted sequence. */
             id: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3702,7 +4016,7 @@ export interface components {
             checks: number;
             /** @description How many of those answers mentioned the tracked brand. */
             mentions: number;
-            /** @description API-based engines that answered the conversation during this request. Empty when only consumer apps run or none of the API engines answered. */
+            /** @description Every API-based engine the conversation was played against during this request, once at least one of them answered, including engines that failed. Empty when only consumer apps run or none of the API engines answered. */
             engines: string[];
             /**
              * @description Scan that plays the conversation in the tracked consumer apps (ChatGPT, Perplexity, Gemini, AI Mode, Copilot) in the background, or `null` when none was queued. Poll `GET /v1/projects/{projectId}/geo/scans/{scanId}` until `status` leaves `running`; its answers then land in the project's GEO checks.
@@ -3715,20 +4029,25 @@ export interface components {
              */
             queuedEngines: string[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         ListGeoPersonasResponse: {
+            /** @description Always `true` for a project-scoped request. */
             configured: boolean;
             /** @description Active personas first in creation order, then archived ones. A project keeps at most 5 active personas. */
             personas: components["schemas"]["GeoPersona"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3736,9 +4055,13 @@ export interface components {
             id: string;
             /** @description Buyer archetype label, such as Budgeter. */
             name: string;
+            /** @description Short job title, at most two words. */
             role: string;
+            /** @description Kind of company the persona works at, with size and industry. */
             company: string;
+            /** @description Buying priorities and situation, one point per line. */
             summary: string;
+            /** @description How the persona writes to AI chats, one point per line. */
             searchStyle: string;
             profile: {
                 goals: string[];
@@ -3751,12 +4074,17 @@ export interface components {
             conversationPrompts: string[];
             /** @description Whether scheduled scans play this persona. */
             enabled: boolean;
+            /** @description When the persona was archived, or `null` when active. */
             archivedAt: string | null;
             createdAt: string;
             updatedAt: string;
+            /** @description First-person facts included in the persona's context when it is played. */
             memories: {
                 id: string;
-                /** @enum {string} */
+                /**
+                 * @description `background` for career and company facts, `experience` for past events with tools or vendors, `preference` for how they like to work and buy, `constraint` for budget, compliance or team limits.
+                 * @enum {string}
+                 */
                 kind: "background" | "experience" | "preference" | "constraint";
                 content: string;
             }[];
@@ -3764,9 +4092,11 @@ export interface components {
         GeoPersonaResponse: {
             persona: components["schemas"]["GeoPersona"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3787,27 +4117,38 @@ export interface components {
             };
         };
         ArchiveGeoPersonaResponse: {
+            /** @description Id of the archived persona. */
             id: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoPersonaResultsResponse: {
+            /** @description Latest answer per turn and engine within the selected scan. */
             results: {
                 scanId: string;
                 /** @description Conversation turn, starting at 1. */
                 turn: number;
                 engine: string;
+                /** @description Message the persona sent on this turn. */
                 prompt: string;
                 answer: string;
+                /** @description Whether the answer named the tracked brand or one of its aliases. */
                 mentioned: boolean;
+                /** @description 1-based rank of the brand in a list of recommended brands, or `null` when it is not mentioned or not in a list. */
                 position: number | null;
+                /** @description `positive`, `neutral` or `negative` toward the brand, or `null` when it is not mentioned or was not classified. */
                 sentiment: string | null;
+                /** @description Part of the answer around the mention, or its opening when the brand is not mentioned. */
                 excerpt: string;
+                /** @description Web searches the engine ran while answering. */
                 searchQueries: string[];
+                /** @description Sources the answer cited. `domain` is empty for answers stored before domains were recorded. */
                 sources: {
                     title: string;
                     url: string;
@@ -3815,73 +4156,101 @@ export interface components {
                 }[];
                 /** @description Hash of the persona context this answer was played with. Changes when the persona is edited. */
                 snapshotVersion: string | null;
+                /** @description When this answer was captured. */
                 lastCheckedAt: string;
             }[];
+            /** @description Up to 50 scans that played this persona, newest first. Pass an id as `scanId` to read that scan. */
             scans: {
                 id: string;
+                /** @description When the last answer of that scan was captured. */
                 capturedAt: string;
             }[];
+            /** @description Scan the results come from, or `null` when the persona has not been played yet. An unknown `scanId` falls back to the latest scan. */
             selectedScanId: string | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoPersonaActivityResponse: {
+            /** @description First UTC day covered (YYYY-MM-DD). */
             from: string;
+            /** @description UTC day after the last day covered (YYYY-MM-DD). Exclusive end of the range. */
             to: string;
+            /** @description One point per persona, persona version and day that had answers. Days without answers are omitted. */
             points: {
                 personaId: string;
+                /** @description Hash of the persona context the answers were played with. Changes when the persona is edited. */
                 snapshotVersion: string;
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
+                /** @description Latest answer captured that day. */
                 lastCheckedAt: string;
+                /** @description Persona answers captured that day across all turns and engines. */
                 checks: number;
+                /** @description Of those, answers that mentioned the tracked brand. */
                 mentions: number;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         RunGeoPersonaResponse: {
             /** @description Answers recorded during this request by the API-based engines that responded. */
             checks: number;
+            /** @description How many of those answers mentioned the tracked brand. */
             mentions: number;
+            /** @description API-based engines the persona was played against during this request. Empty when only consumer apps run or none of the API engines answered. */
             engines: string[];
             /**
              * @description Scan that plays the persona in the tracked consumer apps in the background, or `null`. Poll `GET /v1/projects/{projectId}/geo/scans/{scanId}`.
              * @default null
              */
             queuedScanId: string | null;
-            /** @default [] */
+            /**
+             * @description Consumer-app engines covered by `queuedScanId`. Empty when nothing was queued.
+             * @default []
+             */
             queuedEngines: string[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoPersonaGenerationResponse: {
             job: components["schemas"]["GeoPersonaGenerationJob"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
-        /** @description The project's latest generation job, or `null` when none ran recently. */
+        /** @description The project's current or most recent generation job. Starting a generation while one is queued or running returns that job instead of a new one. `null` when no job was recorded in the last 7 days. */
         GeoPersonaGenerationJob: {
             id: string;
             /** @enum {string} */
             status: "queued" | "running" | "completed" | "failed";
+            /** @description Persona being regenerated, or `null` when the job creates new personas. */
             personaId: string | null;
+            /** @description When the job was queued. */
             startedAt: string;
+            /** @description Failure message when `status` is `failed`, otherwise `null`. */
             error: string | null;
         } | null;
         GenerateGeoPersonasRequest: {
@@ -3896,21 +4265,32 @@ export interface components {
             promptsOnly?: true;
         };
         ListGeoCompetitorsResponse: {
+            /** @description Tracked competitors, oldest first. */
             competitors: components["schemas"]["GeoCompetitor"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoCompetitor: {
+            /** @description Competitor id. Competitors carried over from older settings use `legacy:` plus the lowercased name. Endpoints address competitors by `name`, not id. */
             id: string;
+            /** @description Competitor name. Unique per project, compared case-insensitively. */
             name: string;
+            /** @description Competitor website domain, used to recognize citations of its site. `null` when unknown. */
             domain: string | null;
+            /** @description Alternate names counted as this competitor in answers. */
             synonyms: string[];
-            /** @enum {string} */
+            /**
+             * @description Your own label for the competitor: direct or indirect. Only shown as a label; mentions, share of voice and gaps count both kinds the same way.
+             * @enum {string}
+             */
             kind: "direct" | "indirect";
+            /** @description Custom chart color, or `null` to use the default palette. */
             color: string | null;
         };
         PutGeoCompetitorRequest: {
@@ -3919,40 +4299,61 @@ export interface components {
             previousName?: string;
             domain: string | null;
             synonyms?: string[];
-            /** @enum {string} */
+            /**
+             * @description Label only; it does not change how mentions are counted. Omit to keep the current kind, or direct for a new competitor.
+             * @enum {string}
+             */
             kind?: "direct" | "indirect";
             color?: string | null;
         };
         GeoCompetitorSuggestionsResponse: {
+            /** @description Website domain the suggestions are for. */
             domain: string;
+            /** @description Market or category the lookup placed the website in, or `null` when it reported none. */
             field: string | null;
+            /** @description Suggested competitors, deduplicated by domain or name. Nothing is saved; track one with `PUT /v1/projects/{projectId}/geo/competitors`. */
             competitors: {
                 name: string;
                 domain: string | null;
+                /** @description Short description of the suggested competitor, or `null`. */
                 description: string | null;
-                /** @enum {string|null} */
+                /**
+                 * @description How sure the lookup is that this is a competitor, or `null` when not reported.
+                 * @enum {string|null}
+                 */
                 confidence: "high" | "medium" | null;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         ImportGeoCompetitorsResponse: {
+            /** @description Rows added as new competitors. */
             imported: number;
+            /** @description Rows that matched an existing competitor by name and replaced the domain, kind or synonyms they provided. */
             updated: number;
+            /** @description Rows repeating a name already seen earlier in the import. */
             skipped: number;
+            /** @description Rows rejected while parsing CSV. Always empty for `rows`. */
             issues: {
+                /** @description CSV line number of the rejected row. */
                 line: number;
+                /** @description Why the row was rejected. */
                 message: string;
             }[];
+            /** @description All tracked competitors after the import. */
             competitors: components["schemas"]["GeoCompetitor"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -3960,7 +4361,10 @@ export interface components {
             rows?: {
                 name: string;
                 domain?: string | null;
-                /** @enum {string} */
+                /**
+                 * @description Label only. Omit to keep an existing competitor's kind, or direct for a new one.
+                 * @enum {string}
+                 */
                 kind?: "direct" | "indirect";
                 synonyms?: string[];
             }[];
@@ -3968,29 +4372,49 @@ export interface components {
             csv?: string;
         };
         CreateGeoScanResponse: {
+            /** @description Id of the queued scan, readable right away via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. */
             scanId: string;
+            /** @description Relative URL of that scan, also sent as the `Location` header. Poll it until `status` leaves `running`. */
             statusUrl: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
+        CreateGeoScanRequest: {
+            /**
+             * @description Run only these engines, using ids from `GET /v1/projects/{projectId}/geo/engines`, for example `["openai/chatgpt"]` for one engine. An engine the project doesn't track can be tried once without tracking it. Omit to run every tracked engine. An unknown id is rejected with a 400. A scan that leaves out tracked engines doesn't count as the project's scheduled scan.
+             * @example [
+             *       "openai/chatgpt"
+             *     ]
+             */
+            engines?: string[];
+        };
         ListGeoScansResponse: {
+            /** @description Scans for the project, most recently started first. */
             scans: components["schemas"]["GeoScan"][];
             pagination: {
                 limit: number;
                 currentPage: number;
+                /** @description Next page number, or `null` on the last page. */
                 nextPage: number | null;
+                /** @description Previous page number, or `null` on the first page. */
                 previousPage: number | null;
+                /** @description Total pages at this `limit`. At least 1, even with no scans. */
                 totalPages: number;
+                /** @description Total scans recorded for the project. */
                 totalItems: number;
             };
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4000,415 +4424,677 @@ export interface components {
             /** @enum {string} */
             status: "running" | "completed" | "failed";
             startedAt: string;
+            /** @description When the scan completed or failed, or `null` while running. */
             finishedAt: string | null;
             createdAt: string;
             summary: {
+                /** @description Answers the scan planned to collect, or `null` when the scan recorded no plan. */
                 plannedChecks: number | null;
+                /** @description Answers stored for this scan so far. */
                 completedChecks: number;
+                /** @description Stored answers that mentioned the tracked brand. */
                 mentionCount: number;
+                /** @description Planned answers that failed and were not stored. */
                 failedChecks: number;
+                /** @description The same counts per engine, sorted by engine id. Covers planned engines and engines with stored answers. */
                 engines: {
                     engine: string;
+                    /** @description Answers planned for this engine, or `null` when the plan has no per-engine breakdown. */
                     plannedChecks: number | null;
                     completedChecks: number;
                     mentionCount: number;
                     failedChecks: number;
                 }[];
             };
+            /** @description Machine-readable failure code such as `scan_handoff_failed` or `scan_stale`. `null` unless `status` is `failed`. */
             errorCode: string | null;
+            /** @description Human-readable failure reason. `null` unless `status` is `failed`. */
             errorMessage: string | null;
-            /** @enum {string|null} */
+            /**
+             * @description `handoff` when the scan could not be started, `execution` when it failed while running, `stale` when it stopped reporting progress and was closed. `null` unless `status` is `failed`.
+             * @enum {string|null}
+             */
             failedStage: "handoff" | "execution" | "stale" | null;
+            /** @description `true` when the failure was a timeout or a stale run, so starting a new scan is likely to work. `null` when unknown or the scan did not fail. */
             retryable: boolean | null;
         };
         GeoScanResponse: {
             scan: components["schemas"]["GeoScan"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityOverviewResponse: {
-            /** @description Whether the analytics backend is configured. */
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description One row per engine, highest visibility rate first. Counts every answer in the window, including sequences, personas and all tracked languages. */
             engines: {
+                /** @description Answer engine id, as listed by listGeoEngines. */
                 engine: string;
+                /** @description Checks run: one per prompt, engine, language and scan. A multi-turn conversation counts once. */
                 checks: number;
+                /** @description Checks whose answer named your brand or one of its aliases. */
                 mentions: number;
+                /** @description mentions / checks as a fraction from 0 to 1, rounded to 3 decimals. */
                 mentionRate: number;
+                /** @description Checks whose answer cited a page on your website or tracked domains. */
                 citations: number;
+                /** @description Checks that mentioned your brand or cited your site. */
                 visibility: number;
+                /** @description visibility / checks as a fraction from 0 to 1, rounded to 3 decimals. */
                 visibilityRate: number;
+                /** @description Average 1-based rank of your brand in answers that listed brands, rounded to 1 decimal. Null when no mentioned answer had a rank. */
                 avgPosition: number | null;
+                /** @description ISO timestamp of the newest check for this engine in the window. */
                 lastCheckedAt: string;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityTimeseriesResponse: {
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description One point per day and engine that had checks, oldest first. Days without checks are omitted. */
             points: {
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
+                /** @description Answer engine id, as listed by listGeoEngines. */
                 engine: string;
+                /** @description Checks run: one per prompt, engine, language and scan. A multi-turn conversation counts once. */
                 checks: number;
+                /** @description Checks whose answer named your brand or one of its aliases. */
                 mentions: number;
+                /** @description Checks whose answer cited a page on your website or tracked domains. */
                 citations: number;
+                /** @description Checks that mentioned your brand or cited your site. */
                 visibility: number;
+                /** @description Average 1-based rank of your brand in answers that listed brands, rounded to 1 decimal. Null when no mentioned answer had a rank. */
                 avgPosition?: number | null;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityPromptResultsResponse: {
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description Latest answer per tracked prompt and engine, newest first. Only tracked prompts in the project's prompt language; sequences and personas are left out. */
             results: {
+                /** @description Prompt id; use it with getGeoPromptHistory. */
                 promptId: string;
+                /** @description Answer engine id, as listed by listGeoEngines. */
                 engine: string;
+                /** @description Prompt text sent to the engine. */
                 prompt: string;
+                /** @description Full answer text from the engine. */
                 answer: string;
+                /** @description Whether the answer named your brand or one of its aliases. */
                 mentioned: boolean;
+                /** @description Whether the answer cited a page on your website or tracked domains. */
                 ownedSourceCited: boolean;
+                /** @description 1-based rank of your brand when the answer lists brands. Null when not mentioned or not in a list. */
                 position: number | null;
+                /** @description Tone toward your brand: positive, neutral or negative. Null when not mentioned. */
                 sentiment: string | null;
+                /** @description Alternative brands the answer offered instead of yours, in order of first appearance. */
                 competitors: string[];
+                /** @description Up to 300 characters around the mention, or the start of the answer when not mentioned. */
                 excerpt: string;
+                /** @description Web searches the engine ran while answering, when reported. */
                 searchQueries: string[];
+                /** @description Grounding sources the answer cited, deduplicated by URL. */
                 sources: {
+                    /** @description Source title, falling back to its domain or URL. */
                     title: string;
                     url: string;
+                    /** @description Source domain; empty when it cannot be derived from the URL. */
                     domain: string;
                 }[];
+                /** @description ISO timestamp when this answer was captured. */
                 lastCheckedAt: string;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityPromptResultSummariesResponse: {
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description Latest answer per tracked prompt and engine, newest first. Only tracked prompts in the project's prompt language; sequences and personas are left out. */
             results: {
+                /** @description Prompt id; use it with getGeoPromptHistory. */
                 promptId: string;
+                /** @description Answer engine id, as listed by listGeoEngines. */
                 engine: string;
+                /** @description Prompt text sent to the engine. */
                 prompt: string;
+                /** @description Whether the answer named your brand or one of its aliases. */
                 mentioned: boolean;
+                /** @description Whether the answer cited a page on your website or tracked domains. */
                 ownedSourceCited: boolean;
+                /** @description 1-based rank of your brand when the answer lists brands. Null when not mentioned or not in a list. */
                 position: number | null;
+                /** @description Tone toward your brand: positive, neutral or negative. Null when not mentioned. */
                 sentiment: string | null;
+                /** @description Alternative brands the answer offered instead of yours, in order of first appearance. */
                 competitors: string[];
+                /** @description ISO timestamp when this answer was captured. */
                 lastCheckedAt: string;
+                /** @description Id of this answer; pass it to getGeoPromptResultDetail. */
                 checkId: string;
             }[];
+            /** @description Pass as `cursor` for the next page. Null on the last page. */
             nextCursor: string | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityPromptResultDetailResponse: {
             result: {
+                /** @description Prompt id; use it with getGeoPromptHistory. */
                 promptId: string;
+                /** @description Answer engine id, as listed by listGeoEngines. */
                 engine: string;
+                /** @description Prompt text sent to the engine. */
                 prompt: string;
+                /** @description Full answer text from the engine. */
                 answer: string;
+                /** @description Whether the answer named your brand or one of its aliases. */
                 mentioned: boolean;
+                /** @description Whether the answer cited a page on your website or tracked domains. */
                 ownedSourceCited: boolean;
+                /** @description 1-based rank of your brand when the answer lists brands. Null when not mentioned or not in a list. */
                 position: number | null;
+                /** @description Tone toward your brand: positive, neutral or negative. Null when not mentioned. */
                 sentiment: string | null;
+                /** @description Alternative brands the answer offered instead of yours, in order of first appearance. */
                 competitors: string[];
+                /** @description Up to 300 characters around the mention, or the start of the answer when not mentioned. */
                 excerpt: string;
+                /** @description Web searches the engine ran while answering, when reported. */
                 searchQueries: string[];
+                /** @description Grounding sources the answer cited, deduplicated by URL. */
                 sources: {
+                    /** @description Source title, falling back to its domain or URL. */
                     title: string;
                     url: string;
+                    /** @description Source domain; empty when it cannot be derived from the URL. */
                     domain: string;
                 }[];
+                /** @description ISO timestamp when this answer was captured. */
                 lastCheckedAt: string;
+                /** @description Why the engine stopped generating, as reported by its API. Null when not reported. */
                 finishReason: string | null;
+                /** @description Input tokens the engine reported. Null when not reported. */
                 promptTokens: number | null;
+                /** @description Output tokens the engine reported. Null when not reported. */
                 outputTokens: number | null;
+                /** @description Reasoning tokens the engine reported. Null when not reported. */
                 reasoningTokens: number | null;
+                /** @description True when the answer hit the output length limit (finishReason is length). Null when finishReason is unknown. */
                 truncated: boolean | null;
             };
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityCompetitorShareResponse: {
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description Up to 50 brands, most mentioned first. Includes your own brand when answers mentioned it. */
             points: {
+                /** @description Brand name as answers named it; your own brand appears under its company name. Use it as `brand` in getGeoVisibilityCompetitorDetail. */
                 brand: string;
+                /** @description Checks in the window whose answer named this brand. */
                 mentions: number;
+                /** @description Daily share of this brand among the mentions of the listed brands, as a fraction from 0 to 1. */
                 trend?: {
+                    /** @description UTC day (YYYY-MM-DD). */
                     day: string;
                     value: number;
                 }[];
             }[];
+            /** @description Daily mentions per brand, oldest first, for every brand named in the window. */
             timeseries: {
+                /** @description Brand name as answers named it; your own brand appears under its company name. Use it as `brand` in getGeoVisibilityCompetitorDetail. */
                 brand: string;
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
+                /** @description Checks that day whose answer named this brand. */
                 mentions: number;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityLanguageShareResponse: {
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description One row per language, highest visibility rate first. */
             points: {
+                /** @description Language name, such as English. */
                 language: string;
+                /** @description Checks run: one per prompt, engine, language and scan. A multi-turn conversation counts once. */
                 checks: number;
+                /** @description Checks whose answer named your brand or one of its aliases. */
                 mentions: number;
+                /** @description mentions / checks as a fraction from 0 to 1, rounded to 3 decimals. */
                 mentionRate: number;
+                /** @description Checks whose answer cited a page on your website or tracked domains. */
                 citations: number;
+                /** @description Checks that mentioned your brand or cited your site. */
                 visibility: number;
+                /** @description visibility / checks as a fraction from 0 to 1, rounded to 3 decimals. */
                 visibilityRate: number;
+                /** @description Average 1-based rank of your brand in answers that listed brands, rounded to 1 decimal. Null when no mentioned answer had a rank. */
                 avgPosition: number | null;
+                /** @description Daily visibility rate for this language, from 0 to 1. */
                 trend?: {
+                    /** @description UTC day (YYYY-MM-DD). */
                     day: string;
                     value: number;
                 }[];
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoVisibilityCompetitorDetailResponse: {
+            /** @description Always true for visibility data, which is read from Notra's own database. */
             configured: boolean;
+            /** @description One point per day with checks, oldest first. */
             points: {
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
+                /** @description Checks that day whose answer named this brand. */
                 mentions: number;
+                /** @description All checks run that day, for computing a mention rate. */
                 checks: number;
             }[];
+            /** @description Latest answer per prompt and engine that named this brand, newest first. Persona conversations are left out. */
             prompts: {
                 promptId: string;
                 prompt: string;
+                /** @description Answer engine id, as listed by listGeoEngines. */
                 engine: string;
+                /** @description ISO timestamp of the latest answer for this prompt and engine. */
                 capturedAt: string;
+                /** @description Whether that answer also named your own brand. */
                 mentioned: boolean;
+                /** @description Your brand's 1-based rank in that answer. Null when not mentioned or not in a list. */
                 position: number | null;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoChangesResponse: {
+            /** @description Second most recently started completed scan, or `null` when the project has fewer than two completed scans. Without it there are no events. */
             previousScan: {
                 id: string;
                 finishedAt: string | null;
             } | null;
+            /** @description Most recently started completed scan, or `null` when the project has none. */
             currentScan: {
                 id: string;
                 finishedAt: string | null;
             } | null;
+            /** @description Counts over all events, including those beyond the returned `events`. */
             summary: {
+                /** @description Prompt and engine pairs that now mention the brand. */
                 gained: number;
+                /** @description Pairs that no longer mention the brand, including those where a competitor took its place. */
                 lost: number;
                 positionImproved: number;
+                /** @description Pairs where the brand moved down a list, including when a new competitor moved above it. */
                 positionDropped: number;
+                /** @description Pairs that now cite the project's own site. */
                 citationsAdded: number;
+                /** @description Pairs that no longer cite the project's own site. */
                 citationsRemoved: number;
             };
+            /** @description Changes per prompt and engine between the two scans, at most 40, ordered by kind, then engine, then prompt. Only answers to tracked prompts in the project's prompt language are compared. */
             events: {
                 /** @enum {string} */
                 kind: "gained_mention" | "lost_mention" | "position_improved" | "position_dropped" | "competitor_displaced" | "citation_added" | "citation_removed" | "competitor_cited" | "new_engine";
                 promptId: string;
                 prompt: string;
                 engine: string;
+                /** @description State in the previous scan, or `null` for `new_engine`. */
                 previous: {
                     mentioned: boolean;
+                    /** @description 1-based rank of the brand in a list of recommended brands, or `null` when it is not mentioned or not in a list. */
                     position: number | null;
                 } | null;
+                /** @description State in the current scan. */
                 current: {
                     mentioned: boolean;
+                    /** @description 1-based rank of the brand in a list of recommended brands, or `null` when it is not mentioned or not in a list. */
                     position: number | null;
                 };
+                /** @description For `competitor_displaced`, the competitors that took the brand's place; for `competitor_cited`, competitors whose sites were newly cited. Otherwise empty. */
                 competitors: string[];
+                /** @description For `competitor_cited`, the newly cited competitor domains. Otherwise empty. */
                 domains: string[];
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoPromptHistoryResponse: {
+            /** @description Always `true` for a project-scoped request. */
             configured: boolean;
+            /** @description The requested prompt id, echoed back. */
             promptId: string;
+            /** @description Answers to this prompt, newest first. Without `scanId`, the latest 120 in the project's prompt language; with `scanId`, every answer from that scan. */
             checks: {
+                /** @description Check id, usable with the prompt-result detail endpoint. */
                 id: string;
                 scanId: string;
                 engine: string;
                 mentioned: boolean;
+                /** @description Whether the answer cited a page on the project's own site. */
                 ownedSourceCited?: boolean;
+                /** @description 1-based rank of the brand in a list of recommended brands, or `null` when it is not mentioned or not in a list. */
                 position: number | null;
+                /** @description `positive`, `neutral` or `negative` toward the brand, or `null` when it is not mentioned or was not classified. */
                 sentiment: string | null;
+                /** @description Competing brands the answer offered instead of the brand. */
                 competitors: string[];
+                /** @description Language the prompt was asked in, such as `English`. An empty string means English. */
                 language: string;
                 capturedAt: string;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoSentimentResponse: {
-            /** @enum {boolean} */
+            /**
+             * @description Always `true` for a project-scoped request.
+             * @enum {boolean}
+             */
             configured: true;
+            /** @description Totals for the selected period. */
             summary: {
+                /** @description Answers to tracked prompts in the project's prompt language. Sequence and persona answers are not counted. */
                 totalChecks: number;
+                /** @description Answers that mentioned the tracked brand. */
                 mentions: number;
+                /** @description Mentions classified as positive. */
                 positive: number;
+                /** @description Mentions classified as neutral. */
                 neutral: number;
+                /** @description Mentions classified as negative. */
                 negative: number;
+                /** @description Latest answer captured, or `null` when there are none. */
                 lastCheckedAt: string | null;
+                /** @description Sentiment score from 0 to 100: positive counts 100, neutral 50, negative 0, averaged over classified mentions. `null` without classified mentions. */
                 score: number | null;
+                /** @description Mentions with a sentiment: positive + neutral + negative. */
                 classifiedMentions: number;
+                /** @description Mentions without a sentiment classification. */
                 unknownMentions: number;
+                /** @description Answers that did not mention the brand. */
                 notMentioned: number;
+                /** @description Share of classified mentions that are positive, from 0 to 1. `null` without classified mentions. */
                 positiveShare: number | null;
+                /** @description Share of classified mentions that are neutral, from 0 to 1. `null` without classified mentions. */
                 neutralShare: number | null;
+                /** @description Share of classified mentions that are negative, from 0 to 1. `null` without classified mentions. */
                 negativeShare: number | null;
+                /** @description Share of mentions that have a sentiment, from 0 to 1. `null` without mentions. */
                 classificationCoverage: number | null;
             };
+            /** @description Totals per engine that answered in the selected period. */
             engines: {
+                /** @description Answers to tracked prompts in the project's prompt language. Sequence and persona answers are not counted. */
                 totalChecks: number;
+                /** @description Answers that mentioned the tracked brand. */
                 mentions: number;
+                /** @description Mentions classified as positive. */
                 positive: number;
+                /** @description Mentions classified as neutral. */
                 neutral: number;
+                /** @description Mentions classified as negative. */
                 negative: number;
+                /** @description Latest answer captured, or `null` when there are none. */
                 lastCheckedAt: string | null;
+                /** @description Sentiment score from 0 to 100: positive counts 100, neutral 50, negative 0, averaged over classified mentions. `null` without classified mentions. */
                 score: number | null;
+                /** @description Mentions with a sentiment: positive + neutral + negative. */
                 classifiedMentions: number;
+                /** @description Mentions without a sentiment classification. */
                 unknownMentions: number;
+                /** @description Answers that did not mention the brand. */
                 notMentioned: number;
+                /** @description Share of classified mentions that are positive, from 0 to 1. `null` without classified mentions. */
                 positiveShare: number | null;
+                /** @description Share of classified mentions that are neutral, from 0 to 1. `null` without classified mentions. */
                 neutralShare: number | null;
+                /** @description Share of classified mentions that are negative, from 0 to 1. `null` without classified mentions. */
                 negativeShare: number | null;
+                /** @description Share of mentions that have a sentiment, from 0 to 1. `null` without mentions. */
                 classificationCoverage: number | null;
                 engine: string;
             }[];
+            /** @description One point per UTC day of the selected period, including days without answers. */
             points: {
+                /** @description Answers to tracked prompts in the project's prompt language. Sequence and persona answers are not counted. */
                 totalChecks: number;
+                /** @description Answers that mentioned the tracked brand. */
                 mentions: number;
+                /** @description Mentions classified as positive. */
                 positive: number;
+                /** @description Mentions classified as neutral. */
                 neutral: number;
+                /** @description Mentions classified as negative. */
                 negative: number;
+                /** @description Latest answer captured, or `null` when there are none. */
                 lastCheckedAt: string | null;
+                /** @description Sentiment score from 0 to 100: positive counts 100, neutral 50, negative 0, averaged over classified mentions. `null` without classified mentions. */
                 score: number | null;
+                /** @description Mentions with a sentiment: positive + neutral + negative. */
                 classifiedMentions: number;
+                /** @description Mentions without a sentiment classification. */
                 unknownMentions: number;
+                /** @description Answers that did not mention the brand. */
                 notMentioned: number;
+                /** @description Share of classified mentions that are positive, from 0 to 1. `null` without classified mentions. */
                 positiveShare: number | null;
+                /** @description Share of classified mentions that are neutral, from 0 to 1. `null` without classified mentions. */
                 neutralShare: number | null;
+                /** @description Share of classified mentions that are negative, from 0 to 1. `null` without classified mentions. */
                 negativeShare: number | null;
+                /** @description Share of mentions that have a sentiment, from 0 to 1. `null` without mentions. */
                 classificationCoverage: number | null;
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
             }[];
+            /** @description The selected period compared with the one before it. Always returned by this endpoint. */
             comparison?: {
+                /** @description Selected period as inclusive UTC days (YYYY-MM-DD). */
                 current: {
                     from: string;
                     to: string;
                 };
+                /** @description Period of the same length right before it, as inclusive UTC days (YYYY-MM-DD). */
                 previous: {
                     from: string;
                     to: string;
                 };
+                /** @description Totals for the previous period. */
                 summary: {
+                    /** @description Answers to tracked prompts in the project's prompt language. Sequence and persona answers are not counted. */
                     totalChecks: number;
+                    /** @description Answers that mentioned the tracked brand. */
                     mentions: number;
+                    /** @description Mentions classified as positive. */
                     positive: number;
+                    /** @description Mentions classified as neutral. */
                     neutral: number;
+                    /** @description Mentions classified as negative. */
                     negative: number;
+                    /** @description Latest answer captured, or `null` when there are none. */
                     lastCheckedAt: string | null;
+                    /** @description Sentiment score from 0 to 100: positive counts 100, neutral 50, negative 0, averaged over classified mentions. `null` without classified mentions. */
                     score: number | null;
+                    /** @description Mentions with a sentiment: positive + neutral + negative. */
                     classifiedMentions: number;
+                    /** @description Mentions without a sentiment classification. */
                     unknownMentions: number;
+                    /** @description Answers that did not mention the brand. */
                     notMentioned: number;
+                    /** @description Share of classified mentions that are positive, from 0 to 1. `null` without classified mentions. */
                     positiveShare: number | null;
+                    /** @description Share of classified mentions that are neutral, from 0 to 1. `null` without classified mentions. */
                     neutralShare: number | null;
+                    /** @description Share of classified mentions that are negative, from 0 to 1. `null` without classified mentions. */
                     negativeShare: number | null;
+                    /** @description Share of mentions that have a sentiment, from 0 to 1. `null` without mentions. */
                     classificationCoverage: number | null;
                 };
+                /** @description One point per UTC day of the previous period. */
                 points: {
+                    /** @description Answers to tracked prompts in the project's prompt language. Sequence and persona answers are not counted. */
                     totalChecks: number;
+                    /** @description Answers that mentioned the tracked brand. */
                     mentions: number;
+                    /** @description Mentions classified as positive. */
                     positive: number;
+                    /** @description Mentions classified as neutral. */
                     neutral: number;
+                    /** @description Mentions classified as negative. */
                     negative: number;
+                    /** @description Latest answer captured, or `null` when there are none. */
                     lastCheckedAt: string | null;
+                    /** @description Sentiment score from 0 to 100: positive counts 100, neutral 50, negative 0, averaged over classified mentions. `null` without classified mentions. */
                     score: number | null;
+                    /** @description Mentions with a sentiment: positive + neutral + negative. */
                     classifiedMentions: number;
+                    /** @description Mentions without a sentiment classification. */
                     unknownMentions: number;
+                    /** @description Answers that did not mention the brand. */
                     notMentioned: number;
+                    /** @description Share of classified mentions that are positive, from 0 to 1. `null` without classified mentions. */
                     positiveShare: number | null;
+                    /** @description Share of classified mentions that are neutral, from 0 to 1. `null` without classified mentions. */
                     neutralShare: number | null;
+                    /** @description Share of classified mentions that are negative, from 0 to 1. `null` without classified mentions. */
                     negativeShare: number | null;
+                    /** @description Share of mentions that have a sentiment, from 0 to 1. `null` without mentions. */
                     classificationCoverage: number | null;
+                    /** @description UTC day (YYYY-MM-DD). */
                     day: string;
                 }[];
+                /** @description Current `score` minus previous `score`, in points. `null` when either period has no classified mentions. */
                 delta: number | null;
             };
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoSentimentAnalysisResponse: {
-            /** @enum {string} */
+            /**
+             * @description `ready` when the stored analysis matches the current answers, `pending` while an analysis runs, `stale` when it is missing or older than the current answers, `failed` when the last run failed, `unavailable` when the brand name or the cache is not set up. This endpoint only reads stored analyses and never starts one.
+             * @enum {string}
+             */
             status: "ready" | "pending" | "stale" | "failed" | "unavailable";
+            /** @description The latest analysis. With `pending`, `stale` or `failed` it can be an earlier analysis of different answers. `null` when none is stored. */
             result: {
+                /** @description Identifies the set of answers that was analyzed. */
                 fingerprint: string;
                 generatedAt: string;
+                /** @description Answers sent to the model, at most 12 positive and 12 negative. */
                 sampled: number;
+                /** @description Positive or negative brand mentions in the period when the analysis ran. */
                 eligible: number;
                 themes: {
+                    /** @description The attribute praised or criticized. */
                     title: string;
                     /** @enum {string} */
                     polarity: "positive" | "negative";
+                    /** @description Claims under this theme, each with at least one verified quote. */
                     claims: {
+                        /** @description What the answers say about the brand, written by the model. */
                         statement: string;
+                        /** @description Quotes backing this claim, each checked against its answer text. Claims without a matching quote are dropped. */
                         evidence: {
+                            /** @description Id of the answer the quote comes from. */
                             checkId: string;
+                            /** @description Quote from that answer. It matches the answer text except for whitespace, quote marks and dash style. */
                             quote: string;
                             prompt: string;
                             engine: string;
                             capturedAt: string;
                         }[];
                     }[];
+                    /** @description Every quote from the theme's claims in one list, in claim order, with repeated quotes from the same answer listed once. */
                     evidence: {
+                        /** @description Id of the answer the quote comes from. */
                         checkId: string;
+                        /** @description Quote from that answer. It matches the answer text except for whitespace, quote marks and dash style. */
                         quote: string;
                         prompt: string;
                         engine: string;
@@ -4416,143 +5102,279 @@ export interface components {
                     }[];
                 }[];
             } | null;
+            /** @description Explanation for `stale`, `failed` or `unavailable`, otherwise `null`. */
             message: string | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoSentimentEvidenceResponse: {
+            /** @description Answers to tracked prompts that mentioned the brand negatively, newest first, 25 per page. */
             items: {
+                /** @description Check id of the answer. */
                 id: string;
                 scanId: string;
+                /** @description Prompt the answer belongs to: `custom-` plus the prompt id for custom prompts, the slug for auto prompts. */
                 promptId: string;
                 prompt: string;
                 engine: string;
+                /** @description Language the prompt was asked in, such as `English`. An empty string means English. */
                 language: string;
                 capturedAt: string;
                 answer: string;
+                /** @description Part of the answer around the brand mention. */
                 excerpt: string;
             }[];
+            /** @description Pass as `cursor` with the same window to fetch the next page, or `null` on the last page. */
             nextCursor: string | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoShelfListResponse: {
+            /** @description The project's shelf sources, most recently updated first. Homepage URLs found by scans are left out. */
             sources: {
                 id: string;
-                /** Format: uri */
+                /**
+                 * Format: uri
+                 * @description Page URL.
+                 */
                 url: string;
+                /** @description Hostname of the page. */
                 domain: string;
+                /** @description Page title, from a teammate or from the citations in AI answers. `null` when unknown. */
                 title: string | null;
-                /** @enum {string} */
+                /**
+                 * @description Type of page. For pages added by scans it is guessed from the domain, defaulting to other; teammates choose it for pages they add and can change it.
+                 * @enum {string}
+                 */
                 kind: "listicle" | "review_site" | "community" | "news" | "docs" | "video" | "other";
-                /** @enum {string} */
+                /**
+                 * @description own: on your brand's website. competitor: on a tracked competitor's domain. third_party: anywhere else. Set when a scan adds the page; pages teammates add are third_party.
+                 * @enum {string}
+                 */
                 ownership: "third_party" | "own" | "competitor";
-                /** @enum {string} */
+                /**
+                 * @description scan: added automatically because AI answers cited it. manual: added by a teammate.
+                 * @enum {string}
+                 */
                 origin: "scan" | "manual";
-                /** @enum {string} */
+                /**
+                 * @description Whether Notra could read the page itself: pending, ok, blocked or failed. New sources start as pending.
+                 * @enum {string}
+                 */
                 fetchStatus: "pending" | "ok" | "blocked" | "failed";
-                /** Format: date-time */
+                /**
+                 * Format: date-time
+                 * @description When Notra last read the page. `null` if it never has.
+                 */
                 lastFetchedAt: string | null;
+                /** @description How often AI answers for the project cited this page, as of the last citation sync. */
                 citations: {
+                    /** @description AI answers from the 30 days before the last citation sync that cited this page. */
                     windowCount: number;
+                    /** @description AI answers that ever cited this page. */
                     totalCount: number;
+                    /** @description Distinct prompts whose answers cited this page. */
                     promptCount: number;
+                    /** @description Engines that cited this page, sorted alphabetically. */
                     engines: string[];
-                    /** Format: date-time */
+                    /**
+                     * Format: date-time
+                     * @description First answer that cited this page. `null` when no answer has cited it.
+                     */
                     firstCitedAt: string | null;
-                    /** Format: date-time */
+                    /**
+                     * Format: date-time
+                     * @description Latest answer that cited this page. `null` when no answer has cited it.
+                     */
                     lastCitedAt: string | null;
                 };
+                /** @description Which brands are listed on the page. Your own brand is always included; a competitor appears only once marked present or absent. */
                 placements: {
+                    /** @description Tracked competitor this placement is for, or `null` for your own brand. */
                     competitorId: string | null;
+                    /** @description Brand name at the time the placement was written. */
                     brandName: string;
+                    /** @description Brand website domain at the time the placement was written. `null` when unknown. */
                     brandDomain: string | null;
-                    /** @enum {string} */
+                    /**
+                     * @description present: the brand is listed on the page. absent: it is not. unknown: nobody has checked yet.
+                     * @enum {string}
+                     */
                     status: "present" | "absent" | "unknown";
+                    /** @description 1-based position of the brand on the page. `null` when unknown, and always `null` unless status is present. */
                     position: number | null;
+                    /** @description Whether the page links to the brand. Always false unless status is present. */
                     hasLink: boolean;
-                    /** @enum {string} */
+                    /**
+                     * @description manual: a teammate set the status. fetch: Notra read the page after a scan and found the brand there or not.
+                     * @enum {string}
+                     */
                     evidence: "fetch" | "manual";
+                    /** @description Text from the page around the brand. `null` when none was captured. */
                     excerpt: string | null;
-                    /** Format: date-time */
+                    /**
+                     * Format: date-time
+                     * @description When this placement's status was last set.
+                     */
                     checkedAt: string;
                 }[];
+                /** @description Ticket for getting your brand listed on this page. `null` when none was opened. */
                 opportunity: {
-                    /** @enum {string} */
+                    /**
+                     * @description open or in_progress while the ticket is worked on. won, lost or dismissed close it.
+                     * @enum {string}
+                     */
                     status: "open" | "in_progress" | "won" | "lost" | "dismissed";
-                    /** @enum {string|null} */
+                    /**
+                     * @description low, medium or high. `null` when no priority is set.
+                     * @enum {string|null}
+                     */
                     priority: "low" | "medium" | "high" | null;
+                    /** @description Organization member id (not user id) of the assignee. `null` when unassigned. */
                     assigneeMemberId: string | null;
+                    /** @description Organization member id of the point of contact. `null` when the assignee is also the point of contact. */
                     pocMemberId: string | null;
+                    /** @description Free-text notes on the ticket. */
                     notes: string | null;
-                    /** Format: date-time */
+                    /**
+                     * Format: date-time
+                     * @description Due date. `null` when none is set.
+                     */
                     dueAt: string | null;
                     id: string;
+                    /** @description User who opened the ticket. */
                     createdByUserId: string | null;
-                    /** Format: date-time */
+                    /**
+                     * Format: date-time
+                     * @description When the ticket was closed (won, lost or dismissed). Kept when it moves between closed statuses; `null` while open.
+                     */
                     resolvedAt: string | null;
                     /** Format: date-time */
                     createdAt: string;
                     /** Format: date-time */
                     updatedAt: string;
                 } | null;
+                /** @description User who added the page. `null` for pages added by scans. */
                 createdByUserId: string | null;
-                /** Format: date-time */
+                /**
+                 * Format: date-time
+                 * @description For pages added by scans, when an answer first cited them; otherwise when a teammate added them.
+                 */
                 createdAt: string;
-                /** Format: date-time */
+                /**
+                 * Format: date-time
+                 * @description Last edit or citation change. Pages added by scans start with the time of their latest citation.
+                 */
                 updatedAt: string;
             }[];
+            /** @description Pass as `offset` to fetch the next page, or `null` when this is the last page. */
             nextOffset: number | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoContentGapsResponse: {
+            /** @description Prompts where at least half of the engines answering in the last 30 days left out the brand, plus won gaps that have a brief, highest opportunity first. Ignored gaps are excluded. */
             promptGaps: {
+                /** @description Tracked prompt id, or the scan prompt id for prompts that are not tracked. Use as promptId with updateGeoContentGap, or as sourceId with sourceKind gap when planning a brief. */
                 id: string;
                 prompt: string;
                 title: string | null;
+                /** @description Engines whose latest answer from the last 30 days did not mention the brand. */
                 engines: string[];
+                /** @description Engines whose latest answer from the last 30 days mentioned the brand. */
                 mentionedEngines: string[];
+                /** @description Tracked competitors named in answers that left out the brand. */
                 competitors: string[];
+                /** @description Other brands named in answers that left out the brand and are not tracked as competitors. */
                 discoveredCompetitors: string[];
                 /** @description Web searches AI engines ran while answering this prompt. */
                 searchQueries: string[];
+                /** @description Share of checked engines that mentioned the brand, from 0 to 1. */
                 ownMentionRate: number;
+                /** @description Number of engines with an answer for this prompt. */
                 engineCoverage: number;
+                /** @description Relative priority: grows with missing mentions, engines checked and competitors named. Gaps are sorted by it, highest first; 0 when won. */
                 opportunity: number;
+                /** @description True when most engines now mention the brand; the gap stays listed because a brief was planned for it. */
                 won: boolean;
+                /** @description The most recently updated brief planned from this gap. Null when none exists. */
                 brief: {
+                    /** @description Use with getGeoContentBrief and approveGeoContentBrief. */
                     briefId: string;
                     /** @enum {string} */
                     status: "draft" | "approved" | "writing" | "completed" | "failed";
+                    /** @description Draft post created for the brief. Null when none is linked. */
                     postId: string | null;
                     workingTitle: string | null;
+                    /** @description ISO timestamp of when the brief's post was published. Null until then. */
                     publishedAt: string | null;
+                    /** @description Engine coverage captured when the brief was planned, to compare against after publishing. Only set for briefs planned from a prompt gap or prompt with scan results from the last 30 days; null otherwise. */
                     baseline: {
+                        /** @description Engines that mentioned the brand when the brief was planned. */
                         mentionedEngines: number;
+                        /** @description Engines checked when the brief was planned. */
                         totalEngines: number;
                     } | null;
+                    /** @description True once a rescan of the source prompt was started after the post was published. */
                     rescanned: boolean;
                 } | null;
+                /** @description Whether to create a page or work on existing ones, from how well the brand's sitemap pages and posts already cover the prompt and its web searches. Never ignore, since prompt gaps carry no Search Console demand. Missing on snapshots built before it was added. */
+                recommendation?: {
+                    /**
+                     * @description What to do with this query cluster: create a new page, update the page Google already ranks or the strongest existing page, merge overlapping pages, or ignore thin demand.
+                     * @enum {string}
+                     */
+                    action: "create" | "update" | "merge" | "ignore";
+                    /** @description Plain-language explanation of the recommended action. */
+                    reason: string;
+                    /** @description Existing pages to update or merge, best match first. For create, the closest existing page when there is one; empty for ignore. */
+                    targets: {
+                        /**
+                         * @description page: a page from the brand's sitemap; post: a Notra post.
+                         * @enum {string}
+                         */
+                        kind: "page" | "post";
+                        /** @description Sitemap page id or post id. For a Google-ranked page Notra has not crawled, the page URL. */
+                        id: string;
+                        url: string | null;
+                        title: string;
+                        /** @description How much of the gap's terms this page already covers, from 0 to 1. */
+                        score: number;
+                        /** @description Google position of the gap's queries on this page, when Search Console shows it already ranks there. */
+                        googlePosition?: number;
+                    }[];
+                };
             }[];
+            /** @description Pending prompt suggestions from Google Search Console queries. Clicks, impressions and positions are from the Search Console data covering 31 to 3 days before the suggestion was generated, and are not refreshed later. */
             searchGaps: {
+                /** @description Search Console prompt suggestion id. Use as sourceId with sourceKind search_console when planning a brief. */
                 id: string;
+                /** @description Suggested prompt. */
                 prompt: string;
                 title: string | null;
+                /** @description Google impressions summed across the queries. Null when no query data is stored. */
                 impressions: number | null;
+                /** @description Google clicks summed across the queries. Null when no query data is stored. */
                 clicks: number | null;
+                /** @description Impression-weighted average Google position across the queries, rounded to one decimal. Null when no query data is stored. */
                 position: number | null;
                 queries: {
                     query: string;
@@ -4566,17 +5388,25 @@ export interface components {
                     /** @description Impressions of that page for this query. */
                     pageImpressions?: number;
                 }[];
+                /** @description The most recently updated brief planned from this gap. Null when none exists. */
                 brief: {
+                    /** @description Use with getGeoContentBrief and approveGeoContentBrief. */
                     briefId: string;
                     /** @enum {string} */
                     status: "draft" | "approved" | "writing" | "completed" | "failed";
+                    /** @description Draft post created for the brief. Null when none is linked. */
                     postId: string | null;
                     workingTitle: string | null;
+                    /** @description ISO timestamp of when the brief's post was published. Null until then. */
                     publishedAt: string | null;
+                    /** @description Engine coverage captured when the brief was planned, to compare against after publishing. Only set for briefs planned from a prompt gap or prompt with scan results from the last 30 days; null otherwise. */
                     baseline: {
+                        /** @description Engines that mentioned the brand when the brief was planned. */
                         mentionedEngines: number;
+                        /** @description Engines checked when the brief was planned. */
                         totalEngines: number;
                     } | null;
+                    /** @description True once a rescan of the source prompt was started after the post was published. */
                     rescanned: boolean;
                 } | null;
                 recommendation: {
@@ -4585,13 +5415,20 @@ export interface components {
                      * @enum {string}
                      */
                     action: "create" | "update" | "merge" | "ignore";
+                    /** @description Plain-language explanation of the recommended action. */
                     reason: string;
+                    /** @description Existing pages to update or merge, best match first. For create, the closest existing page when there is one; empty for ignore. */
                     targets: {
-                        /** @enum {string} */
+                        /**
+                         * @description page: a page from the brand's sitemap; post: a Notra post.
+                         * @enum {string}
+                         */
                         kind: "page" | "post";
+                        /** @description Sitemap page id or post id. For a Google-ranked page Notra has not crawled, the page URL. */
                         id: string;
                         url: string | null;
                         title: string;
+                        /** @description How much of the gap's terms this page already covers, from 0 to 1. */
                         score: number;
                         /** @description Google position of the gap's queries on this page, when Search Console shows it already ranks there. */
                         googlePosition?: number;
@@ -4600,28 +5437,45 @@ export interface components {
             }[];
             /** @description Web searches AI engines ran in scan answers without mentioning the brand or citing its site. */
             aiSearchGaps: {
+                /** @description Use as sourceId with sourceKind ai_search when planning a brief. */
                 id: string;
+                /** @description Most common wording of the web search. */
                 query: string;
+                /** @description Other wordings of the same search. */
                 variants: string[];
+                /** @description Prompt texts whose answers ran this search. */
                 prompts: string[];
+                /** @description Engines that ran this search without mentioning the brand or citing its site. */
                 engines: string[];
                 /** @description Scan answers in which an engine ran this web search without mentioning the brand or citing its site. */
                 searches: number;
+                /** @description Share of answers that ran this search and still mentioned the brand or cited its site, from 0 to 1. */
                 ownMentionRate: number;
+                /** @description Tracked competitors named in the answers that missed the brand. */
                 competitors: string[];
+                /** @description Other brands named in the answers that missed the brand and are not tracked as competitors. */
                 discoveredCompetitors: string[];
+                /** @description Relative priority: grows with missing mentions, searches and competitors named. Sorted highest first. */
                 opportunity: number;
+                /** @description The most recently updated brief planned from this gap. Null when none exists. */
                 brief: {
+                    /** @description Use with getGeoContentBrief and approveGeoContentBrief. */
                     briefId: string;
                     /** @enum {string} */
                     status: "draft" | "approved" | "writing" | "completed" | "failed";
+                    /** @description Draft post created for the brief. Null when none is linked. */
                     postId: string | null;
                     workingTitle: string | null;
+                    /** @description ISO timestamp of when the brief's post was published. Null until then. */
                     publishedAt: string | null;
+                    /** @description Engine coverage captured when the brief was planned, to compare against after publishing. Only set for briefs planned from a prompt gap or prompt with scan results from the last 30 days; null otherwise. */
                     baseline: {
+                        /** @description Engines that mentioned the brand when the brief was planned. */
                         mentionedEngines: number;
+                        /** @description Engines checked when the brief was planned. */
                         totalEngines: number;
                     } | null;
+                    /** @description True once a rescan of the source prompt was started after the post was published. */
                     rescanned: boolean;
                 } | null;
             }[];
@@ -4630,9 +5484,11 @@ export interface components {
             /** @description False while the project's content gaps snapshot is being prepared. */
             snapshotReady: boolean;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4640,9 +5496,11 @@ export interface components {
             promptId: string;
             ignored: boolean;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4651,11 +5509,14 @@ export interface components {
             ignored: boolean;
         };
         ListGeoContentBriefsResponse: {
+            /** @description The project's 20 most recently created briefs, newest first. */
             briefs: components["schemas"]["GeoContentBriefSummary"][];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4665,15 +5526,18 @@ export interface components {
             workingTitle: string;
             /** @enum {string} */
             status: "draft" | "approved" | "writing" | "completed" | "failed";
+            /** @description Post the brief writes into. Null when no post is linked, for example after it was deleted. */
             postId: string | null;
             createdAt: string;
         };
         GeoContentBriefResponse: {
             brief: components["schemas"]["GeoContentBriefDetail"];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4683,56 +5547,95 @@ export interface components {
             brief: components["schemas"]["GeoContentBriefDocument"];
             /** @enum {string} */
             status: "draft" | "approved" | "writing" | "completed" | "failed";
+            /** @description True when writing started automatically at planning time instead of through approval. */
             autoApproved: boolean;
+            /** @description Latest writer run id. Null until the brief is approved. */
             runId: string | null;
+            /** @description Post the brief writes into. Null when no post is linked, for example after it was deleted. */
             postId: string | null;
+            /** @description True when the writer's humanizing pass rewrote the draft post. */
             humanized: boolean;
+            /** @description Why the last writer run failed. Null otherwise. */
             error: string | null;
             createdAt: string;
+            /** @description Pass as expectedUpdatedAt to updateGeoContentBrief to avoid overwriting newer changes. */
             updatedAt: string;
+            /** @description ISO timestamp of when the last writer run finished or failed. Null while writing or before approval. */
             completedAt: string | null;
         };
+        /** @description The article plan. Notra's AI planner writes the text fields; updateGeoContentBrief can change them. */
         GeoContentBriefDocument: {
+            /** @description The AI assistant prompt the article is written to win. */
             targetPrompt: string;
+            /** @description Search intent behind the target prompt. */
             intent: string;
-            /** @enum {string} */
+            /**
+             * @description Kind of blog post to write.
+             * @enum {string}
+             */
             contentSubtype: "guide" | "comparison" | "listicle" | "how-to" | "faq" | "alternatives";
+            /** @description Planned article title, up to 120 characters. */
             workingTitle: string;
+            /** @description Who the article is for. */
             audience: string;
+            /** @description What the reader is trying to get done. */
             jobToBeDone: string;
+            /** @description The outline, 3 to 8 sections in order. */
             sections: {
+                /** @description H2 heading for the section. */
                 heading: string;
+                /** @description One sentence on what the reader should take away. */
                 goal: string;
+                /** @description Up to 5 concrete, checkable claims the section must make. */
                 claims: string[];
             }[];
+            /** @description Up to 8 questions the article's FAQ must answer directly. */
             questionsToAnswer: string[];
+            /** @description Up to 6 links to the brand's own pages, picked from the project's sitemap pages. */
             internalLinks: {
+                /** @description Brand page to link. The planner is told to copy it from the project's sitemap; Notra does not check it. */
                 url: string;
+                /** @description Anchor text for the link. */
                 anchor: string;
+                /** @description Why the page belongs in the article. */
                 why: string;
             }[];
+            /** @description Up to 8 checks the finished article must pass, based on Notra's GEO writing rules. */
             acceptanceChecklist: string[];
+            /** @description Why this article should earn the mention, based on current AI answers. Only filled when the brief was planned from scan evidence. */
             recommendedAngle?: string;
+            /** @description Brands named in current AI answers and the claims that earned them the mention. Only filled when the brief was planned from scan evidence. */
             competitorsToCounter?: string[];
+            /** @description Domains cited in current AI answers. Only filled when the brief was planned from scan evidence. */
             sourcesToReference?: string[];
+            /** @description Facts or topics winning AI answers covered that the brand must now cover. Only filled when the brief was planned from scan evidence. */
             missingCoverage?: string[];
+            /** @description How AI engines answered the source prompt when the brief was planned, from answers in the last 30 days. Only set for briefs planned from a prompt gap or prompt; null when there were no recent answers. */
             baseline?: {
+                /** @description Prompt id the brief was planned from. */
                 sourcePromptId: string;
+                /** @description Engines whose latest answer mentioned the brand. */
                 mentionedEngines: number;
+                /** @description Engines with an answer in the last 30 days. */
                 totalEngines: number;
+                /** @description Latest answer per engine. */
                 engines: {
                     engine: string;
                     mentioned: boolean;
+                    /** @description Position of the brand in the answer. Null when the answer gave it none. */
                     position: number | null;
                 }[];
+                /** @description Competitors named in the answers, with the number of engines naming each. */
                 competitorMentions: {
                     name: string;
                     engines: number;
                 }[];
+                /** @description Domains cited in the answers, with the number of engines citing each. */
                 citedDomains: {
                     domain: string;
                     engines: number;
                 }[];
+                /** @description ISO timestamp of the newest answer used. */
                 capturedAt: string | null;
             } | null;
         };
@@ -4765,16 +5668,21 @@ export interface components {
             acceptanceChecklist?: string[];
         };
         PlanGeoContentBriefResponse: {
+            /** @description New brief id, or the id of an open brief reused for the same source. */
             briefId: string;
             brief: components["schemas"]["GeoContentBriefDocument"];
             /** @enum {string} */
             status: "draft" | "approved" | "writing" | "completed" | "failed";
+            /** @description Writer run id. Null when no writer run has started for the brief. */
             runId: string | null;
+            /** @description Draft post the writer fills in. Null when none is linked. */
             postId: string | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4803,30 +5711,41 @@ export interface components {
             existingPageUrl?: string;
         };
         ApproveGeoContentBriefResponse: {
+            /** @description Writer run started for the brief. Poll getGeoContentBrief for status and postId. */
             runId: string;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoAgentReadinessResponse: {
+            /** @description Website URL from the project's brand identity that scans run against. */
             targetUrl: string;
             report: components["schemas"]["GeoAgentReadinessReport"];
             scan: components["schemas"]["GeoAgentReadinessReport"] & unknown;
-            /** @description Completed scans, oldest first. */
+            /** @description Up to the 60 most recent completed scans, oldest first. */
             history: {
                 id: string;
+                /** @description Score from 0 to 100, or null when the scanner returned none. */
                 score: number | null;
+                /** @description Number of checks that failed in this scan. */
                 failedCount: number;
+                /** @description Number of checks that only partly passed in this scan. */
                 partialCount: number;
+                /** @description ISO timestamp of the scan, or of when the report was created if the scan time is unknown. */
                 scannedAt: string;
             }[];
             /** @description Checks that changed between the latest completed scan and the one before it. Null until there are two completed scans. */
             comparison: {
+                /** @description Score of the scan before the latest one, from 0 to 100. Null when the scanner returned none. */
                 previousScore: number | null;
+                /** @description ISO timestamp of the scan before the latest one. */
                 previousScannedAt: string;
+                /** @description Checks that had an issue before and pass now. */
                 resolved: {
                     id: string;
                     name: string;
@@ -4843,6 +5762,7 @@ export interface components {
                      */
                     result: "failed" | "partial" | null;
                 }[];
+                /** @description Checks that passed before and have an issue now. */
                 added: {
                     id: string;
                     name: string;
@@ -4895,9 +5815,11 @@ export interface components {
                 }[];
             } | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4906,50 +5828,74 @@ export interface components {
             id: string;
             /** @enum {string} */
             status: "running" | "completed" | "failed";
+            /** @description Website URL that was scanned. */
             targetUrl: string;
+            /** @description Agent readiness score from 0 to 100. Null until the scan completes. */
             score: number | null;
+            /** @description Label the Is Agentic scanner (is-agentic.com) gives the score, stored as returned. Its API defines it as free text, so treat it as display text rather than a fixed set of values. Null until the scan completes. */
             scoreLabel: string | null;
+            /** @description Points and passing checks per tier. Null until the scan completes. */
             scoreBreakdown: {
                 essential: {
+                    /** @description Score points earned by the checks in this tier. */
                     earned: number;
+                    /** @description Score points this tier can contribute. */
                     available: number;
+                    /** @description Number of checks in this tier that passed. */
                     passing: number;
+                    /** @description Number of checks in this tier. */
                     total: number;
                 };
                 recommended: {
+                    /** @description Score points earned by the checks in this tier. */
                     earned: number;
+                    /** @description Score points this tier can contribute. */
                     available: number;
+                    /** @description Number of checks in this tier that passed. */
                     passing: number;
+                    /** @description Number of checks in this tier. */
                     total: number;
                 };
                 bonus: {
+                    /** @description Extra score points earned from bonus signals. */
                     points: number;
+                    /** @description Number of bonus signals detected. */
                     positiveSignals: number;
                 };
             } | null;
+            /** @description Checks that failed or only partly passed. Passing checks are not listed. */
             issues: {
+                /** @description Stable check identifier, used to match the same check across scans. */
                 id: string;
                 name: string;
                 /** @enum {string} */
                 tier: "essential" | "recommended" | "bonus";
                 /** @enum {string} */
                 result: "failed" | "partial";
+                /** @description What the check found. Null when the scanner gave no details. */
                 details: string | null;
+                /** @description Suggested fix. Null when the scanner gave no recommendation. */
                 recommendation: string | null;
             }[];
+            /** @description Number of checks that applied to this website. Null until the scan completes. */
             eligibleChecks: number | null;
+            /** @description Why the scan failed. Null unless status is failed. */
             errorMessage: string | null;
+            /** @description ISO timestamp of when the website was scanned. Null until the scan completes. */
             scannedAt: string | null;
             createdAt: string;
         } | null;
         GeoAgentReadinessScanResponse: {
+            /** @description Id of the running report. Poll getGeoAgentReadiness until it appears as the completed report. */
             reportId: string;
             /** @description True when an in-flight scan for the same URL was reused instead of starting a new one. */
             alreadyRunning: boolean;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -4957,128 +5903,204 @@ export interface components {
             /** @description False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
             totals: {
+                /** @description Requests from AI crawlers in the window. */
                 crawler: number;
+                /** @description Crawler requests with category assistant-browse: assistants reading pages live while answering. Included in crawler. */
                 cited: number;
+                /** @description Visits from people following a link in an AI assistant. */
                 aiReferral: number;
                 /** @description AI referral visits that reached a configured conversion path. Null when no conversion paths are set. */
                 conversions: number | null;
             };
             /** @description Conversions in the previous window of the same length. Null when no conversion paths are set or no comparison data exists. */
             previousConversions: number | null;
+            /** @description One row per source and visitor type, crawlers and AI referrals only, most requests first. */
             sources: {
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Crawler that made the request. Empty for referrals. */
                 agent: string;
+                /** @description Request purpose, such as training-crawler, search-index or assistant-browse (an assistant reading the page live to answer). assistant-referral for referrals. */
                 category: string;
+                /** @description How the visitor was identified. verified: a crawler user agent whose operator publishes a way to verify it, such as IP ranges; Notra matches the user agent and does not check the IP. reported: a user agent the operator documents without verification, a known request fingerprint, a fetch of a machine-readable file, or, for AI referrals, the referrer. Sources detected only by heuristics are left out of these endpoints. */
                 confidence: string;
+                /** @description Requests in the window, including imported history. */
                 visits: number;
+                /** @description Requests in the previous window of the same length, right before this one. */
                 previousVisits?: number;
+                /** @description Requests that asked for Markdown or a machine-readable file. 0 when filtering by host or path, and for imported history. */
                 markdownVisits: number;
+                /** @description Markdown requests in the previous window of the same length, right before this one. */
                 previousMarkdownVisits?: number;
+                /** @description Distinct page paths requested in the window. */
                 paths: number;
+                /** @description Distinct paths in the previous window of the same length, right before this one. */
                 previousPaths?: number;
+                /** @description UTC time of the newest request in the window, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. Midnight of the day for imported history. `1970-01-01 00:00:00` when the source only had requests in the previous window. */
                 lastSeenAt: string;
             }[];
+            /** @description Daily requests per source and visitor type. */
             points: {
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
+                /** @description Requests from this source on this day. */
                 visits: number;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoTrafficLogResponse: {
             /** @description False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
+            /** @description Newest requests first, from the last 90 days. */
             log: {
+                /** @description UTC time of the request, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. */
                 capturedAt: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
+                /** @description Crawler that made the request. Empty for referrals. */
                 agent: string;
+                /** @description Request purpose, such as training-crawler, search-index or assistant-browse (an assistant reading the page live to answer). assistant-referral for referrals. */
                 category: string;
+                /** @description How the visitor was identified. verified: a crawler user agent whose operator publishes a way to verify it, such as IP ranges; Notra matches the user agent and does not check the IP. reported: a user agent the operator documents without verification, a known request fingerprint, a fetch of a machine-readable file, or, for AI referrals, the referrer. Sources detected only by heuristics are left out of these endpoints. */
                 confidence: string;
                 path: string;
                 host: string;
+                /** @description Country from the request's geo data. Empty when unknown. */
                 country: string;
+                /** @description First 180 characters of the user agent. Empty for AI referrals, whose user agent is not stored. */
                 ua: string;
+                /** @description Groups requests from one agent session; pass it to getGeoTrafficJourney. Empty when no journey could be derived. */
                 journeyId: string;
+                /** @description Whether the request asked for Markdown or fetched a machine-readable file. */
                 wantsMarkdown: boolean;
             }[];
+            /** @description Number of entries in log, not the overall request count. */
             total: number;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoTrafficJourneysResponse: {
             /** @description False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
+            /** @description Crawler and AI referral journeys, most recent activity first. */
             journeys: {
+                /** @description Pass it to getGeoTrafficJourney for every request. */
                 journeyId: string;
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Requests in this journey within the window. */
                 pages: number;
+                /** @description Distinct paths requested in this journey. */
                 distinctPaths: number;
+                /** @description UTC time of the journey's first request in the window, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. */
                 firstSeenAt: string;
+                /** @description UTC time of the journey's latest request in the window, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. */
                 lastSeenAt: string;
+                /** @description Path of the journey's first request. */
                 entryPath: string;
+                /** @description Distinct paths the journey requested, in no particular order. */
                 samplePaths: string[];
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoJourneyDetailResponse: {
             /** @description False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
+            /** @description The journey's requests within the window, oldest first, up to 200. */
             events: {
+                /** @description UTC time of the request, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. */
                 capturedAt: string;
                 path: string;
                 host: string;
+                /** @description HTTP method, uppercase. */
                 method: string;
+                /** @description Referrer origin and path without the query string. Empty when absent. */
                 referer: string;
+                /** @description Country from the request's geo data. Empty when unknown. */
                 country: string;
+                /** @description Crawler that made the request. Empty for referrals. */
                 agent: string;
+                /** @description Request purpose, such as training-crawler, search-index or assistant-browse (an assistant reading the page live to answer). assistant-referral for referrals. */
                 category: string;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoTrafficPagesResponse: {
             /** @description False when the traffic backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
+            /** @description One row per host, path, source and visitor type, most requests first. */
             pages: {
                 path: string;
                 host: string;
+                /** @description Crawler name for crawlers, or the AI assistant a referral came from. */
                 source: string;
-                /** @enum {string} */
+                /**
+                 * @description crawler: an AI bot fetched the page. ai_referral: a person arrived from an AI assistant's link.
+                 * @enum {string}
+                 */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Requests to this page from this source in the window, including imported history. */
                 visits: number;
+                /** @description Requests in the previous window of the same length, right before this one. */
                 previousVisits?: number;
+                /** @description UTC time of the newest request in the window, formatted `YYYY-MM-DD HH:MM:SS` with no time zone suffix. Midnight of the day for imported history. */
                 lastSeenAt: string;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5091,90 +6113,133 @@ export interface components {
                 version: string;
                 protocolVersion: string;
             } | null;
+            /** @description Each previous* value covers the window of the same length right before this one. */
             totals: {
+                /** @description All MCP requests in the window, of every method. */
                 requests: number;
                 previousRequests: number;
+                /** @description tools/call requests. */
                 toolCalls: number;
                 previousToolCalls: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
                 previousErrors: number;
+                /** @description Distinct MCP sessions. */
                 sessions: number;
                 previousSessions: number;
+                /** @description Distinct end-user IDs your server reported. */
                 users: number;
                 previousUsers: number;
+                /** @description 95th percentile request duration in milliseconds. */
                 p95Ms: number;
                 previousP95Ms: number;
             };
+            /** @description Requests per day, split by method. */
             daily: {
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
                 toolsCall: number;
                 resourcesRead: number;
                 promptsGet: number;
+                /** @description Requests of every other method. */
                 other: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
             }[];
+            /** @description Up to 50 tools, most called first. */
             tools: {
                 name: string;
+                /** @description Description from the latest tools/list. Empty when not listed. */
                 description: string;
                 calls: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
+                /** @description Distinct end-user IDs that called the tool. */
                 users: number;
+                /** @description Average response size in bytes. */
                 avgResponseBytes: number;
+                /** @description Median call duration in milliseconds. */
                 p50Ms: number;
+                /** @description 95th percentile call duration in milliseconds. */
                 p95Ms: number;
+                /** @description MCP Apps ui:// resource the tool advertises. Empty when none. */
                 uiResource: string;
             }[];
+            /** @description Up to 50 MCP clients, most sessions first. */
             clients: {
                 name: string;
                 sessions: number;
                 requests: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
+                /** @description ISO timestamp of the client's newest request. */
                 lastSeenAt: string;
             }[];
-            /** @description Most recent failed requests, newest first. */
+            /** @description Up to 100 most recent failed requests, newest first. */
             errorRequests: {
+                /** @description ISO timestamp. */
                 capturedAt: string;
                 clientName: string;
                 clientVersion: string;
+                /** @description JSON-RPC method, such as tools/call. */
                 method: string;
+                /** @description Tool name, resource URI or prompt name the request targeted. */
                 target: string;
                 /** @enum {string} */
                 status: "ok" | "tool_error" | "rpc_error";
                 errorCode: number;
                 errorMessage: string;
                 durationMs: number;
+                /** @description Model the agent reported via the optional _model parameter. Empty when not reported. */
                 model: string;
             }[];
+            /** @description Up to 50 models agents reported via the optional _model parameter, most calls first. */
             models: {
                 name: string;
                 sessions: number;
                 calls: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
             }[];
+            /** @description Up to 50 most frequent intent and tool pairs. */
             intents: {
+                /** @description Intent the agent stated when calling the tool. */
                 intent: string;
+                /** @description Tool the call went to. */
                 tool: string;
                 calls: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
             }[];
+            /** @description Requests your server sent to clients, with how users answered. */
             elicitations: {
+                /** @description Server-to-client request method, such as elicitation or sampling. */
                 method: string;
+                /** @description Tool that triggered the request. */
                 tool: string;
                 requests: number;
                 accepted: number;
                 declined: number;
                 cancelled: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
             }[];
+            /** @description MCP Apps interfaces hosts loaded, most renders first. */
             uiRenders: {
+                /** @description ui:// resource URI. */
                 resource: string;
+                /** @description Tools that advertise this resource. */
                 tools: string[];
+                /** @description Successful reads of the resource. */
                 renders: number;
+                /** @description Distinct sessions with a successful read. */
                 sessions: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
             }[];
             /** @description Tools from the latest tools/list that were never called in the window. Null before a listing is seen. */
             catalog: {
+                /** @description ISO timestamp of the latest tools/list response. */
                 listedAt: string;
                 unusedTools: {
                     name: string;
@@ -5182,9 +6247,11 @@ export interface components {
                 }[];
             } | null;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5192,35 +6259,47 @@ export interface components {
             /** @description Tools called right before this one in the same session. */
             before: {
                 tool: string;
+                /** @description Times this neighbor was adjacent to the tool. */
                 calls: number;
+                /** @description Of those, how often the earlier call of the pair had failed. */
                 afterFailure: number;
             }[];
             /** @description Tools called right after this one in the same session. */
             after: {
                 tool: string;
+                /** @description Times this neighbor was adjacent to the tool. */
                 calls: number;
+                /** @description Of those, how often the earlier call of the pair had failed. */
                 afterFailure: number;
             }[];
             /** @description Failures grouped by error message. */
             failures: {
+                /** @description First 300 characters of the error message. */
                 message: string;
                 clientName: string;
                 /** @enum {string} */
                 status: "ok" | "tool_error" | "rpc_error";
                 errorCode: number;
                 calls: number;
+                /** @description ISO timestamp of the newest failure. */
                 lastSeenAt: string;
             }[];
+            /** @description Up to 20 most frequent intents for this tool. */
             intents: {
+                /** @description Intent the agent stated when calling the tool. */
                 intent: string;
+                /** @description Tool the call went to. */
                 tool: string;
                 calls: number;
+                /** @description Requests whose status was tool_error or rpc_error. */
                 errors: number;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5244,14 +6323,16 @@ export interface components {
                 cloudflare: string;
             };
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
             /** @description Public key for the notra.js browser script, bound to one project. Safe to put in page HTML; it only records human page views on that project's tracked domains and survives token rotation. Only present when web analytics is enabled for the workspace and it has a project. */
             webKey?: string;
-            /** @description Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace. */
+            /** @description Script tag that installs notra.js with the public key, pinned to the current build with its Subresource Integrity hash and crossorigin="anonymous". Build an auto-updating tag from webScript.url instead if you want new builds without copying the tag again. Only present when web analytics is enabled for the workspace. */
             webSnippet?: string;
             /** @description notra.js: the auto-updating URL and the current build pinned with Subresource Integrity. Only present when web analytics is enabled for the workspace. */
             webScript?: {
@@ -5296,16 +6377,18 @@ export interface components {
                 cloudflare: string;
             };
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
             /** @description Tracking token. Shown once per request; rotating invalidates every previously issued token. */
             token: string;
             /** @description Public key for the notra.js browser script, bound to one project. Safe to put in page HTML; it only records human page views on that project's tracked domains and survives token rotation. Only present when web analytics is enabled for the workspace and it has a project. */
             webKey?: string;
-            /** @description Script tag that installs notra.js with the public key. Only present when web analytics is enabled for the workspace. */
+            /** @description Script tag that installs notra.js with the public key, pinned to the current build with its Subresource Integrity hash and crossorigin="anonymous". Build an auto-updating tag from webScript.url instead if you want new builds without copying the tag again. Only present when web analytics is enabled for the workspace. */
             webSnippet?: string;
             /** @description notra.js: the auto-updating URL and the current build pinned with Subresource Integrity. Only present when web analytics is enabled for the workspace. */
             webScript?: {
@@ -5336,39 +6419,49 @@ export interface components {
             /** @description Latest completed history import. Days up to `until` come from it; native tracking starts the day after. */
             imported?: {
                 /** @enum {string} */
-                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum";
+                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum" | "rybbit" | "databuddy" | "posthog";
                 /** @description Last imported day. */
                 until: string;
                 /** @description First day Notra tracked natively, when known. */
                 nativeStart: string | null;
             } | null;
+            /** @description Hosts with page views in the window, ignoring the host filter, most viewed first. */
             hosts: {
                 host: string;
                 /** @description Notra Sites site id, empty for your own domains. */
                 siteId: string;
+                /** @description Human page views in the window; 0 for a Notra Sites site that only has AI traffic. */
                 views: number;
             }[];
             totals: {
+                /** @description Human page views in the window, including imported history. */
                 views: number;
+                /** @description Page views in the previous window of the same length, immediately before this one. */
                 previousViews: number;
                 visitors: number;
                 previousVisitors: number;
+                /** @description Sessions, counted on each session's first page. */
                 sessions: number;
                 previousSessions: number;
+                /** @description Sessions that viewed at least two pages. For imported history, visits minus bounces. */
                 engagedSessions: number;
                 /** @description Visitors who arrived from an AI assistant. */
                 aiVisitors: number;
                 previousAiVisitors: number;
             };
+            /** @description Daily human page views and unique visitors, including imported history. */
             points: {
+                /** @description UTC day (YYYY-MM-DD). */
                 day: string;
                 views: number;
                 visitors: number;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5378,82 +6471,107 @@ export interface components {
             /** @description Latest completed history import. Days up to `until` come from it; native tracking starts the day after. */
             imported?: {
                 /** @enum {string} */
-                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum";
+                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum" | "rybbit" | "databuddy" | "posthog";
                 /** @description Last imported day. */
                 until: string;
                 /** @description First day Notra tracked natively, when known. */
                 nativeStart: string | null;
             } | null;
+            /** @description Top 50 pages by human views. */
             pages: {
                 host: string;
                 path: string;
                 views: number;
+                /** @description Views in the previous window of the same length, immediately before this one. */
                 previousViews: number;
                 visitors: number;
+                /** @description Sessions that started on this page. */
                 landings: number;
+                /** @description Visitors referred by an AI assistant. Imported history does not contribute. */
                 aiVisitors: number;
             }[];
+            /** @description Top 25 referrer sources by sessions. With a path, only sessions that landed on it. */
             sources: {
-                /** @description Referrer group: ai, direct, internal, search, social or other. */
+                /** @description Referrer group of the session's first page: ai, direct, search, social or other. Internal referrals are left out. */
                 group: string;
                 source: string;
+                /** @description Company behind the AI source, such as openai, anthropic, google or microsoft; the source itself when Notra has no mapping. Empty for non-AI groups. */
                 aiProduct: string;
+                /** @description Sessions whose first page had this referrer. */
                 sessions: number;
-                previousSessions: number;
+                /** @description Sessions in the previous window of the same length. Null when filtered to a path and the previous window starts before the 90 days of visits Notra keeps. */
+                previousSessions: number | null;
                 visitors: number;
             }[];
-            /** @description ISO 3166-1 alpha-2 country codes. */
+            /** @description Top 8 ISO 3166-1 alpha-2 country codes by visitors. */
             countries: {
                 value: string;
+                /** @description Visitors in the window. */
                 visitors: number;
+                /** @description Visitors in the previous window of the same length, immediately before this one. Returned on every row; 0 when there were none. Null when the row is read from visits Notra keeps for 90 days (languages, or any breakdown filtered to a path) and the previous window starts before them. */
                 previousVisitors?: number | null;
             }[];
+            /** @description Top 8 device classes by visitors. */
             devices: {
                 value: string;
+                /** @description Visitors in the window. */
                 visitors: number;
+                /** @description Visitors in the previous window of the same length, immediately before this one. Returned on every row; 0 when there were none. Null when the row is read from visits Notra keeps for 90 days (languages, or any breakdown filtered to a path) and the previous window starts before them. */
                 previousVisitors?: number | null;
             }[];
-            /** @description How sessions from AI assistants behave compared to others. */
+            /** @description How sessions from each AI source behave compared to all sessions. Native tracking only, without imported history. */
             outcomes: {
-                /** @description AI assistant the session came from; empty for every other session. */
+                /** @description AI source the session landed from. The row with an empty source covers all sessions, AI-referred ones included. */
                 source: string;
                 sessions: number;
+                /** @description Average page views per session. */
                 pagesPerSession: number;
+                /** @description Share of sessions that viewed two or more pages, from 0 to 1. */
                 engagedRate: number;
             }[];
-            /** @description Clicks on links to other sites. */
+            /** @description Top 25 clicked links to other sites, reported by notra.js. */
             outboundLinks: {
                 /** @description Destination host and path, without the query. */
                 url: string;
                 clicks: number;
-                previousClicks: number;
+                /** @description Clicks in the previous window of the same length, immediately before this one. Null when that window starts before the 90 days of clicks Notra keeps. */
+                previousClicks: number | null;
+                /** @description Unique visitors who clicked. */
                 visitors: number;
             }[];
-            /** @description Core Web Vitals from real visits. */
+            /** @description Core Web Vitals from real visits across all devices. Each page view counts once with its largest reported value. */
             vitals: {
                 /** @enum {string} */
                 metric: "lcp" | "inp" | "cls" | "fcp" | "ttfb";
                 /** @description 75th percentile in milliseconds, or the layout shift score x1000 for cls. */
                 p75: number;
+                /** @description Page views that reported this metric. */
                 samples: number;
             }[];
-            /** @description JavaScript errors reported by notra.plus.js. */
+            /** @description Top 25 JavaScript errors reported by notra.plus.js, by count. */
             errors: {
                 /** @description Scrubbed before storage: no query strings, emails or long ids. */
                 message: string;
                 source: string;
+                /** @description Times this error was reported. */
                 events: number;
+                /** @description Distinct page views that reported this error. */
                 views: number;
             }[];
+            /** @description Top 8 browser languages by visitors, reported by notra.js. */
             languages: {
                 value: string;
+                /** @description Visitors in the window. */
                 visitors: number;
+                /** @description Visitors in the previous window of the same length, immediately before this one. Returned on every row; 0 when there were none. Null when the row is read from visits Notra keeps for 90 days (languages, or any breakdown filtered to a path) and the previous window starts before them. */
                 previousVisitors?: number | null;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5463,53 +6581,74 @@ export interface components {
             rows: {
                 /** @description Source and medium are lowercased. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`. */
                 value: string;
+                /** @description Sessions whose first page carried this UTM value. */
                 sessions: number;
-                previousSessions: number;
+                /** @description Sessions in the previous window of the same length, immediately before this one. Null when read from visits Notra keeps for 90 days (term, content, or any parameter filtered to a path) and the previous window starts before them. */
+                previousSessions: number | null;
                 visitors: number;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
         GeoJourneyStatsResponse: {
             /** @description False when the analytics backend is not configured for this deployment; the payload is then empty rather than an error. */
             configured: boolean;
+            /** @description AI crawler and AI referral journeys per source, most journeys first. A journey belongs to the window it started in. */
             sources: {
                 source: string;
                 /** @enum {string} */
                 visitorType: "crawler" | "ai_referral" | "human" | "unknown";
+                /** @description Journeys that started in the window. */
                 journeys: number;
+                /** @description Journeys that started in the previous window of the same length, immediately before this one. */
                 previousJourneys: number;
+                /** @description Requests across the window's journeys. */
                 pages: number;
+                /** @description Journeys with a single request. */
                 singleFetch: number;
+                /** @description Journeys with 10 or more requests. */
                 deepCrawls: number;
+                /** @description Latest request of a journey that started in the window. Null when none started in the window. */
                 lastSeenAt: string | null;
+                /** @description Journeys per UTC day in the window, by the day they started. Days without journeys are omitted. */
                 daily: {
                     day: string;
                     journeys: number;
                 }[];
             }[];
+            /** @description Up to 500 pages fetched in the window's journeys, most journeys first. */
             pages: {
+                /** @description Path without query string or trailing slash. */
                 path: string;
+                /** @description Journeys started in the window that fetched this page. */
                 journeys: number;
                 previousJourneys: number;
                 /** @description Journeys whose first fetch was this page. */
                 entries: number;
+                /** @description Latest request of a journey that started in the window. Null when none started in the window. */
                 lastSeenAt: string | null;
+                /** @description Journeys per UTC day in the window, by the day they started. Days without journeys are omitted. */
                 daily: {
                     day: string;
                     journeys: number;
                 }[];
             }[];
+            /** @description Distinct pages fetched by journeys in the window, before the 500-page cap. */
             totalPages: number;
+            /** @description Distinct pages fetched by journeys in the previous window. */
             previousTotalPages: number;
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5518,41 +6657,55 @@ export interface components {
                 id: string;
                 projectId: string;
                 /** @enum {string} */
-                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum";
+                provider: "plausible" | "plausible_csv" | "vercel" | "cloudflare" | "cloudflare_rum" | "rybbit" | "databuddy" | "posthog";
                 /**
                  * @description web: page views; geo: AI crawler requests.
                  * @enum {string}
                  */
                 kind: "web" | "geo";
+                /** @description Name of the site in the source provider, or its reference when it has no name. */
                 sourceLabel: string;
+                /** @description Hostname the import was set up for. Imported rows without a hostname are counted under it; Plausible and Cloudflare imports also write rows for its subdomains. */
                 host: string;
                 /** @enum {string} */
                 status: "pending" | "running" | "waiting_rate_limit" | "completed" | "failed" | "deleting" | "deleted";
+                /** @description First day the import covers. */
                 startDay: string | null;
+                /** @description Last day the import covers. */
                 endDay: string | null;
                 /** @description First day of native tracking; imports stop before it. */
                 cutoffDay: string | null;
+                /** @description Date-range chunks the import is split into. 0 until planned. */
                 chunksTotal: number;
+                /** @description Chunks imported so far. */
                 chunksDone: number;
+                /** @description Page views imported so far across finished chunks. */
                 pageviewsImported: number;
+                /** @description Analytics rows written so far across finished chunks. */
                 rowsWritten: number;
+                /** @description Metrics the provider can supply; metrics it cannot supply read as 0. */
                 capabilities: {
                     visitors: boolean;
                     visits: boolean;
                     bounces: boolean;
                     utm: boolean;
                     entryPages: boolean;
+                    /** @description True when the provider reports estimates extrapolated from sampled data rather than exact counts (both Cloudflare providers). */
                     sampled: boolean;
                 };
+                /** @description Why the import failed or is waiting. Cleared when a chunk succeeds. */
                 lastError: string | null;
+                /** @description When a waiting import resumes (ISO timestamp). Null unless the status is waiting_rate_limit. */
                 retryAt: string | null;
                 createdAt: string;
                 completedAt: string | null;
             }[];
             organization: {
+                /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                 id: string;
                 slug: string;
                 name: string;
+                /** @description Workspace logo image URL. Null when none is set. */
                 logo: string | null;
             };
         };
@@ -5632,6 +6785,8 @@ export type PutSiteAuthorRequest = components['schemas']['PutSiteAuthorRequest']
 export type ImportSiteAuthorsResponse = components['schemas']['ImportSiteAuthorsResponse'];
 export type ImportSiteAuthorsRequest = components['schemas']['ImportSiteAuthorsRequest'];
 export type PatchSiteAuthorPageRequest = components['schemas']['PatchSiteAuthorPageRequest'];
+export type SiteSectionsResponse = components['schemas']['SiteSectionsResponse'];
+export type PatchSiteSectionsRequest = components['schemas']['PatchSiteSectionsRequest'];
 export type PublishSiteResponse = components['schemas']['PublishSiteResponse'];
 export type PublishSiteRequest = components['schemas']['PublishSiteRequest'];
 export type GetSiteResponse = components['schemas']['GetSiteResponse'];
@@ -5699,6 +6854,7 @@ export type GeoCompetitorSuggestionsResponse = components['schemas']['GeoCompeti
 export type ImportGeoCompetitorsResponse = components['schemas']['ImportGeoCompetitorsResponse'];
 export type ImportGeoCompetitorsRequest = components['schemas']['ImportGeoCompetitorsRequest'];
 export type CreateGeoScanResponse = components['schemas']['CreateGeoScanResponse'];
+export type CreateGeoScanRequest = components['schemas']['CreateGeoScanRequest'];
 export type ListGeoScansResponse = components['schemas']['ListGeoScansResponse'];
 export type GeoScan = components['schemas']['GeoScan'];
 export type GeoScanResponse = components['schemas']['GeoScanResponse'];
@@ -5803,7 +6959,7 @@ export interface operations {
                 status?: string;
                 /** @description Filter by content type using a comma-separated list. */
                 contentType?: string;
-                /** @description Filter by brand identity ID using a comma-separated list. */
+                /** @description Comma-separated brand identity IDs. Matches posts whose sourceMetadata.brandVoiceId is one of them: posts from generation runs (POST /v1/posts/generate, schedules, event triggers and GEO content briefs), which record the brand identity they wrote in, including the default one when none was requested. Posts created with POST /v1/posts or in chat, including images generated in chat, never match. */
                 brandIdentityId?: string;
             };
             header?: never;
@@ -5820,14 +6976,17 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         posts: {
                             id: string;
                             title: string;
+                            /** @description URL slug. Only blog posts and changelogs have one; null when none is set. */
                             slug: string | null;
                             /** @description Rendered HTML for text posts. For image posts, this is the public CDN URL of the rendered image. */
                             content: string;
@@ -5837,9 +6996,11 @@ export interface operations {
                             markdown: string | null;
                             /** @description Legacy inline generated HTML for image posts. New generated image HTML is stored as htmlUrl. Null for non-image posts. */
                             rawHtml: string | null;
+                            /** @description Publishing suggestions written by the generator as Markdown, such as when and where to share the post. Null when there are none. */
                             recommendations: string | null;
                             /** @enum {string} */
                             contentType: "changelog" | "linkedin_post" | "twitter_post" | "blog_post" | "investor_update" | "image";
+                            /** @description Free-form JSON recorded by whatever produced the post, such as a generation run or chat. Null for posts created with POST /v1/posts. Posts from generation runs (POST /v1/posts/generate, schedules, event triggers and GEO content briefs) include brandVoiceId, the brand identity the run wrote in (absent when the workspace had none), which the brandIdentityId filter of GET /v1/posts reads. */
                             sourceMetadata?: unknown;
                             /** @description Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type. */
                             metadata: {
@@ -5927,9 +7088,13 @@ export interface operations {
                         pagination: {
                             limit: number;
                             currentPage: number;
+                            /** @description Null on the last page. */
                             nextPage: number | null;
+                            /** @description Null on the first page. */
                             previousPage: number | null;
+                            /** @description At least 1, even when no posts match. */
                             totalPages: number;
+                            /** @description Posts matching the filters across all pages. */
                             totalItems: number;
                         };
                     };
@@ -6014,14 +7179,17 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         post: {
                             id: string;
                             title: string;
+                            /** @description URL slug. Only blog posts and changelogs have one; null when none is set. */
                             slug: string | null;
                             /** @description Rendered HTML for text posts. For image posts, this is the public CDN URL of the rendered image. */
                             content: string;
@@ -6031,9 +7199,11 @@ export interface operations {
                             markdown: string | null;
                             /** @description Legacy inline generated HTML for image posts. New generated image HTML is stored as htmlUrl. Null for non-image posts. */
                             rawHtml: string | null;
+                            /** @description Publishing suggestions written by the generator as Markdown, such as when and where to share the post. Null when there are none. */
                             recommendations: string | null;
                             /** @enum {string} */
                             contentType: "changelog" | "linkedin_post" | "twitter_post" | "blog_post" | "investor_update" | "image";
+                            /** @description Free-form JSON recorded by whatever produced the post, such as a generation run or chat. Null for posts created with POST /v1/posts. Posts from generation runs (POST /v1/posts/generate, schedules, event triggers and GEO content briefs) include brandVoiceId, the brand identity the run wrote in (absent when the workspace had none), which the brandIdentityId filter of GET /v1/posts reads. */
                             sourceMetadata?: unknown;
                             /** @description Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type. */
                             metadata: {
@@ -6211,9 +7381,11 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         authors: {
@@ -6305,14 +7477,18 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
+                        /** @description Null when no post with this ID exists in the organization; the response is still 200. */
                         post: {
                             id: string;
                             title: string;
+                            /** @description URL slug. Only blog posts and changelogs have one; null when none is set. */
                             slug: string | null;
                             /** @description Rendered HTML for text posts. For image posts, this is the public CDN URL of the rendered image. */
                             content: string;
@@ -6322,9 +7498,11 @@ export interface operations {
                             markdown: string | null;
                             /** @description Legacy inline generated HTML for image posts. New generated image HTML is stored as htmlUrl. Null for non-image posts. */
                             rawHtml: string | null;
+                            /** @description Publishing suggestions written by the generator as Markdown, such as when and where to share the post. Null when there are none. */
                             recommendations: string | null;
                             /** @enum {string} */
                             contentType: "changelog" | "linkedin_post" | "twitter_post" | "blog_post" | "investor_update" | "image";
+                            /** @description Free-form JSON recorded by whatever produced the post, such as a generation run or chat. Null for posts created with POST /v1/posts. Posts from generation runs (POST /v1/posts/generate, schedules, event triggers and GEO content briefs) include brandVoiceId, the brand identity the run wrote in (absent when the workspace had none), which the brandIdentityId filter of GET /v1/posts reads. */
                             sourceMetadata?: unknown;
                             /** @description Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type. */
                             metadata: {
@@ -6479,9 +7657,11 @@ export interface operations {
                     "application/json": {
                         id: string;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -6629,14 +7809,17 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         post: {
                             id: string;
                             title: string;
+                            /** @description URL slug. Only blog posts and changelogs have one; null when none is set. */
                             slug: string | null;
                             /** @description Rendered HTML for text posts. For image posts, this is the public CDN URL of the rendered image. */
                             content: string;
@@ -6646,9 +7829,11 @@ export interface operations {
                             markdown: string | null;
                             /** @description Legacy inline generated HTML for image posts. New generated image HTML is stored as htmlUrl. Null for non-image posts. */
                             rawHtml: string | null;
+                            /** @description Publishing suggestions written by the generator as Markdown, such as when and where to share the post. Null when there are none. */
                             recommendations: string | null;
                             /** @enum {string} */
                             contentType: "changelog" | "linkedin_post" | "twitter_post" | "blog_post" | "investor_update" | "image";
+                            /** @description Free-form JSON recorded by whatever produced the post, such as a generation run or chat. Null for posts created with POST /v1/posts. Posts from generation runs (POST /v1/posts/generate, schedules, event triggers and GEO content briefs) include brandVoiceId, the brand identity the run wrote in (absent when the workspace had none), which the brandIdentityId filter of GET /v1/posts reads. */
                             sourceMetadata?: unknown;
                             /** @description Cover image, tags, excerpt, authors and other site metadata. Set for blog posts and changelogs, null for every other content type. */
                             metadata: {
@@ -6980,9 +8165,11 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         job: {
@@ -6997,22 +8184,29 @@ export interface operations {
                             contentType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             /** @enum {string} */
                             lookbackWindow: "current_day" | "yesterday" | "last_7_days" | "last_14_days" | "last_30_days";
+                            /** @description Selected GitHub integration IDs. Empty when no GitHub source was selected. Every connected GitHub integration is used only when neither a GitHub nor a Linear source was selected. */
                             repositoryIds: string[];
+                            /** @description Brand identity the post is written in: the requested one, else the default, else the most recently updated. Null when the organization has none. */
                             brandVoiceId: string | null;
+                            /** @description Internal workflow run ID. Null until the generation workflow has started. */
                             workflowRunId: string | null;
                             /** @description ID of the generated post. Set once the job reaches completed. */
                             postId: string | null;
-                            /** @description Failure reason when status is failed. */
+                            /** @description Failure reason when status is failed, or why generation was skipped (for example no meaningful source activity) when status is skipped. */
                             error: string | null;
                             /**
                              * @description Stable machine-readable failure code when status is failed, such as NO_ACTIVITY_TYPES_SELECTED or NO_AVAILABLE_SOURCES. Absent or null for other failures and for older jobs.
                              * @example NO_AVAILABLE_SOURCES
                              */
                             errorCode?: string | null;
-                            /** @enum {string} */
+                            /**
+                             * @description Where the job was started.
+                             * @enum {string}
+                             */
                             source: "api" | "dashboard";
                             createdAt: string;
                             updatedAt: string;
+                            /** @description When the job reached completed, failed or skipped. Null while it is queued or running. */
                             completedAt: string | null;
                         };
                     };
@@ -7125,15 +8319,18 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         pullRequest: {
                             number: number;
                             /** Format: uri */
                             url: string;
+                            /** @description Head branch of the pull request. */
                             branchName: string;
                             /** @description Repository path of the post file on the branch. */
                             path: string;
@@ -7259,31 +8456,41 @@ export interface operations {
                             contentType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             /** @enum {string} */
                             lookbackWindow: "current_day" | "yesterday" | "last_7_days" | "last_14_days" | "last_30_days";
+                            /** @description Selected GitHub integration IDs. Empty when no GitHub source was selected. Every connected GitHub integration is used only when neither a GitHub nor a Linear source was selected. */
                             repositoryIds: string[];
+                            /** @description Brand identity the post is written in: the requested one, else the default, else the most recently updated. Null when the organization has none. */
                             brandVoiceId: string | null;
+                            /** @description Internal workflow run ID. Null until the generation workflow has started. */
                             workflowRunId: string | null;
                             /** @description ID of the generated post. Set once the job reaches completed. */
                             postId: string | null;
-                            /** @description Failure reason when status is failed. */
+                            /** @description Failure reason when status is failed, or why generation was skipped (for example no meaningful source activity) when status is skipped. */
                             error: string | null;
                             /**
                              * @description Stable machine-readable failure code when status is failed, such as NO_ACTIVITY_TYPES_SELECTED or NO_AVAILABLE_SOURCES. Absent or null for other failures and for older jobs.
                              * @example NO_AVAILABLE_SOURCES
                              */
                             errorCode?: string | null;
-                            /** @enum {string} */
+                            /**
+                             * @description Where the job was started.
+                             * @enum {string}
+                             */
                             source: "api" | "dashboard";
                             createdAt: string;
                             updatedAt: string;
+                            /** @description When the job reached completed, failed or skipped. Null while it is queued or running. */
                             completedAt: string | null;
                         };
+                        /** @description The job's event log, oldest first, up to the 100 most recent events. */
                         events: {
                             id: string;
                             jobId: string;
                             /** @enum {string} */
                             type: "queued" | "workflow_triggered" | "running" | "fetching_repositories" | "generating_content" | "post_created" | "completed" | "failed" | "skipped";
+                            /** @description Human-readable description of the event. */
                             message: string;
                             createdAt: string;
+                            /** @description Event details that vary by type, such as postId on post_created and completed, or errorCode on failed and skipped. */
                             metadata: {
                                 [key: string]: unknown;
                             } | null;
@@ -7357,8 +8564,11 @@ export interface operations {
                         endpoints: {
                             id: string;
                             organizationId: string;
+                            /** @description HTTPS URL that receives signed POST requests. */
                             url: string;
+                            /** @description Event types delivered to this endpoint. */
                             events: ("post.generation.completed" | "post.generation.failed" | "post.generation.skipped" | "brand_identity.generation.completed" | "brand_identity.generation.failed" | "post.published" | "post.created" | "post.updated" | "post.deleted" | "post.unpublished" | "geo.scan.completed" | "geo.scan.failed" | "geo.alert.triggered")[];
+                            /** @description Disabled endpoints receive no deliveries. */
                             enabled: boolean;
                             createdAt: string;
                         }[];
@@ -7466,11 +8676,15 @@ export interface operations {
                         endpoint: {
                             id: string;
                             organizationId: string;
+                            /** @description HTTPS URL that receives signed POST requests. */
                             url: string;
+                            /** @description Event types delivered to this endpoint. */
                             events: ("post.generation.completed" | "post.generation.failed" | "post.generation.skipped" | "brand_identity.generation.completed" | "brand_identity.generation.failed" | "post.published" | "post.created" | "post.updated" | "post.deleted" | "post.unpublished" | "geo.scan.completed" | "geo.scan.failed" | "geo.alert.triggered")[];
+                            /** @description Disabled endpoints receive no deliveries. */
                             enabled: boolean;
                             createdAt: string;
                         };
+                        /** @description Signing secret, starting with whsec_. Returned only here; use it to verify the x-notra-signature header on each request. */
                         secret: string;
                     };
                 };
@@ -7648,7 +8862,9 @@ export interface operations {
     listWebhookDeliveries: {
         parameters: {
             query?: {
+                /** @description Deliveries to skip. Pages hold 25 deliveries, newest first, so pass a multiple of 25. Defaults to 0. */
                 offset?: number | null;
+                /** @description Only return deliveries with this status. Defaults to all. */
                 status?: "all" | "pending" | "sending" | "retrying" | "succeeded" | "failed" | "cancelled";
             };
             header?: never;
@@ -7664,21 +8880,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Up to 25 deliveries, newest first. */
                         deliveries: {
+                            /** @description Sent to the endpoint in the x-notra-delivery-id header. */
                             id: string;
+                            /** @description The event this delivery carries, sent in the x-notra-event-id header. Each subscribed endpoint gets its own delivery of the same event. */
                             eventId: string;
                             endpointId: string;
+                            /** @description URL the delivery is sent to. */
                             url: string;
                             /** @enum {string} */
                             eventType: "post.generation.completed" | "post.generation.failed" | "post.generation.skipped" | "brand_identity.generation.completed" | "brand_identity.generation.failed" | "post.published" | "post.created" | "post.updated" | "post.deleted" | "post.unpublished" | "geo.scan.completed" | "geo.scan.failed" | "geo.alert.triggered";
-                            /** @enum {string} */
+                            /**
+                             * @description pending waits for its first attempt, sending is in flight and retrying waits for another attempt. succeeded got a 2xx response; failed ran out of attempts or hit an error that is not retried; cancelled stopped because the endpoint was removed or disabled.
+                             * @enum {string}
+                             */
                             status: "pending" | "sending" | "retrying" | "succeeded" | "failed" | "cancelled";
+                            /** @description Attempts made so far. Up to 8 attempts are made, and a manual retry allows 8 more. */
                             attemptCount: number;
+                            /** @description When the next attempt is due. Only meaningful while pending or retrying. */
                             nextAttemptAt: string;
                             createdAt: string;
+                            /** @description HTTP status of the latest attempt. Null before the first attempt finishes or when no response came back. */
                             statusCode: number | null;
+                            /** @description Error code of the latest attempt: http_<status> for a non-2xx response, or network, timeout (no response within 10 seconds), unsafe_url, signing_failed or lease_expired_outcome_unknown. Null when it succeeded or has not finished. */
                             error: string | null;
                         }[];
+                        /** @description More deliveries follow. Request the next page with offset + 25. */
                         hasMore: boolean;
                     };
                 };
@@ -7776,29 +9004,46 @@ export interface operations {
                 content: {
                     "application/json": {
                         delivery: {
+                            /** @description Sent to the endpoint in the x-notra-delivery-id header. */
                             id: string;
+                            /** @description The event this delivery carries, sent in the x-notra-event-id header. Each subscribed endpoint gets its own delivery of the same event. */
                             eventId: string;
                             endpointId: string;
+                            /** @description URL the delivery is sent to. */
                             url: string;
                             /** @enum {string} */
                             eventType: "post.generation.completed" | "post.generation.failed" | "post.generation.skipped" | "brand_identity.generation.completed" | "brand_identity.generation.failed" | "post.published" | "post.created" | "post.updated" | "post.deleted" | "post.unpublished" | "geo.scan.completed" | "geo.scan.failed" | "geo.alert.triggered";
-                            /** @enum {string} */
+                            /**
+                             * @description pending waits for its first attempt, sending is in flight and retrying waits for another attempt. succeeded got a 2xx response; failed ran out of attempts or hit an error that is not retried; cancelled stopped because the endpoint was removed or disabled.
+                             * @enum {string}
+                             */
                             status: "pending" | "sending" | "retrying" | "succeeded" | "failed" | "cancelled";
+                            /** @description Attempts made so far. Up to 8 attempts are made, and a manual retry allows 8 more. */
                             attemptCount: number;
+                            /** @description When the next attempt is due. Only meaningful while pending or retrying. */
                             nextAttemptAt: string;
                             createdAt: string;
+                            /** @description HTTP status of the latest attempt. Null before the first attempt finishes or when no response came back. */
                             statusCode: number | null;
+                            /** @description Error code of the latest attempt: http_<status> for a non-2xx response, or network, timeout (no response within 10 seconds), unsafe_url, signing_failed or lease_expired_outcome_unknown. Null when it succeeded or has not finished. */
                             error: string | null;
+                            /** @description The JSON request body sent to the endpoint, as a string. */
                             payload: string;
                         };
+                        /** @description Every attempt, oldest first. */
                         attempts: {
                             id: string;
                             deliveryId: string;
+                            /** @description Position of the attempt, starting at 1. */
                             attemptNumber: number;
                             startedAt: string;
+                            /** @description Null while the attempt is in flight. */
                             finishedAt: string | null;
+                            /** @description HTTP status the endpoint returned, or null without a response. */
                             statusCode: number | null;
+                            /** @description Error code: http_<status> for a non-2xx response, or network, timeout, unsafe_url, signing_failed or lease_expired_outcome_unknown. Null on success or while in flight. */
                             error: string | null;
+                            /** @description Request duration in milliseconds. */
                             durationMs: number | null;
                         }[];
                     };
@@ -8225,9 +9470,11 @@ export interface operations {
     getPostAgentReach: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
             };
             header?: never;
@@ -8338,22 +9585,35 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
+                        /** @description Every brand identity in the organization, default first. */
                         brandIdentities: {
+                            /** @description Pass as brandIdentityId to post generation or the brandIdentityId filter of GET /v1/posts. */
                             id: string;
                             name: string;
+                            /** @description The organization's default brand identity, used when post generation omits brandIdentityId. */
                             isDefault: boolean;
+                            /** @description Website the identity was analyzed from. */
                             websiteUrl: string;
+                            /** @description Filled in by the website analysis. Null until the analysis completes or when not set. */
                             companyName: string | null;
+                            /** @description Filled in by the website analysis. Null until the analysis completes or when not set. */
                             companyDescription: string | null;
+                            /** @description Preset tone: Conversational, Professional, Casual or Formal. Ignored while customTone is set. */
                             toneProfile: string | null;
+                            /** @description Free-text voice notes. When set, generation follows them instead of toneProfile. */
                             customTone: string | null;
+                            /** @description Extra writing instructions applied to generated content. */
                             customInstructions: string | null;
+                            /** @description Target audience. Filled in by the website analysis; null until it completes or when not set. */
                             audience: string | null;
+                            /** @description Language generated content is written in. Null means no language is enforced. */
                             language: string | null;
                             createdAt: string;
                             updatedAt: string;
@@ -8431,9 +9691,11 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         job: {
@@ -8451,12 +9713,16 @@ export interface operations {
                              * @enum {string|null}
                              */
                             step: "scraping" | "extracting" | "saving" | null;
+                            /** @description Progress through the analysis, out of totalSteps. */
                             currentStep: number;
                             totalSteps: number;
+                            /** @description Internal workflow run ID. Null until the analysis workflow has started. */
                             workflowRunId: string | null;
+                            /** @description Failure reason when status is failed. */
                             error: string | null;
                             createdAt: string;
                             updatedAt: string;
+                            /** @description When the job completed or failed. Null while it is queued or running. */
                             completedAt: string | null;
                         };
                     };
@@ -8555,9 +9821,11 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         job: {
@@ -8575,12 +9843,16 @@ export interface operations {
                              * @enum {string|null}
                              */
                             step: "scraping" | "extracting" | "saving" | null;
+                            /** @description Progress through the analysis, out of totalSteps. */
                             currentStep: number;
                             totalSteps: number;
+                            /** @description Internal workflow run ID. Null until the analysis workflow has started. */
                             workflowRunId: string | null;
+                            /** @description Failure reason when status is failed. */
                             error: string | null;
                             createdAt: string;
                             updatedAt: string;
+                            /** @description When the job completed or failed. Null while it is queued or running. */
                             completedAt: string | null;
                         };
                     };
@@ -8651,25 +9923,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Null when no brand identity with this ID exists in the organization; the response is still 200. */
                         brandIdentity: {
+                            /** @description Pass as brandIdentityId to post generation or the brandIdentityId filter of GET /v1/posts. */
                             id: string;
                             name: string;
+                            /** @description The organization's default brand identity, used when post generation omits brandIdentityId. */
                             isDefault: boolean;
+                            /** @description Website the identity was analyzed from. */
                             websiteUrl: string;
+                            /** @description Filled in by the website analysis. Null until the analysis completes or when not set. */
                             companyName: string | null;
+                            /** @description Filled in by the website analysis. Null until the analysis completes or when not set. */
                             companyDescription: string | null;
+                            /** @description Preset tone: Conversational, Professional, Casual or Formal. Ignored while customTone is set. */
                             toneProfile: string | null;
+                            /** @description Free-text voice notes. When set, generation follows them instead of toneProfile. */
                             customTone: string | null;
+                            /** @description Extra writing instructions applied to generated content. */
                             customInstructions: string | null;
+                            /** @description Target audience. Filled in by the website analysis; null until it completes or when not set. */
                             audience: string | null;
+                            /** @description Language generated content is written in. Null means no language is enforced. */
                             language: string | null;
                             createdAt: string;
                             updatedAt: string;
                         } | null;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -8742,17 +10027,25 @@ export interface operations {
                     "application/json": {
                         id: string;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
+                        /** @description Schedules that targeted the deleted resource. They are kept but set to enabled: false and stop running. IDs work with the /v1/schedules endpoints. */
                         disabledSchedules: {
+                            /** @description Automation trigger ID. */
                             id: string;
+                            /** @description Trigger name. Event triggers always have the default "Untitled Schedule". */
                             name: string;
                         }[];
+                        /** @description Event triggers that targeted the deleted resource. They are kept but set to enabled: false and ignore GitHub events. IDs work with the /v1/event-triggers endpoints. */
                         disabledEvents: {
+                            /** @description Automation trigger ID. */
                             id: string;
+                            /** @description Trigger name. Event triggers always have the default "Untitled Schedule". */
                             name: string;
                         }[];
                     };
@@ -8872,22 +10165,34 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         brandIdentity: {
+                            /** @description Pass as brandIdentityId to post generation or the brandIdentityId filter of GET /v1/posts. */
                             id: string;
                             name: string;
+                            /** @description The organization's default brand identity, used when post generation omits brandIdentityId. */
                             isDefault: boolean;
+                            /** @description Website the identity was analyzed from. */
                             websiteUrl: string;
+                            /** @description Filled in by the website analysis. Null until the analysis completes or when not set. */
                             companyName: string | null;
+                            /** @description Filled in by the website analysis. Null until the analysis completes or when not set. */
                             companyDescription: string | null;
+                            /** @description Preset tone: Conversational, Professional, Casual or Formal. Ignored while customTone is set. */
                             toneProfile: string | null;
+                            /** @description Free-text voice notes. When set, generation follows them instead of toneProfile. */
                             customTone: string | null;
+                            /** @description Extra writing instructions applied to generated content. */
                             customInstructions: string | null;
+                            /** @description Target audience. Filled in by the website analysis; null until it completes or when not set. */
                             audience: string | null;
+                            /** @description Language generated content is written in. Null means no language is enforced. */
                             language: string | null;
                             createdAt: string;
                             updatedAt: string;
@@ -8970,12 +10275,16 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
+                        /** @description Colors of the brand identity in display order. */
                         colors: {
+                            /** @description Pass as colorId to update or delete the color. */
                             id: string;
                             /**
                              * @example primary
@@ -8983,9 +10292,14 @@ export interface operations {
                              */
                             role: "primary" | "secondary" | "accent" | "background" | "foreground" | "neutral" | "custom";
                             name: string | null;
-                            /** @example #13A0DC */
+                            /**
+                             * @description Hex color for light mode.
+                             * @example #13A0DC
+                             */
                             lightValue: string;
+                            /** @description Hex color for dark mode. Null when the color has no dark variant. */
                             darkValue: string | null;
+                            /** @description Free-text note on where the color should be used. */
                             usage: string | null;
                         }[];
                     };
@@ -9073,12 +10387,15 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         color: {
+                            /** @description Pass as colorId to update or delete the color. */
                             id: string;
                             /**
                              * @example primary
@@ -9086,9 +10403,14 @@ export interface operations {
                              */
                             role: "primary" | "secondary" | "accent" | "background" | "foreground" | "neutral" | "custom";
                             name: string | null;
-                            /** @example #13A0DC */
+                            /**
+                             * @description Hex color for light mode.
+                             * @example #13A0DC
+                             */
                             lightValue: string;
+                            /** @description Hex color for dark mode. Null when the color has no dark variant. */
                             darkValue: string | null;
+                            /** @description Free-text note on where the color should be used. */
                             usage: string | null;
                         };
                     };
@@ -9161,9 +10483,11 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         id: string;
@@ -9251,12 +10575,15 @@ export interface operations {
                 content: {
                     "application/json": {
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                         color: {
+                            /** @description Pass as colorId to update or delete the color. */
                             id: string;
                             /**
                              * @example primary
@@ -9264,9 +10591,14 @@ export interface operations {
                              */
                             role: "primary" | "secondary" | "accent" | "background" | "foreground" | "neutral" | "custom";
                             name: string | null;
-                            /** @example #13A0DC */
+                            /**
+                             * @description Hex color for light mode.
+                             * @example #13A0DC
+                             */
                             lightValue: string;
+                            /** @description Hex color for dark mode. Null when the color has no dark variant. */
                             darkValue: string | null;
+                            /** @description Free-text note on where the color should be used. */
                             usage: string | null;
                         };
                     };
@@ -9337,10 +10669,15 @@ export interface operations {
                     "application/json": {
                         /** @description Enabled GitHub integrations. One entry per connected repository. */
                         github: {
+                            /** @description GitHub integration ID. Use it in integrations.github for post generation, as integrationId for post pull requests and as repositoryId for scheduled GitHub publishing. */
                             id: string;
+                            /** @description Label for the repository, owner/repo when created through the API. */
                             displayName: string;
+                            /** @description Repository owner (user or organization). Null only for integrations connected before Notra stored the owner and repository name on the integration; every connection path sets both today. */
                             owner: string | null;
+                            /** @description Repository name without the owner. Null under the same condition as owner. */
                             repo: string | null;
+                            /** @description Branch Notra reads activity from. Null means the repository's default branch on GitHub. */
                             defaultBranch: string | null;
                         }[];
                         /** @description Always empty. Slack is connected from the dashboard and is not exposed through the API. */
@@ -9349,15 +10686,19 @@ export interface operations {
                         linear: {
                             id: string;
                             displayName: string;
+                            /** @description ID of the connected Linear workspace. */
                             linearOrganizationId: string;
                             linearOrganizationName: string | null;
+                            /** @description Linear team that issues are read from. Null means every team in the Linear workspace. */
                             linearTeamId: string | null;
                             linearTeamName: string | null;
                         }[];
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -9443,16 +10784,23 @@ export interface operations {
                 content: {
                     "application/json": {
                         github: {
+                            /** @description GitHub integration ID. Use it in integrations.github for post generation, as integrationId for post pull requests and as repositoryId for scheduled GitHub publishing. */
                             id: string;
+                            /** @description Label for the repository, owner/repo when created through the API. */
                             displayName: string;
+                            /** @description Repository owner (user or organization). Null only for integrations connected before Notra stored the owner and repository name on the integration; every connection path sets both today. */
                             owner: string | null;
+                            /** @description Repository name without the owner. Null under the same condition as owner. */
                             repo: string | null;
+                            /** @description Branch Notra reads activity from. Null means the repository's default branch on GitHub. */
                             defaultBranch: string | null;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -9536,7 +10884,7 @@ export interface operations {
             query?: {
                 /** @description Activity to list: pull requests merged into the default branch, commits on the default branch, or releases published in the repository. */
                 type?: "pull_requests" | "commits" | "releases";
-                /** @description Start of the window (ISO 8601). Defaults to 7 days ago. */
+                /** @description Start of the window (ISO 8601). Defaults to 7 days before until. */
                 since?: string;
                 /** @description End of the window (ISO 8601). Defaults to now. */
                 until?: string;
@@ -9559,37 +10907,51 @@ export interface operations {
                 content: {
                     "application/json": {
                         integration: {
+                            /** @description GitHub integration ID. Use it in integrations.github for post generation, as integrationId for post pull requests and as repositoryId for scheduled GitHub publishing. */
                             id: string;
+                            /** @description Label for the repository, owner/repo when created through the API. */
                             displayName: string;
+                            /** @description Repository owner (user or organization). Null only for integrations connected before Notra stored the owner and repository name on the integration; every connection path sets both today. */
                             owner: string | null;
+                            /** @description Repository name without the owner. Null under the same condition as owner. */
                             repo: string | null;
+                            /** @description Branch Notra reads activity from. Null means the repository's default branch on GitHub. */
                             defaultBranch: string | null;
                         };
                         /** @enum {string} */
                         type: "pull_requests" | "commits" | "releases";
+                        /** @description Start of the window used (ISO 8601), after defaults are applied. */
                         since: string;
+                        /** @description End of the window used (ISO 8601), after defaults are applied. */
                         until: string;
                         items: {
                             /**
-                             * @description Pull request number, commit SHA or release tag, depending on type.
+                             * @description Pull request number as a string, full commit SHA or release tag name, depending on type.
                              * @example 482
                              */
                             ref: string;
+                            /** @description Pull request title, first line of the commit message, or release name (the tag name when the release has none). */
                             title: string;
+                            /** @description Pull request description, rest of the commit message after the first line, or release notes. Null when empty. */
                             body: string | null;
+                            /** @description GitHub login of the author. For commits without a linked GitHub account, the Git author name. */
                             author: string | null;
+                            /** @description Link to the pull request, commit or release on GitHub. */
                             url: string;
                             /** @description Merge, commit or publish time (ISO 8601). */
                             occurredAt: string;
                         }[];
                         pagination: {
                             page: number;
+                            /** @description Next GitHub page to request, or null when there are no more items in the window. A page can hold fewer items than the page size while nextPage is set. */
                             nextPage: number | null;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -9662,17 +11024,25 @@ export interface operations {
                     "application/json": {
                         id: string;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
+                        /** @description Schedules that targeted the deleted resource. They are kept but set to enabled: false and stop running. IDs work with the /v1/schedules endpoints. */
                         disabledSchedules: {
+                            /** @description Automation trigger ID. */
                             id: string;
+                            /** @description Trigger name. Event triggers always have the default "Untitled Schedule". */
                             name: string;
                         }[];
+                        /** @description Event triggers that targeted the deleted resource. They are kept but set to enabled: false and ignore GitHub events. IDs work with the /v1/event-triggers endpoints. */
                         disabledEvents: {
+                            /** @description Automation trigger ID. */
                             id: string;
+                            /** @description Trigger name. Event triggers always have the default "Untitled Schedule". */
                             name: string;
                         }[];
                     };
@@ -9744,6 +11114,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Schedules, newest first. */
                         schedules: {
                             id: string;
                             organizationId: string;
@@ -9774,7 +11145,7 @@ export interface operations {
                                      */
                                     dayOfWeek?: number;
                                     /**
-                                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+                                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly. Months without that day are skipped, so 31 runs only in 31-day months.
                                      * @example 1
                                      */
                                     dayOfMonth?: number;
@@ -9800,7 +11171,8 @@ export interface operations {
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
                                 /**
-                                 * @description Where auto-published posts are sent.
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
                                  * @enum {string}
                                  */
                                 publishDestination?: "webflow" | "framer" | "custom";
@@ -9826,20 +11198,28 @@ export interface operations {
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether the schedule runs. Disabled schedules are stored but never fire. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
-                            /** @enum {string} */
+                            /**
+                             * @description How far back each run collects source activity.
+                             * @enum {string}
+                             */
                             lookbackWindow: "current_day" | "yesterday" | "last_7_days" | "last_14_days" | "last_30_days";
                         }[];
+                        /** @description Maps each targeted GitHub integration ID to an owner/repo label, followed by the default branch when one is known. Integrations without an owner and repo are left out. */
                         repositoryMap: {
                             [key: string]: string;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -9945,7 +11325,7 @@ export interface operations {
                              */
                             dayOfWeek?: number;
                             /**
-                             * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+                             * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly. Months without that day are skipped, so 31 runs only in 31-day months.
                              * @example 1
                              */
                             dayOfMonth?: number;
@@ -9987,7 +11367,8 @@ export interface operations {
                     outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                     outputConfig?: {
                         /**
-                         * @description Where auto-published posts are sent.
+                         * @deprecated
+                         * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
                          * @enum {string}
                          */
                         publishDestination?: "webflow" | "framer" | "custom";
@@ -10019,7 +11400,7 @@ export interface operations {
                      */
                     enabled: boolean;
                     /**
-                     * @description Publish generated posts automatically instead of saving them as drafts.
+                     * @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts.
                      * @default false
                      * @example false
                      */
@@ -10072,7 +11453,7 @@ export interface operations {
                                      */
                                     dayOfWeek?: number;
                                     /**
-                                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+                                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly. Months without that day are skipped, so 31 runs only in 31-day months.
                                      * @example 1
                                      */
                                     dayOfMonth?: number;
@@ -10098,7 +11479,8 @@ export interface operations {
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
                                 /**
-                                 * @description Where auto-published posts are sent.
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
                                  * @enum {string}
                                  */
                                 publishDestination?: "webflow" | "framer" | "custom";
@@ -10124,17 +11506,24 @@ export interface operations {
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether the schedule runs. Disabled schedules are stored but never fire. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
-                            /** @enum {string} */
+                            /**
+                             * @description How far back each run collects source activity.
+                             * @enum {string}
+                             */
                             lookbackWindow: "current_day" | "yesterday" | "last_7_days" | "last_14_days" | "last_30_days";
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10225,9 +11614,11 @@ export interface operations {
                     "application/json": {
                         id: string;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10341,7 +11732,7 @@ export interface operations {
                                      */
                                     dayOfWeek?: number;
                                     /**
-                                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly.
+                                     * @description Day of the month for monthly schedules (1-31). Required when frequency is monthly. Months without that day are skipped, so 31 runs only in 31-day months.
                                      * @example 1
                                      */
                                     dayOfMonth?: number;
@@ -10367,7 +11758,8 @@ export interface operations {
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
                                 /**
-                                 * @description Where auto-published posts are sent.
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
                                  * @enum {string}
                                  */
                                 publishDestination?: "webflow" | "framer" | "custom";
@@ -10393,17 +11785,24 @@ export interface operations {
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether the schedule runs. Disabled schedules are stored but never fire. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
-                            /** @enum {string} */
+                            /**
+                             * @description How far back each run collects source activity.
+                             * @enum {string}
+                             */
                             lookbackWindow: "current_day" | "yesterday" | "last_7_days" | "last_14_days" | "last_30_days";
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10495,9 +11894,11 @@ export interface operations {
                         /** @description ID of the run, as listed by `GET /v1/schedules/{scheduleId}/runs`. */
                         runId: string;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10571,6 +11972,7 @@ export interface operations {
     listScheduleRuns: {
         parameters: {
             query?: {
+                /** @description Newest runs to return. Defaults to 10. */
                 limit?: number;
             };
             header?: never;
@@ -10588,6 +11990,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Runs, newest first. */
                         runs: {
                             id: string;
                             /**
@@ -10595,20 +11998,24 @@ export interface operations {
                              * @enum {string}
                              */
                             status: "running" | "success" | "failed" | "skipped";
-                            /** @description Title of what the run produced, null while running. */
+                            /** @description Title of the post the run created, or a count such as "3 linkedin post drafts" when it created several. Null while running and for runs that created nothing. */
                             title: string | null;
-                            /** @description The draft post the run created, if any. */
+                            /** @description ID of the post the run created, or the first one when it created several. Null when it created none. */
                             postId: string | null;
+                            /** @description Why a failed or skipped run produced no content. */
                             errorMessage: string | null;
                             /** @description Started on demand rather than by the schedule. */
                             manual: boolean;
                             startedAt: string;
+                            /** @description When the run reported its result. Null while running. */
                             finishedAt: string | null;
                         }[];
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10689,45 +12096,73 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Event triggers, newest first. */
                         eventTriggers: {
                             id: string;
                             organizationId: string;
+                            /**
+                             * @description Event triggers cannot be named through the API or the dashboard, so this is the default "Untitled Schedule".
+                             * @example Untitled Schedule
+                             */
                             name: string;
                             /** @enum {string} */
                             sourceType: "github_webhook";
                             sourceConfig: {
+                                /** @description GitHub webhook events that start a run: published releases, pushes, or both. */
                                 eventTypes: ("release" | "push")[];
-                                /** @default true */
+                                /**
+                                 * @description Whether releases marked as pre-releases on GitHub also start a run.
+                                 * @default true
+                                 */
                                 includePreReleases: boolean;
-                                /** @default [] */
+                                /**
+                                 * @description Case-insensitive JavaScript regular expressions tested against each commit message of a push, matching anywhere unless anchored. A push is skipped only when every commit matches at least one pattern. Releases are not filtered.
+                                 * @default []
+                                 * @example [
+                                 *       "^chore(\\(|:)",
+                                 *       "\\[skip ci\\]"
+                                 *     ]
+                                 */
                                 ignoreCommitPatterns: string[];
                             };
                             targets: {
+                                /** @description GitHub integration IDs whose webhook events start the trigger, as returned in the github array of GET /v1/integrations. */
                                 repositoryIds: string[];
                             };
                             /** @enum {string} */
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
-                                /** @enum {string} */
+                                /**
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
+                                 * @enum {string}
+                                 */
                                 publishDestination?: "webflow" | "framer" | "custom";
+                                /** @description Brand identity ID to write in. Falls back to the organization's default brand identity when unset or not found. */
                                 brandVoiceId?: string;
+                                /** @description Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners. */
                                 notify?: {
                                     slack: boolean;
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether matching GitHub events start runs. Disabled triggers are stored but ignored. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
                         }[];
+                        /** @description Maps each targeted GitHub integration ID to an owner/repo label, followed by the default branch when one is known. Integrations without an owner and repo are left out. */
                         repositoryMap: {
                             [key: string]: string;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10802,28 +12237,49 @@ export interface operations {
                     /** @enum {string} */
                     sourceType: "github_webhook";
                     sourceConfig: {
+                        /** @description GitHub webhook events that start a run: published releases, pushes, or both. */
                         eventTypes: ("release" | "push")[];
-                        /** @default true */
+                        /**
+                         * @description Whether releases marked as pre-releases on GitHub also start a run.
+                         * @default true
+                         */
                         includePreReleases?: boolean;
-                        /** @default [] */
+                        /**
+                         * @description Case-insensitive JavaScript regular expressions tested against each commit message of a push, matching anywhere unless anchored. A push is skipped only when every commit matches at least one pattern. Releases are not filtered.
+                         * @default []
+                         * @example [
+                         *       "^chore(\\(|:)",
+                         *       "\\[skip ci\\]"
+                         *     ]
+                         */
                         ignoreCommitPatterns?: string[];
                     };
                     targets: {
+                        /** @description GitHub integration IDs whose webhook events start the trigger, as returned in the github array of GET /v1/integrations. */
                         repositoryIds: string[];
                     };
                     /** @enum {string} */
                     outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                     outputConfig?: {
-                        /** @enum {string} */
+                        /**
+                         * @deprecated
+                         * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
+                         * @enum {string}
+                         */
                         publishDestination?: "webflow" | "framer" | "custom";
+                        /** @description Brand identity ID to write in. Falls back to the organization's default brand identity when unset or not found. */
                         brandVoiceId?: string;
+                        /** @description Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners. */
                         notify?: {
                             slack: boolean;
                             email: boolean;
                         };
                     };
                     enabled: boolean;
-                    /** @default false */
+                    /**
+                     * @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts.
+                     * @default false
+                     */
                     autoPublish?: boolean;
                 };
             };
@@ -10839,39 +12295,65 @@ export interface operations {
                         eventTrigger: {
                             id: string;
                             organizationId: string;
+                            /**
+                             * @description Event triggers cannot be named through the API or the dashboard, so this is the default "Untitled Schedule".
+                             * @example Untitled Schedule
+                             */
                             name: string;
                             /** @enum {string} */
                             sourceType: "github_webhook";
                             sourceConfig: {
+                                /** @description GitHub webhook events that start a run: published releases, pushes, or both. */
                                 eventTypes: ("release" | "push")[];
-                                /** @default true */
+                                /**
+                                 * @description Whether releases marked as pre-releases on GitHub also start a run.
+                                 * @default true
+                                 */
                                 includePreReleases: boolean;
-                                /** @default [] */
+                                /**
+                                 * @description Case-insensitive JavaScript regular expressions tested against each commit message of a push, matching anywhere unless anchored. A push is skipped only when every commit matches at least one pattern. Releases are not filtered.
+                                 * @default []
+                                 * @example [
+                                 *       "^chore(\\(|:)",
+                                 *       "\\[skip ci\\]"
+                                 *     ]
+                                 */
                                 ignoreCommitPatterns: string[];
                             };
                             targets: {
+                                /** @description GitHub integration IDs whose webhook events start the trigger, as returned in the github array of GET /v1/integrations. */
                                 repositoryIds: string[];
                             };
                             /** @enum {string} */
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
-                                /** @enum {string} */
+                                /**
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
+                                 * @enum {string}
+                                 */
                                 publishDestination?: "webflow" | "framer" | "custom";
+                                /** @description Brand identity ID to write in. Falls back to the organization's default brand identity when unset or not found. */
                                 brandVoiceId?: string;
+                                /** @description Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners. */
                                 notify?: {
                                     slack: boolean;
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether matching GitHub events start runs. Disabled triggers are stored but ignored. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -10963,39 +12445,65 @@ export interface operations {
                         eventTrigger: {
                             id: string;
                             organizationId: string;
+                            /**
+                             * @description Event triggers cannot be named through the API or the dashboard, so this is the default "Untitled Schedule".
+                             * @example Untitled Schedule
+                             */
                             name: string;
                             /** @enum {string} */
                             sourceType: "github_webhook";
                             sourceConfig: {
+                                /** @description GitHub webhook events that start a run: published releases, pushes, or both. */
                                 eventTypes: ("release" | "push")[];
-                                /** @default true */
+                                /**
+                                 * @description Whether releases marked as pre-releases on GitHub also start a run.
+                                 * @default true
+                                 */
                                 includePreReleases: boolean;
-                                /** @default [] */
+                                /**
+                                 * @description Case-insensitive JavaScript regular expressions tested against each commit message of a push, matching anywhere unless anchored. A push is skipped only when every commit matches at least one pattern. Releases are not filtered.
+                                 * @default []
+                                 * @example [
+                                 *       "^chore(\\(|:)",
+                                 *       "\\[skip ci\\]"
+                                 *     ]
+                                 */
                                 ignoreCommitPatterns: string[];
                             };
                             targets: {
+                                /** @description GitHub integration IDs whose webhook events start the trigger, as returned in the github array of GET /v1/integrations. */
                                 repositoryIds: string[];
                             };
                             /** @enum {string} */
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
-                                /** @enum {string} */
+                                /**
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
+                                 * @enum {string}
+                                 */
                                 publishDestination?: "webflow" | "framer" | "custom";
+                                /** @description Brand identity ID to write in. Falls back to the organization's default brand identity when unset or not found. */
                                 brandVoiceId?: string;
+                                /** @description Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners. */
                                 notify?: {
                                     slack: boolean;
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether matching GitHub events start runs. Disabled triggers are stored but ignored. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -11077,9 +12585,11 @@ export interface operations {
                     "application/json": {
                         id: string;
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -11166,39 +12676,65 @@ export interface operations {
                         eventTrigger: {
                             id: string;
                             organizationId: string;
+                            /**
+                             * @description Event triggers cannot be named through the API or the dashboard, so this is the default "Untitled Schedule".
+                             * @example Untitled Schedule
+                             */
                             name: string;
                             /** @enum {string} */
                             sourceType: "github_webhook";
                             sourceConfig: {
+                                /** @description GitHub webhook events that start a run: published releases, pushes, or both. */
                                 eventTypes: ("release" | "push")[];
-                                /** @default true */
+                                /**
+                                 * @description Whether releases marked as pre-releases on GitHub also start a run.
+                                 * @default true
+                                 */
                                 includePreReleases: boolean;
-                                /** @default [] */
+                                /**
+                                 * @description Case-insensitive JavaScript regular expressions tested against each commit message of a push, matching anywhere unless anchored. A push is skipped only when every commit matches at least one pattern. Releases are not filtered.
+                                 * @default []
+                                 * @example [
+                                 *       "^chore(\\(|:)",
+                                 *       "\\[skip ci\\]"
+                                 *     ]
+                                 */
                                 ignoreCommitPatterns: string[];
                             };
                             targets: {
+                                /** @description GitHub integration IDs whose webhook events start the trigger, as returned in the github array of GET /v1/integrations. */
                                 repositoryIds: string[];
                             };
                             /** @enum {string} */
                             outputType: "changelog" | "blog_post" | "linkedin_post" | "twitter_post" | "image";
                             outputConfig?: {
-                                /** @enum {string} */
+                                /**
+                                 * @deprecated
+                                 * @description Deprecated and ignored. Auto-published posts are only marked as published in Notra; publish to GitHub or a Notra site from the post instead.
+                                 * @enum {string}
+                                 */
                                 publishDestination?: "webflow" | "framer" | "custom";
+                                /** @description Brand identity ID to write in. Falls back to the organization's default brand identity when unset or not found. */
                                 brandVoiceId?: string;
+                                /** @description Where to announce new content after a successful run: Slack posts to the organization's notification channel, email goes to the workspace owners. */
                                 notify?: {
                                     slack: boolean;
                                     email: boolean;
                                 };
                             } | null;
+                            /** @description Whether matching GitHub events start runs. Disabled triggers are stored but ignored. */
                             enabled: boolean;
+                            /** @description Save generated changelogs and blog posts with status published instead of draft. This only marks them published in Notra; nothing is pushed to GitHub or a Notra site. Other output types always stay drafts. */
                             autoPublish: boolean;
                             createdAt: string;
                             updatedAt: string;
                         };
                         organization: {
+                            /** @description Workspace ID. Account API keys can send it, or the slug, as X-Notra-Organization-Id. */
                             id: string;
                             slug: string;
                             name: string;
+                            /** @description Workspace logo image URL. Null when none is set. */
                             logo: string | null;
                         };
                     };
@@ -12012,6 +13548,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Use a Site's id as siteId in /v1/sites/{siteId}. */
                         sites: components["schemas"]["Site"][];
                     };
                 };
@@ -12509,6 +14046,112 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SiteAuthors"];
+                };
+            };
+            /** @description Invalid path params or request body */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Missing or invalid API key */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Site or author not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The site has no blog, blog.json can't be edited as it is, another editor changed it meanwhile, or the author is in use (code SITE_AUTHOR_IN_USE) */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Rate limit exceeded. This endpoint allows 60 requests per 1 minute per API key. */
+            429: {
+                headers: {
+                    /** @description Maximum requests allowed in the current window. */
+                    "RateLimit-Limit"?: number;
+                    /** @description Requests remaining in the current window. */
+                    "RateLimit-Remaining"?: number;
+                    /** @description Seconds until the current window resets. */
+                    "RateLimit-Reset"?: number;
+                    /** @description Seconds the client should wait before retrying. */
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RateLimitErrorResponse"];
+                };
+            };
+            /** @description Notra Sites or authentication is unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description The site's repository didn't answer in time */
+            504: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    updateSiteSections: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                siteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchSiteSectionsRequest"];
+            };
+        };
+        responses: {
+            /** @description Sections saved as an unpublished change */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteSectionsResponse"];
                 };
             };
             /** @description Invalid path params or request body */
@@ -13626,6 +15269,7 @@ export interface operations {
     getWorkspaces: {
         parameters: {
             query?: {
+                /** @description Send true to also list pending workspace invitations. Only applies to OAuth tokens and account API keys. */
                 includePending?: "true";
             };
             header?: never;
@@ -13778,9 +15422,9 @@ export interface operations {
                 /** @description What kind of feedback this is. */
                 kind?: "bug" | "feature" | "praise" | "question" | "other";
                 projectId?: string;
-                /** @description Items per page */
+                /** @description Items per page. Defaults to 25. */
                 limit?: number;
-                /** @description Page number */
+                /** @description Page number. Defaults to 1. */
                 page?: number;
             };
             header?: never;
@@ -16605,9 +18249,11 @@ export interface operations {
     getGeoPersonaActivity: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -17662,7 +19308,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CreateGeoScanRequest"];
+            };
+        };
         responses: {
             /** @description Scan accepted */
             202: {
@@ -17776,7 +19426,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CreateGeoScanRequest"];
+            };
+        };
         responses: {
             /** @description Scan accepted */
             202: {
@@ -17978,9 +19632,11 @@ export interface operations {
     getGeoVisibilityOverview: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Without `days` or `from`, all stored history is included. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -18077,9 +19733,11 @@ export interface operations {
     getGeoVisibilityTimeseries: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Without `days` or `from`, all stored history is included. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -18176,9 +19834,11 @@ export interface operations {
     getGeoVisibilityPromptResults: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Without `days` or `from`, all stored history is included. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -18275,9 +19935,11 @@ export interface operations {
     listGeoPromptResultSummaries: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Without `days` or `from`, all stored history is included. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
                 cursor?: number | null;
                 limit?: number;
@@ -18474,9 +20136,11 @@ export interface operations {
     getGeoVisibilityCompetitorShare: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Without `days` or `from`, all stored history is included. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -18573,9 +20237,11 @@ export interface operations {
     getGeoVisibilityLanguageShare: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Without `days` or `from`, all stored history is included. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -18672,9 +20338,11 @@ export interface operations {
     getGeoVisibilityCompetitorDetail: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Only used together with `from`; ignored when `from` is not set. */
                 to?: string;
             };
             header?: never;
@@ -18867,11 +20535,13 @@ export interface operations {
     getGeoPromptHistory: {
         parameters: {
             query?: {
+                /** @description Only return answers from this scan. Defaults to the latest 120 answers across scans. */
                 scanId?: string;
             };
             header?: never;
             path: {
                 projectId: string;
+                /** @description Tracked prompt id from the prompts list: a custom prompt UUID or an auto prompt slug. */
                 promptId: string;
             };
             cookie?: never;
@@ -18964,9 +20634,11 @@ export interface operations {
     getGeoSentiment: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Window size in days, counted back from `to` (or today), that day included. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. The window from `from` through `to` must span 1 to 366 days. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Defaults to today. Without `from`, the window is the `days` days ending on this day. */
                 to?: string;
             };
             header?: never;
@@ -19063,9 +20735,11 @@ export interface operations {
     getGeoSentimentAnalysis: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Window size in days, counted back from `to` (or today), that day included. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. The window from `from` through `to` must span 1 to 366 days. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Defaults to today. Without `from`, the window is the `days` days ending on this day. */
                 to?: string;
             };
             header?: never;
@@ -19162,9 +20836,11 @@ export interface operations {
     listGeoSentimentEvidence: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Window size in days, counted back from `to` (or today), that day included. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. The window from `from` through `to` must span 1 to 366 days. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Defaults to today. Without `from`, the window is the `days` days ending on this day. */
                 to?: string;
                 cursor?: string;
             };
@@ -20272,9 +21948,11 @@ export interface operations {
     getGeoTrafficOverview: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
                 /** @description Hostname to filter on, such as www.example.com. Subdomains are included. Omit for every host. */
                 host?: string;
@@ -20377,6 +22055,7 @@ export interface operations {
     getGeoTrafficLog: {
         parameters: {
             query?: {
+                /** @description Maximum rows to return. Defaults to 50. */
                 limit?: number;
                 /** @description Comma-separated. One or more of: crawler, ai_referral. */
                 visitorTypes?: string;
@@ -20479,10 +22158,13 @@ export interface operations {
     listGeoTrafficJourneys: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
+                /** @description Maximum rows to return. Defaults to 25. */
                 limit?: number;
             };
             header?: never;
@@ -20579,14 +22261,17 @@ export interface operations {
     getGeoTrafficJourney: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
             };
             header?: never;
             path: {
                 projectId: string;
+                /** @description Journey id from the traffic log or journeys list. */
                 journeyId: string;
             };
             cookie?: never;
@@ -20679,10 +22364,13 @@ export interface operations {
     listGeoTrafficPages: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
+                /** @description Maximum rows to return. Defaults to 20. */
                 limit?: number;
                 visitorType?: "crawler" | "ai_referral";
                 /** @description Hostname to filter on. Subdomains of this host are included. Omit for every host. */
@@ -20782,9 +22470,11 @@ export interface operations {
     getGeoMcpAnalytics: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 14 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
             };
             header?: never;
@@ -20881,9 +22571,11 @@ export interface operations {
     getGeoMcpToolDetail: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 14 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
             };
             header?: never;
@@ -21267,9 +22959,11 @@ export interface operations {
     getGeoWebAnalytics: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
                 /** @description Hostname to filter on, such as www.example.com. Subdomains are included. Omit for every host. */
                 host?: string;
@@ -21372,9 +23066,11 @@ export interface operations {
     getGeoWebAnalyticsBreakdowns: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
                 /** @description Hostname to filter on, such as www.example.com. Subdomains are included. Omit for every host. */
                 host?: string;
@@ -21477,9 +23173,11 @@ export interface operations {
     getGeoWebAnalyticsUtm: {
         parameters: {
             query: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
                 /** @description Hostname to filter on, such as www.example.com. Subdomains are included. Omit for every host. */
                 host?: string;
@@ -21584,9 +23282,11 @@ export interface operations {
     getGeoTrafficJourneyStats: {
         parameters: {
             query?: {
-                /** @description Rolling window size in days. Ignored when from/to are set. */
+                /** @description Rolling window size in days. Ignored when `from` is set. Defaults to 30 days. */
                 days?: number;
+                /** @description First UTC day to include (YYYY-MM-DD). Replaces `days`. Without `to`, the window runs through today. */
                 from?: string;
+                /** @description Last UTC day to include (YYYY-MM-DD). Also applies without `from`: it cuts off the `days` window, which still counts back from today. Omit to include today. */
                 to?: string;
             };
             header?: never;
@@ -21977,7 +23677,10 @@ export interface operations {
     };
     streamAgentSessionEvents: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Index of the first event to send, to resume a stream after the last event you received. */
+                startIndex?: number | null;
+            };
             header?: never;
             path: {
                 sessionId: string;
