@@ -1,6 +1,10 @@
 export const DEFAULT_ENDPOINT = "https://api.usenotra.com";
 export const FEEDBACK_PATH = "/v1/feedback";
-export const SUBMIT_TIMEOUT_MS = 10_000;
+/**
+ * The Notra API may classify the feedback with a model before answering, so
+ * give it well beyond that before reporting a failure.
+ */
+export const SUBMIT_TIMEOUT_MS = 20_000;
 export const MISSING_URL_MESSAGE =
   "Provide the feedback URL from the Feedback page in your Notra dashboard as `url`.";
 export const DEFAULT_TOOL_NAME = "submit_feedback";

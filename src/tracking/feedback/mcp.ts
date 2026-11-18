@@ -60,6 +60,11 @@ export function buildFeedbackToolDescription(productName?: string): string {
 }
 
 function toErrorText(error: unknown): string {
+  // The request may have reached Notra before the timeout, and Notra files an
+  // identical submission sent again shortly after only once.
+  if (error instanceof Error && error.name === "TimeoutError") {
+    return "Feedback was not confirmed in time and may already be recorded. Sending the same feedback again within 10 minutes will not file it twice.";
+  }
   if (error instanceof FeedbackSubmitError) {
     return `Feedback could not be submitted (${error.status}): ${error.message}`;
   }
