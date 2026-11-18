@@ -117,6 +117,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.sites.deleteSiteAuthor()` | `DELETE /v1/sites/{siteId}/authors/{authorId}` | Delete a site author |
 | `notra.sites.importSiteAuthors()` | `POST /v1/sites/{siteId}/authors/import` | Import Notra authors into a site |
 | `notra.sites.updateSiteAuthorPage()` | `PATCH /v1/sites/{siteId}/author-page` | Set the author page layout |
+| `notra.sites.updateSiteSections()` | `PATCH /v1/sites/{siteId}/sections` | Set the blog and changelog paths |
 | `notra.sites.publishSite()` | `POST /v1/sites/{siteId}/publish` | Publish a site's Design changes |
 | `notra.sites.getSite()` | `GET /v1/sites/{siteId}` | Get a Site |
 | `notra.sites.listSiteDeployments()` | `GET /v1/sites/{siteId}/deployments` | List a Site's deployments |
@@ -213,11 +214,11 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.geo.getGeoIngestSetup()` | `GET /v1/geo/ingest/setup` | Get the install snippets |
 | `notra.geo.issueGeoIngestToken()` | `POST /v1/geo/ingest/token` | Issue the tracking token |
 | `notra.geo.rotateGeoIngestToken()` | `POST /v1/geo/ingest/rotate-token` | Rotate the tracking token |
-| `notra.geo.getGeoWebAnalytics()` | `GET /v1/projects/{projectId}/geo/traffic/web` | Get website analytics totals and trend (private beta) |
-| `notra.geo.getGeoWebAnalyticsBreakdowns()` | `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns` | Get website analytics breakdowns (private beta) |
-| `notra.geo.getGeoWebAnalyticsUtm()` | `GET /v1/projects/{projectId}/geo/traffic/web/utm` | Get website sessions by UTM parameter (private beta) |
-| `notra.geo.getGeoTrafficJourneyStats()` | `GET /v1/projects/{projectId}/geo/traffic/journey-stats` | Get AI journey statistics (private beta) |
-| `notra.geo.listGeoAnalyticsImports()` | `GET /v1/projects/{projectId}/geo/traffic/imports` | List history imports (private beta) |
+| `notra.geo.getGeoWebAnalytics()` | `GET /v1/projects/{projectId}/geo/traffic/web` | Get website analytics totals and trend |
+| `notra.geo.getGeoWebAnalyticsBreakdowns()` | `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns` | Get website analytics breakdowns |
+| `notra.geo.getGeoWebAnalyticsUtm()` | `GET /v1/projects/{projectId}/geo/traffic/web/utm` | Get website sessions by UTM parameter |
+| `notra.geo.getGeoTrafficJourneyStats()` | `GET /v1/projects/{projectId}/geo/traffic/journey-stats` | Get AI journey statistics |
+| `notra.geo.listGeoAnalyticsImports()` | `GET /v1/projects/{projectId}/geo/traffic/imports` | List history imports |
 
 ## Agent
 
