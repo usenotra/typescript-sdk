@@ -8,6 +8,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 - [Content](#content) (`notra.content`)
 - [Webhooks](#webhooks) (`notra.webhooks`)
 - [Schedules](#schedules) (`notra.schedules`)
+- [Autopilot](#autopilot) (`notra.autopilot`)
 - [Event Triggers](#event-triggers) (`notra.eventTriggers`)
 - [Chats](#chats) (`notra.chats`)
 - [Skills](#skills) (`notra.skills`)
@@ -21,6 +22,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | Method | Endpoint | Summary |
 | --- | --- | --- |
 | `notra.discovery.getPublicApiStatus()` | `GET /v1/status` | Check public API reachability |
+| `notra.discovery.getPricingQuote()` | `GET /v1/pricing` | Estimate monthly AI answers and the plan that fits |
 | `notra.discovery.getWorkspaces()` | `GET /v1/me/workspaces` | Get authenticated workspace context |
 
 ## Content
@@ -77,6 +79,15 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.schedules.runSchedule()` | `POST /v1/schedules/{scheduleId}/run` | Run a schedule now |
 | `notra.schedules.listScheduleRuns()` | `GET /v1/schedules/{scheduleId}/runs` | List a schedule's runs |
 
+## Autopilot
+
+| Method | Endpoint | Summary |
+| --- | --- | --- |
+| `notra.autopilot.getAutopilotStatus()` | `GET /v1/autopilot/status` | Get Autopilot status |
+| `notra.autopilot.startAutopilotRun()` | `POST /v1/autopilot/runs` | Start an Autopilot run |
+| `notra.autopilot.stopAutopilotRun()` | `POST /v1/autopilot/runs/{runId}/stop` | Stop an active Autopilot run |
+| `notra.autopilot.startAutopilotWorkflowRun()` | `POST /v1/autopilot/workflows/{workflowId}/run` | Start an Autopilot custom workflow |
+
 ## Event Triggers
 
 | Method | Endpoint | Summary |
@@ -117,6 +128,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.sites.deleteSiteAuthor()` | `DELETE /v1/sites/{siteId}/authors/{authorId}` | Delete a site author |
 | `notra.sites.importSiteAuthors()` | `POST /v1/sites/{siteId}/authors/import` | Import Notra authors into a site |
 | `notra.sites.updateSiteAuthorPage()` | `PATCH /v1/sites/{siteId}/author-page` | Set the author page layout |
+| `notra.sites.updateSiteSections()` | `PATCH /v1/sites/{siteId}/sections` | Set the blog and changelog paths |
 | `notra.sites.publishSite()` | `POST /v1/sites/{siteId}/publish` | Publish a site's Design changes |
 | `notra.sites.getSite()` | `GET /v1/sites/{siteId}` | Get a Site |
 | `notra.sites.listSiteDeployments()` | `GET /v1/sites/{siteId}/deployments` | List a Site's deployments |
@@ -194,6 +206,9 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.geo.getGeoSentimentAnalysis()` | `GET /v1/projects/{projectId}/geo/sentiment/analysis` | Get the stored GEO sentiment analysis |
 | `notra.geo.listGeoSentimentEvidence()` | `GET /v1/projects/{projectId}/geo/sentiment/evidence` | List answers used as sentiment evidence |
 | `notra.geo.listGeoShelfSources()` | `GET /v1/projects/{projectId}/geo/shelf-sources` | List stored GEO shelf sources |
+| `notra.geo.claimGeoContent()` | `POST /v1/projects/{projectId}/geo/claims` | Claim a content gap or brief before writing it |
+| `notra.geo.releaseGeoContentClaim()` | `POST /v1/projects/{projectId}/geo/claims/release` | Release a claim on a content gap or brief |
+| `notra.geo.reportGeoContentAgentFailure()` | `POST /v1/projects/{projectId}/geo/claims/failure` | Report that your agent could not write a claimed article |
 | `notra.geo.listGeoContentGaps()` | `GET /v1/projects/{projectId}/geo/gaps` | List content gaps |
 | `notra.geo.updateGeoContentGap()` | `PATCH /v1/projects/{projectId}/geo/gaps/{promptId}` | Ignore or restore a content gap |
 | `notra.geo.listGeoContentBriefs()` | `GET /v1/projects/{projectId}/geo/briefs` | List content briefs |
@@ -213,11 +228,11 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.geo.getGeoIngestSetup()` | `GET /v1/geo/ingest/setup` | Get the install snippets |
 | `notra.geo.issueGeoIngestToken()` | `POST /v1/geo/ingest/token` | Issue the tracking token |
 | `notra.geo.rotateGeoIngestToken()` | `POST /v1/geo/ingest/rotate-token` | Rotate the tracking token |
-| `notra.geo.getGeoWebAnalytics()` | `GET /v1/projects/{projectId}/geo/traffic/web` | Get website analytics totals and trend (private beta) |
-| `notra.geo.getGeoWebAnalyticsBreakdowns()` | `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns` | Get website analytics breakdowns (private beta) |
-| `notra.geo.getGeoWebAnalyticsUtm()` | `GET /v1/projects/{projectId}/geo/traffic/web/utm` | Get website sessions by UTM parameter (private beta) |
-| `notra.geo.getGeoTrafficJourneyStats()` | `GET /v1/projects/{projectId}/geo/traffic/journey-stats` | Get AI journey statistics (private beta) |
-| `notra.geo.listGeoAnalyticsImports()` | `GET /v1/projects/{projectId}/geo/traffic/imports` | List history imports (private beta) |
+| `notra.geo.getGeoWebAnalytics()` | `GET /v1/projects/{projectId}/geo/traffic/web` | Get website analytics totals and trend |
+| `notra.geo.getGeoWebAnalyticsBreakdowns()` | `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns` | Get website analytics breakdowns |
+| `notra.geo.getGeoWebAnalyticsUtm()` | `GET /v1/projects/{projectId}/geo/traffic/web/utm` | Get website sessions by UTM parameter |
+| `notra.geo.getGeoTrafficJourneyStats()` | `GET /v1/projects/{projectId}/geo/traffic/journey-stats` | Get AI journey statistics |
+| `notra.geo.listGeoAnalyticsImports()` | `GET /v1/projects/{projectId}/geo/traffic/imports` | List history imports |
 
 ## Agent
 
