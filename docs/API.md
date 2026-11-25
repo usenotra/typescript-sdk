@@ -8,6 +8,8 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 - [Content](#content) (`notra.content`)
 - [Webhooks](#webhooks) (`notra.webhooks`)
 - [Schedules](#schedules) (`notra.schedules`)
+- [Autopilot](#autopilot) (`notra.autopilot`)
+- [Autopilot outreach](#autopilot-outreach) (`notra.autopilotOutreach`)
 - [Event Triggers](#event-triggers) (`notra.eventTriggers`)
 - [Chats](#chats) (`notra.chats`)
 - [Skills](#skills) (`notra.skills`)
@@ -21,6 +23,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | Method | Endpoint | Summary |
 | --- | --- | --- |
 | `notra.discovery.getPublicApiStatus()` | `GET /v1/status` | Check public API reachability |
+| `notra.discovery.getPricingQuote()` | `GET /v1/pricing` | Estimate monthly AI answers and the plan that fits |
 | `notra.discovery.getWorkspaces()` | `GET /v1/me/workspaces` | Get authenticated workspace context |
 
 ## Content
@@ -40,6 +43,10 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.content.schedulePost()` | `POST /v1/posts/{postId}/schedule` | Schedule a post for publishing |
 | `notra.content.cancelPostSchedule()` | `DELETE /v1/posts/{postId}/schedule` | Cancel a post's publishing schedule |
 | `notra.content.getPostAgentReach()` | `GET /v1/posts/{postId}/agent-reach` | Get a post's agent reach |
+| `notra.content.listCommentedPosts()` | `GET /v1/post-comments` | Find posts with open comments |
+| `notra.content.listPostComments()` | `GET /v1/posts/{postId}/comments` | List a post's comment threads |
+| `notra.content.resolvePostComments()` | `POST /v1/posts/{postId}/comments/resolve` | Resolve comment threads |
+| `notra.content.replyToPostComment()` | `POST /v1/posts/{postId}/comments/{threadId}/replies` | Reply to a comment thread |
 | `notra.content.listBrandIdentities()` | `GET /v1/brand-identities` | List available brand identities |
 | `notra.content.createBrandIdentity()` | `POST /v1/brand-identities/generate` | Queue async brand identity generation |
 | `notra.content.getBrandIdentityGeneration()` | `GET /v1/brand-identities/generate/{jobId}` | Get async brand identity generation status |
@@ -76,6 +83,48 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.schedules.deleteSchedule()` | `DELETE /v1/schedules/{scheduleId}` | Delete a schedule |
 | `notra.schedules.runSchedule()` | `POST /v1/schedules/{scheduleId}/run` | Run a schedule now |
 | `notra.schedules.listScheduleRuns()` | `GET /v1/schedules/{scheduleId}/runs` | List a schedule's runs |
+
+## Autopilot
+
+| Method | Endpoint | Summary |
+| --- | --- | --- |
+| `notra.autopilot.getAutopilotStatus()` | `GET /v1/autopilot/status` | Get Autopilot status |
+| `notra.autopilot.listAutopilotRuns()` | `GET /v1/autopilot/runs` | List recent Autopilot runs |
+| `notra.autopilot.startAutopilotRun()` | `POST /v1/autopilot/runs` | Start an Autopilot run |
+| `notra.autopilot.stopAutopilotRun()` | `POST /v1/autopilot/runs/{runId}/stop` | Stop an active Autopilot run |
+| `notra.autopilot.startAutopilotWorkflowRun()` | `POST /v1/autopilot/workflows/{workflowId}/run` | Start an Autopilot custom workflow |
+| `notra.autopilot.updateAutopilotSettings()` | `PATCH /v1/autopilot/settings` | Update Autopilot settings |
+| `notra.autopilot.listAutopilotFindings()` | `GET /v1/autopilot/findings` | List Autopilot findings |
+| `notra.autopilot.getAutopilotFinding()` | `GET /v1/autopilot/findings/{findingId}` | Get an Autopilot finding |
+| `notra.autopilot.writeAutopilotFinding()` | `POST /v1/autopilot/findings/{findingId}/write` | Write a suggested idea now |
+| `notra.autopilot.dismissAutopilotFinding()` | `POST /v1/autopilot/findings/{findingId}/dismiss` | Dismiss a finding |
+| `notra.autopilot.mergeAutopilotFinding()` | `POST /v1/autopilot/findings/{findingId}/merge` | Merge a finding's pull request |
+| `notra.autopilot.holdAutopilotFinding()` | `POST /v1/autopilot/findings/{findingId}/hold` | Hold an automatic publish |
+| `notra.autopilot.requestAutopilotChanges()` | `POST /v1/autopilot/findings/{findingId}/request-changes` | Ask for changes on a pull request |
+| `notra.autopilot.addAutopilotRule()` | `POST /v1/autopilot/rules` | Add a standing rule |
+| `notra.autopilot.deleteAutopilotRule()` | `DELETE /v1/autopilot/rules/{ruleId}` | Delete a standing rule |
+| `notra.autopilot.setAutopilotWorkflowEnabled()` | `PATCH /v1/autopilot/workflows/{workflowId}` | Turn a custom workflow on or off |
+| `notra.autopilot.deleteAutopilotWorkflow()` | `DELETE /v1/autopilot/workflows/{workflowId}` | Delete a custom workflow |
+| `notra.autopilot.getAutopilotRun()` | `GET /v1/autopilot/runs/{runId}` | Get an Autopilot run and its log |
+| `notra.autopilot.getAutopilotBrief()` | `GET /v1/autopilot/brief` | Get today's daily brief |
+
+## Autopilot outreach
+
+| Method | Endpoint | Summary |
+| --- | --- | --- |
+| `notra.autopilotOutreach.listOutreachPitches()` | `GET /v1/autopilot/outreach/pitches` | List outreach pitches |
+| `notra.autopilotOutreach.getOutreachPitch()` | `GET /v1/autopilot/outreach/pitches/{pitchId}` | Get an outreach pitch |
+| `notra.autopilotOutreach.editOutreachPitch()` | `PATCH /v1/autopilot/outreach/pitches/{pitchId}` | Edit a drafted pitch |
+| `notra.autopilotOutreach.deleteOutreachPitch()` | `DELETE /v1/autopilot/outreach/pitches/{pitchId}` | Delete a pitch |
+| `notra.autopilotOutreach.sendOutreachPitch()` | `POST /v1/autopilot/outreach/pitches/{pitchId}/send` | Send or schedule a pitch |
+| `notra.autopilotOutreach.cancelOutreachPitch()` | `POST /v1/autopilot/outreach/pitches/{pitchId}/cancel` | Cancel a scheduled pitch |
+| `notra.autopilotOutreach.markOutreachPitchSent()` | `POST /v1/autopilot/outreach/pitches/{pitchId}/mark-sent` | Mark a pitch as sent |
+| `notra.autopilotOutreach.markOutreachPitchListed()` | `POST /v1/autopilot/outreach/pitches/{pitchId}/mark-listed` | Mark a pitch as listed |
+| `notra.autopilotOutreach.laterOutreachPitch()` | `POST /v1/autopilot/outreach/pitches/{pitchId}/later` | Put a draft off until the next brief |
+| `notra.autopilotOutreach.undoLaterOutreachPitch()` | `DELETE /v1/autopilot/outreach/pitches/{pitchId}/later` | Undo putting a draft off |
+| `notra.autopilotOutreach.updateOutreachPitchDetails()` | `PATCH /v1/autopilot/outreach/pitches/{pitchId}/details` | Update a pitch's stage, follow-up or deal |
+| `notra.autopilotOutreach.getOutreachMailbox()` | `GET /v1/autopilot/outreach/mailbox` | Get the outreach mailbox |
+| `notra.autopilotOutreach.disconnectOutreachMailbox()` | `DELETE /v1/autopilot/outreach/mailbox` | Disconnect the outreach mailbox |
 
 ## Event Triggers
 
@@ -117,6 +166,7 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.sites.deleteSiteAuthor()` | `DELETE /v1/sites/{siteId}/authors/{authorId}` | Delete a site author |
 | `notra.sites.importSiteAuthors()` | `POST /v1/sites/{siteId}/authors/import` | Import Notra authors into a site |
 | `notra.sites.updateSiteAuthorPage()` | `PATCH /v1/sites/{siteId}/author-page` | Set the author page layout |
+| `notra.sites.updateSiteSections()` | `PATCH /v1/sites/{siteId}/sections` | Set the blog and changelog paths |
 | `notra.sites.publishSite()` | `POST /v1/sites/{siteId}/publish` | Publish a site's Design changes |
 | `notra.sites.getSite()` | `GET /v1/sites/{siteId}` | Get a Site |
 | `notra.sites.listSiteDeployments()` | `GET /v1/sites/{siteId}/deployments` | List a Site's deployments |
@@ -176,6 +226,10 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.geo.suggestGeoCompetitors()` | `GET /v1/projects/{projectId}/geo/competitors/suggestions` | Suggest GEO competitors for a domain |
 | `notra.geo.deleteGeoCompetitor()` | `DELETE /v1/projects/{projectId}/geo/competitors/{name}` | Stop tracking a GEO competitor |
 | `notra.geo.importGeoCompetitors()` | `POST /v1/projects/{projectId}/geo/competitors/import` | Bulk import GEO competitors |
+| `notra.geo.listGeoNameCollisions()` | `GET /v1/projects/{projectId}/geo/name-collisions` | List the not-confused-with list |
+| `notra.geo.addGeoNameCollision()` | `POST /v1/projects/{projectId}/geo/name-collisions` | Add a product to the not-confused-with list |
+| `notra.geo.acceptGeoNameCollision()` | `POST /v1/projects/{projectId}/geo/name-collisions/{collisionId}/accept` | Accept a name collision suggestion |
+| `notra.geo.dismissGeoNameCollision()` | `POST /v1/projects/{projectId}/geo/name-collisions/{collisionId}/dismiss` | Dismiss or remove a name collision |
 | `notra.geo.listGeoScans()` | `GET /v1/projects/{projectId}/geo/scans` | List GEO scans |
 | `notra.geo.createGeoScan()` | `POST /v1/projects/{projectId}/geo/scans` | Trigger a GEO scan |
 | `notra.geo.createGeoPromptScan()` | `POST /v1/projects/{projectId}/geo/scans/prompts/{promptId}` | Rescan a single GEO prompt |
@@ -194,6 +248,9 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.geo.getGeoSentimentAnalysis()` | `GET /v1/projects/{projectId}/geo/sentiment/analysis` | Get the stored GEO sentiment analysis |
 | `notra.geo.listGeoSentimentEvidence()` | `GET /v1/projects/{projectId}/geo/sentiment/evidence` | List answers used as sentiment evidence |
 | `notra.geo.listGeoShelfSources()` | `GET /v1/projects/{projectId}/geo/shelf-sources` | List stored GEO shelf sources |
+| `notra.geo.claimGeoContent()` | `POST /v1/projects/{projectId}/geo/claims` | Claim a content gap or brief before writing it |
+| `notra.geo.releaseGeoContentClaim()` | `POST /v1/projects/{projectId}/geo/claims/release` | Release a claim on a content gap or brief |
+| `notra.geo.reportGeoContentAgentFailure()` | `POST /v1/projects/{projectId}/geo/claims/failure` | Report that your agent could not write a claimed article |
 | `notra.geo.listGeoContentGaps()` | `GET /v1/projects/{projectId}/geo/gaps` | List content gaps |
 | `notra.geo.updateGeoContentGap()` | `PATCH /v1/projects/{projectId}/geo/gaps/{promptId}` | Ignore or restore a content gap |
 | `notra.geo.listGeoContentBriefs()` | `GET /v1/projects/{projectId}/geo/briefs` | List content briefs |
@@ -213,11 +270,11 @@ Every method of `new Notra()`, generated from the Notra API OpenAPI spec. Each m
 | `notra.geo.getGeoIngestSetup()` | `GET /v1/geo/ingest/setup` | Get the install snippets |
 | `notra.geo.issueGeoIngestToken()` | `POST /v1/geo/ingest/token` | Issue the tracking token |
 | `notra.geo.rotateGeoIngestToken()` | `POST /v1/geo/ingest/rotate-token` | Rotate the tracking token |
-| `notra.geo.getGeoWebAnalytics()` | `GET /v1/projects/{projectId}/geo/traffic/web` | Get website analytics totals and trend (private beta) |
-| `notra.geo.getGeoWebAnalyticsBreakdowns()` | `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns` | Get website analytics breakdowns (private beta) |
-| `notra.geo.getGeoWebAnalyticsUtm()` | `GET /v1/projects/{projectId}/geo/traffic/web/utm` | Get website sessions by UTM parameter (private beta) |
-| `notra.geo.getGeoTrafficJourneyStats()` | `GET /v1/projects/{projectId}/geo/traffic/journey-stats` | Get AI journey statistics (private beta) |
-| `notra.geo.listGeoAnalyticsImports()` | `GET /v1/projects/{projectId}/geo/traffic/imports` | List history imports (private beta) |
+| `notra.geo.getGeoWebAnalytics()` | `GET /v1/projects/{projectId}/geo/traffic/web` | Get website analytics totals and trend |
+| `notra.geo.getGeoWebAnalyticsBreakdowns()` | `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns` | Get website analytics breakdowns |
+| `notra.geo.getGeoWebAnalyticsUtm()` | `GET /v1/projects/{projectId}/geo/traffic/web/utm` | Get website sessions by UTM parameter |
+| `notra.geo.getGeoTrafficJourneyStats()` | `GET /v1/projects/{projectId}/geo/traffic/journey-stats` | Get AI journey statistics |
+| `notra.geo.listGeoAnalyticsImports()` | `GET /v1/projects/{projectId}/geo/traffic/imports` | List history imports |
 
 ## Agent
 
