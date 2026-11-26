@@ -7,6 +7,11 @@ import type { operations } from "./schema.js";
 /** What `discovery.getPublicApiStatus()` resolves to. */
 export type GetPublicApiStatusResult = operations["getPublicApiStatus"]["responses"][200]["content"]["application/json"];
 
+/** Parameters of `discovery.getPricingQuote()`. */
+export type GetPricingQuoteParams = Prettify<NonNullable<operations["getPricingQuote"]["parameters"]["query"]>>;
+/** What `discovery.getPricingQuote()` resolves to. */
+export type GetPricingQuoteResult = operations["getPricingQuote"]["responses"][200]["content"]["application/json"];
+
 /** Parameters of `content.listPosts()`. */
 export type ListPostsParams = Prettify<NonNullable<operations["listPosts"]["parameters"]["query"]>>;
 /** What `content.listPosts()` resolves to. */
@@ -89,7 +94,7 @@ export type SchedulePostParams = Prettify<operations["schedulePost"]["parameters
 export type SchedulePostResult = operations["schedulePost"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `content.cancelPostSchedule()`. */
-export type CancelPostScheduleParams = Prettify<operations["cancelPostSchedule"]["parameters"]["path"]>;
+export type CancelPostScheduleParams = Prettify<operations["cancelPostSchedule"]["parameters"]["path"] & NonNullable<operations["cancelPostSchedule"]["parameters"]["query"]>>;
 /** What `content.cancelPostSchedule()` resolves to. */
 export type CancelPostScheduleResult = operations["cancelPostSchedule"]["responses"][200]["content"]["application/json"];
 
@@ -97,6 +102,26 @@ export type CancelPostScheduleResult = operations["cancelPostSchedule"]["respons
 export type GetPostAgentReachParams = Prettify<operations["getPostAgentReach"]["parameters"]["path"] & NonNullable<operations["getPostAgentReach"]["parameters"]["query"]>>;
 /** What `content.getPostAgentReach()` resolves to. */
 export type GetPostAgentReachResult = operations["getPostAgentReach"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `content.listCommentedPosts()`. */
+export type ListCommentedPostsParams = Prettify<NonNullable<operations["listCommentedPosts"]["parameters"]["query"]>>;
+/** What `content.listCommentedPosts()` resolves to. */
+export type ListCommentedPostsResult = operations["listCommentedPosts"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `content.listPostComments()`. */
+export type ListPostCommentsParams = Prettify<operations["listPostComments"]["parameters"]["path"] & NonNullable<operations["listPostComments"]["parameters"]["query"]>>;
+/** What `content.listPostComments()` resolves to. */
+export type ListPostCommentsResult = operations["listPostComments"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `content.resolvePostComments()`. */
+export type ResolvePostCommentsParams = Prettify<operations["resolvePostComments"]["parameters"]["path"] & { body: operations["resolvePostComments"]["requestBody"]["content"]["application/json"] }>;
+/** What `content.resolvePostComments()` resolves to. */
+export type ResolvePostCommentsResult = operations["resolvePostComments"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `content.replyToPostComment()`. */
+export type ReplyToPostCommentParams = Prettify<operations["replyToPostComment"]["parameters"]["path"] & { body: operations["replyToPostComment"]["requestBody"]["content"]["application/json"] }>;
+/** What `content.replyToPostComment()` resolves to. */
+export type ReplyToPostCommentResult = operations["replyToPostComment"]["responses"][201]["content"]["application/json"];
 
 /** What `content.listBrandIdentities()` resolves to. */
 export type ListBrandIdentitiesResult = operations["listBrandIdentities"]["responses"][200]["content"]["application/json"];
@@ -193,6 +218,158 @@ export type RunScheduleResult = operations["runSchedule"]["responses"][202]["con
 export type ListScheduleRunsParams = Prettify<operations["listScheduleRuns"]["parameters"]["path"] & NonNullable<operations["listScheduleRuns"]["parameters"]["query"]>>;
 /** What `schedules.listScheduleRuns()` resolves to. */
 export type ListScheduleRunsResult = operations["listScheduleRuns"]["responses"][200]["content"]["application/json"];
+
+/** What `autopilot.getAutopilotStatus()` resolves to. */
+export type GetAutopilotStatusResult = operations["getAutopilotStatus"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.listAutopilotRuns()`. */
+export type ListAutopilotRunsParams = Prettify<NonNullable<operations["listAutopilotRuns"]["parameters"]["query"]>>;
+/** What `autopilot.listAutopilotRuns()` resolves to. */
+export type ListAutopilotRunsResult = operations["listAutopilotRuns"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.startAutopilotRun()`. */
+export type StartAutopilotRunParams = Prettify<{ body?: NonNullable<operations["startAutopilotRun"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.startAutopilotRun()` resolves to. */
+export type StartAutopilotRunResult = operations["startAutopilotRun"]["responses"][202]["content"]["application/json"];
+
+/** Parameters of `autopilot.stopAutopilotRun()`. */
+export type StopAutopilotRunParams = Prettify<operations["stopAutopilotRun"]["parameters"]["path"]>;
+/** What `autopilot.stopAutopilotRun()` resolves to. */
+export type StopAutopilotRunResult = operations["stopAutopilotRun"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.startAutopilotWorkflowRun()`. */
+export type StartAutopilotWorkflowRunParams = Prettify<operations["startAutopilotWorkflowRun"]["parameters"]["path"]>;
+/** What `autopilot.startAutopilotWorkflowRun()` resolves to. */
+export type StartAutopilotWorkflowRunResult = operations["startAutopilotWorkflowRun"]["responses"][202]["content"]["application/json"];
+
+/** Parameters of `autopilot.updateAutopilotSettings()`. */
+export type UpdateAutopilotSettingsParams = Prettify<{ body?: NonNullable<operations["updateAutopilotSettings"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.updateAutopilotSettings()` resolves to. */
+export type UpdateAutopilotSettingsResult = operations["updateAutopilotSettings"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.listAutopilotFindings()`. */
+export type ListAutopilotFindingsParams = Prettify<NonNullable<operations["listAutopilotFindings"]["parameters"]["query"]>>;
+/** What `autopilot.listAutopilotFindings()` resolves to. */
+export type ListAutopilotFindingsResult = operations["listAutopilotFindings"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.getAutopilotFinding()`. */
+export type GetAutopilotFindingParams = Prettify<operations["getAutopilotFinding"]["parameters"]["path"]>;
+/** What `autopilot.getAutopilotFinding()` resolves to. */
+export type GetAutopilotFindingResult = operations["getAutopilotFinding"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.writeAutopilotFinding()`. */
+export type WriteAutopilotFindingParams = Prettify<operations["writeAutopilotFinding"]["parameters"]["path"]>;
+/** What `autopilot.writeAutopilotFinding()` resolves to. */
+export type WriteAutopilotFindingResult = operations["writeAutopilotFinding"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.dismissAutopilotFinding()`. */
+export type DismissAutopilotFindingParams = Prettify<operations["dismissAutopilotFinding"]["parameters"]["path"] & { body?: NonNullable<operations["dismissAutopilotFinding"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.dismissAutopilotFinding()` resolves to. */
+export type DismissAutopilotFindingResult = operations["dismissAutopilotFinding"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.mergeAutopilotFinding()`. */
+export type MergeAutopilotFindingParams = Prettify<operations["mergeAutopilotFinding"]["parameters"]["path"] & { body?: NonNullable<operations["mergeAutopilotFinding"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.mergeAutopilotFinding()` resolves to. */
+export type MergeAutopilotFindingResult = operations["mergeAutopilotFinding"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.holdAutopilotFinding()`. */
+export type HoldAutopilotFindingParams = Prettify<operations["holdAutopilotFinding"]["parameters"]["path"]>;
+/** What `autopilot.holdAutopilotFinding()` resolves to. */
+export type HoldAutopilotFindingResult = operations["holdAutopilotFinding"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.requestAutopilotChanges()`. */
+export type RequestAutopilotChangesParams = Prettify<operations["requestAutopilotChanges"]["parameters"]["path"] & { body?: NonNullable<operations["requestAutopilotChanges"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.requestAutopilotChanges()` resolves to. */
+export type RequestAutopilotChangesResult = operations["requestAutopilotChanges"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.addAutopilotRule()`. */
+export type AddAutopilotRuleParams = Prettify<{ body?: NonNullable<operations["addAutopilotRule"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.addAutopilotRule()` resolves to. */
+export type AddAutopilotRuleResult = operations["addAutopilotRule"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.deleteAutopilotRule()`. */
+export type DeleteAutopilotRuleParams = Prettify<operations["deleteAutopilotRule"]["parameters"]["path"]>;
+/** What `autopilot.deleteAutopilotRule()` resolves to. */
+export type DeleteAutopilotRuleResult = operations["deleteAutopilotRule"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.setAutopilotWorkflowEnabled()`. */
+export type SetAutopilotWorkflowEnabledParams = Prettify<operations["setAutopilotWorkflowEnabled"]["parameters"]["path"] & { body?: NonNullable<operations["setAutopilotWorkflowEnabled"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilot.setAutopilotWorkflowEnabled()` resolves to. */
+export type SetAutopilotWorkflowEnabledResult = operations["setAutopilotWorkflowEnabled"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.deleteAutopilotWorkflow()`. */
+export type DeleteAutopilotWorkflowParams = Prettify<operations["deleteAutopilotWorkflow"]["parameters"]["path"]>;
+/** What `autopilot.deleteAutopilotWorkflow()` resolves to. */
+export type DeleteAutopilotWorkflowResult = operations["deleteAutopilotWorkflow"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilot.getAutopilotRun()`. */
+export type GetAutopilotRunParams = Prettify<operations["getAutopilotRun"]["parameters"]["path"]>;
+/** What `autopilot.getAutopilotRun()` resolves to. */
+export type GetAutopilotRunResult = operations["getAutopilotRun"]["responses"][200]["content"]["application/json"];
+
+/** What `autopilot.getAutopilotBrief()` resolves to. */
+export type GetAutopilotBriefResult = operations["getAutopilotBrief"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.listOutreachPitches()`. */
+export type ListOutreachPitchesParams = Prettify<NonNullable<operations["listOutreachPitches"]["parameters"]["query"]>>;
+/** What `autopilotOutreach.listOutreachPitches()` resolves to. */
+export type ListOutreachPitchesResult = operations["listOutreachPitches"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.getOutreachPitch()`. */
+export type GetOutreachPitchParams = Prettify<operations["getOutreachPitch"]["parameters"]["path"]>;
+/** What `autopilotOutreach.getOutreachPitch()` resolves to. */
+export type GetOutreachPitchResult = operations["getOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.editOutreachPitch()`. */
+export type EditOutreachPitchParams = Prettify<operations["editOutreachPitch"]["parameters"]["path"] & { body?: NonNullable<operations["editOutreachPitch"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilotOutreach.editOutreachPitch()` resolves to. */
+export type EditOutreachPitchResult = operations["editOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.deleteOutreachPitch()`. */
+export type DeleteOutreachPitchParams = Prettify<operations["deleteOutreachPitch"]["parameters"]["path"]>;
+/** What `autopilotOutreach.deleteOutreachPitch()` resolves to. */
+export type DeleteOutreachPitchResult = operations["deleteOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.sendOutreachPitch()`. */
+export type SendOutreachPitchParams = Prettify<operations["sendOutreachPitch"]["parameters"]["path"] & { body?: NonNullable<operations["sendOutreachPitch"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilotOutreach.sendOutreachPitch()` resolves to. */
+export type SendOutreachPitchResult = operations["sendOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.cancelOutreachPitch()`. */
+export type CancelOutreachPitchParams = Prettify<operations["cancelOutreachPitch"]["parameters"]["path"]>;
+/** What `autopilotOutreach.cancelOutreachPitch()` resolves to. */
+export type CancelOutreachPitchResult = operations["cancelOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.markOutreachPitchSent()`. */
+export type MarkOutreachPitchSentParams = Prettify<operations["markOutreachPitchSent"]["parameters"]["path"]>;
+/** What `autopilotOutreach.markOutreachPitchSent()` resolves to. */
+export type MarkOutreachPitchSentResult = operations["markOutreachPitchSent"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.markOutreachPitchListed()`. */
+export type MarkOutreachPitchListedParams = Prettify<operations["markOutreachPitchListed"]["parameters"]["path"]>;
+/** What `autopilotOutreach.markOutreachPitchListed()` resolves to. */
+export type MarkOutreachPitchListedResult = operations["markOutreachPitchListed"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.laterOutreachPitch()`. */
+export type LaterOutreachPitchParams = Prettify<operations["laterOutreachPitch"]["parameters"]["path"]>;
+/** What `autopilotOutreach.laterOutreachPitch()` resolves to. */
+export type LaterOutreachPitchResult = operations["laterOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.undoLaterOutreachPitch()`. */
+export type UndoLaterOutreachPitchParams = Prettify<operations["undoLaterOutreachPitch"]["parameters"]["path"]>;
+/** What `autopilotOutreach.undoLaterOutreachPitch()` resolves to. */
+export type UndoLaterOutreachPitchResult = operations["undoLaterOutreachPitch"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `autopilotOutreach.updateOutreachPitchDetails()`. */
+export type UpdateOutreachPitchDetailsParams = Prettify<operations["updateOutreachPitchDetails"]["parameters"]["path"] & { body?: NonNullable<operations["updateOutreachPitchDetails"]["requestBody"]>["content"]["application/json"] }>;
+/** What `autopilotOutreach.updateOutreachPitchDetails()` resolves to. */
+export type UpdateOutreachPitchDetailsResult = operations["updateOutreachPitchDetails"]["responses"][200]["content"]["application/json"];
+
+/** What `autopilotOutreach.getOutreachMailbox()` resolves to. */
+export type GetOutreachMailboxResult = operations["getOutreachMailbox"]["responses"][200]["content"]["application/json"];
+
+/** What `autopilotOutreach.disconnectOutreachMailbox()` resolves to. */
+export type DisconnectOutreachMailboxResult = operations["disconnectOutreachMailbox"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `eventTriggers.listEventTriggers()`. */
 export type ListEventTriggersParams = Prettify<NonNullable<operations["listEventTriggers"]["parameters"]["query"]>>;
@@ -293,6 +470,11 @@ export type UpdateSiteAuthorPageParams = Prettify<operations["updateSiteAuthorPa
 /** What `sites.updateSiteAuthorPage()` resolves to. */
 export type UpdateSiteAuthorPageResult = operations["updateSiteAuthorPage"]["responses"][200]["content"]["application/json"];
 
+/** Parameters of `sites.updateSiteSections()`. */
+export type UpdateSiteSectionsParams = Prettify<operations["updateSiteSections"]["parameters"]["path"] & { body: operations["updateSiteSections"]["requestBody"]["content"]["application/json"] }>;
+/** What `sites.updateSiteSections()` resolves to. */
+export type UpdateSiteSectionsResult = operations["updateSiteSections"]["responses"][200]["content"]["application/json"];
+
 /** Parameters of `sites.publishSite()`. */
 export type PublishSiteParams = Prettify<operations["publishSite"]["parameters"]["path"] & { body?: NonNullable<operations["publishSite"]["requestBody"]>["content"]["application/json"] }>;
 /** What `sites.publishSite()` resolves to. */
@@ -324,7 +506,7 @@ export type RedeploySiteDeploymentParams = Prettify<operations["redeploySiteDepl
 export type RedeploySiteDeploymentResult = operations["redeploySiteDeployment"]["responses"][202]["content"]["application/json"];
 
 /** Parameters of `sites.createSitePostPreview()`. */
-export type CreateSitePostPreviewParams = Prettify<operations["createSitePostPreview"]["parameters"]["path"] & { body?: NonNullable<operations["createSitePostPreview"]["requestBody"]>["content"]["application/json"] }>;
+export type CreateSitePostPreviewParams = Prettify<operations["createSitePostPreview"]["parameters"]["path"] & { body: operations["createSitePostPreview"]["requestBody"]["content"]["application/json"] }>;
 /** What `sites.createSitePostPreview()` resolves to. */
 export type CreateSitePostPreviewResult = operations["createSitePostPreview"]["responses"][202]["content"]["application/json"];
 
@@ -334,7 +516,7 @@ export type GetSitePostPreviewParams = Prettify<operations["getSitePostPreview"]
 export type GetSitePostPreviewResult = operations["getSitePostPreview"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `sites.publishPostToSite()`. */
-export type PublishPostToSiteParams = Prettify<operations["publishPostToSite"]["parameters"]["path"] & { body?: NonNullable<operations["publishPostToSite"]["requestBody"]>["content"]["application/json"] }>;
+export type PublishPostToSiteParams = Prettify<operations["publishPostToSite"]["parameters"]["path"] & { body: operations["publishPostToSite"]["requestBody"]["content"]["application/json"] }>;
 /** What `sites.publishPostToSite()` resolves to. */
 export type PublishPostToSiteResult = operations["publishPostToSite"]["responses"][200]["content"]["application/json"];
 
@@ -541,18 +723,38 @@ export type ImportGeoCompetitorsParams = Prettify<operations["importGeoCompetito
 /** What `geo.importGeoCompetitors()` resolves to. */
 export type ImportGeoCompetitorsResult = operations["importGeoCompetitors"]["responses"][200]["content"]["application/json"];
 
+/** Parameters of `geo.listGeoNameCollisions()`. */
+export type ListGeoNameCollisionsParams = Prettify<operations["listGeoNameCollisions"]["parameters"]["path"]>;
+/** What `geo.listGeoNameCollisions()` resolves to. */
+export type ListGeoNameCollisionsResult = operations["listGeoNameCollisions"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `geo.addGeoNameCollision()`. */
+export type AddGeoNameCollisionParams = Prettify<operations["addGeoNameCollision"]["parameters"]["path"] & { body: operations["addGeoNameCollision"]["requestBody"]["content"]["application/json"] }>;
+/** What `geo.addGeoNameCollision()` resolves to. */
+export type AddGeoNameCollisionResult = operations["addGeoNameCollision"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `geo.acceptGeoNameCollision()`. */
+export type AcceptGeoNameCollisionParams = Prettify<operations["acceptGeoNameCollision"]["parameters"]["path"]>;
+/** What `geo.acceptGeoNameCollision()` resolves to. */
+export type AcceptGeoNameCollisionResult = operations["acceptGeoNameCollision"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `geo.dismissGeoNameCollision()`. */
+export type DismissGeoNameCollisionParams = Prettify<operations["dismissGeoNameCollision"]["parameters"]["path"]>;
+/** What `geo.dismissGeoNameCollision()` resolves to. */
+export type DismissGeoNameCollisionResult = operations["dismissGeoNameCollision"]["responses"][200]["content"]["application/json"];
+
 /** Parameters of `geo.listGeoScans()`. */
 export type ListGeoScansParams = Prettify<operations["listGeoScans"]["parameters"]["path"] & NonNullable<operations["listGeoScans"]["parameters"]["query"]>>;
 /** What `geo.listGeoScans()` resolves to. */
 export type ListGeoScansResult = operations["listGeoScans"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `geo.createGeoScan()`. */
-export type CreateGeoScanParams = Prettify<operations["createGeoScan"]["parameters"]["path"]>;
+export type CreateGeoScanParams = Prettify<operations["createGeoScan"]["parameters"]["path"] & { body?: NonNullable<operations["createGeoScan"]["requestBody"]>["content"]["application/json"] }>;
 /** What `geo.createGeoScan()` resolves to. */
 export type CreateGeoScanResult = operations["createGeoScan"]["responses"][202]["content"]["application/json"];
 
 /** Parameters of `geo.createGeoPromptScan()`. */
-export type CreateGeoPromptScanParams = Prettify<operations["createGeoPromptScan"]["parameters"]["path"]>;
+export type CreateGeoPromptScanParams = Prettify<operations["createGeoPromptScan"]["parameters"]["path"] & { body?: NonNullable<operations["createGeoPromptScan"]["requestBody"]>["content"]["application/json"] }>;
 /** What `geo.createGeoPromptScan()` resolves to. */
 export type CreateGeoPromptScanResult = operations["createGeoPromptScan"]["responses"][202]["content"]["application/json"];
 
@@ -630,6 +832,21 @@ export type ListGeoSentimentEvidenceResult = operations["listGeoSentimentEvidenc
 export type ListGeoShelfSourcesParams = Prettify<operations["listGeoShelfSources"]["parameters"]["path"] & NonNullable<operations["listGeoShelfSources"]["parameters"]["query"]>>;
 /** What `geo.listGeoShelfSources()` resolves to. */
 export type ListGeoShelfSourcesResult = operations["listGeoShelfSources"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `geo.claimGeoContent()`. */
+export type ClaimGeoContentParams = Prettify<operations["claimGeoContent"]["parameters"]["path"] & { body: operations["claimGeoContent"]["requestBody"]["content"]["application/json"] }>;
+/** What `geo.claimGeoContent()` resolves to. */
+export type ClaimGeoContentResult = operations["claimGeoContent"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `geo.releaseGeoContentClaim()`. */
+export type ReleaseGeoContentClaimParams = Prettify<operations["releaseGeoContentClaim"]["parameters"]["path"] & { body: operations["releaseGeoContentClaim"]["requestBody"]["content"]["application/json"] }>;
+/** What `geo.releaseGeoContentClaim()` resolves to. */
+export type ReleaseGeoContentClaimResult = operations["releaseGeoContentClaim"]["responses"][200]["content"]["application/json"];
+
+/** Parameters of `geo.reportGeoContentAgentFailure()`. */
+export type ReportGeoContentAgentFailureParams = Prettify<operations["reportGeoContentAgentFailure"]["parameters"]["path"] & { body: operations["reportGeoContentAgentFailure"]["requestBody"]["content"]["application/json"] }>;
+/** What `geo.reportGeoContentAgentFailure()` resolves to. */
+export type ReportGeoContentAgentFailureResult = operations["reportGeoContentAgentFailure"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `geo.listGeoContentGaps()`. */
 export type ListGeoContentGapsParams = Prettify<operations["listGeoContentGaps"]["parameters"]["path"]>;
@@ -762,7 +979,7 @@ export type SendAgentSessionMessageParams = Prettify<operations["sendAgentSessio
 export type SendAgentSessionMessageResult = operations["sendAgentSessionMessage"]["responses"][200]["content"]["application/json"];
 
 /** Parameters of `agent.streamAgentSessionEvents()`. */
-export type StreamAgentSessionEventsParams = Prettify<operations["streamAgentSessionEvents"]["parameters"]["path"]>;
+export type StreamAgentSessionEventsParams = Prettify<operations["streamAgentSessionEvents"]["parameters"]["path"] & NonNullable<operations["streamAgentSessionEvents"]["parameters"]["query"]>>;
 /** What `agent.streamAgentSessionEvents()` resolves to. */
 export type StreamAgentSessionEventsResult = NotraStream<NotraAgentEvent>;
 
@@ -773,6 +990,7 @@ export type ListAgentChatsResult = operations["listAgentChats"]["responses"][200
 
 const OPERATIONS = {
   getPublicApiStatus: {"method":"GET","path":"/v1/status","pathParams":[],"queryParams":[],"body":false,"response":"json"},
+  getPricingQuote: {"method":"GET","path":"/v1/pricing","pathParams":[],"queryParams":["prompts","engines","languages","personas","scanIntervalDays","audience"],"body":false,"response":"json"},
   listPosts: {"method":"GET","path":"/v1/posts","pathParams":[],"queryParams":["sort","limit","page","status","contentType","brandIdentityId"],"body":false,"response":"json"},
   createPost: {"method":"POST","path":"/v1/posts","pathParams":[],"queryParams":[],"body":true,"response":"json"},
   listPostAuthors: {"method":"GET","path":"/v1/posts/authors","pathParams":[],"queryParams":[],"body":false,"response":"json"},
@@ -790,8 +1008,12 @@ const OPERATIONS = {
   retryWebhookDelivery: {"method":"POST","path":"/v1/webhooks/deliveries/{deliveryId}/retry","pathParams":["deliveryId"],"queryParams":[],"body":false,"response":"json"},
   getPostSchedule: {"method":"GET","path":"/v1/posts/{postId}/schedule","pathParams":["postId"],"queryParams":[],"body":false,"response":"json"},
   schedulePost: {"method":"POST","path":"/v1/posts/{postId}/schedule","pathParams":["postId"],"queryParams":[],"body":true,"response":"json"},
-  cancelPostSchedule: {"method":"DELETE","path":"/v1/posts/{postId}/schedule","pathParams":["postId"],"queryParams":[],"body":false,"response":"json"},
+  cancelPostSchedule: {"method":"DELETE","path":"/v1/posts/{postId}/schedule","pathParams":["postId"],"queryParams":["withdraw"],"body":false,"response":"json"},
   getPostAgentReach: {"method":"GET","path":"/v1/posts/{postId}/agent-reach","pathParams":["postId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
+  listCommentedPosts: {"method":"GET","path":"/v1/post-comments","pathParams":[],"queryParams":["link","limit","page"],"body":false,"response":"json"},
+  listPostComments: {"method":"GET","path":"/v1/posts/{postId}/comments","pathParams":["postId"],"queryParams":["status"],"body":false,"response":"json"},
+  resolvePostComments: {"method":"POST","path":"/v1/posts/{postId}/comments/resolve","pathParams":["postId"],"queryParams":[],"body":true,"response":"json"},
+  replyToPostComment: {"method":"POST","path":"/v1/posts/{postId}/comments/{threadId}/replies","pathParams":["postId","threadId"],"queryParams":[],"body":true,"response":"json"},
   listBrandIdentities: {"method":"GET","path":"/v1/brand-identities","pathParams":[],"queryParams":[],"body":false,"response":"json"},
   createBrandIdentity: {"method":"POST","path":"/v1/brand-identities/generate","pathParams":[],"queryParams":[],"body":true,"response":"json"},
   getBrandIdentityGeneration: {"method":"GET","path":"/v1/brand-identities/generate/{jobId}","pathParams":["jobId"],"queryParams":[],"body":false,"response":"json"},
@@ -812,6 +1034,38 @@ const OPERATIONS = {
   deleteSchedule: {"method":"DELETE","path":"/v1/schedules/{scheduleId}","pathParams":["scheduleId"],"queryParams":[],"body":false,"response":"json"},
   runSchedule: {"method":"POST","path":"/v1/schedules/{scheduleId}/run","pathParams":["scheduleId"],"queryParams":[],"body":false,"response":"json"},
   listScheduleRuns: {"method":"GET","path":"/v1/schedules/{scheduleId}/runs","pathParams":["scheduleId"],"queryParams":["limit"],"body":false,"response":"json"},
+  getAutopilotStatus: {"method":"GET","path":"/v1/autopilot/status","pathParams":[],"queryParams":[],"body":false,"response":"json"},
+  listAutopilotRuns: {"method":"GET","path":"/v1/autopilot/runs","pathParams":[],"queryParams":["limit"],"body":false,"response":"json"},
+  startAutopilotRun: {"method":"POST","path":"/v1/autopilot/runs","pathParams":[],"queryParams":[],"body":true,"response":"json"},
+  stopAutopilotRun: {"method":"POST","path":"/v1/autopilot/runs/{runId}/stop","pathParams":["runId"],"queryParams":[],"body":false,"response":"json"},
+  startAutopilotWorkflowRun: {"method":"POST","path":"/v1/autopilot/workflows/{workflowId}/run","pathParams":["workflowId"],"queryParams":[],"body":false,"response":"json"},
+  updateAutopilotSettings: {"method":"PATCH","path":"/v1/autopilot/settings","pathParams":[],"queryParams":[],"body":true,"response":"json"},
+  listAutopilotFindings: {"method":"GET","path":"/v1/autopilot/findings","pathParams":[],"queryParams":["status","kind","limit"],"body":false,"response":"json"},
+  getAutopilotFinding: {"method":"GET","path":"/v1/autopilot/findings/{findingId}","pathParams":["findingId"],"queryParams":[],"body":false,"response":"json"},
+  writeAutopilotFinding: {"method":"POST","path":"/v1/autopilot/findings/{findingId}/write","pathParams":["findingId"],"queryParams":[],"body":false,"response":"json"},
+  dismissAutopilotFinding: {"method":"POST","path":"/v1/autopilot/findings/{findingId}/dismiss","pathParams":["findingId"],"queryParams":[],"body":true,"response":"json"},
+  mergeAutopilotFinding: {"method":"POST","path":"/v1/autopilot/findings/{findingId}/merge","pathParams":["findingId"],"queryParams":[],"body":true,"response":"json"},
+  holdAutopilotFinding: {"method":"POST","path":"/v1/autopilot/findings/{findingId}/hold","pathParams":["findingId"],"queryParams":[],"body":false,"response":"json"},
+  requestAutopilotChanges: {"method":"POST","path":"/v1/autopilot/findings/{findingId}/request-changes","pathParams":["findingId"],"queryParams":[],"body":true,"response":"json"},
+  addAutopilotRule: {"method":"POST","path":"/v1/autopilot/rules","pathParams":[],"queryParams":[],"body":true,"response":"json"},
+  deleteAutopilotRule: {"method":"DELETE","path":"/v1/autopilot/rules/{ruleId}","pathParams":["ruleId"],"queryParams":[],"body":false,"response":"json"},
+  setAutopilotWorkflowEnabled: {"method":"PATCH","path":"/v1/autopilot/workflows/{workflowId}","pathParams":["workflowId"],"queryParams":[],"body":true,"response":"json"},
+  deleteAutopilotWorkflow: {"method":"DELETE","path":"/v1/autopilot/workflows/{workflowId}","pathParams":["workflowId"],"queryParams":[],"body":false,"response":"json"},
+  getAutopilotRun: {"method":"GET","path":"/v1/autopilot/runs/{runId}","pathParams":["runId"],"queryParams":[],"body":false,"response":"json"},
+  getAutopilotBrief: {"method":"GET","path":"/v1/autopilot/brief","pathParams":[],"queryParams":[],"body":false,"response":"json"},
+  listOutreachPitches: {"method":"GET","path":"/v1/autopilot/outreach/pitches","pathParams":[],"queryParams":["status","stage","followUpDue","search"],"body":false,"response":"json"},
+  getOutreachPitch: {"method":"GET","path":"/v1/autopilot/outreach/pitches/{pitchId}","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  editOutreachPitch: {"method":"PATCH","path":"/v1/autopilot/outreach/pitches/{pitchId}","pathParams":["pitchId"],"queryParams":[],"body":true,"response":"json"},
+  deleteOutreachPitch: {"method":"DELETE","path":"/v1/autopilot/outreach/pitches/{pitchId}","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  sendOutreachPitch: {"method":"POST","path":"/v1/autopilot/outreach/pitches/{pitchId}/send","pathParams":["pitchId"],"queryParams":[],"body":true,"response":"json"},
+  cancelOutreachPitch: {"method":"POST","path":"/v1/autopilot/outreach/pitches/{pitchId}/cancel","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  markOutreachPitchSent: {"method":"POST","path":"/v1/autopilot/outreach/pitches/{pitchId}/mark-sent","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  markOutreachPitchListed: {"method":"POST","path":"/v1/autopilot/outreach/pitches/{pitchId}/mark-listed","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  laterOutreachPitch: {"method":"POST","path":"/v1/autopilot/outreach/pitches/{pitchId}/later","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  undoLaterOutreachPitch: {"method":"DELETE","path":"/v1/autopilot/outreach/pitches/{pitchId}/later","pathParams":["pitchId"],"queryParams":[],"body":false,"response":"json"},
+  updateOutreachPitchDetails: {"method":"PATCH","path":"/v1/autopilot/outreach/pitches/{pitchId}/details","pathParams":["pitchId"],"queryParams":[],"body":true,"response":"json"},
+  getOutreachMailbox: {"method":"GET","path":"/v1/autopilot/outreach/mailbox","pathParams":[],"queryParams":[],"body":false,"response":"json"},
+  disconnectOutreachMailbox: {"method":"DELETE","path":"/v1/autopilot/outreach/mailbox","pathParams":[],"queryParams":[],"body":false,"response":"json"},
   listEventTriggers: {"method":"GET","path":"/v1/event-triggers","pathParams":[],"queryParams":["repositoryIds"],"body":false,"response":"json"},
   createEventTrigger: {"method":"POST","path":"/v1/event-triggers","pathParams":[],"queryParams":[],"body":true,"response":"json"},
   getEventTrigger: {"method":"GET","path":"/v1/event-triggers/{triggerId}","pathParams":["triggerId"],"queryParams":[],"body":false,"response":"json"},
@@ -833,6 +1087,7 @@ const OPERATIONS = {
   deleteSiteAuthor: {"method":"DELETE","path":"/v1/sites/{siteId}/authors/{authorId}","pathParams":["siteId","authorId"],"queryParams":["force"],"body":false,"response":"json"},
   importSiteAuthors: {"method":"POST","path":"/v1/sites/{siteId}/authors/import","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   updateSiteAuthorPage: {"method":"PATCH","path":"/v1/sites/{siteId}/author-page","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
+  updateSiteSections: {"method":"PATCH","path":"/v1/sites/{siteId}/sections","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   publishSite: {"method":"POST","path":"/v1/sites/{siteId}/publish","pathParams":["siteId"],"queryParams":[],"body":true,"response":"json"},
   getSite: {"method":"GET","path":"/v1/sites/{siteId}","pathParams":["siteId"],"queryParams":[],"body":false,"response":"json"},
   listSiteDeployments: {"method":"GET","path":"/v1/sites/{siteId}/deployments","pathParams":["siteId"],"queryParams":["limit"],"body":false,"response":"json"},
@@ -883,14 +1138,18 @@ const OPERATIONS = {
   suggestGeoCompetitors: {"method":"GET","path":"/v1/projects/{projectId}/geo/competitors/suggestions","pathParams":["projectId"],"queryParams":["domain"],"body":false,"response":"json"},
   deleteGeoCompetitor: {"method":"DELETE","path":"/v1/projects/{projectId}/geo/competitors/{name}","pathParams":["projectId","name"],"queryParams":[],"body":false,"response":"json"},
   importGeoCompetitors: {"method":"POST","path":"/v1/projects/{projectId}/geo/competitors/import","pathParams":["projectId"],"queryParams":[],"body":true,"response":"json"},
+  listGeoNameCollisions: {"method":"GET","path":"/v1/projects/{projectId}/geo/name-collisions","pathParams":["projectId"],"queryParams":[],"body":false,"response":"json"},
+  addGeoNameCollision: {"method":"POST","path":"/v1/projects/{projectId}/geo/name-collisions","pathParams":["projectId"],"queryParams":[],"body":true,"response":"json"},
+  acceptGeoNameCollision: {"method":"POST","path":"/v1/projects/{projectId}/geo/name-collisions/{collisionId}/accept","pathParams":["projectId","collisionId"],"queryParams":[],"body":false,"response":"json"},
+  dismissGeoNameCollision: {"method":"POST","path":"/v1/projects/{projectId}/geo/name-collisions/{collisionId}/dismiss","pathParams":["projectId","collisionId"],"queryParams":[],"body":false,"response":"json"},
   listGeoScans: {"method":"GET","path":"/v1/projects/{projectId}/geo/scans","pathParams":["projectId"],"queryParams":["limit","page"],"body":false,"response":"json"},
-  createGeoScan: {"method":"POST","path":"/v1/projects/{projectId}/geo/scans","pathParams":["projectId"],"queryParams":[],"body":false,"response":"json"},
-  createGeoPromptScan: {"method":"POST","path":"/v1/projects/{projectId}/geo/scans/prompts/{promptId}","pathParams":["projectId","promptId"],"queryParams":[],"body":false,"response":"json"},
+  createGeoScan: {"method":"POST","path":"/v1/projects/{projectId}/geo/scans","pathParams":["projectId"],"queryParams":[],"body":true,"response":"json"},
+  createGeoPromptScan: {"method":"POST","path":"/v1/projects/{projectId}/geo/scans/prompts/{promptId}","pathParams":["projectId","promptId"],"queryParams":[],"body":true,"response":"json"},
   getGeoScan: {"method":"GET","path":"/v1/projects/{projectId}/geo/scans/{scanId}","pathParams":["projectId","scanId"],"queryParams":[],"body":false,"response":"json"},
-  getGeoVisibilityOverview: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/overview","pathParams":["projectId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
+  getGeoVisibilityOverview: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/overview","pathParams":["projectId"],"queryParams":["days","from","to","scanId"],"body":false,"response":"json"},
   getGeoVisibilityTimeseries: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/timeseries","pathParams":["projectId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
   getGeoVisibilityPromptResults: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/prompt-results","pathParams":["projectId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
-  listGeoPromptResultSummaries: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/prompt-results/summaries","pathParams":["projectId"],"queryParams":["days","from","to","cursor","limit","engine","mentioned","query"],"body":false,"response":"json"},
+  listGeoPromptResultSummaries: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/prompt-results/summaries","pathParams":["projectId"],"queryParams":["days","from","to","scanId","cursor","limit","engine","mentioned","query"],"body":false,"response":"json"},
   getGeoPromptResultDetail: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/prompt-results/{checkId}","pathParams":["projectId","checkId"],"queryParams":[],"body":false,"response":"json"},
   getGeoVisibilityCompetitorShare: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/competitor-share","pathParams":["projectId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
   getGeoVisibilityLanguageShare: {"method":"GET","path":"/v1/projects/{projectId}/geo/visibility/language-share","pathParams":["projectId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
@@ -901,6 +1160,9 @@ const OPERATIONS = {
   getGeoSentimentAnalysis: {"method":"GET","path":"/v1/projects/{projectId}/geo/sentiment/analysis","pathParams":["projectId"],"queryParams":["days","from","to"],"body":false,"response":"json"},
   listGeoSentimentEvidence: {"method":"GET","path":"/v1/projects/{projectId}/geo/sentiment/evidence","pathParams":["projectId"],"queryParams":["days","from","to","cursor"],"body":false,"response":"json"},
   listGeoShelfSources: {"method":"GET","path":"/v1/projects/{projectId}/geo/shelf-sources","pathParams":["projectId"],"queryParams":["offset","limit"],"body":false,"response":"json"},
+  claimGeoContent: {"method":"POST","path":"/v1/projects/{projectId}/geo/claims","pathParams":["projectId"],"queryParams":[],"body":true,"response":"json"},
+  releaseGeoContentClaim: {"method":"POST","path":"/v1/projects/{projectId}/geo/claims/release","pathParams":["projectId"],"queryParams":[],"body":true,"response":"json"},
+  reportGeoContentAgentFailure: {"method":"POST","path":"/v1/projects/{projectId}/geo/claims/failure","pathParams":["projectId"],"queryParams":[],"body":true,"response":"json"},
   listGeoContentGaps: {"method":"GET","path":"/v1/projects/{projectId}/geo/gaps","pathParams":["projectId"],"queryParams":[],"body":false,"response":"json"},
   updateGeoContentGap: {"method":"PATCH","path":"/v1/projects/{projectId}/geo/gaps/{promptId}","pathParams":["projectId","promptId"],"queryParams":[],"body":true,"response":"json"},
   listGeoContentBriefs: {"method":"GET","path":"/v1/projects/{projectId}/geo/briefs","pathParams":["projectId"],"queryParams":[],"body":false,"response":"json"},
@@ -927,7 +1189,7 @@ const OPERATIONS = {
   listGeoAnalyticsImports: {"method":"GET","path":"/v1/projects/{projectId}/geo/traffic/imports","pathParams":["projectId"],"queryParams":[],"body":false,"response":"json"},
   createAgentSession: {"method":"POST","path":"/v2/eve/v1/session","pathParams":[],"queryParams":[],"body":true,"response":"json"},
   sendAgentSessionMessage: {"method":"POST","path":"/v2/eve/v1/session/{sessionId}","pathParams":["sessionId"],"queryParams":[],"body":true,"response":"json"},
-  streamAgentSessionEvents: {"method":"GET","path":"/v2/eve/v1/session/{sessionId}/stream","pathParams":["sessionId"],"queryParams":[],"body":false,"response":"ndjson"},
+  streamAgentSessionEvents: {"method":"GET","path":"/v2/eve/v1/session/{sessionId}/stream","pathParams":["sessionId"],"queryParams":["startIndex","follow","includeTailIndex"],"body":false,"response":"ndjson"},
   listAgentChats: {"method":"GET","path":"/v2/agent-chats","pathParams":[],"queryParams":["limit"],"body":false,"response":"json"},
 } satisfies Record<string, OperationSpec>;
 
@@ -948,6 +1210,17 @@ export class DiscoveryResource {
    */
   getPublicApiStatus(options?: RequestOptions): Promise<GetPublicApiStatusResult> {
     return this.#transport.call(OPERATIONS.getPublicApiStatus, undefined, options) as Promise<GetPublicApiStatusResult>;
+  }
+
+  /**
+   * Estimate monthly AI answers and the plan that fits
+   *
+   * Public and keyless. Quotes any mix of prompts, engines, languages, personas and scan interval against Notra's plan limits.
+   *
+   * `GET /v1/pricing`
+   */
+  getPricingQuote(params?: GetPricingQuoteParams, options?: RequestOptions): Promise<GetPricingQuoteResult> {
+    return this.#transport.call(OPERATIONS.getPricingQuote, params, options) as Promise<GetPricingQuoteResult>;
   }
 
   /**
@@ -1019,7 +1292,7 @@ export class ContentResource {
   /**
    * Update a single post
    *
-   * Updates any combination of title, slug, markdown, status, and metadata. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs and metadata are only accepted for blog posts and changelogs. Inside metadata, send only the fields you want to change; tags and authorIds replace the stored list, and authorIds must come from GET /v1/posts/authors. A blog post that publishes to a Notra Sites site can also credit that site's authors as site:<id>, the ref from GET /v1/sites/{siteId}/authors. Title, slug, markdown, or metadata updates also sync a post linked to GitHub: an open pull request gets a new commit, and a repository set to publish directly gets a direct commit when its live branch allows one (unprotected, file unchanged on GitHub). Otherwise, including closed or merged pull requests, GitHub is left as is and no new pull request is opened; the post is still saved. GitHub sync errors occur after saving the post: 429 includes Retry-After, 502 indicates a sync error, and 504 indicates an unknown sync outcome. Check the PR before retrying an unconfirmed sync.
+   * Updates any combination of title, slug, markdown, status, and metadata. Sending markdown re-renders the stored HTML, and when title is omitted it is taken from the first heading in the markdown, keeping the existing title when the markdown has no heading. Slugs and metadata are only accepted for blog posts and changelogs. Inside metadata, send only the fields you want to change; tags and authorIds replace the stored list, and authorIds must come from GET /v1/posts/authors. A blog post that publishes to a Notra Sites site can also credit that site's authors as site:<id>, the ref from GET /v1/sites/{siteId}/authors. Title, slug, markdown, or metadata updates also sync a post linked to GitHub: an open pull request gets a new commit, and a repository set to publish directly gets a direct commit when its live branch allows one (unprotected, file unchanged on GitHub). Otherwise, including closed or merged pull requests, GitHub is left as is and no new pull request is opened; the post is still saved. GitHub sync errors occur after saving the post: 429 includes Retry-After, 502 indicates a sync error, and 504 indicates an unknown sync outcome. Check the PR before retrying an unconfirmed sync. Sending markdown for a GEO brief's draft post releases your claim on that brief (see claimGeoContent).
    *
    * `PATCH /v1/posts/{postId}`
    */
@@ -1061,7 +1334,7 @@ export class ContentResource {
   /**
    * Get async post generation status
    *
-   * Returns the job and its event log. job.status moves from queued to running and ends as completed, failed, or skipped. job.postId is set once the post has been created; fetch it with GET /v1/posts/{postId}.
+   * Returns the job and its event log. If the workflow start can't be confirmed, job.status is start_unconfirmed. Surface that outcome rather than retrying automatically; a later status check can still show progress. Once accepted, the job can be queued or running and ends as completed, failed, or skipped. Fetch a completed post with GET /v1/posts/{postId}.
    *
    * `GET /v1/posts/generate/{jobId}`
    */
@@ -1072,7 +1345,7 @@ export class ContentResource {
   /**
    * Get a post's publishing schedule
    *
-   * Returns the post's current schedule with the state of every destination, or null when nothing is scheduled.
+   * Returns the post's latest schedule with destinations that were not canceled, and the state of each of them. The schedule stays after it published or failed, and destinations that already published remain after a cancel, so check each publication's status. schedule is null when the post was never scheduled or all its destinations were canceled.
    *
    * `GET /v1/posts/{postId}/schedule`
    */
@@ -1094,7 +1367,7 @@ export class ContentResource {
   /**
    * Cancel a post's publishing schedule
    *
-   * Cancels every destination that has not started and clears failed ones. A destination that is already publishing cannot be interrupted: it finishes if it succeeds and ends canceled instead of being retried. inProgress reports it.
+   * Cancels every destination that has not started and clears failed ones. A destination that is already publishing cannot be interrupted: it finishes if it succeeds and ends canceled instead of being retried. inProgress reports it. When the post has an open GitHub pull request, from scheduling, createPostPullRequest or publishPostToSite, pass withdraw=true to close it as well. Without it the call returns 409 and changes nothing, so a pull request is never withdrawn by accident. With withdraw=true and no schedule, it only closes the pull request.
    *
    * `DELETE /v1/posts/{postId}/schedule`
    */
@@ -1111,6 +1384,50 @@ export class ContentResource {
    */
   getPostAgentReach(params: GetPostAgentReachParams, options?: RequestOptions): Promise<GetPostAgentReachResult> {
     return this.#transport.call(OPERATIONS.getPostAgentReach, params, options) as Promise<GetPostAgentReachResult>;
+  }
+
+  /**
+   * Find posts with open comments
+   *
+   * Lists the posts that have unresolved comment threads, newest first, so a request like "fix the comments on my preview" can find its post. Pass link (a post's Notra Sites preview link or its link in Notra) to look up that post. Then read its threads with GET /v1/posts/{postId}/comments.
+   *
+   * `GET /v1/post-comments`
+   */
+  listCommentedPosts(params?: ListCommentedPostsParams, options?: RequestOptions): Promise<ListCommentedPostsResult> {
+    return this.#transport.call(OPERATIONS.listCommentedPosts, params, options) as Promise<ListCommentedPostsResult>;
+  }
+
+  /**
+   * List a post's comment threads
+   *
+   * Returns the comment threads teammates left on a post, in the editor or on its Notra Sites preview. Each thread quotes the passage it is about and includes its replies. To work feedback in: read the open threads, update the post with PATCH /v1/posts/{postId}, rebuild its preview with POST /v1/sites/{siteId}/post-previews, then resolve the threads you addressed.
+   *
+   * `GET /v1/posts/{postId}/comments`
+   */
+  listPostComments(params: ListPostCommentsParams, options?: RequestOptions): Promise<ListPostCommentsResult> {
+    return this.#transport.call(OPERATIONS.listPostComments, params, options) as Promise<ListPostCommentsResult>;
+  }
+
+  /**
+   * Resolve comment threads
+   *
+   * Marks open threads as resolved, for example after an update addressed them. Threads already resolved, gone (first comment and every reply deleted), replies or on another post are returned in skipped. OAuth and account keys record their person as the resolver; organization keys resolve without one.
+   *
+   * `POST /v1/posts/{postId}/comments/resolve`
+   */
+  resolvePostComments(params: ResolvePostCommentsParams, options?: RequestOptions): Promise<ResolvePostCommentsResult> {
+    return this.#transport.call(OPERATIONS.resolvePostComments, params, options) as Promise<ResolvePostCommentsResult>;
+  }
+
+  /**
+   * Reply to a comment thread
+   *
+   * Adds a reply to an open thread, written as the person behind the key, for example to explain a change or ask a question back. Needs an OAuth or account key; organization keys have no person to write as and get 403.
+   *
+   * `POST /v1/posts/{postId}/comments/{threadId}/replies`
+   */
+  replyToPostComment(params: ReplyToPostCommentParams, options?: RequestOptions): Promise<ReplyToPostCommentResult> {
+    return this.#transport.call(OPERATIONS.replyToPostComment, params, options) as Promise<ReplyToPostCommentResult>;
   }
 
   /**
@@ -1346,7 +1663,7 @@ export class SchedulesResource {
   /**
    * List schedules
    *
-   * Returns the organization's cron schedules, newest first. repositoryMap maps each targeted GitHub integration ID to an owner/repo label.
+   * Returns the organization's cron schedules, newest first. repositoryMap maps each targeted GitHub integration ID to an owner/repo label, followed by " · <branch>" when the integration has a default branch set.
    *
    * `GET /v1/schedules`
    */
@@ -1407,6 +1724,380 @@ export class SchedulesResource {
    */
   listScheduleRuns(params: ListScheduleRunsParams, options?: RequestOptions): Promise<ListScheduleRunsResult> {
     return this.#transport.call(OPERATIONS.listScheduleRuns, params, options) as Promise<ListScheduleRunsResult>;
+  }
+}
+
+/**
+ * The Autopilot endpoints, as `notra.autopilot`.
+ */
+export class AutopilotResource {
+  readonly #transport: Transport;
+
+  constructor(transport: Transport) {
+    this.#transport = transport;
+  }
+
+  /**
+   * Get Autopilot status
+   *
+   * Read settings, active run IDs, custom workflows, open findings and rules for your workspace. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/status`
+   */
+  getAutopilotStatus(options?: RequestOptions): Promise<GetAutopilotStatusResult> {
+    return this.#transport.call(OPERATIONS.getAutopilotStatus, undefined, options) as Promise<GetAutopilotStatusResult>;
+  }
+
+  /**
+   * List recent Autopilot runs
+   *
+   * Daily, manual and single-item runs, newest first, with what each came to. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/runs`
+   */
+  listAutopilotRuns(params?: ListAutopilotRunsParams, options?: RequestOptions): Promise<ListAutopilotRunsResult> {
+    return this.#transport.call(OPERATIONS.listAutopilotRuns, params, options) as Promise<ListAutopilotRunsResult>;
+  }
+
+  /**
+   * Start an Autopilot run
+   *
+   * Run Autopilot now or select one enabled built-in automation with kind. Uses AI credits and can open pull requests under the workspace's existing approval settings. If already running, returns the existing run. Requires autopilot.write and workspace owner or admin access.
+   *
+   * `POST /v1/autopilot/runs`
+   */
+  startAutopilotRun(params?: StartAutopilotRunParams, options?: RequestOptions): Promise<StartAutopilotRunResult> {
+    return this.#transport.call(OPERATIONS.startAutopilotRun, params, options) as Promise<StartAutopilotRunResult>;
+  }
+
+  /**
+   * Stop an active Autopilot run
+   *
+   * Stop a built-in or custom workflow run in this workspace. Find its ID in Autopilot status. This does not undo work already completed. Requires autopilot.write and workspace owner or admin access.
+   *
+   * `POST /v1/autopilot/runs/{runId}/stop`
+   */
+  stopAutopilotRun(params: StopAutopilotRunParams, options?: RequestOptions): Promise<StopAutopilotRunResult> {
+    return this.#transport.call(OPERATIONS.stopAutopilotRun, params, options) as Promise<StopAutopilotRunResult>;
+  }
+
+  /**
+   * Start an Autopilot custom workflow
+   *
+   * Run a saved workflow now, separate from its schedule. Find its ID in Autopilot status. Workflows can use AI credits and act on connected services. Requires autopilot.write and workspace owner or admin access.
+   *
+   * `POST /v1/autopilot/workflows/{workflowId}/run`
+   */
+  startAutopilotWorkflowRun(params: StartAutopilotWorkflowRunParams, options?: RequestOptions): Promise<StartAutopilotWorkflowRunResult> {
+    return this.#transport.call(OPERATIONS.startAutopilotWorkflowRun, params, options) as Promise<StartAutopilotWorkflowRunResult>;
+  }
+
+  /**
+   * Update Autopilot settings
+   *
+   * Change only the settings named; the rest stay as saved. Read the current values from Autopilot status. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `PATCH /v1/autopilot/settings`
+   */
+  updateAutopilotSettings(params?: UpdateAutopilotSettingsParams, options?: RequestOptions): Promise<UpdateAutopilotSettingsResult> {
+    return this.#transport.call(OPERATIONS.updateAutopilotSettings, params, options) as Promise<UpdateAutopilotSettingsResult>;
+  }
+
+  /**
+   * List Autopilot findings
+   *
+   * Ideas, drafts and pull requests Autopilot made, newest first. Outreach pitches are listed under outreach. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/findings`
+   */
+  listAutopilotFindings(params?: ListAutopilotFindingsParams, options?: RequestOptions): Promise<ListAutopilotFindingsResult> {
+    return this.#transport.call(OPERATIONS.listAutopilotFindings, params, options) as Promise<ListAutopilotFindingsResult>;
+  }
+
+  /**
+   * Get an Autopilot finding
+   *
+   * Why Autopilot picked it, its pull request and whether it will publish on its own. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/findings/{findingId}`
+   */
+  getAutopilotFinding(params: GetAutopilotFindingParams, options?: RequestOptions): Promise<GetAutopilotFindingResult> {
+    return this.#transport.call(OPERATIONS.getAutopilotFinding, params, options) as Promise<GetAutopilotFindingResult>;
+  }
+
+  /**
+   * Write a suggested idea now
+   *
+   * Write a suggested finding now instead of waiting. Uses AI credits and opens a pull request. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/findings/{findingId}/write`
+   */
+  writeAutopilotFinding(params: WriteAutopilotFindingParams, options?: RequestOptions): Promise<WriteAutopilotFindingResult> {
+    return this.#transport.call(OPERATIONS.writeAutopilotFinding, params, options) as Promise<WriteAutopilotFindingResult>;
+  }
+
+  /**
+   * Dismiss a finding
+   *
+   * Drop an idea or close its pull request. A reason that states a preference becomes a standing rule. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/findings/{findingId}/dismiss`
+   */
+  dismissAutopilotFinding(params: DismissAutopilotFindingParams, options?: RequestOptions): Promise<DismissAutopilotFindingResult> {
+    return this.#transport.call(OPERATIONS.dismissAutopilotFinding, params, options) as Promise<DismissAutopilotFindingResult>;
+  }
+
+  /**
+   * Merge a finding's pull request
+   *
+   * Merge the open pull request on GitHub, which publishes it. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/findings/{findingId}/merge`
+   */
+  mergeAutopilotFinding(params: MergeAutopilotFindingParams, options?: RequestOptions): Promise<MergeAutopilotFindingResult> {
+    return this.#transport.call(OPERATIONS.mergeAutopilotFinding, params, options) as Promise<MergeAutopilotFindingResult>;
+  }
+
+  /**
+   * Hold an automatic publish
+   *
+   * Stop Autopilot from publishing a pull request on its own at publishAt; it then waits for a person. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/findings/{findingId}/hold`
+   */
+  holdAutopilotFinding(params: HoldAutopilotFindingParams, options?: RequestOptions): Promise<HoldAutopilotFindingResult> {
+    return this.#transport.call(OPERATIONS.holdAutopilotFinding, params, options) as Promise<HoldAutopilotFindingResult>;
+  }
+
+  /**
+   * Ask for changes on a pull request
+   *
+   * Post the instruction on the open pull request under the member's name; Autopilot then changes the branch. Uses AI credits. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/findings/{findingId}/request-changes`
+   */
+  requestAutopilotChanges(params: RequestAutopilotChangesParams, options?: RequestOptions): Promise<RequestAutopilotChangesResult> {
+    return this.#transport.call(OPERATIONS.requestAutopilotChanges, params, options) as Promise<RequestAutopilotChangesResult>;
+  }
+
+  /**
+   * Add a standing rule
+   *
+   * A preference Autopilot follows in every run, like "Never write about pricing". Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/rules`
+   */
+  addAutopilotRule(params?: AddAutopilotRuleParams, options?: RequestOptions): Promise<AddAutopilotRuleResult> {
+    return this.#transport.call(OPERATIONS.addAutopilotRule, params, options) as Promise<AddAutopilotRuleResult>;
+  }
+
+  /**
+   * Delete a standing rule
+   *
+   * Find rule IDs in Autopilot status. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `DELETE /v1/autopilot/rules/{ruleId}`
+   */
+  deleteAutopilotRule(params: DeleteAutopilotRuleParams, options?: RequestOptions): Promise<DeleteAutopilotRuleResult> {
+    return this.#transport.call(OPERATIONS.deleteAutopilotRule, params, options) as Promise<DeleteAutopilotRuleResult>;
+  }
+
+  /**
+   * Turn a custom workflow on or off
+   *
+   * Turning it off stops its schedule. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `PATCH /v1/autopilot/workflows/{workflowId}`
+   */
+  setAutopilotWorkflowEnabled(params: SetAutopilotWorkflowEnabledParams, options?: RequestOptions): Promise<SetAutopilotWorkflowEnabledResult> {
+    return this.#transport.call(OPERATIONS.setAutopilotWorkflowEnabled, params, options) as Promise<SetAutopilotWorkflowEnabledResult>;
+  }
+
+  /**
+   * Delete a custom workflow
+   *
+   * Deletes the workflow and its schedule. Its past runs stay. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `DELETE /v1/autopilot/workflows/{workflowId}`
+   */
+  deleteAutopilotWorkflow(params: DeleteAutopilotWorkflowParams, options?: RequestOptions): Promise<DeleteAutopilotWorkflowResult> {
+    return this.#transport.call(OPERATIONS.deleteAutopilotWorkflow, params, options) as Promise<DeleteAutopilotWorkflowResult>;
+  }
+
+  /**
+   * Get an Autopilot run and its log
+   *
+   * What the run did, step by step: what it skipped, decided and changed. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/runs/{runId}`
+   */
+  getAutopilotRun(params: GetAutopilotRunParams, options?: RequestOptions): Promise<GetAutopilotRunResult> {
+    return this.#transport.call(OPERATIONS.getAutopilotRun, params, options) as Promise<GetAutopilotRunResult>;
+  }
+
+  /**
+   * Get today's daily brief
+   *
+   * Today's brief, or null before it is written or while the brief is off. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/brief`
+   */
+  getAutopilotBrief(options?: RequestOptions): Promise<GetAutopilotBriefResult> {
+    return this.#transport.call(OPERATIONS.getAutopilotBrief, undefined, options) as Promise<GetAutopilotBriefResult>;
+  }
+}
+
+/**
+ * The Autopilot outreach endpoints, as `notra.autopilotOutreach`.
+ */
+export class AutopilotOutreachResource {
+  readonly #transport: Transport;
+
+  constructor(transport: Transport) {
+    this.#transport = transport;
+  }
+
+  /**
+   * List outreach pitches
+   *
+   * Pitches Autopilot drafted to pages that AI answers cite without your brand, newest activity first, with where each conversation stands. Skipped pitches are left out unless status=skipped. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/outreach/pitches`
+   */
+  listOutreachPitches(params?: ListOutreachPitchesParams, options?: RequestOptions): Promise<ListOutreachPitchesResult> {
+    return this.#transport.call(OPERATIONS.listOutreachPitches, params, options) as Promise<ListOutreachPitchesResult>;
+  }
+
+  /**
+   * Get an outreach pitch
+   *
+   * One pitch with its email, why the page was picked, every way to reach its editor, the suggested send time and the whole thread of replies. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/outreach/pitches/{pitchId}`
+   */
+  getOutreachPitch(params: GetOutreachPitchParams, options?: RequestOptions): Promise<GetOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.getOutreachPitch, params, options) as Promise<GetOutreachPitchResult>;
+  }
+
+  /**
+   * Edit a drafted pitch
+   *
+   * Change the recipient, subject or body of a draft before it is sent. Fields left out stay. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `PATCH /v1/autopilot/outreach/pitches/{pitchId}`
+   */
+  editOutreachPitch(params: EditOutreachPitchParams, options?: RequestOptions): Promise<EditOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.editOutreachPitch, params, options) as Promise<EditOutreachPitchResult>;
+  }
+
+  /**
+   * Delete a pitch
+   *
+   * Drop a pitch that shouldn't go out; a scheduled one is taken back first. The page isn't pitched again. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `DELETE /v1/autopilot/outreach/pitches/{pitchId}`
+   */
+  deleteOutreachPitch(params: DeleteOutreachPitchParams, options?: RequestOptions): Promise<DeleteOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.deleteOutreachPitch, params, options) as Promise<DeleteOutreachPitchResult>;
+  }
+
+  /**
+   * Send or schedule a pitch
+   *
+   * Send a draft from the workspace's connected Gmail or Outlook now, or schedule it with sendAt. Every pitch goes out as plain text with an unsubscribe link. This emails a real person: confirm with the user first. Each workspace can submit up to 20 pitches in a rolling 24-hour window. Scheduled pitches count when submitted, not when delivered. Cancelling a scheduled pitch frees its slot. Separately, at most 20 pitches leave within any 24 hours, counted by when each one goes out, so pitches scheduled ahead can't pile onto one morning. Someone who replied asking not to be emailed, unsubscribed or marked a pitch as spam gets no further pitches. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/outreach/pitches/{pitchId}/send`
+   */
+  sendOutreachPitch(params: SendOutreachPitchParams, options?: RequestOptions): Promise<SendOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.sendOutreachPitch, params, options) as Promise<SendOutreachPitchResult>;
+  }
+
+  /**
+   * Cancel a scheduled pitch
+   *
+   * Take back a scheduled pitch before it goes out, even if Outreach is no longer available in the workspace. The pitch becomes a draft again. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/outreach/pitches/{pitchId}/cancel`
+   */
+  cancelOutreachPitch(params: CancelOutreachPitchParams, options?: RequestOptions): Promise<CancelOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.cancelOutreachPitch, params, options) as Promise<CancelOutreachPitchResult>;
+  }
+
+  /**
+   * Mark a pitch as sent
+   *
+   * Record that someone sent the pitch themselves, through the page's form or their own mail app. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/outreach/pitches/{pitchId}/mark-sent`
+   */
+  markOutreachPitchSent(params: MarkOutreachPitchSentParams, options?: RequestOptions): Promise<MarkOutreachPitchSentResult> {
+    return this.#transport.call(OPERATIONS.markOutreachPitchSent, params, options) as Promise<MarkOutreachPitchSentResult>;
+  }
+
+  /**
+   * Mark a pitch as listed
+   *
+   * Record that the page now lists the brand, before Autopilot's own page check notices. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/outreach/pitches/{pitchId}/mark-listed`
+   */
+  markOutreachPitchListed(params: MarkOutreachPitchListedParams, options?: RequestOptions): Promise<MarkOutreachPitchListedResult> {
+    return this.#transport.call(OPERATIONS.markOutreachPitchListed, params, options) as Promise<MarkOutreachPitchListedResult>;
+  }
+
+  /**
+   * Put a draft off until the next brief
+   *
+   * Take a draft out of today's brief; the next daily brief shows it again. Only drafts can be put off. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `POST /v1/autopilot/outreach/pitches/{pitchId}/later`
+   */
+  laterOutreachPitch(params: LaterOutreachPitchParams, options?: RequestOptions): Promise<LaterOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.laterOutreachPitch, params, options) as Promise<LaterOutreachPitchResult>;
+  }
+
+  /**
+   * Undo putting a draft off
+   *
+   * Bring a draft put off with Later back to where it was. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `DELETE /v1/autopilot/outreach/pitches/{pitchId}/later`
+   */
+  undoLaterOutreachPitch(params: UndoLaterOutreachPitchParams, options?: RequestOptions): Promise<UndoLaterOutreachPitchResult> {
+    return this.#transport.call(OPERATIONS.undoLaterOutreachPitch, params, options) as Promise<UndoLaterOutreachPitchResult>;
+  }
+
+  /**
+   * Update a pitch's stage, follow-up or deal
+   *
+   * Correct what Autopilot read from the thread: the stage, when to follow up, or what the editor asked for. Fields left out stay. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `PATCH /v1/autopilot/outreach/pitches/{pitchId}/details`
+   */
+  updateOutreachPitchDetails(params: UpdateOutreachPitchDetailsParams, options?: RequestOptions): Promise<UpdateOutreachPitchDetailsResult> {
+    return this.#transport.call(OPERATIONS.updateOutreachPitchDetails, params, options) as Promise<UpdateOutreachPitchDetailsResult>;
+  }
+
+  /**
+   * Get the outreach mailbox
+   *
+   * The Gmail or Outlook mailbox pitches are sent from, and a link to connect one. Connecting needs the mailbox owner's sign-in in a browser. Requires autopilot.read and a member's OAuth session or account API key.
+   *
+   * `GET /v1/autopilot/outreach/mailbox`
+   */
+  getOutreachMailbox(options?: RequestOptions): Promise<GetOutreachMailboxResult> {
+    return this.#transport.call(OPERATIONS.getOutreachMailbox, undefined, options) as Promise<GetOutreachMailboxResult>;
+  }
+
+  /**
+   * Disconnect the outreach mailbox
+   *
+   * Stop sending from the connected mailbox. Scheduled pitches go back to drafts. Requires autopilot.write and workspace owner or admin access through an OAuth session or account API key.
+   *
+   * `DELETE /v1/autopilot/outreach/mailbox`
+   */
+  disconnectOutreachMailbox(options?: RequestOptions): Promise<DisconnectOutreachMailboxResult> {
+    return this.#transport.call(OPERATIONS.disconnectOutreachMailbox, undefined, options) as Promise<DisconnectOutreachMailboxResult>;
   }
 }
 
@@ -1673,6 +2364,17 @@ export class SitesResource {
   }
 
   /**
+   * Set the blog and changelog paths
+   *
+   * Sets sections in blog.json: which of the blog and changelog the Site serves, and at which paths. A section left out is turned off. Once a production build with them goes live, they replace the dashboard's Sections setting, and a section that moves or turns off stops answering at its old path, so add redirects for it. Changes are saved as unpublished Design changes to the site's blog.json, the same draft the dashboard's Design tab shows, and go live when published with POST /v1/sites/{siteId}/publish or from the dashboard.
+   *
+   * `PATCH /v1/sites/{siteId}/sections`
+   */
+  updateSiteSections(params: UpdateSiteSectionsParams, options?: RequestOptions): Promise<UpdateSiteSectionsResult> {
+    return this.#transport.call(OPERATIONS.updateSiteSections, params, options) as Promise<UpdateSiteSectionsResult>;
+  }
+
+  /**
    * Publish a site's Design changes
    *
    * Commits the unpublished blog.json changes, with the images they use, to the site's production branch and deploys it, like Publish in the dashboard. Returns 409 with code SITE_HAS_OTHER_CHANGES when other files have unpublished changes, so work staged in the dashboard is never published by accident; publish those from the dashboard.
@@ -1741,7 +2443,7 @@ export class SitesResource {
   /**
    * Preview a post on a Site
    *
-   * Builds a preview of the Site with the post added, without writing to the repository, and returns its URL. Workspace members open protected previews after signing in; set a password to share it with others. Starts a site build; poll GET /v1/sites/{siteId}/post-previews/{postId} until it is live.
+   * Builds a preview of the Site with the post added, without writing to the repository, and returns its URL. Workspace members open protected previews after signing in and can comment on the page; set a password to share it with others (they can read but not comment). Starts a site build; poll GET /v1/sites/{siteId}/post-previews/{postId} until it is live. Call it again after editing the post to rebuild the same preview; it keeps its lifetime and password unless you pass new ones. Read the team's comments with GET /v1/posts/{postId}/comments.
    *
    * `POST /v1/sites/{siteId}/post-previews`
    */
@@ -1854,6 +2556,8 @@ export class GeoResource {
   /**
    * Create a GEO project
    *
+   * Analyzes the linked brand identity's website and seeds the project with tracked prompts, competitors, conversations and settings, like creating a project in the dashboard. This can take up to a minute. Set startScan to also start scanning, which uses AI credits.
+   *
    * `POST /v1/projects`
    */
   createProject(params: CreateProjectParams, options?: RequestOptions): Promise<CreateProjectResult> {
@@ -1901,7 +2605,7 @@ export class GeoResource {
   /**
    * Replace a project's GEO settings
    *
-   * Writes the full settings document and re-arms the recurring scan. Engines must be ids returned by `GET /projects/{projectId}/geo/engines` (model APIs plus consumer surfaces such as `google/ai-overview`, `google/gemini` and `openai/chatgpt`) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
+   * Writes the full settings document. Changing `scanIntervalHours` or turning `enabled` back on recalculates `nextScanAt` from the last finished scan, and the scan is due immediately when that time has already passed. Saving with the same interval keeps the current `nextScanAt`. Engines must be ids returned by `GET /projects/{projectId}/geo/engines` (model APIs plus consumer surfaces such as `google/ai-overview`, `google/gemini` and `openai/chatgpt`) and languages must be supported languages; an unknown value is rejected with a 400 instead of being replaced by a default. Zero data retention is forced off without the ZDR add-on, and engines that are not visible to this caller keep their stored selection. Competitors are managed through the competitors endpoints and are not part of this payload. The language the project's prompts are written in always stays tracked: leaving it out of `languages` adds it back as the first entry, and a full list without it is rejected with a 400.
    *
    * `PATCH /v1/projects/{projectId}/geo/settings`
    */
@@ -1943,7 +2647,7 @@ export class GeoResource {
   /**
    * Update a tracked GEO prompt
    *
-   * Enable or disable a tracked prompt, or replace tags on a custom prompt.
+   * Enable or disable a tracked prompt.
    *
    * `PATCH /v1/projects/{projectId}/geo/prompts/{promptId}`
    */
@@ -2202,6 +2906,50 @@ export class GeoResource {
   }
 
   /**
+   * List the not-confused-with list
+   *
+   * Other products that share your brand's name. Answers about them don't count as mentions. Scans suggest new entries when answers cite a same-named product on another domain.
+   *
+   * `GET /v1/projects/{projectId}/geo/name-collisions`
+   */
+  listGeoNameCollisions(params: ListGeoNameCollisionsParams, options?: RequestOptions): Promise<ListGeoNameCollisionsResult> {
+    return this.#transport.call(OPERATIONS.listGeoNameCollisions, params, options) as Promise<ListGeoNameCollisionsResult>;
+  }
+
+  /**
+   * Add a product to the not-confused-with list
+   *
+   * Adds a same-named product by name and domain, applied from the next scan on. Matches on domain, so a pending suggestion or dismissed entry for it is accepted. Returns the full list.
+   *
+   * `POST /v1/projects/{projectId}/geo/name-collisions`
+   */
+  addGeoNameCollision(params: AddGeoNameCollisionParams, options?: RequestOptions): Promise<AddGeoNameCollisionResult> {
+    return this.#transport.call(OPERATIONS.addGeoNameCollision, params, options) as Promise<AddGeoNameCollisionResult>;
+  }
+
+  /**
+   * Accept a name collision suggestion
+   *
+   * Adds a suggested product to the not-confused-with list. Returns 404 when the entry was dismissed or doesn't exist. Returns the full list.
+   *
+   * `POST /v1/projects/{projectId}/geo/name-collisions/{collisionId}/accept`
+   */
+  acceptGeoNameCollision(params: AcceptGeoNameCollisionParams, options?: RequestOptions): Promise<AcceptGeoNameCollisionResult> {
+    return this.#transport.call(OPERATIONS.acceptGeoNameCollision, params, options) as Promise<AcceptGeoNameCollisionResult>;
+  }
+
+  /**
+   * Dismiss or remove a name collision
+   *
+   * Dismisses a suggestion or removes an accepted entry. Scans won't suggest that domain again. Returns the full list.
+   *
+   * `POST /v1/projects/{projectId}/geo/name-collisions/{collisionId}/dismiss`
+   */
+  dismissGeoNameCollision(params: DismissGeoNameCollisionParams, options?: RequestOptions): Promise<DismissGeoNameCollisionResult> {
+    return this.#transport.call(OPERATIONS.dismissGeoNameCollision, params, options) as Promise<DismissGeoNameCollisionResult>;
+  }
+
+  /**
    * List GEO scans
    *
    * Lists scans with planned, completed, mentioned, and explicitly failed check totals by engine. Failed scans include safe failure metadata when available.
@@ -2215,7 +2963,7 @@ export class GeoResource {
   /**
    * Trigger a GEO scan
    *
-   * Queues a scan with the Notra dashboard, which owns the model credentials and billing gates. The public API never calls an answer engine itself. The scan record is created before the hand-off, so `scanId` is immediately readable via `GET /v1/projects/{projectId}/geo/scans/{scanId}`. Poll `statusUrl` (also returned as the `Location` header) until `status` leaves `running`. Returns 409 while a scan for this project is still in flight, and 402 when the plan or AI credits cannot cover a scan.
+   * Brand tracking must be enabled unless `oneShot: true`. Set `includeSequences: false` to skip sequences or pass `engines` to narrow the run. Poll `statusUrl` until the scan leaves `running`. Returns 409 if a scan is already running and 402 if billing blocks the scan. A manual scan does not move the schedule: the next automatic scan still runs at `nextScanAt` from `GET /projects/{projectId}/geo/settings`.
    *
    * `POST /v1/projects/{projectId}/geo/scans`
    */
@@ -2226,7 +2974,7 @@ export class GeoResource {
   /**
    * Rescan a single GEO prompt
    *
-   * Queues a scan of one enabled tracked prompt across the project's engines, for example to check a prompt again after publishing content for it. Only that prompt's checks run, so it costs less than a full scan. Otherwise it behaves like `POST /v1/projects/{projectId}/geo/scans`: poll `statusUrl` until `status` leaves `running`, 409 while another scan is in flight, 402 when the plan or AI credits cannot cover it, and it shares that route's rate limit. Returns 404 for a prompt that is unknown or disabled.
+   * Brand tracking must be enabled unless `oneShot: true`. Rescans one enabled prompt on tracked engines or the requested `engines`. Poll `statusUrl` until the scan leaves `running`. Returns 404 if the prompt is unknown or disabled.
    *
    * `POST /v1/projects/{projectId}/geo/scans/prompts/{promptId}`
    */
@@ -2281,7 +3029,7 @@ export class GeoResource {
   /**
    * List compact prompt result summaries
    *
-   * A filtered, paginated projection of the latest answer per prompt and engine. Full answer text and sources are omitted; use checkId with the detail endpoint.
+   * Latest answer per prompt and engine, with an excerpt and citation domains. Pass `scanId` to isolate one scan or `checkId` to the detail endpoint for the full answer.
    *
    * `GET /v1/projects/{projectId}/geo/visibility/prompt-results/summaries`
    */
@@ -2325,7 +3073,7 @@ export class GeoResource {
   /**
    * Get one competitor's mention history
    *
-   * Daily mentions and the prompts that produced them for a single brand. Without a window this falls back to the competitor-detail default rather than the project default, matching the dashboard.
+   * Daily mentions and the prompts that produced them for a single brand. Without a window this covers the last 30 days, matching the dashboard, while the other visibility endpoints cover all history.
    *
    * `GET /v1/projects/{projectId}/geo/visibility/competitors/{brand}`
    */
@@ -2396,6 +3144,39 @@ export class GeoResource {
   }
 
   /**
+   * Claim a content gap or brief before writing it
+   *
+   * Call this before your own agent writes the article for a content gap or brief, so Notra's writer, Autopilot and other agents do not write it at the same time. Returns 409 while someone else holds the claim. Claiming again with the same credentials renews it. The claim lapses after `ttlMinutes`. Saving the brief's draft post with updatePost releases it; otherwise call releaseGeoContentClaim, or reportGeoContentAgentFailure when the agent cannot finish. A brief planned from a gap shares the gap's claim. While it is held, the dashboard shows the gap as being written by `agent`.
+   *
+   * `POST /v1/projects/{projectId}/geo/claims`
+   */
+  claimGeoContent(params: ClaimGeoContentParams, options?: RequestOptions): Promise<ClaimGeoContentResult> {
+    return this.#transport.call(OPERATIONS.claimGeoContent, params, options) as Promise<ClaimGeoContentResult>;
+  }
+
+  /**
+   * Release a claim on a content gap or brief
+   *
+   * Gives up your claim so Notra or another agent can write the article. Releasing an expired or missing claim succeeds with `released: false`. Returns 409 when someone else holds it.
+   *
+   * `POST /v1/projects/{projectId}/geo/claims/release`
+   */
+  releaseGeoContentClaim(params: ReleaseGeoContentClaimParams, options?: RequestOptions): Promise<ReleaseGeoContentClaimResult> {
+    return this.#transport.call(OPERATIONS.releaseGeoContentClaim, params, options) as Promise<ReleaseGeoContentClaimResult>;
+  }
+
+  /**
+   * Report that your agent could not write a claimed article
+   *
+   * Releases your active claim and saves the reason as the error on the gap's open draft or failed brief, so the team sees why the article was not written. Returns 409 without changing the brief if the claim is missing, expired, or held by someone else.
+   *
+   * `POST /v1/projects/{projectId}/geo/claims/failure`
+   */
+  reportGeoContentAgentFailure(params: ReportGeoContentAgentFailureParams, options?: RequestOptions): Promise<ReportGeoContentAgentFailureResult> {
+    return this.#transport.call(OPERATIONS.reportGeoContentAgentFailure, params, options) as Promise<ReportGeoContentAgentFailureResult>;
+  }
+
+  /**
    * List content gaps
    *
    * Prompts where competitors are mentioned and this brand is not, plus Search Console queries with no tracked prompt. Each row carries the brief already written for it, when there is one.
@@ -2460,7 +3241,7 @@ export class GeoResource {
   /**
    * Approve a brief and start the writer
    *
-   * Claims the brief and queues the writer with the Notra dashboard. Only briefs in `draft` or `failed` can be approved; anything else returns 409.
+   * Queues Notra's writer for the brief. Only briefs in `draft` or `failed` can be approved; anything else returns 409. Also returns 409 while another agent holds a claim on the brief or its gap (see claimGeoContent). If you hold the claim yourself, approving hands the writing to Notra and releases it.
    *
    * `POST /v1/projects/{projectId}/geo/briefs/{briefId}/approve`
    */
@@ -2546,7 +3327,7 @@ export class GeoResource {
   /**
    * Get MCP server analytics
    *
-   * Usage of your own MCP server, as reported by the `@usenotra/geo` SDK: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
+   * Usage of your own MCP server, as reported by `@usenotra/sdk/mcp`: request and error totals against the previous window, per-tool latency and errors, clients, models, intents, recent failures and tools that were never called. Captured arguments, responses and end-user IDs are not returned.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/mcp`
    */
@@ -2590,7 +3371,7 @@ export class GeoResource {
   /**
    * Rotate the tracking token
    *
-   * Invalidates every tracking token previously issued for this organization and returns a fresh one. Deployments still sending the old token stop being accepted immediately.
+   * Pass `projectId` to invalidate only that project's tracking tokens and return a replacement. Omit it to invalidate the legacy organization token and every project's tracking tokens, and return a new legacy organization token. The legacy token still only accepts the oldest project's hosts. Public web keys are unchanged.
    *
    * `POST /v1/geo/ingest/rotate-token`
    */
@@ -2599,9 +3380,9 @@ export class GeoResource {
   }
 
   /**
-   * Get website analytics totals and trend (private beta)
+   * Get website analytics totals and trend
    *
-   * Private beta: workspaces without web analytics access get 403. Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
+   * Page views, visitors, sessions and AI-referred visitors against the previous window of the same length, daily views and visitors, and the hosts seen. Includes completed history imports. Explicit ranges can span at most 366 days.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/web`
    */
@@ -2610,9 +3391,9 @@ export class GeoResource {
   }
 
   /**
-   * Get website analytics breakdowns (private beta)
+   * Get website analytics breakdowns
    *
-   * Private beta: workspaces without web analytics access get 403. Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
+   * Top pages, referrer sources, countries, devices, languages, AI visitor outcomes, and the reports only notra.js sends: outbound link clicks, Core Web Vitals and JavaScript errors.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/web/breakdowns`
    */
@@ -2621,9 +3402,9 @@ export class GeoResource {
   }
 
   /**
-   * Get website sessions by UTM parameter (private beta)
+   * Get website sessions by UTM parameter
    *
-   * Private beta: workspaces without web analytics access get 403. Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
+   * Sessions and visitors per value of one UTM parameter (source, medium, campaign, term or content), counted on each session's first page, against the previous window of the same length. Returns the top 25 values. Includes completed history imports when no path is set. Term and content from visits Notra tracked itself cover at most the last 90 days. Campaign, term and content values that look like an email address, a UUID or a token are reported as `:id`.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/web/utm`
    */
@@ -2632,9 +3413,9 @@ export class GeoResource {
   }
 
   /**
-   * Get AI journey statistics (private beta)
+   * Get AI journey statistics
    *
-   * Private beta: workspaces without web analytics access get 403. Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
+   * Exact journey counts per AI source and per page against the previous window: single fetches, deep crawls, entry pages and daily counts.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/journey-stats`
    */
@@ -2643,9 +3424,9 @@ export class GeoResource {
   }
 
   /**
-   * List history imports (private beta)
+   * List history imports
    *
-   * Private beta: workspaces without web analytics access get 403. Imports of earlier analytics from Plausible, Cloudflare or Vercel and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
+   * Imports of earlier analytics from Plausible, Cloudflare, Vercel, PostHog, Rybbit or Databuddy and their progress, newest first. Connections and their credentials are never returned; start imports in the dashboard.
    *
    * `GET /v1/projects/{projectId}/geo/traffic/imports`
    */
@@ -2678,7 +3459,7 @@ export class AgentResource {
   /**
    * Send a follow-up message or answer a pending input request
    *
-   * Sends the next turn of an agent session. The server binds the session's stored continuation token, so the client-provided one is ignored. Answer input.requested events (tool approvals, questions) from the event stream via inputResponses.
+   * Sends the next turn of an agent session. The server binds the session's stored continuation token, so the client-provided one is ignored. Answer interaction.opened events (tool approvals, questions) from the event stream via inputResponses.
    *
    * `POST /v2/eve/v1/session/{sessionId}`
    */
@@ -2689,7 +3470,7 @@ export class AgentResource {
   /**
    * Stream an agent session's events
    *
-   * Durable, replayable eve session event stream (newline-delimited JSON). Pass startIndex to resume from a known position. Includes input.requested events for tool approvals.
+   * Durable, replayable eve session event stream (newline-delimited JSON, stream version 27). Each stored line holds a `facts` array of events or a `progress` record. Pass startIndex to resume from a known line. Includes interaction.opened events for tool approvals.
    *
    * `GET /v2/eve/v1/session/{sessionId}/stream`
    */
@@ -2713,6 +3494,8 @@ export class NotraApi {
   readonly content: ContentResource;
   readonly webhooks: WebhooksResource;
   readonly schedules: SchedulesResource;
+  readonly autopilot: AutopilotResource;
+  readonly autopilotOutreach: AutopilotOutreachResource;
   readonly eventTriggers: EventTriggersResource;
   readonly chats: ChatsResource;
   readonly skills: SkillsResource;
@@ -2729,6 +3512,8 @@ export class NotraApi {
     this.content = new ContentResource(transport);
     this.webhooks = new WebhooksResource(transport);
     this.schedules = new SchedulesResource(transport);
+    this.autopilot = new AutopilotResource(transport);
+    this.autopilotOutreach = new AutopilotOutreachResource(transport);
     this.eventTriggers = new EventTriggersResource(transport);
     this.chats = new ChatsResource(transport);
     this.skills = new SkillsResource(transport);
